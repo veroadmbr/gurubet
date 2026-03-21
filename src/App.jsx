@@ -249,23 +249,24 @@ async function fetchImageUrl(name) {
   if (!API_KEY) { imageCache[name] = null; return }
   pendingFetches.add(name)
   try {
-    const prompt = `Para o time/atleta "${name}", retorne SOMENTE uma URL direta de imagem PNG ou JPG (logo oficial ou foto profissional). Prefira Wikipedia Commons, sites oficiais de ligas, ATP/WTA, UFC. Se não souber uma URL válida, responda NONE.`
+    const prompt = 'Você é especialista em logos esportivos. Para o time/atleta "' + name + '", retorne SOMENTE uma URL direta funcional de PNG/SVG com fundo branco ou transparente. Priorize: Wikipedia Commons, Wikimedia, ESPN CDN. Responda APENAS a URL ou NONE.'
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:200,messages:[{role:'user',content:prompt}]})
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,messages:[{role:'user',content:prompt}]})
     })
-    if (!res.ok) throw new Error(res.status)
+    if (!res.ok) { imageCache[name] = null; return }
     const json = await res.json()
-    const url = json.content?.find(b=>b.type==='text')?.text?.trim()||''
-    imageCache[name] = (url && url!=='NONE' && url.startsWith('http')) ? url : null
+    const raw = (json.content?.find(b=>b.type==='text')?.text||'').trim()
+    const url = raw.split('\n')[0].trim()
+    imageCache[name] = (url && url !== 'NONE' && url.startsWith('http')) ? url : null
   } catch(e) { imageCache[name] = null }
   finally { pendingFetches.delete(name) }
 }
 
 // ─── KNOWN LOGOS — URLs verificadas ──────────────────────────────────────────
 const LOGOS = {
-  // Futebol BR
+  // ── Futebol Brasil ──
   saopaulo:     'https://upload.wikimedia.org/wikipedia/commons/6/67/S%C3%A3o_Paulo_FC.svg',
   palmeiras:    'https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg',
   corinthians:  'https://upload.wikimedia.org/wikipedia/commons/b/b6/Logo-Corinthians.svg',
@@ -280,6 +281,7 @@ const LOGOS = {
   cruzeiro:     'https://upload.wikimedia.org/wikipedia/commons/f/f2/Cruzeiro_Esporte_Clube_-_Escudo.svg',
   sport:        'https://upload.wikimedia.org/wikipedia/commons/7/7d/Sport_Club_do_Recife.svg',
   fortaleza:    'https://upload.wikimedia.org/wikipedia/commons/1/1e/Escudo_do_Fortaleza.svg',
+  // ── Premier League ──
   arsenal:      'https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg',
   manutd:       'https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg',
   mancity:      'https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg',
@@ -290,15 +292,21 @@ const LOGOS = {
   everton:      'https://upload.wikimedia.org/wikipedia/en/7/7c/Everton_FC_logo.svg',
   newcastle:    'https://upload.wikimedia.org/wikipedia/en/5/56/Newcastle_United_Logo.svg',
   astonvilla:   'https://upload.wikimedia.org/wikipedia/en/9/9a/Aston_Villa_FC_new_crest.svg',
+  // ── La Liga ──
   realmadrid:   'https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg',
   barcelona:    'https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg',
   atletimadrid: 'https://upload.wikimedia.org/wikipedia/en/f/f4/Atletico_Madrid_2017_logo.svg',
-  psg:          'https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg',
+  // ── Bundesliga ──
   bayernmunich: 'https://upload.wikimedia.org/wikipedia/commons/1/1f/FC_Bayern_M%C3%BCnchen_logo_%282002%E2%80%932017%29.svg',
   dortmund:     'https://upload.wikimedia.org/wikipedia/commons/6/67/Borussia_Dortmund_logo.svg',
+  leverkusen:   'https://upload.wikimedia.org/wikipedia/en/5/59/Bayer_04_Leverkusen_logo.svg',
+  // ── Ligue 1 ──
+  psg:          'https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg',
+  // ── Serie A ──
   intermilan:   'https://upload.wikimedia.org/wikipedia/commons/0/05/FC_Internazionale_Milano_2021.svg',
   juventus:     'https://upload.wikimedia.org/wikipedia/commons/1/15/Juventus_FC_2017_logo.svg',
   napoli:       'https://upload.wikimedia.org/wikipedia/commons/2/2d/SSC_Napoli.svg',
+  // ── NBA ──
   okc:          'https://upload.wikimedia.org/wikipedia/en/5/5d/Oklahoma_City_Thunder.svg',
   lakers:       'https://upload.wikimedia.org/wikipedia/commons/3/3c/Los_Angeles_Lakers_logo.svg',
   celtics:      'https://upload.wikimedia.org/wikipedia/en/8/8f/Boston_Celtics.svg',
@@ -308,17 +316,21 @@ const LOGOS = {
   nuggets:      'https://upload.wikimedia.org/wikipedia/en/7/76/Denver_Nuggets.svg',
   heat:         'https://upload.wikimedia.org/wikipedia/en/f/fb/Miami_Heat_logo.svg',
   suns:         'https://upload.wikimedia.org/wikipedia/en/d/dc/Phoenix_Suns_logo.svg',
-  sinner:       'https://www.atptour.com/-/media/alias/player-headshot/S0AG',
-  alcaraz:      'https://www.atptour.com/-/media/alias/player-headshot/A0E2',
-  sabalenka:    'https://www.wtatennis.com/-/media/alias/player-headshot/316494',
-  gauff:        'https://www.wtatennis.com/-/media/alias/player-headshot/326408',
-  fritz:        'https://www.atptour.com/-/media/alias/player-headshot/FA18',
-  tsitsipas:    'https://www.atptour.com/-/media/alias/player-headshot/TS29',
+  // ── Tênis (ESPN CDN — headshots brancos) ──
+  sinner:       'https://a.espncdn.com/i/headshots/tennis/players/full/4741.png',
+  alcaraz:      'https://a.espncdn.com/i/headshots/tennis/players/full/4759.png',
+  sabalenka:    'https://a.espncdn.com/i/headshots/tennis/players/full/4613.png',
+  gauff:        'https://a.espncdn.com/i/headshots/tennis/players/full/4866.png',
+  fritz:        'https://a.espncdn.com/i/headshots/tennis/players/full/4321.png',
+  tsitsipas:    'https://a.espncdn.com/i/headshots/tennis/players/full/4543.png',
+  // ── MMA — UFC CDN oficial ──
   pereira:      'https://dmxg5wxfqgb4u.cloudfront.net/styles/athlete_bio_full_body/s3/2024-10/PEREIRA_ALEX_L_BELT.png',
   makhachev:    'https://dmxg5wxfqgb4u.cloudfront.net/styles/athlete_bio_full_body/s3/2023-10/MAKHACHEV_ISLAM_L_BELT.png',
   pantoja:      'https://dmxg5wxfqgb4u.cloudfront.net/styles/athlete_bio_full_body/s3/2024-09/PANTOJA_ALEXANDRE_L_BELT.png',
+  // ── E-sports ──
   loud:         'https://upload.wikimedia.org/wikipedia/commons/7/7e/LOUD_Esports_logo.png',
   t1:           'https://upload.wikimedia.org/wikipedia/commons/d/db/T1_logo.png',
+  furia:        'https://upload.wikimedia.org/wikipedia/commons/3/37/FURIA_Esports_logo.png',
 }
 
 // ─── TEAM / PLAYER LOGO ───────────────────────────────────────────────────────
@@ -1024,21 +1036,16 @@ function DesktopNav({tab, onTab, page, onPage, updating, countdown, queue, force
           </nav>
         </div>
         <div style={{display:'flex',alignItems:'center',gap:10}}>
-          {updating?(
+          {updating&&(
             <div style={{display:'flex',alignItems:'center',gap:6,background:'#FFF8E1',borderRadius:T.r.pill,padding:'6px 13px',border:'1px solid #FFE082'}}>
               <div style={{width:7,height:7,borderRadius:'50%',border:'2px solid #F59E0B',borderTopColor:'transparent',animation:'spin 0.8s linear infinite',flexShrink:0}}/>
               <span style={{fontSize:12,fontWeight:600,color:'#92400E'}}>{queue.length>0?`Analisando ${queue[0]}...`:'Analisando...'}</span>
             </div>
-          ):countdown?(
-            <div style={{display:'flex',alignItems:'center',gap:6,background:'#F0FFF4',borderRadius:T.r.pill,padding:'6px 13px',border:'1px solid #A7F3D0'}}>
-              <div style={{width:7,height:7,borderRadius:'50%',background:T.green,flexShrink:0}}/>
-              <span style={{fontSize:12,fontWeight:600,color:'#065F46',fontVariantNumeric:'tabular-nums'}}>Próxima atualização: {countdown}</span>
-            </div>
-          ):null}
+          )}
           <button onClick={force} disabled={updating}
             style={{display:'flex',alignItems:'center',gap:7,background:updating?T.gray2:T.green,color:updating?T.gray1:T.white,border:'none',borderRadius:T.r.pill,padding:'8px 17px',fontSize:13,fontWeight:700,cursor:updating?'not-allowed':'pointer',transition:'background 0.15s'}}>
             <IcoRefresh size={14} color={updating?T.gray1:T.white}/>
-            {updating?'Atualizando...':'Resetar previsões'}
+            {updating?'Atualizando...':'Atualizar previsões'}
           </button>
         </div>
       </div>
@@ -1521,11 +1528,12 @@ const SEED={loterias:LOTERIAS,esportes:ESPORTES}
 export default function App() {
   const [tab,setTab]=useState('todos')
   const [page,setPage]=useState('categorias')
-  // Mobile navigation stack: null | 'list' | 'chat'
-  const [mobileScreen,setMobileScreen]=useState(null) // null=home, 'list'=events, 'chat'=event chat
   const [selItem,setSelItem]=useState(null)
-  const [selCatKey,setSelCatKey]=useState(null)
   const [activeFilter,setActiveFilter]=useState('all')
+  // Chat navigation: null | 'tabs' | 'events' | 'chat'
+  const [chatScreen,setChatScreen]=useState(null)
+  const [chatCat,setChatCat]=useState('futebol')
+  const [chatItem,setChatItem]=useState(null)
 
   const {appData,logs,updating,lastAt,countdown,queue,force}=useAutoUpdate(SEED)
   const {isMobile,isTablet,isDesktop}=useBreakpoint()
@@ -1548,20 +1556,12 @@ export default function App() {
       : espItems.filter(i=>activeFilter==='all'||(activeFilter==='live'&&i.status==='live')||(activeFilter==='upcoming'&&i.status==='upcoming'))
 
   function handleTab(k){setTab(k);setActiveFilter('all')}
-  function handlePage(p){setPage(p);setMobileScreen(null)}
+  function handlePage(p){setPage(p);if(p!=='social')setChatScreen(null)}
 
-  // Open events list for a category
-  function openList(catKey) {
-    handleTab(catKey)
-    setMobileScreen('list')
-  }
-
-  // Open chat for an event
-  function openChat(item, catKey) {
-    setSelItem(item)
-    setSelCatKey(catKey)
-    setMobileScreen('chat')
-  }
+  // ── Chat navigation helpers ──
+  function openChatTabs() { setChatScreen('tabs'); setChatCat('futebol') }
+  function openChatEvents(cat) { setChatCat(cat); setChatScreen('events') }
+  function openChat(item, catKey) { setChatItem(item); setChatCat(catKey); setChatScreen('chat') }
 
   // ── DESKTOP ──
   if (isDesktop) {
@@ -1587,8 +1587,8 @@ export default function App() {
               {isLoto&&<div style={{background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:T.r.md,padding:'10px 16px',marginBottom:18,fontSize:12,color:'#78350F',lineHeight:1.6}}><strong>Jogo responsável.</strong> Sugestões baseadas em estatística histórica.</div>}
               <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:14,alignItems:'start'}}>
                 {isLoto
-                  ?currentItems.map(lot=><KalshiLotoCard key={lot.id} lot={lot} onSelect={i=>setSelItem(i)} catUpdating={catUpd}/>)
-                  :currentItems.map(item=><KalshiSportCard key={item.id} item={item} catKey={item._catKey||tab} onSelect={i=>setSelItem(i)} catUpdating={isTodos?false:catUpd}/>)
+                  ?currentItems.map(lot=><KalshiLotoCard key={lot.id} lot={lot} onSelect={setSelItem} catUpdating={catUpd}/>)
+                  :currentItems.map(item=><KalshiSportCard key={item.id} item={item} catKey={item._catKey||tab} onSelect={setSelItem} catUpdating={isTodos?false:catUpd}/>)
                 }
               </div>
             </div>
@@ -1599,147 +1599,159 @@ export default function App() {
     )
   }
 
-  // ── MOBILE — SCREEN: CHAT ──
-  if (mobileScreen==='chat' && selItem) {
-    return (
-      <div>
-        <style>{CSS}</style>
-        <MobileChatPage
-          item={selItem}
-          catKey={selCatKey||tab}
-          onBack={()=>setMobileScreen('list')}
-          appData={appData}
-        />
-      </div>
-    )
-  }
-
-  // ── MOBILE — SCREEN: EVENTS LIST ──
-  if (mobileScreen==='list') {
-    return (
-      <div>
-        <style>{CSS}</style>
-        <MobileEventsList
-          tab={tab}
-          appData={appData}
-          onSelect={openChat}
-          onBack={()=>setMobileScreen(null)}
-          updating={updating}
-          countdown={countdown}
-          force={force}
-        />
-      </div>
-    )
-  }
-
-  // ── MOBILE — SCREEN: HOME (tab bar + categoria cards) ──
-  return (
-    <div style={{background:T.bg,minHeight:'100vh',paddingBottom:80}}>
-      <style>{CSS}</style>
-
-      {/* Header fixo */}
-      <div style={{background:T.white,borderBottom:`1px solid ${T.border}`,position:'sticky',top:0,zIndex:50}}>
-        <div style={{padding:'10px 16px 8px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-          <LogoSVG height={24}/>
-          <button onClick={force} disabled={updating}
-            style={{display:'flex',alignItems:'center',gap:5,padding:'7px 14px',borderRadius:T.r.pill,
-              background:updating?T.gray2:T.green,border:'none',color:updating?T.gray1:T.white,
-              fontSize:12,fontWeight:700,cursor:updating?'not-allowed':'pointer'}}>
-            <IcoRefresh size={13} color={updating?T.gray1:T.white}/>
-            {updating?'Analisando...':'Atualizar'}
-          </button>
+  // ── MOBILE/TABLET — CHAT SCREENS (Social page only) ──
+  if (page==='social') {
+    // Screen 3: Event chat
+    if (chatScreen==='chat' && chatItem) {
+      return (
+        <div><style>{CSS}</style>
+          <MobileChatPage item={chatItem} catKey={chatCat} onBack={()=>setChatScreen('events')} appData={appData}/>
         </div>
-        {!updating&&countdown&&(
-          <div style={{margin:'0 16px 8px',background:T.gray2,borderRadius:T.r.sm,padding:'4px 12px',display:'flex',justifyContent:'space-between'}}>
-            <span style={{fontSize:11,color:T.gray1}}>Próxima atualização</span>
-            <span style={{fontSize:11,fontWeight:800,color:T.black,fontVariantNumeric:'tabular-nums'}}>{countdown}</span>
+      )
+    }
+    // Screen 2: Events list
+    if (chatScreen==='events') {
+      return (
+        <div><style>{CSS}</style>
+          <MobileEventsList tab={chatCat} appData={appData} onSelect={openChat} onBack={()=>setChatScreen('tabs')} updating={updating} countdown={countdown} force={force}/>
+        </div>
+      )
+    }
+    // Screen 1: Category tabs for chat
+    if (chatScreen==='tabs' || chatScreen===null) {
+      return (
+        <div style={{background:T.bg,minHeight:'100vh',paddingBottom:80}}>
+          <style>{CSS}</style>
+          {/* Header */}
+          <div style={{background:T.white,borderBottom:`1px solid ${T.border}`,position:'sticky',top:0,zIndex:50,padding:'12px 16px 10px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+            <div style={{fontSize:18,fontWeight:800,color:T.black}}>Social</div>
+            <button onClick={()=>handlePage('categorias')} style={{background:'none',border:'none',cursor:'pointer',color:T.gray1,fontSize:13}}>← Início</button>
           </div>
-        )}
-        {updating&&(
-          <div style={{margin:'0 16px 8px',background:'#FFF8E1',borderRadius:T.r.sm,padding:'4px 12px',display:'flex',alignItems:'center',gap:7}}>
-            <div style={{width:7,height:7,borderRadius:'50%',border:'2px solid #F59E0B',borderTopColor:'transparent',animation:'spin 0.8s linear infinite',flexShrink:0}}/>
-            <span style={{fontSize:11,color:'#78350F'}}>{queue.length>0?'Analisando '+queue[0]:'Atualizando...'}</span>
-          </div>
-        )}
-      </div>
-
-      {page==='social'?<SocialPage appData={appData}/>:(
-        <div style={{padding:'16px 16px 0'}}>
-
-          {/* Ao Vivo banner — se houver eventos live */}
-          {totalLive>0&&(
-            <button onClick={()=>openList('todos')}
-              style={{width:'100%',background:'#FEF2F2',border:'1.5px solid #FCA5A5',borderRadius:T.r.lg,
-                padding:'12px 16px',display:'flex',alignItems:'center',gap:12,cursor:'pointer',
-                marginBottom:16,textAlign:'left'}}>
-              <div style={{width:36,height:36,borderRadius:'50%',background:T.red,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                <div style={{width:12,height:12,borderRadius:'50%',background:T.white,animation:'pulse 1.5s infinite'}}/>
-              </div>
-              <div style={{flex:1}}>
-                <div style={{fontSize:14,fontWeight:800,color:T.red}}>{totalLive} evento{totalLive!==1?'s':''} ao vivo agora</div>
-                <div style={{fontSize:12,color:'#991B1B',marginTop:1}}>Toque para ver todos</div>
-              </div>
-              <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={T.red} strokeWidth="2.5" strokeLinecap="round"><path d="m9 18 6-6-6-6"/></svg>
-            </button>
-          )}
-
-          {/* Grid de categorias */}
-          <div style={{fontSize:12,fontWeight:700,color:T.gray1,letterSpacing:'0.06em',marginBottom:10}}>CATEGORIAS</div>
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:16}}>
-            {TABS.map(({key,label})=>{
-              const Ico = TAB_ICON[key]||IcoLottery
-              const cc  = T.cat[key]||T.black
-              const cb  = T.catBg[key]||T.gray2
-              const items = key==='todos'
-                ? allEvents
-                : key==='loterias'
-                  ? appData.loterias
-                  : appData.esportes[key]?.items||[]
-              const liveInCat = key==='todos'||key==='loterias' ? 0
-                : items.filter(i=>i.status==='live').length
-              return (
-                <button key={key} onClick={()=>openList(key)}
-                  style={{background:T.white,borderRadius:T.r.lg,border:`1.5px solid ${T.border}`,
-                    padding:'14px 16px',display:'flex',flexDirection:'column',gap:10,
-                    cursor:'pointer',textAlign:'left',transition:'all 0.12s',position:'relative',overflow:'hidden'}}>
-                  {liveInCat>0&&(
-                    <div style={{position:'absolute',top:8,right:8,background:T.red,color:T.white,
-                      fontSize:9,fontWeight:900,borderRadius:T.r.pill,padding:'1px 6px'}}>
-                      {liveInCat} AO VIVO
+          <div style={{padding:'16px'}}>
+            <div style={{fontSize:12,fontWeight:700,color:T.gray1,letterSpacing:'0.06em',marginBottom:12}}>ESCOLHA UMA CATEGORIA</div>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
+              {TABS.filter(t=>t.key!=='todos'&&t.key!=='loterias').map(({key,label})=>{
+                const Ico=TAB_ICON[key]||IcoLottery
+                const cc=T.cat[key]||T.black
+                const cb=T.catBg[key]||T.gray2
+                const items=appData.esportes[key]?.items||[]
+                const liveCount=items.filter(i=>i.status==='live').length
+                return (
+                  <button key={key} onClick={()=>openChatEvents(key)}
+                    style={{background:T.white,borderRadius:T.r.lg,border:`1.5px solid ${T.border}`,padding:'14px 16px',display:'flex',flexDirection:'column',gap:10,cursor:'pointer',textAlign:'left',position:'relative'}}>
+                    {liveCount>0&&<div style={{position:'absolute',top:8,right:8,background:T.red,color:T.white,fontSize:9,fontWeight:900,borderRadius:T.r.pill,padding:'1px 6px'}}>{liveCount} AO VIVO</div>}
+                    <div style={{width:44,height:44,borderRadius:12,background:cb,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                      <Ico size={22} color={cc}/>
                     </div>
-                  )}
-                  <div style={{width:44,height:44,borderRadius:12,background:cb,display:'flex',alignItems:'center',justifyContent:'center'}}>
-                    <Ico size={22} color={cc}/>
-                  </div>
-                  <div>
-                    <div style={{fontSize:15,fontWeight:700,color:T.black,marginBottom:2}}>{label}</div>
-                    <div style={{fontSize:11,color:T.gray1}}>{items.length} evento{items.length!==1?'s':''}</div>
-                  </div>
+                    <div>
+                      <div style={{fontSize:15,fontWeight:700,color:T.black,marginBottom:2}}>{label}</div>
+                      <div style={{fontSize:11,color:T.gray1}}>{items.length} eventos</div>
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+          {/* Bottom nav */}
+          <div style={{position:'fixed',bottom:0,left:0,right:0,background:T.white,borderTop:`1px solid ${T.border}`,display:'flex',paddingTop:8,paddingBottom:'env(safe-area-inset-bottom,16px)',zIndex:100,boxShadow:'0 -2px 12px rgba(0,0,0,0.06)'}}>
+            {[
+              {key:'home',   label:'Início', Ico:IcoHome,  action:()=>handlePage('categorias')},
+              {key:'social', label:'Social', Ico:IcoSocial,action:()=>{handlePage('social');setChatScreen('tabs')}},
+              {key:'live',   label:'Ao Vivo',Ico:IcoPlay,  badge:totalLive, action:()=>handlePage('categorias')},
+              {key:'perfil', label:'Perfil', Ico:IcoPerson,action:null},
+            ].map(({key,label,Ico,badge,action})=>{
+              const active=key==='social'
+              const col=active?T.black:T.gray1
+              return (
+                <button key={key} onClick={()=>action&&action()}
+                  style={{background:'none',border:'none',display:'flex',flexDirection:'column',alignItems:'center',gap:2,cursor:'pointer',position:'relative',flex:1,padding:'3px 0'}}>
+                  {badge>0&&<span style={{position:'absolute',top:-2,right:'calc(50% - 18px)',background:T.red,color:T.white,fontSize:9,fontWeight:900,borderRadius:T.r.pill,padding:'1px 5px',lineHeight:1.5}}>{badge}</span>}
+                  <Ico size={22} color={col}/>
+                  <span style={{fontSize:10,fontWeight:active?700:400,color:col}}>{label}</span>
+                  {active&&<div style={{width:4,height:4,borderRadius:'50%',background:T.black,marginTop:1}}/>}
                 </button>
               )
             })}
           </div>
         </div>
-      )}
+      )
+    }
+  }
+
+  // ── MOBILE/TABLET — MAIN PAGE (original responsive layout) ──
+  return (
+    <div style={{background:T.bg,minHeight:'100vh',paddingBottom:80}}>
+      <style>{CSS}</style>
+      <MobileHeader tab={tab} onTab={handleTab} page={page} onPage={handlePage} updating={updating} countdown={countdown} queue={queue} force={force}/>
+
+      <div style={{padding:isTablet?'20px 24px':'12px 14px',maxWidth:isTablet?860:'100%',margin:'0 auto'}}>
+
+        {/* Filter pills */}
+        {!isLoto&&(
+          <div style={{display:'flex',gap:6,marginBottom:14,overflowX:'auto',scrollbarWidth:'none',paddingBottom:2}}>
+            {[
+              {f:'all',     label:'Todos'},
+              {f:'live',    label:'Ao Vivo'},
+              {f:'upcoming',label:'Próximos'},
+            ].map(({f,label})=>{
+              const active=activeFilter===f
+              const liveCount=allEvents.filter(i=>i.status==='live').length
+              return (
+                <button key={f} onClick={()=>setActiveFilter(f)}
+                  style={{display:'flex',alignItems:'center',gap:5,padding:'7px 16px',borderRadius:T.r.pill,
+                    border:'1.5px solid '+(active?T.black:T.border),
+                    background:active?T.black:T.white,color:active?T.white:T.black,
+                    fontSize:13,fontWeight:active?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0}}>
+                  {f==='live'&&<IcoLiveDot/>}
+                  {label}
+                  {f==='all'&&<span style={{fontSize:11,opacity:0.55}}>
+                    {' '}({isTodos?allEvents.length:espItems.length})
+                  </span>}
+                  {f==='live'&&liveCount>0&&<span style={{fontSize:11,opacity:0.7}}>· {liveCount}</span>}
+                </button>
+              )
+            })}
+          </div>
+        )}
+
+        {isLoto&&<div style={{background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:T.r.md,padding:'10px 14px',marginBottom:14,fontSize:12,color:'#78350F',lineHeight:1.6}}><strong>Jogo responsável.</strong> Sugestões baseadas em estatística.</div>}
+
+        {/* Cards grid */}
+        {isLoto?(
+          <div style={{display:'grid',gridTemplateColumns:isTablet?'repeat(2,1fr)':'1fr',gap:12}}>
+            {currentItems.map(lot=><LotoCard key={lot.id} lot={lot} onSelect={setSelItem} catUpdating={catUpd}/>)}
+          </div>
+        ):(
+          <div style={{display:'flex',flexDirection:'column',gap:0}}>
+            {currentItems.length===0?(
+              <div style={{textAlign:'center',padding:'56px 0',color:T.gray1}}>
+                <div style={{fontSize:36,marginBottom:12}}>📋</div>
+                <div style={{fontSize:15,fontWeight:600,color:T.black}}>Nenhum evento</div>
+                <div style={{fontSize:13,marginTop:4}}>Tente mudar o filtro acima</div>
+              </div>
+            ):(
+              currentItems.map(item=>(
+                <MobileSportCard key={item.id} item={item} catKey={item._catKey||tab} onSelect={setSelItem}/>
+              ))
+            )}
+          </div>
+        )}
+      </div>
 
       {/* Bottom nav */}
-      <div style={{position:'fixed',bottom:0,left:0,right:0,background:T.white,borderTop:`1px solid ${T.border}`,
-        display:'flex',paddingTop:8,paddingBottom:'env(safe-area-inset-bottom,16px)',zIndex:100,
-        boxShadow:'0 -2px 12px rgba(0,0,0,0.06)'}}>
+      <div style={{position:'fixed',bottom:0,left:0,right:0,background:T.white,borderTop:`1px solid ${T.border}`,display:'flex',paddingTop:8,paddingBottom:'env(safe-area-inset-bottom,16px)',zIndex:100,boxShadow:'0 -2px 12px rgba(0,0,0,0.06)'}}>
         {[
-          {key:'home',   label:'Início', Ico:IcoHome,  action:()=>handlePage('categorias')},
-          {key:'social', label:'Social', Ico:IcoSocial,action:()=>handlePage('social')},
-          {key:'live',   label:'Ao Vivo',Ico:IcoPlay,  badge:totalLive, action:()=>{handlePage('categorias');openList('todos')}},
+          {key:'home',   label:'Início', Ico:IcoHome,  action:()=>{handlePage('categorias');handleTab('todos');setActiveFilter('all')}},
+          {key:'social', label:'Social', Ico:IcoSocial,action:()=>{handlePage('social');setChatScreen('tabs')}},
+          {key:'live',   label:'Ao Vivo',Ico:IcoPlay,  badge:totalLive,action:()=>{handlePage('categorias');setActiveFilter('live')}},
           {key:'perfil', label:'Perfil', Ico:IcoPerson,action:null},
         ].map(({key,label,Ico,badge,action})=>{
-          const active = key==='home'?page==='categorias'&&mobileScreen===null : key==='social'?page==='social' : false
-          const col = active?T.black:T.gray1
+          const active=key==='home'?page==='categorias':key==='social'?page==='social':false
+          const col=active?T.black:T.gray1
           return (
             <button key={key} onClick={()=>action&&action()}
-              style={{background:'none',border:'none',display:'flex',flexDirection:'column',
-                alignItems:'center',gap:2,cursor:'pointer',position:'relative',flex:1,padding:'3px 0'}}>
-              {badge>0&&<span style={{position:'absolute',top:-2,right:'calc(50% - 18px)',background:T.red,
-                color:T.white,fontSize:9,fontWeight:900,borderRadius:T.r.pill,padding:'1px 5px',lineHeight:1.5}}>{badge}</span>}
+              style={{background:'none',border:'none',display:'flex',flexDirection:'column',alignItems:'center',gap:2,cursor:'pointer',position:'relative',flex:1,padding:'3px 0'}}>
+              {badge>0&&<span style={{position:'absolute',top:-2,right:'calc(50% - 18px)',background:T.red,color:T.white,fontSize:9,fontWeight:900,borderRadius:T.r.pill,padding:'1px 5px',lineHeight:1.5}}>{badge}</span>}
               <Ico size={22} color={col}/>
               <span style={{fontSize:10,fontWeight:active?700:400,color:col}}>{label}</span>
               {active&&<div style={{width:4,height:4,borderRadius:'50%',background:T.black,marginTop:1}}/>}
@@ -1747,6 +1759,8 @@ export default function App() {
           )
         })}
       </div>
+
+      {selItem&&<InfoModal item={selItem} isLoto={!selItem.home&&!selItem.away} catKey={selItem._catKey||tab} onClose={()=>setSelItem(null)}/>}
     </div>
   )
 }
