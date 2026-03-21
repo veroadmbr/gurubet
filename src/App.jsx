@@ -452,7 +452,7 @@ function SportCard({item, catKey, onSelect, catUpdating}) {
 // Methodology text per category
 const METHODOLOGY = {
   loterias: (item) =>
-    `A previsão é gerada analisando ${item.concurso ? `os ${item.concurso} sorteios históricos` : 'o histórico completo'} da ${item.nome}: frequência absoluta de cada dezena, ciclo de atraso (dezenas que estão atrasadas em relação à média), distribuição par/ímpar ideal (tipicamente 7-8 pares para Lotofácil, 3 pares para Mega-Sena), e padrão de soma das dezenas sorteadas. O algoritmo pondera esses quatro fatores para sugerir a combinação estatisticamente mais coerente com o perfil histórico do concurso — sem garantia de resultado, pois loteria é jogo de azar.`,
+    'A previsão é gerada analisando o histórico completo de ' + (item.nome||'loteria') + ': frequência absoluta de cada dezena, ciclo de atraso (dezenas atrasadas em relação à média), distribuição par/ímpar ideal e padrão de soma das dezenas sorteadas. O algoritmo pondera esses quatro fatores para sugerir a combinação estatisticamente mais coerente com o perfil histórico do concurso — sem garantia de resultado, pois loteria é jogo de azar.',
 
   futebol: (item) =>
     `A previsão combina quatro variáveis ponderadas: forma recente dos times (últimas 5 partidas, peso 40%), histórico de confrontos diretos (H2H dos últimos 3 anos, peso 25%), fator mando de campo calculado pelo aproveitamento histórico em casa vs fora (peso 20%) e contexto da competição — posição na tabela, pressão por resultado e desfalques divulgados (peso 15%). O índice de confiança reflete o grau de convergência entre esses fatores: quanto maior, mais os indicadores apontam na mesma direção.`,
