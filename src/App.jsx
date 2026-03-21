@@ -76,66 +76,67 @@ const LOTERIAS = [
 // ─── TEAM/PLAYER LOGOS — PNG URLs fundo branco ────────────────────────────────
 // Logos oficiais via Wikipedia / clubes oficiais (fundo branco)
 const LOGOS = {
-  // Futebol BR
-  saopaulo:    'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/São_Paulo_FC.svg/150px-São_Paulo_FC.svg.png',
-  palmeiras:   'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Palmeiras_logo.svg/150px-Palmeiras_logo.svg.png',
-  corinthians: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Logo-Corinthians.svg/150px-Logo-Corinthians.svg.png',
-  flamengo:    'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Flamengo_escudo.svg/150px-Flamengo_escudo.svg.png',
-  bahia:       'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/EC_Bahia.svg/150px-EC_Bahia.svg.png',
-  botafogo:    'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Botafogo_de_Futebol_e_Regatas.svg/150px-Botafogo_de_Futebol_e_Regatas.svg.png',
-  internacional:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Sport_Club_Internacional.svg/150px-Sport_Club_Internacional.svg.png',
-  gremio:      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Gr%C3%AAmio_Foot-Ball_Porto_Alegrense_logo.svg/150px-Grêmio_Foot-Ball_Porto_Alegrense_logo.svg.png',
-  atleticmg:   'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Clube_Atlético_Mineiro_cock.svg/150px-Clube_Atlético_Mineiro_cock.svg.png',
-  fluminense:  'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Fluminense_Logo.svg/150px-Fluminense_Logo.svg.png',
-  vasco:       'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Vasco_da_Gama_Cruz_de_Malta.svg/150px-Vasco_da_Gama_Cruz_de_Malta.svg.png',
-  cruzeiro:    'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Cruzeiro_Esporte_Clube_-_Escudo.svg/150px-Cruzeiro_Esporte_Clube_-_Escudo.svg.png',
-  sport:       'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Sport_Club_do_Recife.svg/150px-Sport_Club_do_Recife.svg.png',
-  fortaleza:   'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Escudo_do_Fortaleza.svg/150px-Escudo_do_Fortaleza.svg.png',
-  // Futebol Internacional
-  arsenal:     'https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Arsenal_FC.svg/150px-Arsenal_FC.svg.png',
-  manutd:      'https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/150px-Manchester_United_FC_crest.svg.png',
-  mancity:     'https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/150px-Manchester_City_FC_badge.svg.png',
-  liverpool:   'https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/150px-Liverpool_FC.svg.png',
-  chelsea:     'https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/150px-Chelsea_FC.svg.png',
-  tottenham:   'https://upload.wikimedia.org/wikipedia/en/thumb/b/b4/Tottenham_Hotspur.svg/150px-Tottenham_Hotspur.svg.png',
-  brighton:    'https://upload.wikimedia.org/wikipedia/en/thumb/f/fd/Brighton_%26_Hove_Albion_FC_logo.svg/150px-Brighton_%26_Hove_Albion_FC_logo.svg.png',
-  everton:     'https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/Everton_FC_logo.svg/150px-Everton_FC_logo.svg.png',
-  newcastle:   'https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Newcastle_United_Logo.svg/150px-Newcastle_United_Logo.svg.png',
-  astonvilla:  'https://upload.wikimedia.org/wikipedia/en/thumb/9/9a/Aston_Villa_FC_new_crest.svg/150px-Aston_Villa_FC_new_crest.svg.png',
-  realmadrid:  'https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/150px-Real_Madrid_CF.svg.png',
-  barcelona:   'https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/150px-FC_Barcelona_%28crest%29.svg.png',
-  atletimadrid:'https://upload.wikimedia.org/wikipedia/en/thumb/f/f4/Atletico_Madrid_2017_logo.svg/150px-Atletico_Madrid_2017_logo.svg.png',
-  psg:         'https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/Paris_Saint-Germain_F.C..svg/150px-Paris_Saint-Germain_F.C..svg.png',
-  bayernmunich:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/FC_Bayern_München_logo_%282002%E2%80%932017%29.svg/150px-FC_Bayern_München_logo_%282002%E2%80%932017%29.svg.png',
-  dortmund:    'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Borussia_Dortmund_logo.svg/150px-Borussia_Dortmund_logo.svg.png',
-  intermilan:  'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/FC_Internazionale_Milano_2021.svg/150px-FC_Internazionale_Milano_2021.svg.png',
-  juventus:    'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Juventus_FC_2017_logo.svg/150px-Juventus_FC_2017_logo.svg.png',
-  napoli:      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/SSC_Napoli.svg/150px-SSC_Napoli.svg.png',
-  // Tênis
-  sinner:      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Jannik_Sinner_2023.jpg/120px-Jannik_Sinner_2023.jpg',
-  alcaraz:     'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Carlos_Alcaraz_2022_%28cropped%29.jpg/120px-Carlos_Alcaraz_2022_%28cropped%29.jpg',
-  sabalenka:   'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Aryna_Sabalenka_2022_%28cropped%29.jpg/120px-Aryna_Sabalenka_2022_%28cropped%29.jpg',
-  gauff:       'https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Coco_Gauff_2023_%28cropped%29.jpg/120px-Coco_Gauff_2023_%28cropped%29.jpg',
-  fritz:       'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Taylor_Fritz_2024.jpg/120px-Taylor_Fritz_2024.jpg',
-  tsitsipas:   'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Tsitsipas_2023_%28cropped%29.jpg/120px-Tsitsipas_2023_%28cropped%29.jpg',
-  // MMA
-  pereira:     'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Alex_Pereira_2023.jpg/120px-Alex_Pereira_2023.jpg',
-  makhachev:   'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Islam_Makhachev.jpg/120px-Islam_Makhachev.jpg',
-  pantoja:     'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Alexandre_Pantoja.jpg/120px-Alexandre_Pantoja.jpg',
-  // NBA
-  okc:         'https://upload.wikimedia.org/wikipedia/en/thumb/5/5d/Oklahoma_City_Thunder.svg/150px-Oklahoma_City_Thunder.svg.png',
-  lakers:      'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Los_Angeles_Lakers_logo.svg/150px-Los_Angeles_Lakers_logo.svg.png',
-  celtics:     'https://upload.wikimedia.org/wikipedia/en/thumb/8/8f/Boston_Celtics.svg/150px-Boston_Celtics.svg.png',
-  warriors:    'https://upload.wikimedia.org/wikipedia/en/thumb/0/01/Golden_State_Warriors_logo.svg/150px-Golden_State_Warriors_logo.svg.png',
-  cavaliers:   'https://upload.wikimedia.org/wikipedia/en/thumb/4/4b/Cleveland_Cavaliers_logo.svg/150px-Cleveland_Cavaliers_logo.svg.png',
-  rockets:     'https://upload.wikimedia.org/wikipedia/en/thumb/2/28/Houston_Rockets.svg/150px-Houston_Rockets.svg.png',
-  nuggets:     'https://upload.wikimedia.org/wikipedia/en/thumb/7/76/Denver_Nuggets.svg/150px-Denver_Nuggets.svg.png',
-  heat:        'https://upload.wikimedia.org/wikipedia/en/thumb/f/fb/Miami_Heat_logo.svg/150px-Miami_Heat_logo.svg.png',
-  suns:        'https://upload.wikimedia.org/wikipedia/en/thumb/d/dc/Phoenix_Suns_logo.svg/150px-Phoenix_Suns_logo.svg.png',
+  // Futebol BR — api-sports CDN
+  saopaulo:     'https://media.api-sports.io/football/teams/121.png',
+  palmeiras:    'https://media.api-sports.io/football/teams/119.png',
+  corinthians:  'https://media.api-sports.io/football/teams/131.png',
+  flamengo:     'https://media.api-sports.io/football/teams/127.png',
+  bahia:        'https://media.api-sports.io/football/teams/118.png',
+  botafogo:     'https://media.api-sports.io/football/teams/130.png',
+  internacional:'https://media.api-sports.io/football/teams/126.png',
+  gremio:       'https://media.api-sports.io/football/teams/117.png',
+  atleticmg:    'https://media.api-sports.io/football/teams/1062.png',
+  fluminense:   'https://media.api-sports.io/football/teams/116.png',
+  vasco:        'https://media.api-sports.io/football/teams/120.png',
+  cruzeiro:     'https://media.api-sports.io/football/teams/1598.png',
+  sport:        'https://media.api-sports.io/football/teams/129.png',
+  fortaleza:    'https://media.api-sports.io/football/teams/1074.png',
+  // Futebol Internacional — api-sports CDN (PNG fundo transparente/branco)
+  arsenal:      'https://media.api-sports.io/football/teams/42.png',
+  manutd:       'https://media.api-sports.io/football/teams/33.png',
+  mancity:      'https://media.api-sports.io/football/teams/50.png',
+  liverpool:    'https://media.api-sports.io/football/teams/40.png',
+  chelsea:      'https://media.api-sports.io/football/teams/49.png',
+  tottenham:    'https://media.api-sports.io/football/teams/47.png',
+  brighton:     'https://media.api-sports.io/football/teams/51.png',
+  everton:      'https://media.api-sports.io/football/teams/45.png',
+  newcastle:    'https://media.api-sports.io/football/teams/34.png',
+  astonvilla:   'https://media.api-sports.io/football/teams/66.png',
+  realmadrid:   'https://media.api-sports.io/football/teams/541.png',
+  barcelona:    'https://media.api-sports.io/football/teams/529.png',
+  atletimadrid: 'https://media.api-sports.io/football/teams/530.png',
+  psg:          'https://media.api-sports.io/football/teams/85.png',
+  bayernmunich: 'https://media.api-sports.io/football/teams/157.png',
+  dortmund:     'https://media.api-sports.io/football/teams/165.png',
+  intermilan:   'https://media.api-sports.io/football/teams/505.png',
+  juventus:     'https://media.api-sports.io/football/teams/496.png',
+  napoli:       'https://media.api-sports.io/football/teams/492.png',
+  // Tênis — fotos via thesportsdb (fundo branco)
+  sinner:       'https://www.thesportsdb.com/images/media/player/thumb/janniksinner.jpg',
+  alcaraz:      'https://www.thesportsdb.com/images/media/player/thumb/carlosalcaraz.jpg',
+  sabalenka:    'https://www.thesportsdb.com/images/media/player/thumb/arynasamalenka.jpg',
+  gauff:        'https://www.thesportsdb.com/images/media/player/thumb/cocogauff.jpg',
+  fritz:        'https://www.thesportsdb.com/images/media/player/thumb/taylorfritz.jpg',
+  tsitsipas:    'https://www.thesportsdb.com/images/media/player/thumb/stefanostsitsipas.jpg',
+  // MMA — via thesportsdb
+  pereira:      'https://www.thesportsdb.com/images/media/player/thumb/alexpereira.jpg',
+  makhachev:    'https://www.thesportsdb.com/images/media/player/thumb/islammakhachev.jpg',
+  pantoja:      'https://www.thesportsdb.com/images/media/player/thumb/alexandrepantoja.jpg',
+  // NBA — api-sports basquete
+  okc:          'https://media.api-sports.io/basketball/teams/141.png',
+  lakers:       'https://media.api-sports.io/basketball/teams/145.png',
+  celtics:      'https://media.api-sports.io/basketball/teams/128.png',
+  warriors:     'https://media.api-sports.io/basketball/teams/140.png',
+  cavaliers:    'https://media.api-sports.io/basketball/teams/132.png',
+  rockets:      'https://media.api-sports.io/basketball/teams/141.png',
+  nuggets:      'https://media.api-sports.io/basketball/teams/136.png',
+  heat:         'https://media.api-sports.io/basketball/teams/143.png',
+  suns:         'https://media.api-sports.io/basketball/teams/148.png',
   // Esports
-  loud:        'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/LOUD_Esports_logo.png/150px-LOUD_Esports_logo.png',
-  t1:          'https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/T1_logo.png/150px-T1_logo.png',
+  loud:         'https://upload.wikimedia.org/wikipedia/commons/7/7e/LOUD_Esports_logo.png',
+  t1:           'https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/T1_logo.png/150px-T1_logo.png',
 }
+
 
 const ESPORTES = {
   futebol: { label:'Futebol', items:[
@@ -354,21 +355,29 @@ function Ball({n, size=24, bg=T.gray2, color=T.black}) {
 }
 
 // ─── TEAM / PLAYER LOGO ───────────────────────────────────────────────────────
-function TeamLogo({logo, name, size=28}) {
-  const [err,setErr]=useState(false)
-  const url = logo && LOGOS[logo]
-  if (!url||err) {
-    // fallback: colored initial circle
-    const initials = name ? name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() : '?'
-    return (
-      <div style={{width:size,height:size,minWidth:size,borderRadius:'50%',background:T.gray2,border:`1px solid ${T.border}`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:size*0.32,fontWeight:700,color:T.gray1,flexShrink:0,overflow:'hidden'}}>
-        {initials}
-      </div>
-    )
+// Shows image if logo key exists and loads; shows nothing if no logo key or load fails
+function TeamLogo({logo, name, size=26}) {
+  const [err, setErr] = useState(false)
+  const url = logo ? LOGOS[logo] : null
+
+  // Always render consistently — no early return before hooks
+  if (!url || err) {
+    // No logo key or image failed — render nothing (empty space to keep layout)
+    return <div style={{width:size, height:size, minWidth:size, flexShrink:0}}/>
   }
   return (
-    <img src={url} alt={name} onError={()=>setErr(true)}
-      style={{width:size,height:size,minWidth:size,borderRadius:'50%',objectFit:'contain',background:'#fff',border:`1px solid ${T.border}`,flexShrink:0}} />
+    <img
+      src={url}
+      alt={name}
+      onError={() => setErr(true)}
+      style={{
+        width: size, height: size, minWidth: size,
+        borderRadius: 4,
+        objectFit: 'contain',
+        background: 'transparent',
+        flexShrink: 0,
+      }}
+    />
   )
 }
 
