@@ -355,12 +355,7 @@ function useAutoUpdate(seed) {
 
 // ─── COMPONENTS ──────────────────────────────────────────────────────────────
 
-function Splash({ onDone }) {
-  useEffect(() => {
-    const t = setTimeout(onDone, 2000)
-    return () => clearTimeout(t)
-  }, [onDone])
-
+function SplashScreen() {
   return (
     <div style={{
       position: 'fixed', inset: 0,
@@ -1280,9 +1275,14 @@ export default function App() {
   const [selItem, setSelItem] = useState(null)
   const [showLog, setShowLog] = useState(false)
 
+  useEffect(() => {
+    const t = setTimeout(() => setSplash(false), 2000)
+    return () => clearTimeout(t)
+  }, [])
+
   const { appData, logs, updating, lastAt, countdown, queue, force } = useAutoUpdate(SEED)
 
-  if (splash) return <Splash onDone={() => setSplash(false)} />
+  if (splash) return <SplashScreen />
 
   const isLoto      = tab === 'loterias'
   const espData     = appData.esportes[tab]
