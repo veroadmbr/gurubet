@@ -220,7 +220,7 @@ function KalshiSportCard({item,catKey,onSelect,catUpdating}) {
       <div style={{padding:'12px 14px 10px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
           <div style={{width:28,height:28,borderRadius:8,background:catBg,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,overflow:'hidden'}}>
-            <TabIcon c={catColor} s={16}/>
+            <span style={{width:16,height:16,display:'inline-flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><TabIcon c={catColor} s={16}/></span>
           </div>
           <span style={{fontSize:11,fontWeight:700,color:catColor,letterSpacing:'0.04em',textTransform:'uppercase'}}>{label}</span>
         </div>
@@ -286,7 +286,7 @@ function KalshiLotoCard({lot,onSelect,catUpdating}) {
       <div style={{padding:'12px 14px 10px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
           <div style={{width:28,height:28,borderRadius:8,background:T.catBg.loterias,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,overflow:'hidden'}}>
-            <Icon.lottery c={T.cat.loterias} s={16}/>
+            <span style={{width:16,height:16,display:'inline-flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><Icon.lottery c={T.cat.loterias} s={16}/></span>
           </div>
           <span style={{fontSize:11,fontWeight:700,color:T.cat.loterias,letterSpacing:'0.04em',textTransform:'uppercase'}}>LOTERIA</span>
         </div>
@@ -611,7 +611,7 @@ function DesktopNav({tab,onTab,updating,countdown,queue,showLog,onToggleLog,forc
           const catColor=T.cat[key]||T.black
           return (
             <button key={key} onClick={()=>onTab(key)} style={{display:'flex',alignItems:'center',gap:7,padding:'12px 16px',border:'none',background:'transparent',color:active?T.black:T.gray1,fontSize:13,fontWeight:active?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0,position:'relative',borderBottom:`2px solid ${active?T.black:'transparent'}`,transition:'color 0.15s',marginBottom:-1}}>
-              <TabIcon c={active?catColor:T.gray3} s={15}/>
+              <span style={{width:15,height:15,display:'inline-flex',alignItems:'center',justifyContent:'center',flexShrink:0,overflow:'hidden'}}><TabIcon c={active?catColor:T.gray3} s={15}/></span>
               {label}
             </button>
           )
@@ -646,7 +646,7 @@ function MobileHeader({tab,onTab,updating,countdown,queue,showLog,onToggleLog,fo
           const catColor=T.cat[key]||T.black
           return (
             <button key={key} onClick={()=>onTab(key)} style={{display:'flex',alignItems:'center',gap:6,padding:'11px 14px',border:'none',borderBottom:`2px solid ${active?T.black:'transparent'}`,background:'transparent',color:active?T.black:T.gray1,fontSize:12,fontWeight:active?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0,transition:'all 0.12s',marginBottom:-1}}>
-              <TabIcon c={active?catColor:T.gray3} s={14}/>
+              <span style={{width:14,height:14,display:'inline-flex',alignItems:'center',justifyContent:'center',flexShrink:0,overflow:'hidden'}}><TabIcon c={active?catColor:T.gray3} s={14}/></span>
               {label}
             </button>
           )
@@ -671,6 +671,7 @@ const CSS=`
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
   html,body{height:100%;}
   body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;}
+  svg{display:block;max-width:100%;max-height:100%;}
   ::-webkit-scrollbar{width:6px;height:6px;}
   ::-webkit-scrollbar-track{background:transparent;}
   ::-webkit-scrollbar-thumb{background:#E0E0E0;border-radius:3px;}
