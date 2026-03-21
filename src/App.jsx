@@ -81,11 +81,11 @@ const LOTERIAS = [
 const ESPORTES = {
   futebol: { label:'Futebol', items:[
     // ── Premier League 21/03 — AO VIVO: Leeds×Brentford (20:00 GMT) ──
-    { id:'f-lbr', status:'upcoming', startTime:'2026-03-21T20:00:00Z', statusLabel:'Hoje · 17h BRT · Elland Road',     competition:'Premier League · Jornada 31', title:'Leeds × Brentford',        bettvPick:'Brentford', bettvConf:49, bettvReason:'Leeds 18º em casa briga contra rebaixamento. Brentford 10º mais estável fora.', home:{name:'Leeds United',  logo:null,        sub:'18º · 22pts',pct:33}, away:{name:'Brentford',    logo:null,       sub:'10º · 42pts',pct:45}, draw:22 },
+    { id:'f-lbr', status:'upcoming', startTime:'2026-03-21T20:00:00Z', statusLabel:'Hoje · 17h BRT · Elland Road',     competition:'Premier League · Jornada 31', title:'Leeds × Brentford',        bettvPick:'Brentford', bettvConf:49, bettvReason:'Leeds 18º em casa briga contra rebaixamento. Brentford 10º mais estável fora.', home:{name:'Leeds United',  logo:'leeds',        sub:'18º · 22pts',pct:33}, away:{name:'Brentford',    logo:'brentford',       sub:'10º · 42pts',pct:45}, draw:22 },
     // ── Premier League 22/03 ──
-    { id:'f-nsu', status:'upcoming', startTime:'2026-03-22T12:00:00Z', statusLabel:'Amanhã · 09h BRT · St James Park', competition:'Premier League · Jornada 31', title:'Newcastle × Sunderland',   bettvPick:'Newcastle',  bettvConf:68, bettvReason:'Newcastle 5º em casa. Sunderland promovido 19º. Qualidade superior dos Magpies.', home:{name:'Newcastle',    logo:'newcastle', sub:'5º · 55pts', pct:67}, away:{name:'Sunderland',   logo:null,       sub:'19º · 19pts',pct:14}, draw:19 },
-    { id:'f-avw', status:'upcoming', startTime:'2026-03-22T14:15:00Z', statusLabel:'Amanhã · 11h15 BRT · Villa Park',  competition:'Premier League · Jornada 31', title:'Aston Villa × West Ham',  bettvPick:'Aston Villa', bettvConf:58, bettvReason:'Villa 7º busca top 4. Watkins artilheiro da temporada. West Ham 15º em queda.', home:{name:'Aston Villa',  logo:'astonvilla',sub:'7º · 48pts', pct:57}, away:{name:'West Ham United',    logo:null,       sub:'15º · 28pts',pct:22}, draw:21 },
-    { id:'f-tnf', status:'upcoming', startTime:'2026-03-22T14:15:00Z', statusLabel:'Amanhã · 11h15 BRT · T.Hotspur',  competition:'Premier League · Jornada 31', title:'Tottenham × Nottm Forest', bettvPick:'Tottenham',   bettvConf:55, bettvReason:'Spurs 8º em casa. Son liderando ataque com 14 gols. Forest 11º fora de casa oscila.', home:{name:'Tottenham',    logo:'tottenham', sub:'8º · 46pts', pct:54}, away:{name:'Nottingham Forest', logo:null,       sub:'11º · 40pts',pct:24}, draw:22 },
+    { id:'f-nsu', status:'upcoming', startTime:'2026-03-22T12:00:00Z', statusLabel:'Amanhã · 09h BRT · St James Park', competition:'Premier League · Jornada 31', title:'Newcastle × Sunderland',   bettvPick:'Newcastle',  bettvConf:68, bettvReason:'Newcastle 5º em casa. Sunderland promovido 19º. Qualidade superior dos Magpies.', home:{name:'Newcastle',    logo:'newcastle', sub:'5º · 55pts', pct:67}, away:{name:'Sunderland',   logo:'sunderland',       sub:'19º · 19pts',pct:14}, draw:19 },
+    { id:'f-avw', status:'upcoming', startTime:'2026-03-22T14:15:00Z', statusLabel:'Amanhã · 11h15 BRT · Villa Park',  competition:'Premier League · Jornada 31', title:'Aston Villa × West Ham',  bettvPick:'Aston Villa', bettvConf:58, bettvReason:'Villa 7º busca top 4. Watkins artilheiro da temporada. West Ham 15º em queda.', home:{name:'Aston Villa',  logo:'astonvilla',sub:'7º · 48pts', pct:57}, away:{name:'West Ham United',    logo:'westham',       sub:'15º · 28pts',pct:22}, draw:21 },
+    { id:'f-tnf', status:'upcoming', startTime:'2026-03-22T14:15:00Z', statusLabel:'Amanhã · 11h15 BRT · T.Hotspur',  competition:'Premier League · Jornada 31', title:'Tottenham × Nottm Forest', bettvPick:'Tottenham',   bettvConf:55, bettvReason:'Spurs 8º em casa. Son liderando ataque com 14 gols. Forest 11º fora de casa oscila.', home:{name:'Tottenham',    logo:'tottenham', sub:'8º · 46pts', pct:54}, away:{name:'Nottingham Forest', logo:'nottmforest',       sub:'11º · 40pts',pct:24}, draw:22 },
     // ── La Liga 22/03 ──
     { id:'f-clsco',status:'upcoming', startTime:'2026-03-22T20:00:00Z', statusLabel:'Amanhã · 17h BRT · Bernabéu',    competition:'La Liga · Jornada 29',        title:'Real Madrid × Barcelona', bettvPick:'Real Madrid', bettvConf:48, bettvReason:'El Clásico. Barça lidera com 70pts. Real 2º com 68pts. Mbappé vs Yamal — duelo épico.', home:{name:'Real Madrid',  logo:'realmadrid',sub:'2º · 68pts', pct:46}, away:{name:'Barcelona',  logo:'barcelona', sub:'1º · 70pts',pct:36}, draw:18 },
     // ── Champions League QF — Abril ──
@@ -98,21 +98,21 @@ const ESPORTES = {
   ]},
   basquete: { label:'Basquete', items:[
     // ── NBA AO VIVO AGORA: WAS×OKC (Q2, OKC 68-63) ──
-    { id:'b-wokc', status:'upcoming', startTime:'2026-03-21T21:00:00Z', statusLabel:'AO VIVO · Q2 · Capital One Arena', competition:'NBA · Temporada Regular',     title:'Washington Wizards × OKC Thunder', bettvPick:'OKC Thunder', bettvConf:94, bettvReason:'OKC 95.8% SportRadar. Lidera Q2 68-63. Shai dominante — SGA com 22pts.', home:{name:'Washington Wizards',   logo:null,        sub:'Último Leste', pct:4},  away:{name:'OKC Thunder', logo:'okc',       sub:'1º Oeste',   pct:93}, draw:3  },
+    { id:'b-wokc', status:'upcoming', startTime:'2026-03-21T21:00:00Z', statusLabel:'AO VIVO · Q2 · Capital One Arena', competition:'NBA · Temporada Regular',     title:'Washington Wizards × OKC Thunder', bettvPick:'OKC Thunder', bettvConf:94, bettvReason:'OKC 95.8% SportRadar. Lidera Q2 68-63. Shai dominante — SGA com 22pts.', home:{name:'Washington Wizards',   logo:'wizards',        sub:'Último Leste', pct:4},  away:{name:'OKC Thunder', logo:'okc',       sub:'1º Oeste',   pct:93}, draw:3  },
     // ── NBA hoje — scheduled 21/03 BRT ──
-    { id:'b-olal', status:'upcoming', startTime:'2026-03-21T23:00:00Z', statusLabel:'Hoje · 20h BRT · Kaseya Center',  competition:'NBA · Temporada Regular',     title:'Orlando Magic × LA Lakers',      bettvPick:'LA Lakers',   bettvConf:57, bettvReason:'Lakers 60.8% SportRadar. LeBron+AD dominam. Orlando perdeu 5 dos últimos 7.', home:{name:'Orlando Magic',      logo:null,        sub:'8º Leste',    pct:39}, away:{name:'LA Lakers',   logo:'lakers',    sub:'Conf. Oeste', pct:57}, draw:4  },
-    { id:'b-cmem', status:'upcoming', startTime:'2026-03-21T23:00:00Z', statusLabel:'Hoje · 20h BRT · Spectrum Center', competition:'NBA · Temporada Regular',     title:'Charlotte Hornets × Memphis Grizzlies',      bettvPick:'Charlotte Hornets',   bettvConf:90, bettvReason:'Charlotte 93.0% SportRadar. Memphis em colapso — pior fase da temporada.', home:{name:'Charlotte Hornets',    logo:null,        sub:'Conf. Leste', pct:89}, away:{name:'Memphis Grizzlies',     logo:null,        sub:'Conf. Oeste', pct:8},  draw:3  },
-    { id:'b-ncle', status:'upcoming', startTime:'2026-03-21T23:00:00Z', statusLabel:'Hoje · 20h BRT · Smoothie King',  competition:'NBA · Temporada Regular',     title:'New Orleans Pelicans × Cleveland Cavaliers',  bettvPick:'Cleveland Cavaliers',   bettvConf:63, bettvReason:'Cleveland 67.1% SportRadar. Em 4V seguidas. Donovan Mitchell no melhor momento.', home:{name:'New Orleans Pelicans',  logo:null,        sub:'Conf. Leste', pct:33}, away:{name:'Cleveland Cavaliers',   logo:'cavaliers', sub:'3º Leste',    pct:63}, draw:4  },
+    { id:'b-olal', status:'upcoming', startTime:'2026-03-21T23:00:00Z', statusLabel:'Hoje · 20h BRT · Kaseya Center',  competition:'NBA · Temporada Regular',     title:'Orlando Magic × LA Lakers',      bettvPick:'LA Lakers',   bettvConf:57, bettvReason:'Lakers 60.8% SportRadar. LeBron+AD dominam. Orlando perdeu 5 dos últimos 7.', home:{name:'Orlando Magic',      logo:'magic',        sub:'8º Leste',    pct:39}, away:{name:'LA Lakers',   logo:'lakers',    sub:'Conf. Oeste', pct:57}, draw:4  },
+    { id:'b-cmem', status:'upcoming', startTime:'2026-03-21T23:00:00Z', statusLabel:'Hoje · 20h BRT · Spectrum Center', competition:'NBA · Temporada Regular',     title:'Charlotte Hornets × Memphis Grizzlies',      bettvPick:'Charlotte Hornets',   bettvConf:90, bettvReason:'Charlotte 93.0% SportRadar. Memphis em colapso — pior fase da temporada.', home:{name:'Charlotte Hornets',    logo:'hornets',        sub:'Conf. Leste', pct:89}, away:{name:'Memphis Grizzlies',     logo:'grizzlies',        sub:'Conf. Oeste', pct:8},  draw:3  },
+    { id:'b-ncle', status:'upcoming', startTime:'2026-03-21T23:00:00Z', statusLabel:'Hoje · 20h BRT · Smoothie King',  competition:'NBA · Temporada Regular',     title:'New Orleans Pelicans × Cleveland Cavaliers',  bettvPick:'Cleveland Cavaliers',   bettvConf:63, bettvReason:'Cleveland 67.1% SportRadar. Em 4V seguidas. Donovan Mitchell no melhor momento.', home:{name:'New Orleans Pelicans',  logo:'pelicans',        sub:'Conf. Leste', pct:33}, away:{name:'Cleveland Cavaliers',   logo:'cavaliers', sub:'3º Leste',    pct:63}, draw:4  },
     { id:'b-hmia', status:'upcoming', startTime:'2026-03-22T00:00:00Z', statusLabel:'Hoje · 21h BRT · Toyota Center',  competition:'NBA · Temporada Regular',     title:'Houston Rockets × Miami Heat',          bettvPick:'Houston Rockets',     bettvConf:51, bettvReason:'Houston 54.7% SportRadar. 5V seguidas em casa. Miami sem Tyler Herro.', home:{name:'Houston Rockets',      logo:'rockets',   sub:'Conf. Oeste', pct:52}, away:{name:'Miami Heat',       logo:'heat',      sub:'Conf. Leste', pct:45}, draw:3  },
-    { id:'b-sind', status:'upcoming', startTime:'2026-03-22T00:00:00Z', statusLabel:'Hoje · 21h BRT · AT&T Center',    competition:'NBA · Temporada Regular',     title:'San Antonio Spurs × Indiana Pacers',    bettvPick:'San Antonio Spurs', bettvConf:90, bettvReason:'Spurs 93.4% SportRadar. Wembanyama 24pts/12reb por jogo. Pacers sem Haliburton.', home:{name:'San Antonio Spurs',  logo:null,        sub:'Conf. Oeste', pct:89}, away:{name:'Indiana Pacers',     logo:null,        sub:'Conf. Leste', pct:7},  draw:4  },
-    { id:'b-agws', status:'upcoming', startTime:'2026-03-22T00:00:00Z', statusLabel:'Hoje · 21h BRT · State Farm Arena',competition:'NBA · Temporada Regular',     title:'Atlanta Hawks × Golden State Warriors',   bettvPick:'Atlanta Hawks',     bettvConf:75, bettvReason:'Hawks 78.3% SportRadar. Warriors em reconstrução — Curry fora por lesão no tornozelo.', home:{name:'Atlanta Hawks',      logo:null,        sub:'Conf. Leste', pct:76}, away:{name:'Golden State', logo:'warriors',  sub:'Conf. Oeste', pct:21}, draw:3  },
-    { id:'b-dlac', status:'upcoming', startTime:'2026-03-22T00:30:00Z', statusLabel:'Hoje · 21h30 BRT · Am. Airlines',  competition:'NBA · Temporada Regular',     title:'Dallas Mavericks × LA Clippers',     bettvPick:'LA Clippers', bettvConf:68, bettvReason:'Clippers 71.7% SportRadar. Dallas rebuilding — sem Luka após troca polêmica.', home:{name:'Dallas Mavericks',       logo:null,        sub:'Conf. Oeste', pct:28}, away:{name:'LA Clippers',  logo:null,        sub:'Conf. Oeste', pct:68}, draw:4  },
-    { id:'b-uphi', status:'upcoming', startTime:'2026-03-22T01:30:00Z', statusLabel:'Hoje · 22h30 BRT · Delta Center',  competition:'NBA · Temporada Regular',     title:'Utah Jazz × Philadelphia 76ers',      bettvPick:'Philadelphia 76ers', bettvConf:62, bettvReason:'76ers 66.3% SportRadar. Embiid voltou de lesão e está em grande fase.', home:{name:'Utah Jazz',         logo:null,        sub:'Conf. Oeste', pct:34}, away:{name:'Philadelphia 76ers', logo:null,        sub:'Conf. Leste', pct:62}, draw:4  },
-    { id:'b-pmil', status:'upcoming', startTime:'2026-03-22T02:00:00Z', statusLabel:'Hoje · 23h BRT · Footprint Center',competition:'NBA · Temporada Regular',     title:'Phoenix Suns × Milwaukee Bucks',      bettvPick:'Phoenix Suns',     bettvConf:80, bettvReason:'Suns 83.1% SportRadar. Bucks sem Giannis por lesão no joelho — temporada acabada.', home:{name:'Phoenix Suns',      logo:'suns',      sub:'Conf. Oeste', pct:81}, away:{name:'Milwaukee Bucks',   logo:null,        sub:'Conf. Leste', pct:16}, draw:3  },
+    { id:'b-sind', status:'upcoming', startTime:'2026-03-22T00:00:00Z', statusLabel:'Hoje · 21h BRT · AT&T Center',    competition:'NBA · Temporada Regular',     title:'San Antonio Spurs × Indiana Pacers',    bettvPick:'San Antonio Spurs', bettvConf:90, bettvReason:'Spurs 93.4% SportRadar. Wembanyama 24pts/12reb por jogo. Pacers sem Haliburton.', home:{name:'San Antonio Spurs',  logo:'spurs',        sub:'Conf. Oeste', pct:89}, away:{name:'Indiana Pacers',     logo:'pacers',        sub:'Conf. Leste', pct:7},  draw:4  },
+    { id:'b-agws', status:'upcoming', startTime:'2026-03-22T00:00:00Z', statusLabel:'Hoje · 21h BRT · State Farm Arena',competition:'NBA · Temporada Regular',     title:'Atlanta Hawks × Golden State Warriors',   bettvPick:'Atlanta Hawks',     bettvConf:75, bettvReason:'Hawks 78.3% SportRadar. Warriors em reconstrução — Curry fora por lesão no tornozelo.', home:{name:'Atlanta Hawks',      logo:'hawks',        sub:'Conf. Leste', pct:76}, away:{name:'Golden State', logo:'warriors',  sub:'Conf. Oeste', pct:21}, draw:3  },
+    { id:'b-dlac', status:'upcoming', startTime:'2026-03-22T00:30:00Z', statusLabel:'Hoje · 21h30 BRT · Am. Airlines',  competition:'NBA · Temporada Regular',     title:'Dallas Mavericks × LA Clippers',     bettvPick:'LA Clippers', bettvConf:68, bettvReason:'Clippers 71.7% SportRadar. Dallas rebuilding — sem Luka após troca polêmica.', home:{name:'Dallas Mavericks',       logo:'mavericks',        sub:'Conf. Oeste', pct:28}, away:{name:'LA Clippers',  logo:'clippers',        sub:'Conf. Oeste', pct:68}, draw:4  },
+    { id:'b-uphi', status:'upcoming', startTime:'2026-03-22T01:30:00Z', statusLabel:'Hoje · 22h30 BRT · Delta Center',  competition:'NBA · Temporada Regular',     title:'Utah Jazz × Philadelphia 76ers',      bettvPick:'Philadelphia 76ers', bettvConf:62, bettvReason:'76ers 66.3% SportRadar. Embiid voltou de lesão e está em grande fase.', home:{name:'Utah Jazz',         logo:'jazz',        sub:'Conf. Oeste', pct:34}, away:{name:'Philadelphia 76ers', logo:'sixers',        sub:'Conf. Leste', pct:62}, draw:4  },
+    { id:'b-pmil', status:'upcoming', startTime:'2026-03-22T02:00:00Z', statusLabel:'Hoje · 23h BRT · Footprint Center',competition:'NBA · Temporada Regular',     title:'Phoenix Suns × Milwaukee Bucks',      bettvPick:'Phoenix Suns',     bettvConf:80, bettvReason:'Suns 83.1% SportRadar. Bucks sem Giannis por lesão no joelho — temporada acabada.', home:{name:'Phoenix Suns',      logo:'suns',      sub:'Conf. Oeste', pct:81}, away:{name:'Milwaukee Bucks',   logo:'bucks',        sub:'Conf. Leste', pct:16}, draw:3  },
     // ── NBA 22/03 ──
-    { id:'b-dpor', status:'upcoming', startTime:'2026-03-22T21:00:00Z', statusLabel:'Amanhã · 18h BRT · Ball Arena',   competition:'NBA · Temporada Regular',     title:'Denver Nuggets × Portland Trail Blazers',        bettvPick:'Denver Nuggets',      bettvConf:72, bettvReason:'Nuggets favoritos em casa. Jokic triplo-duplo machine. Portland em reconstrução.', home:{name:'Denver Nuggets',       logo:'nuggets',   sub:'Conf. Oeste', pct:73}, away:{name:'Portland Trail Blazers',    logo:null,        sub:'Conf. Oeste', pct:19}, draw:8  },
-    { id:'b-bmin', status:'upcoming', startTime:'2026-03-23T00:00:00Z', statusLabel:'Dom · 21h BRT · TD Garden',       competition:'NBA · Temporada Regular',     title:'Boston Celtics × Minnesota Timberwolves',       bettvPick:'Boston Celtics',      bettvConf:58, bettvReason:'Celtics 1º do Leste em casa. Timberwolves fortes mas viajando 3.000 milhas.', home:{name:'Boston Celtics',       logo:'celtics',   sub:'1º Leste',    pct:58}, away:{name:'Minnesota Timberwolves',   logo:null,        sub:'Conf. Oeste', pct:35}, draw:7  },
-    { id:'b-pokc', status:'upcoming', startTime:'2026-03-23T23:00:00Z', statusLabel:'Seg · 20h BRT · Wells Fargo',     competition:'NBA · Temporada Regular',     title:'Philadelphia 76ers × OKC Thunder',       bettvPick:'Philadelphia 76ers', bettvConf:55, bettvReason:'76ers em casa surpreendentes. Embiid vs SGA — duelo dos MVPs da temporada.', home:{name:'Philadelphia 76ers', logo:null,        sub:'Conf. Leste', pct:52}, away:{name:'OKC Thunder',  logo:'okc',       sub:'1º Oeste',    pct:43}, draw:5  },
+    { id:'b-dpor', status:'upcoming', startTime:'2026-03-22T21:00:00Z', statusLabel:'Amanhã · 18h BRT · Ball Arena',   competition:'NBA · Temporada Regular',     title:'Denver Nuggets × Portland Trail Blazers',        bettvPick:'Denver Nuggets',      bettvConf:72, bettvReason:'Nuggets favoritos em casa. Jokic triplo-duplo machine. Portland em reconstrução.', home:{name:'Denver Nuggets',       logo:'nuggets',   sub:'Conf. Oeste', pct:73}, away:{name:'Portland Trail Blazers',    logo:'blazers',        sub:'Conf. Oeste', pct:19}, draw:8  },
+    { id:'b-bmin', status:'upcoming', startTime:'2026-03-23T00:00:00Z', statusLabel:'Dom · 21h BRT · TD Garden',       competition:'NBA · Temporada Regular',     title:'Boston Celtics × Minnesota Timberwolves',       bettvPick:'Boston Celtics',      bettvConf:58, bettvReason:'Celtics 1º do Leste em casa. Timberwolves fortes mas viajando 3.000 milhas.', home:{name:'Boston Celtics',       logo:'celtics',   sub:'1º Leste',    pct:58}, away:{name:'Minnesota Timberwolves',   logo:'timberwolves',        sub:'Conf. Oeste', pct:35}, draw:7  },
+    { id:'b-pokc', status:'upcoming', startTime:'2026-03-23T23:00:00Z', statusLabel:'Seg · 20h BRT · Wells Fargo',     competition:'NBA · Temporada Regular',     title:'Philadelphia 76ers × OKC Thunder',       bettvPick:'Philadelphia 76ers', bettvConf:55, bettvReason:'76ers em casa surpreendentes. Embiid vs SGA — duelo dos MVPs da temporada.', home:{name:'Philadelphia 76ers', logo:'sixers',        sub:'Conf. Leste', pct:52}, away:{name:'OKC Thunder',  logo:'okc',       sub:'1º Oeste',    pct:43}, draw:5  },
   ]},
   volei: { label:'Vôlei', items:[
     // ── Superliga — Semifinais Março/Abril 2026 ──
@@ -124,24 +124,24 @@ const ESPORTES = {
   ]},
   mma: { label:'MMA / UFC', items:[
     // ── UFC FN 271 — Seattle 28/03 (CBS Sports confirmado) ──
-    { id:'m-fn271', status:'upcoming', startTime:'2026-03-29T00:00:00Z', statusLabel:'28/03 · 21h PT · Seattle',        competition:'UFC Fight Night 271 · Main Event', title:'Adesanya × Pyfer',    bettvPick:'Adesanya',bettvConf:58, bettvReason:'Adesanya ex-campeão MW Nº4 com 24-5. Pyfer Nº14 com 15-3 — falta nível de elite.', home:{name:'I. Adesanya',logo:null,sub:'Nº4 MW · 24-5',pct:55},away:{name:'J. Pyfer',  logo:null,sub:'Nº14 MW · 15-3',pct:35}, draw:10 },
+    { id:'m-fn271', status:'upcoming', startTime:'2026-03-29T00:00:00Z', statusLabel:'28/03 · 21h PT · Seattle',        competition:'UFC Fight Night 271 · Main Event', title:'Adesanya × Pyfer',    bettvPick:'Adesanya',bettvConf:58, bettvReason:'Adesanya ex-campeão MW Nº4 com 24-5. Pyfer Nº14 com 15-3 — falta nível de elite.', home:{name:'I. Adesanya',logo:'adesanya',sub:'Nº4 MW · 24-5',pct:55},away:{name:'J. Pyfer',  logo:'adesanya',sub:'Nº14 MW · 15-3',pct:35}, draw:10 },
     // ── UFC FN 272 — Las Vegas 04/04 (Sherdog confirmado) ──
     { id:'m-fn272', status:'upcoming', startTime:'2026-04-05T03:00:00Z', statusLabel:'04/04 · 20h PT · Las Vegas',       competition:'UFC Fight Night 272 · Main Event', title:'Moicano × Duncan',    bettvPick:'Moicano',bettvConf:60, bettvReason:'Moicano Nº11 leve mais experiente com 20-7. Duncan 15-2 surpreendente mas nível menor.', home:{name:'R. Moicano',logo:null,sub:'Nº11 LW · 20-7',pct:58},away:{name:'C. Duncan', logo:null,sub:'LW · 15-2',     pct:30}, draw:12 },
     // ── UFC 327 — Miami 11/04 (CBS Sports) ──
-    { id:'m-327',   status:'upcoming', startTime:'2026-04-12T01:00:00Z', statusLabel:'11/04 · 21h ET · Miami',           competition:'UFC 327 · Main Event',             title:'Prochazka × Ulberg', bettvPick:'Prochazka',bettvConf:55, bettvReason:'Prochazka ex-campeão LHW 32-5. Ulberg 14-1 ascendente mas primeiro title shot.', home:{name:'J. Prochazka',logo:null,sub:'32-5 · Ex-camp LHW',pct:54},away:{name:'C. Ulberg',logo:null,sub:'14-1 · Nº3 LHW',  pct:36}, draw:10 },
+    { id:'m-327',   status:'upcoming', startTime:'2026-04-12T01:00:00Z', statusLabel:'11/04 · 21h ET · Miami',           competition:'UFC 327 · Main Event',             title:'Prochazka × Ulberg', bettvPick:'Prochazka',bettvConf:55, bettvReason:'Prochazka ex-campeão LHW 32-5. Ulberg 14-1 ascendente mas primeiro title shot.', home:{name:'J. Prochazka',logo:'prochazka',sub:'32-5 · Ex-camp LHW',pct:54},away:{name:'C. Ulberg',logo:'prochazka',sub:'14-1 · Nº3 LHW',  pct:36}, draw:10 },
     // ── UFC FN 273 — 18/04 (Sherdog) ──
     { id:'m-fn273', status:'upcoming', startTime:'2026-04-19T03:00:00Z', statusLabel:'18/04 · 20h PT · Las Vegas',       competition:'UFC Fight Night 273 · Main Event', title:'Burns × Malott',     bettvPick:'Burns',bettvConf:57, bettvReason:'Gilbert Burns veterano top 10 WW. Malott em grande momento mas Burns mais completo.', home:{name:'G. Burns',  logo:null,sub:'Top 10 WW',       pct:56},away:{name:'M. Malott',logo:null,sub:'WW contender',     pct:33}, draw:11 },
     // ── UFC Brasil — São Paulo Maio ──
-    { id:'m-bra',   status:'upcoming', startTime:'2026-05-10T00:00:00Z', statusLabel:'09/05 · 20h BRT · São Paulo',      competition:'UFC Fight Night Brasil · Main Event', title:'Pantoja × Royval II',bettvPick:'Pantoja',bettvConf:67, bettvReason:'Alexandre Pantoja campeão peso-mosca defende cinturão em casa. Venceu Royval em 2023.', home:{name:'A. Pantoja',logo:null,sub:'Camp. Mosca',       pct:66},away:{name:'B. Royval',logo:null,sub:'Top 5 Mosca',      pct:23}, draw:11 },
+    { id:'m-bra',   status:'upcoming', startTime:'2026-05-10T00:00:00Z', statusLabel:'09/05 · 20h BRT · São Paulo',      competition:'UFC Fight Night Brasil · Main Event', title:'Pantoja × Royval II',bettvPick:'Pantoja',bettvConf:67, bettvReason:'Alexandre Pantoja campeão peso-mosca defende cinturão em casa. Venceu Royval em 2023.', home:{name:'A. Pantoja',logo:'pantoja',sub:'Camp. Mosca',       pct:66},away:{name:'B. Royval',logo:null,sub:'Top 5 Mosca',      pct:23}, draw:11 },
   ]},
   tenis: { label:'Tênis', items:[
     // ── Miami Open hoje 21/03 — R2/R3 em andamento ──
     // Sinner×Dzumhur R2 hoje (13h ET = 14h BRT)
-    { id:'t-sdzu', status:'upcoming', startTime:'2026-03-21T17:00:00Z', statusLabel:'Hoje · 14h BRT · Miami Open R2',  competition:'ATP Miami Open 2026 · R2',       title:'Sinner × Dzumhur',         bettvPick:'Sinner',    bettvConf:88, bettvReason:'Sinner campeão Indian Wells 2026 s/ perder sets. Dzumhur Nº76 taticamente limitado.', home:{name:'J. Sinner',   logo:'sinner',    sub:'Nº2 · IW Campeão',pct:88}, away:{name:'D. Dzumhur',  logo:null,       sub:'Nº76 ATP',    pct:8},  draw:4  },
+    { id:'t-sdzu', status:'upcoming', startTime:'2026-03-21T17:00:00Z', statusLabel:'Hoje · 14h BRT · Miami Open R2',  competition:'ATP Miami Open 2026 · R2',       title:'Sinner × Dzumhur',         bettvPick:'Sinner',    bettvConf:88, bettvReason:'Sinner campeão Indian Wells 2026 s/ perder sets. Dzumhur Nº76 taticamente limitado.', home:{name:'J. Sinner',   logo:'sinner',    sub:'Nº2 · IW Campeão',pct:88}, away:{name:'D. Dzumhur',  logo:'sinner',       sub:'Nº76 ATP',    pct:8},  draw:4  },
     // Alcaraz×Korda R3 hoje (noite)
-    { id:'t-akrd', status:'upcoming', startTime:'2026-03-22T00:00:00Z', statusLabel:'Hoje · 21h BRT · Miami Open R3',  competition:'ATP Miami Open 2026 · R3',       title:'Alcaraz × Korda',           bettvPick:'Alcaraz',   bettvConf:78, bettvReason:'Alcaraz Nº1 invicto em 2026 (17-1). Korda perigoso em casa mas nível abaixo.', home:{name:'C. Alcaraz',  logo:'alcaraz',   sub:'Nº1 ATP · 17-1',  pct:78}, away:{name:'S. Korda',    logo:null,       sub:'Nº24 ATP',    pct:15}, draw:7  },
+    { id:'t-akrd', status:'upcoming', startTime:'2026-03-22T00:00:00Z', statusLabel:'Hoje · 21h BRT · Miami Open R3',  competition:'ATP Miami Open 2026 · R3',       title:'Alcaraz × Korda',           bettvPick:'Alcaraz',   bettvConf:78, bettvReason:'Alcaraz Nº1 invicto em 2026 (17-1). Korda perigoso em casa mas nível abaixo.', home:{name:'C. Alcaraz',  logo:'alcaraz',   sub:'Nº1 ATP · 17-1',  pct:78}, away:{name:'S. Korda',    logo:'alcaraz',       sub:'Nº24 ATP',    pct:15}, draw:7  },
     // ── Miami Open R16 — 23-24/03 ──
-    { id:'t-sin16', status:'upcoming', startTime:'2026-03-23T17:00:00Z', statusLabel:'23/03 · 14h BRT · Miami Open R16',competition:'ATP Miami Open 2026 · R16',      title:'Sinner × oponente R16',     bettvPick:'Sinner',    bettvConf:78, bettvReason:'Sinner favorito absoluto até as quartas. Defende título Miami 2024.', home:{name:'J. Sinner',   logo:'sinner',    sub:'Nº2 ATP · Campeão 2024',pct:78},away:{name:'Oponente R16',logo:null,       sub:'ATP',         pct:15}, draw:7  },
+    { id:'t-sin16', status:'upcoming', startTime:'2026-03-23T17:00:00Z', statusLabel:'23/03 · 14h BRT · Miami Open R16',competition:'ATP Miami Open 2026 · R16',      title:'Sinner × oponente R16',     bettvPick:'Sinner',    bettvConf:78, bettvReason:'Sinner favorito absoluto até as quartas. Defende título Miami 2024.', home:{name:'J. Sinner',   logo:'sinner',    sub:'Nº2 ATP · Campeão 2024',pct:78},away:{name:'Oponente R16',logo:'sinner',       sub:'ATP',         pct:15}, draw:7  },
     // ── Miami Open QF — 25-26/03 ──
     { id:'t-mqf',   status:'upcoming', startTime:'2026-03-25T17:00:00Z', statusLabel:'25/03 · 14h BRT · Miami QF',      competition:'ATP Miami Open 2026 · Quartas', title:'QF Miami Open ATP',         bettvPick:'Sinner',    bettvConf:52, bettvReason:'Sinner favorito até as quartas. Alcaraz pode cruzar no mesmo lado do chaveamento.', home:{name:'J. Sinner',   logo:'sinner',    sub:'Nº2 ATP · Fav.',  pct:48}, away:{name:'C. Alcaraz',  logo:'alcaraz',  sub:'Nº1 ATP',     pct:38}, draw:14 },
     // ── Miami Open SF — 27-28/03 ──
@@ -153,11 +153,11 @@ const ESPORTES = {
   ]},
   esports: { label:'E-sports', items:[
     // ── CBLOL 2026 Etapa 1 — confirmado pela Riot Brasil ──
-    { id:'e-loud1', status:'upcoming', startTime:'2026-03-28T16:00:00Z', statusLabel:'28/03 · Riot Arena SP · 13h',    competition:'CBLOL 2026 · Etapa 1 · Rodada 1', title:'LOUD × paiN Gaming', bettvPick:'LOUD',  bettvConf:66, bettvReason:'LOUD campeã Copa CBLOL 2026. Bull e RedBert dominantes. paiN sem título desde 2023.', home:{name:'LOUD',        logo:'loud', sub:'Campeã Copa 2026', pct:62},away:{name:'paiN Gaming', logo:null,sub:'4º Copa',    pct:24}, draw:14 },
-    { id:'e-fur1',  status:'upcoming', startTime:'2026-03-28T18:00:00Z', statusLabel:'28/03 · Riot Arena SP · 15h',    competition:'CBLOL 2026 · Etapa 1 · Rodada 1', title:'FURIA × RED Canids',bettvPick:'FURIA', bettvConf:54, bettvReason:'FURIA bootcampou na Coreia pré-temporada. RED Canids inconstante na Copa.', home:{name:'FURIA',       logo:'furia',sub:'Americas Cup',   pct:52},away:{name:'RED Canids', logo:null,sub:'5º Copa',    pct:32}, draw:16 },
+    { id:'e-loud1', status:'upcoming', startTime:'2026-03-28T16:00:00Z', statusLabel:'28/03 · Riot Arena SP · 13h',    competition:'CBLOL 2026 · Etapa 1 · Rodada 1', title:'LOUD × paiN Gaming', bettvPick:'LOUD',  bettvConf:66, bettvReason:'LOUD campeã Copa CBLOL 2026. Bull e RedBert dominantes. paiN sem título desde 2023.', home:{name:'LOUD',        logo:'loud', sub:'Campeã Copa 2026', pct:62},away:{name:'paiN Gaming', logo:'loud',sub:'4º Copa',    pct:24}, draw:14 },
+    { id:'e-fur1',  status:'upcoming', startTime:'2026-03-28T18:00:00Z', statusLabel:'28/03 · Riot Arena SP · 15h',    competition:'CBLOL 2026 · Etapa 1 · Rodada 1', title:'FURIA × RED Canids',bettvPick:'FURIA', bettvConf:54, bettvReason:'FURIA bootcampou na Coreia pré-temporada. RED Canids inconstante na Copa.', home:{name:'FURIA',       logo:'furia',sub:'Americas Cup',   pct:52},away:{name:'RED Canids', logo:'furia',sub:'5º Copa',    pct:32}, draw:16 },
     { id:'e-loud2', status:'upcoming', startTime:'2026-04-04T16:00:00Z', statusLabel:'04/04 · Riot Arena SP · 13h',    competition:'CBLOL 2026 · Etapa 1 · Rodada 2', title:'LOUD × FURIA',     bettvPick:'LOUD',  bettvConf:55, bettvReason:'LOUD lidera H2H histórico vs FURIA (12V-8D). FURIA motivada pós-bootcamp Korea.', home:{name:'LOUD',        logo:'loud', sub:'Campeã Copa',     pct:53},away:{name:'FURIA',       logo:'furia',sub:'Americas',   pct:35}, draw:12 },
     // ── LCK Spring 2026 Playoffs — confirmado lolesports ──
-    { id:'e-t1gg',  status:'upcoming', startTime:'2026-04-05T08:00:00Z', statusLabel:'05/04 · 05h BRT · LCK · Seoul',  competition:'LCK Spring 2026 · Playoffs SF',   title:'T1 × Gen.G',        bettvPick:'T1',    bettvConf:58, bettvReason:'T1 e Faker históricos em playoffs LCK. Gen.G com Chovy mas T1 tem mais experiência decisiva.', home:{name:'T1',          logo:'t1', sub:'1º LCK',          pct:56},away:{name:'Gen.G',       logo:null,sub:'2º LCK',     pct:32}, draw:12 },
+    { id:'e-t1gg',  status:'upcoming', startTime:'2026-04-05T08:00:00Z', statusLabel:'05/04 · 05h BRT · LCK · Seoul',  competition:'LCK Spring 2026 · Playoffs SF',   title:'T1 × Gen.G',        bettvPick:'T1',    bettvConf:58, bettvReason:'T1 e Faker históricos em playoffs LCK. Gen.G com Chovy mas T1 tem mais experiência decisiva.', home:{name:'T1',          logo:'t1', sub:'1º LCK',          pct:56},away:{name:'Gen.G',       logo:'t1',sub:'2º LCK',     pct:32}, draw:12 },
     // ── CS2 Major 2026 ──
     { id:'e-cs2',   status:'upcoming', startTime:'2026-05-01T12:00:00Z', statusLabel:'01/05 · 09h BRT · CS2 Major',    competition:'CS2 Major 2026 · Quartas',        title:'NaVi × FaZe Clan',  bettvPick:'NaVi',  bettvConf:53, bettvReason:'s1mple ao melhor nível em 2026. FaZe forte mas NaVi tem mais títulos em Majors (3).', home:{name:'Natus Vincere',logo:null,sub:'Top 5 CS2',       pct:52},away:{name:'FaZe Clan',   logo:null,sub:'Top 5 CS2',  pct:35}, draw:13 },
   ]},
@@ -541,21 +541,35 @@ async function fetchImageUrl(name) {
 
 // ─── KNOWN LOGOS — URLs verificadas ──────────────────────────────────────────
 const LOGOS = {
-  // ── Futebol Brasil ──
-  saopaulo:     'https://upload.wikimedia.org/wikipedia/commons/6/67/S%C3%A3o_Paulo_FC.svg',
-  palmeiras:    'https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg',
-  corinthians:  'https://upload.wikimedia.org/wikipedia/commons/b/b6/Logo-Corinthians.svg',
-  flamengo:     'https://upload.wikimedia.org/wikipedia/commons/2/2b/Flamengo_escudo.svg',
-  bahia:        'https://upload.wikimedia.org/wikipedia/commons/9/9e/EC_Bahia.svg',
-  botafogo:     'https://upload.wikimedia.org/wikipedia/commons/9/93/Botafogo_de_Futebol_e_Regatas.svg',
-  internacional:'https://upload.wikimedia.org/wikipedia/commons/f/f3/Sport_Club_Internacional.svg',
-  gremio:       'https://upload.wikimedia.org/wikipedia/commons/e/eb/Gr%C3%AAmio_FBPA.svg',
-  atleticmg:    'https://upload.wikimedia.org/wikipedia/commons/1/1e/Atletico_mineiro_galo.svg',
-  fluminense:   'https://upload.wikimedia.org/wikipedia/commons/3/3d/Fluminense_Logo.svg',
-  vasco:        'https://upload.wikimedia.org/wikipedia/commons/c/c7/Vasco_da_Gama_Cruz_de_Malta.svg',
-  cruzeiro:     'https://upload.wikimedia.org/wikipedia/commons/f/f2/Cruzeiro_Esporte_Clube_-_Escudo.svg',
-  sport:        'https://upload.wikimedia.org/wikipedia/commons/7/7d/Sport_Club_do_Recife.svg',
-  fortaleza:    'https://upload.wikimedia.org/wikipedia/commons/1/1e/Escudo_do_Fortaleza.svg',
+  // ── NBA ──
+  okc:          'https://upload.wikimedia.org/wikipedia/en/5/5d/Oklahoma_City_Thunder.svg',
+  lakers:       'https://upload.wikimedia.org/wikipedia/commons/3/3c/Los_Angeles_Lakers_logo.svg',
+  celtics:      'https://upload.wikimedia.org/wikipedia/en/8/8f/Boston_Celtics.svg',
+  warriors:     'https://upload.wikimedia.org/wikipedia/en/0/01/Golden_State_Warriors_logo.svg',
+  cavaliers:    'https://upload.wikimedia.org/wikipedia/en/4/4b/Cleveland_Cavaliers_logo.svg',
+  rockets:      'https://upload.wikimedia.org/wikipedia/en/2/28/Houston_Rockets.svg',
+  nuggets:      'https://upload.wikimedia.org/wikipedia/en/7/76/Denver_Nuggets.svg',
+  heat:         'https://upload.wikimedia.org/wikipedia/en/f/fb/Miami_Heat_logo.svg',
+  suns:         'https://upload.wikimedia.org/wikipedia/en/d/dc/Phoenix_Suns_logo.svg',
+  hawks:        'https://upload.wikimedia.org/wikipedia/en/2/24/Atlanta_Hawks_logo.svg',
+  hornets:      'https://upload.wikimedia.org/wikipedia/en/9/9e/Charlotte_Hornets_%282014%29.svg',
+  grizzlies:    'https://upload.wikimedia.org/wikipedia/en/f/f1/Memphis_Grizzlies.svg',
+  pelicans:     'https://upload.wikimedia.org/wikipedia/en/0/0d/New_Orleans_Pelicans_logo.svg',
+  spurs:        'https://upload.wikimedia.org/wikipedia/en/a/a2/San_Antonio_Spurs.svg',
+  mavericks:    'https://upload.wikimedia.org/wikipedia/en/9/97/Dallas_Mavericks_logo.svg',
+  jazz:         'https://upload.wikimedia.org/wikipedia/en/0/04/Utah_Jazz_logo_%282022%29.svg',
+  bucks:        'https://upload.wikimedia.org/wikipedia/en/4/4a/Milwaukee_Bucks_logo.svg',
+  pacers:       'https://upload.wikimedia.org/wikipedia/en/1/1b/Indiana_Pacers.svg',
+  wizards:      'https://upload.wikimedia.org/wikipedia/en/0/02/Washington_Wizards_logo.svg',
+  magic:        'https://upload.wikimedia.org/wikipedia/en/1/10/Orlando_Magic_logo.svg',
+  sixers:       'https://upload.wikimedia.org/wikipedia/en/0/0e/Philadelphia_76ers_logo.svg',
+  blazers:      'https://upload.wikimedia.org/wikipedia/en/2/21/Portland_Trail_Blazers_logo.svg',
+  timberwolves: 'https://upload.wikimedia.org/wikipedia/en/c/c2/Minnesota_Timberwolves_logo.svg',
+  clippers:     'https://upload.wikimedia.org/wikipedia/en/b/bb/LA_Clippers_logo.svg',
+  knicks:       'https://upload.wikimedia.org/wikipedia/en/2/25/New_York_Knicks_logo.svg',
+  nets:         'https://upload.wikimedia.org/wikipedia/commons/4/44/Brooklyn_Nets_newlogo.svg',
+  raptors:      'https://upload.wikimedia.org/wikipedia/en/3/36/Toronto_Raptors_logo.svg',
+  kings:        'https://upload.wikimedia.org/wikipedia/en/c/c7/Kings_Sac_Logo_2023.svg',
   // ── Premier League ──
   arsenal:      'https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg',
   manutd:       'https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg',
@@ -567,6 +581,11 @@ const LOGOS = {
   everton:      'https://upload.wikimedia.org/wikipedia/en/7/7c/Everton_FC_logo.svg',
   newcastle:    'https://upload.wikimedia.org/wikipedia/en/5/56/Newcastle_United_Logo.svg',
   astonvilla:   'https://upload.wikimedia.org/wikipedia/en/9/9a/Aston_Villa_FC_new_crest.svg',
+  brentford:    'https://upload.wikimedia.org/wikipedia/en/2/2a/Brentford_FC_crest.svg',
+  nottmforest:  'https://upload.wikimedia.org/wikipedia/en/e/e5/Nottingham_Forest_F.C._logo.svg',
+  westham:      'https://upload.wikimedia.org/wikipedia/en/c/c2/West_Ham_United_FC_logo.svg',
+  sunderland:   'https://upload.wikimedia.org/wikipedia/en/7/77/Logo_Sunderland.svg',
+  leeds:        'https://upload.wikimedia.org/wikipedia/en/5/54/Leeds_United_F.C._logo.svg',
   // ── La Liga ──
   realmadrid:   'https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg',
   barcelona:    'https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg',
@@ -581,32 +600,43 @@ const LOGOS = {
   intermilan:   'https://upload.wikimedia.org/wikipedia/commons/0/05/FC_Internazionale_Milano_2021.svg',
   juventus:     'https://upload.wikimedia.org/wikipedia/commons/1/15/Juventus_FC_2017_logo.svg',
   napoli:       'https://upload.wikimedia.org/wikipedia/commons/2/2d/SSC_Napoli.svg',
-  // ── NBA ──
-  okc:          'https://upload.wikimedia.org/wikipedia/en/5/5d/Oklahoma_City_Thunder.svg',
-  lakers:       'https://upload.wikimedia.org/wikipedia/commons/3/3c/Los_Angeles_Lakers_logo.svg',
-  celtics:      'https://upload.wikimedia.org/wikipedia/en/8/8f/Boston_Celtics.svg',
-  warriors:     'https://upload.wikimedia.org/wikipedia/en/0/01/Golden_State_Warriors_logo.svg',
-  cavaliers:    'https://upload.wikimedia.org/wikipedia/en/4/4b/Cleveland_Cavaliers_logo.svg',
-  rockets:      'https://upload.wikimedia.org/wikipedia/en/2/28/Houston_Rockets.svg',
-  nuggets:      'https://upload.wikimedia.org/wikipedia/en/7/76/Denver_Nuggets.svg',
-  heat:         'https://upload.wikimedia.org/wikipedia/en/f/fb/Miami_Heat_logo.svg',
-  suns:         'https://upload.wikimedia.org/wikipedia/en/d/dc/Phoenix_Suns_logo.svg',
-  // ── Tênis (ESPN CDN — headshots brancos) ──
+  // ── Brasileirão ──
+  saopaulo:     'https://upload.wikimedia.org/wikipedia/commons/6/67/S%C3%A3o_Paulo_FC.svg',
+  palmeiras:    'https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg',
+  corinthians:  'https://upload.wikimedia.org/wikipedia/commons/b/b6/Logo-Corinthians.svg',
+  flamengo:     'https://upload.wikimedia.org/wikipedia/commons/2/2b/Flamengo_escudo.svg',
+  fluminense:   'https://upload.wikimedia.org/wikipedia/commons/3/3d/Fluminense_Logo.svg',
+  botafogo:     'https://upload.wikimedia.org/wikipedia/commons/9/93/Botafogo_de_Futebol_e_Regatas.svg',
+  atleticmg:    'https://upload.wikimedia.org/wikipedia/commons/1/1e/Atletico_mineiro_galo.svg',
+  internacional:'https://upload.wikimedia.org/wikipedia/commons/f/f3/Sport_Club_Internacional.svg',
+  gremio:       'https://upload.wikimedia.org/wikipedia/commons/e/eb/Gr%C3%AAmio_FBPA.svg',
+  cruzeiro:     'https://upload.wikimedia.org/wikipedia/commons/f/f2/Cruzeiro_Esporte_Clube_-_Escudo.svg',
+  bahia:        'https://upload.wikimedia.org/wikipedia/commons/9/9e/EC_Bahia.svg',
+  vasco:        'https://upload.wikimedia.org/wikipedia/commons/c/c7/Vasco_da_Gama_Cruz_de_Malta.svg',
+  fortaleza:    'https://upload.wikimedia.org/wikipedia/commons/1/1e/Escudo_do_Fortaleza.svg',
+  sport:        'https://upload.wikimedia.org/wikipedia/commons/7/7d/Sport_Club_do_Recife.svg',
+  // ── Tênis (ESPN CDN) ──
   sinner:       'https://a.espncdn.com/i/headshots/tennis/players/full/4741.png',
   alcaraz:      'https://a.espncdn.com/i/headshots/tennis/players/full/4759.png',
   sabalenka:    'https://a.espncdn.com/i/headshots/tennis/players/full/4613.png',
   gauff:        'https://a.espncdn.com/i/headshots/tennis/players/full/4866.png',
   fritz:        'https://a.espncdn.com/i/headshots/tennis/players/full/4321.png',
   tsitsipas:    'https://a.espncdn.com/i/headshots/tennis/players/full/4543.png',
-  // ── MMA — UFC CDN oficial ──
+  medvedev:     'https://a.espncdn.com/i/headshots/tennis/players/full/4581.png',
+  zverev:       'https://a.espncdn.com/i/headshots/tennis/players/full/4320.png',
+  dzumhur:      'https://a.espncdn.com/i/headshots/tennis/players/full/3723.png',
+  // ── MMA (UFC CDN) ──
   pereira:      'https://dmxg5wxfqgb4u.cloudfront.net/styles/athlete_bio_full_body/s3/2024-10/PEREIRA_ALEX_L_BELT.png',
-  makhachev:    'https://dmxg5wxfqgb4u.cloudfront.net/styles/athlete_bio_full_body/s3/2023-10/MAKHACHEV_ISLAM_L_BELT.png',
+  makhachev:    'https://dmxg5wxfqgb4u.cloudfront.net/styles/athlete_bio_full_body/s3/2024-03/MAKHACHEV_ISLAM_L_BELT-new.png',
   pantoja:      'https://dmxg5wxfqgb4u.cloudfront.net/styles/athlete_bio_full_body/s3/2024-09/PANTOJA_ALEXANDRE_L_BELT.png',
+  adesanya:     'https://dmxg5wxfqgb4u.cloudfront.net/styles/athlete_bio_full_body/s3/2023-09/ADESANYA_ISRAEL_L_BELT.png',
+  prochazka:    'https://dmxg5wxfqgb4u.cloudfront.net/styles/athlete_bio_full_body/s3/2024-03/PROCHAZKA_JIRI_L_BELT.png',
   // ── E-sports ──
-  loud:         'https://upload.wikimedia.org/wikipedia/commons/7/7e/LOUD_Esports_logo.png',
-  t1:           'https://upload.wikimedia.org/wikipedia/commons/d/db/T1_logo.png',
-  furia:        'https://upload.wikimedia.org/wikipedia/commons/3/37/FURIA_Esports_logo.png',
+  loud:         'https://upload.wikimedia.org/wikipedia/commons/a/a5/LOUD_Esports_logo.png',
+  furia:        'https://upload.wikimedia.org/wikipedia/commons/f/f9/Furia_Esports_logo.png',
+  t1:           'https://upload.wikimedia.org/wikipedia/commons/1/13/T1_%28esports%29_logo.png',
 }
+
 
 // ─── TEAM / PLAYER LOGO ───────────────────────────────────────────────────────
 // 1. Tenta URL do mapa LOGOS estático
