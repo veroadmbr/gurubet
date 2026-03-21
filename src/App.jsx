@@ -80,187 +80,88 @@ const LOTERIAS = [
 
 const ESPORTES = {
   futebol: { label:'Futebol', items:[
-    // ── AO VIVO AGORA ──
-    { id:'f-leeds',  status:'live',     startTime:'2026-03-21T20:00:00Z', statusLabel:'AO VIVO · 17h GMT · Elland Road',   competition:'Premier League · Jornada 31', title:'Leeds × Brentford',         bettvPick:'Brentford', bettvConf:49, bettvReason:'Leeds 18º luta contra rebaixamento. Brentford 10º mais estável fora de casa.', home:{name:'Leeds United', logo:null,        sub:'18º · 22pts',pct:33}, away:{name:'Brentford',   logo:null,       sub:'10º · 42pts',pct:45}, draw:22 },
-    // ── AMANHÃ 22/03 Premier League ──
-    { id:'f-new',    status:'upcoming', startTime:'2026-03-22T12:00:00Z', statusLabel:'Amanhã · 09h · St James Park',       competition:'Premier League · Jornada 31', title:'Newcastle × Sunderland',    bettvPick:'Newcastle',  bettvConf:68, bettvReason:'Newcastle 5º em casa. Sunderland promovido 19º. Diferença de qualidade grande.', home:{name:'Newcastle',    logo:'newcastle', sub:'5º · 55pts', pct:67}, away:{name:'Sunderland',  logo:null,       sub:'19º · 19pts',pct:14}, draw:19 },
-    { id:'f-avl',    status:'upcoming', startTime:'2026-03-22T14:15:00Z', statusLabel:'Amanhã · 11h15 · Villa Park',        competition:'Premier League · Jornada 31', title:'Aston Villa × West Ham',    bettvPick:'Aston Villa',bettvConf:58, bettvReason:'Villa 7º busca top 4. Watkins artilheiro. West Ham 15º em queda.', home:{name:'Aston Villa',  logo:'astonvilla',sub:'7º · 48pts', pct:57}, away:{name:'West Ham',    logo:null,       sub:'15º · 28pts',pct:22}, draw:21 },
-    { id:'f-tot',    status:'upcoming', startTime:'2026-03-22T14:15:00Z', statusLabel:'Amanhã · 11h15 · Tottenham Hotspur', competition:'Premier League · Jornada 31', title:'Tottenham × Nottm Forest', bettvPick:'Tottenham',  bettvConf:55, bettvReason:'Spurs 8º em casa. Son liderando ataque. Forest 11º estável fora.', home:{name:'Tottenham',    logo:'tottenham', sub:'8º · 46pts', pct:54}, away:{name:'Nottm Forest',logo:null,       sub:'11º · 40pts',pct:24}, draw:22 },
+    // ── Premier League 21/03 — AO VIVO: Leeds×Brentford (20:00 GMT) ──
+    { id:'f-lbr', status:'upcoming', startTime:'2026-03-21T20:00:00Z', statusLabel:'Hoje · 17h BRT · Elland Road',     competition:'Premier League · Jornada 31', title:'Leeds × Brentford',        bettvPick:'Brentford', bettvConf:49, bettvReason:'Leeds 18º em casa briga contra rebaixamento. Brentford 10º mais estável fora.', home:{name:'Leeds United',  logo:null,        sub:'18º · 22pts',pct:33}, away:{name:'Brentford',    logo:null,       sub:'10º · 42pts',pct:45}, draw:22 },
+    // ── Premier League 22/03 ──
+    { id:'f-nsu', status:'upcoming', startTime:'2026-03-22T12:00:00Z', statusLabel:'Amanhã · 09h BRT · St James Park', competition:'Premier League · Jornada 31', title:'Newcastle × Sunderland',   bettvPick:'Newcastle',  bettvConf:68, bettvReason:'Newcastle 5º em casa. Sunderland promovido 19º. Qualidade superior dos Magpies.', home:{name:'Newcastle',    logo:'newcastle', sub:'5º · 55pts', pct:67}, away:{name:'Sunderland',   logo:null,       sub:'19º · 19pts',pct:14}, draw:19 },
+    { id:'f-avw', status:'upcoming', startTime:'2026-03-22T14:15:00Z', statusLabel:'Amanhã · 11h15 BRT · Villa Park',  competition:'Premier League · Jornada 31', title:'Aston Villa × West Ham',  bettvPick:'Aston Villa', bettvConf:58, bettvReason:'Villa 7º busca top 4. Watkins artilheiro da temporada. West Ham 15º em queda.', home:{name:'Aston Villa',  logo:'astonvilla',sub:'7º · 48pts', pct:57}, away:{name:'West Ham',    logo:null,       sub:'15º · 28pts',pct:22}, draw:21 },
+    { id:'f-tnf', status:'upcoming', startTime:'2026-03-22T14:15:00Z', statusLabel:'Amanhã · 11h15 BRT · T.Hotspur',  competition:'Premier League · Jornada 31', title:'Tottenham × Nottm Forest', bettvPick:'Tottenham',   bettvConf:55, bettvReason:'Spurs 8º em casa. Son liderando ataque com 14 gols. Forest 11º fora de casa oscila.', home:{name:'Tottenham',    logo:'tottenham', sub:'8º · 46pts', pct:54}, away:{name:'Nottm Forest', logo:null,       sub:'11º · 40pts',pct:24}, draw:22 },
     // ── La Liga 22/03 ──
-    { id:'f-clasico',status:'upcoming', startTime:'2026-03-22T21:00:00+01:00', statusLabel:'Amanhã · 17h · Bernabéu',       competition:'La Liga · Jornada 29',        title:'Real Madrid × Barcelona', bettvPick:'Real Madrid', bettvConf:48, bettvReason:'El Clásico no Bernabéu. Barça lidera (70pts). Real 2º (68pts). Mbappé vs Yamal.', home:{name:'Real Madrid',  logo:'realmadrid',sub:'2º · 68pts', pct:46}, away:{name:'Barcelona',  logo:'barcelona',sub:'1º · 70pts', pct:36}, draw:18 },
-    // ── Champions League QF Abril ──
-    { id:'f-ucl1',   status:'upcoming', startTime:'2026-04-07T20:00:00+02:00', statusLabel:'07/04 · 15h · Etihad',          competition:'Champions League · Quartas',  title:'Man. City × PSG',          bettvPick:'Man. City',  bettvConf:52, bettvReason:'City em casa, 5 finais UCL em 6 anos. PSG nunca venceu City em casa.', home:{name:'Man. City',    logo:'mancity',   sub:'QF · ING',   pct:50}, away:{name:'PSG',         logo:'psg',      sub:'QF · FRA',   pct:30}, draw:20 },
-    { id:'f-ucl2',   status:'upcoming', startTime:'2026-04-08T20:00:00+02:00', statusLabel:'08/04 · 15h · Bernabéu',        competition:'Champions League · Quartas',  title:'Real Madrid × Inter',      bettvPick:'Real Madrid', bettvConf:54, bettvReason:'Real 15 títulos UCL. Inter finalista 2023. Mbappé vs Lautaro.', home:{name:'Real Madrid',  logo:'realmadrid',sub:'QF · ESP',   pct:52}, away:{name:'Inter Milão', logo:'intermilan',sub:'QF · ITA',   pct:28}, draw:20 },
-    // ── Brasileirão Série A — começa em Abril 2026 ──
-    { id:'f-bra1',   status:'upcoming', startTime:'2026-04-12T16:00:00-03:00', statusLabel:'12/04 · 16h · Morumbis',        competition:'Brasileirão Série A 2026 · Rd 1', title:'São Paulo × Palmeiras', bettvPick:'Palmeiras',  bettvConf:55, bettvReason:'Palmeiras favorito no início. SP em reestruturação pós-Copa SP.', home:{name:'São Paulo',    logo:'saopaulo',  sub:'Série A 2026',pct:33}, away:{name:'Palmeiras',  logo:'palmeiras', sub:'Série A 2026',pct:48}, draw:19 },
-    { id:'f-bra2',   status:'upcoming', startTime:'2026-04-12T18:30:00-03:00', statusLabel:'12/04 · 18h30 · Neo Química',   competition:'Brasileirão Série A 2026 · Rd 1', title:'Corinthians × Flamengo',bettvPick:'Flamengo',  bettvConf:52, bettvReason:'Flamengo elenco mais completo. Corinthians em reestruturação.', home:{name:'Corinthians',  logo:'corinthians',sub:'Série A 2026',pct:29}, away:{name:'Flamengo',   logo:'flamengo',  sub:'Série A 2026',pct:48}, draw:23 },
+    { id:'f-clsco',status:'upcoming', startTime:'2026-03-22T20:00:00Z', statusLabel:'Amanhã · 17h BRT · Bernabéu',    competition:'La Liga · Jornada 29',        title:'Real Madrid × Barcelona', bettvPick:'Real Madrid', bettvConf:48, bettvReason:'El Clásico. Barça lidera com 70pts. Real 2º com 68pts. Mbappé vs Yamal — duelo épico.', home:{name:'Real Madrid',  logo:'realmadrid',sub:'2º · 68pts', pct:46}, away:{name:'Barcelona',  logo:'barcelona', sub:'1º · 70pts',pct:36}, draw:18 },
+    // ── Champions League QF — Abril ──
+    { id:'f-ucl1', status:'upcoming', startTime:'2026-04-07T18:00:00Z', statusLabel:'07/04 · 15h BRT · Etihad',        competition:'Champions League · Quartas',  title:'Man. City × PSG',         bettvPick:'Man. City',   bettvConf:52, bettvReason:'City em casa. 5 finais da UCL nos últimos 6 anos. PSG nunca venceu City no Etihad.', home:{name:'Man. City',    logo:'mancity',   sub:'QF · ING',   pct:50}, away:{name:'PSG',         logo:'psg',       sub:'QF · FRA',  pct:30}, draw:20 },
+    { id:'f-ucl2', status:'upcoming', startTime:'2026-04-08T18:00:00Z', statusLabel:'08/04 · 15h BRT · Bernabéu',      competition:'Champions League · Quartas',  title:'Real Madrid × Inter',     bettvPick:'Real Madrid', bettvConf:54, bettvReason:'Real 15 títulos UCL. Inter finalista 2023. Mbappé vs Lautaro Martínez — duelo de artilheiros.', home:{name:'Real Madrid',  logo:'realmadrid',sub:'QF · ESP',   pct:52}, away:{name:'Inter Milão', logo:'intermilan',sub:'QF · ITA',  pct:28}, draw:20 },
+    // ── Brasileirão — inicia Abril 2026 ──
+    { id:'f-bra1', status:'upcoming', startTime:'2026-04-12T16:00:00-03:00', statusLabel:'12/04 · 16h · Morumbis',     competition:'Brasileirão Série A 2026 · Rd 1', title:'São Paulo × Palmeiras', bettvPick:'Palmeiras',  bettvConf:55, bettvReason:'Palmeiras favorito na abertura. SP em reestruturação pós-estadual 2026.', home:{name:'São Paulo',    logo:'saopaulo',  sub:'Série A 2026',pct:33}, away:{name:'Palmeiras',  logo:'palmeiras', sub:'Série A 2026',pct:48}, draw:19 },
+    { id:'f-bra2', status:'upcoming', startTime:'2026-04-12T18:30:00-03:00', statusLabel:'12/04 · 18h30 · Neo Química', competition:'Brasileirão Série A 2026 · Rd 1', title:'Corinthians × Flamengo',bettvPick:'Flamengo',   bettvConf:52, bettvReason:'Flamengo com elenco mais completo. Corinthians em reestruturação 2026.', home:{name:'Corinthians',  logo:'corinthians',sub:'Série A 2026',pct:29}, away:{name:'Flamengo',   logo:'flamengo',  sub:'Série A 2026',pct:48}, draw:23 },
+    { id:'f-bra3', status:'upcoming', startTime:'2026-04-12T20:30:00-03:00', statusLabel:'12/04 · 20h30 · Maracanã',   competition:'Brasileirão Série A 2026 · Rd 1', title:'Fluminense × Botafogo',bettvPick:'Botafogo',   bettvConf:53, bettvReason:'Fla-Flu pelo Brasileirão. Botafogo defende título — elenco experiente e organizado.', home:{name:'Fluminense',   logo:'fluminense',sub:'Série A 2026',pct:30}, away:{name:'Botafogo',   logo:'botafogo',  sub:'Série A 2026',pct:46}, draw:24 },
   ]},
   basquete: { label:'Basquete', items:[
-    // ── NBA HOJE 21/03 — dados reais SportRadar ──
-    { id:'b-okc',    status:'upcoming', startTime:'2026-03-21T21:00:00Z', statusLabel:'Hoje · 18h · Capital One Arena',     competition:'NBA · Temporada Regular',     title:'Washington × OKC Thunder', bettvPick:'OKC Thunder',bettvConf:93, bettvReason:'OKC 95.8% SportRadar. Líder absoluto do Oeste vs último do Leste.', home:{name:'Washington',   logo:null,        sub:'Conf. Leste', pct:4},  away:{name:'OKC Thunder', logo:'okc',      sub:'1º Oeste',   pct:93}, draw:3 },
-    { id:'b-lal',    status:'upcoming', startTime:'2026-03-21T23:00:00Z', statusLabel:'Hoje · 20h · Kaseya Center',         competition:'NBA · Temporada Regular',     title:'Orlando × LA Lakers',      bettvPick:'LA Lakers',  bettvConf:55, bettvReason:'Lakers 59.9% SportRadar. LeBron e AD dominam. Orlando em queda.', home:{name:'Orlando',      logo:null,        sub:'Conf. Leste', pct:40}, away:{name:'LA Lakers',  logo:'lakers',   sub:'Conf. Oeste',pct:55}, draw:5 },
-    { id:'b-cle',    status:'upcoming', startTime:'2026-03-21T23:00:00Z', statusLabel:'Hoje · 20h · Smoothie King',         competition:'NBA · Temporada Regular',     title:'New Orleans × Cleveland',  bettvPick:'Cleveland',  bettvConf:62, bettvReason:'Cleveland 66.2% SportRadar. Em 4V seguidas. Pelicans irregular em casa.', home:{name:'New Orleans',  logo:null,        sub:'Conf. Leste', pct:34}, away:{name:'Cleveland',  logo:'cavaliers',sub:'3º Leste',   pct:62}, draw:4 },
-    { id:'b-cha',    status:'upcoming', startTime:'2026-03-21T23:00:00Z', statusLabel:'Hoje · 20h · Spectrum Center',       competition:'NBA · Temporada Regular',     title:'Charlotte × Memphis',      bettvPick:'Charlotte',  bettvConf:89, bettvReason:'Charlotte 93.2% SportRadar. Memphis em colapso total — pior da conferência.', home:{name:'Charlotte',    logo:null,        sub:'Conf. Leste', pct:89}, away:{name:'Memphis',    logo:null,       sub:'Conf. Oeste',pct:8},  draw:3 },
-    { id:'b-hou',    status:'upcoming', startTime:'2026-03-22T00:00:00Z', statusLabel:'Hoje · 21h · Toyota Center',         competition:'NBA · Temporada Regular',     title:'Houston × Miami',          bettvPick:'Houston',    bettvConf:52, bettvReason:'Houston 54.7% SportRadar. 5 vitórias seguidas em casa.', home:{name:'Houston',      logo:'rockets',   sub:'Conf. Oeste', pct:53}, away:{name:'Miami',      logo:'heat',     sub:'Conf. Leste',pct:44}, draw:3 },
-    { id:'b-sas',    status:'upcoming', startTime:'2026-03-22T00:00:00Z', statusLabel:'Hoje · 21h · AT&T Center',           competition:'NBA · Temporada Regular',     title:'San Antonio × Indiana',    bettvPick:'San Antonio',bettvConf:89, bettvReason:'Spurs 93.4% SportRadar. Wembanyama dominante. Pacers sem Haliburton.', home:{name:'San Antonio',  logo:null,        sub:'Conf. Oeste', pct:89}, away:{name:'Indiana',    logo:null,       sub:'Conf. Leste',pct:7},  draw:4 },
-    { id:'b-atl',    status:'upcoming', startTime:'2026-03-22T00:00:00Z', statusLabel:'Hoje · 21h · State Farm Arena',      competition:'NBA · Temporada Regular',     title:'Atlanta × Golden State',   bettvPick:'Atlanta',    bettvConf:77, bettvReason:'Hawks 80.5% SportRadar. Warriors sem Curry — em reconstrução.', home:{name:'Atlanta',      logo:null,        sub:'Conf. Leste', pct:78}, away:{name:'Golden State',logo:'warriors', sub:'Conf. Oeste',pct:19}, draw:3 },
-    { id:'b-dal',    status:'upcoming', startTime:'2026-03-22T00:30:00Z', statusLabel:'Hoje · 21h30 · American Airlines',   competition:'NBA · Temporada Regular',     title:'Dallas × LA Clippers',     bettvPick:'LA Clippers',bettvConf:68, bettvReason:'Clippers 72.7% SportRadar. Dallas em reconstrução após troca de Dončić.', home:{name:'Dallas',       logo:null,        sub:'Conf. Oeste', pct:27}, away:{name:'LA Clippers',logo:null,       sub:'Conf. Oeste',pct:69}, draw:4 },
-    { id:'b-uta',    status:'upcoming', startTime:'2026-03-22T01:30:00Z', statusLabel:'Hoje · 22h30 · Delta Center',        competition:'NBA · Temporada Regular',     title:'Utah × Philadelphia',      bettvPick:'Philadelphia',bettvConf:63, bettvReason:'76ers 67% SportRadar. Embiid voltou de lesão e está dominante.', home:{name:'Utah',         logo:null,        sub:'Conf. Oeste', pct:33}, away:{name:'Philadelphia',logo:null,       sub:'Conf. Leste',pct:63}, draw:4 },
-    { id:'b-phx',    status:'upcoming', startTime:'2026-03-22T02:00:00Z', statusLabel:'Hoje · 23h · Footprint Center',      competition:'NBA · Temporada Regular',     title:'Phoenix × Milwaukee',      bettvPick:'Phoenix',    bettvConf:79, bettvReason:'Suns 83.1% SportRadar. Bucks 16.9% — em crise com Giannis irregular.', home:{name:'Phoenix',      logo:'suns',      sub:'Conf. Oeste', pct:80}, away:{name:'Milwaukee',  logo:null,       sub:'Conf. Leste',pct:17}, draw:3 },
-    // ── NBA 22/03 amanhã ──
-    { id:'b-den',    status:'upcoming', startTime:'2026-03-22T21:00:00Z', statusLabel:'Amanhã · 18h · Ball Arena',          competition:'NBA · Temporada Regular',     title:'Denver × Portland',        bettvPick:'Denver',     bettvConf:72, bettvReason:'Nuggets favoritos em casa. Jokic dominante. Portland rebuilding.', home:{name:'Denver',       logo:'nuggets',   sub:'Conf. Oeste', pct:73}, away:{name:'Portland',   logo:null,       sub:'Conf. Oeste',pct:19}, draw:8 },
-    { id:'b-nyknba', status:'upcoming', startTime:'2026-03-22T23:30:00Z', statusLabel:'Amanhã · 20h30 · Madison Sq. Garden',competition:'NBA · Temporada Regular',     title:'New York Knicks × Washington',bettvPick:'Knicks',   bettvConf:82, bettvReason:'Knicks em casa buscam top 4. Washington pior recorde da liga.', home:{name:'New York',     logo:null,        sub:'Conf. Leste', pct:83}, away:{name:'Washington', logo:null,       sub:'Conf. Leste',pct:10}, draw:7 },
-    { id:'b-bos',    status:'upcoming', startTime:'2026-03-23T00:00:00Z', statusLabel:'Amanhã · 21h · TD Garden',           competition:'NBA · Temporada Regular',     title:'Boston × Minnesota',       bettvPick:'Boston',     bettvConf:58, bettvReason:'Celtics em casa — melhor recorde do Leste. Timberwolves fortes mas viajando.', home:{name:'Boston',       logo:'celtics',   sub:'1º Leste',    pct:58}, away:{name:'Minnesota',  logo:null,       sub:'Conf. Oeste',pct:35}, draw:7 },
+    // ── NBA AO VIVO AGORA: WAS×OKC (Q2, OKC 68-63) ──
+    { id:'b-wokc', status:'upcoming', startTime:'2026-03-21T21:00:00Z', statusLabel:'AO VIVO · Q2 · Capital One Arena', competition:'NBA · Temporada Regular',     title:'Washington × OKC Thunder', bettvPick:'OKC Thunder', bettvConf:94, bettvReason:'OKC 95.8% SportRadar. Lidera Q2 68-63. Shai dominante — SGA com 22pts.', home:{name:'Washington',   logo:null,        sub:'Último Leste', pct:4},  away:{name:'OKC Thunder', logo:'okc',       sub:'1º Oeste',   pct:93}, draw:3  },
+    // ── NBA hoje — scheduled 21/03 BRT ──
+    { id:'b-olal', status:'upcoming', startTime:'2026-03-21T23:00:00Z', statusLabel:'Hoje · 20h BRT · Kaseya Center',  competition:'NBA · Temporada Regular',     title:'Orlando × LA Lakers',      bettvPick:'LA Lakers',   bettvConf:57, bettvReason:'Lakers 60.8% SportRadar. LeBron+AD dominam. Orlando perdeu 5 dos últimos 7.', home:{name:'Orlando',      logo:null,        sub:'8º Leste',    pct:39}, away:{name:'LA Lakers',   logo:'lakers',    sub:'Conf. Oeste', pct:57}, draw:4  },
+    { id:'b-cmem', status:'upcoming', startTime:'2026-03-21T23:00:00Z', statusLabel:'Hoje · 20h BRT · Spectrum Center', competition:'NBA · Temporada Regular',     title:'Charlotte × Memphis',      bettvPick:'Charlotte',   bettvConf:90, bettvReason:'Charlotte 93.0% SportRadar. Memphis em colapso — pior fase da temporada.', home:{name:'Charlotte',    logo:null,        sub:'Conf. Leste', pct:89}, away:{name:'Memphis',     logo:null,        sub:'Conf. Oeste', pct:8},  draw:3  },
+    { id:'b-ncle', status:'upcoming', startTime:'2026-03-21T23:00:00Z', statusLabel:'Hoje · 20h BRT · Smoothie King',  competition:'NBA · Temporada Regular',     title:'New Orleans × Cleveland',  bettvPick:'Cleveland',   bettvConf:63, bettvReason:'Cleveland 67.1% SportRadar. Em 4V seguidas. Donovan Mitchell no melhor momento.', home:{name:'New Orleans',  logo:null,        sub:'Conf. Leste', pct:33}, away:{name:'Cleveland',   logo:'cavaliers', sub:'3º Leste',    pct:63}, draw:4  },
+    { id:'b-hmia', status:'upcoming', startTime:'2026-03-22T00:00:00Z', statusLabel:'Hoje · 21h BRT · Toyota Center',  competition:'NBA · Temporada Regular',     title:'Houston × Miami',          bettvPick:'Houston',     bettvConf:51, bettvReason:'Houston 54.7% SportRadar. 5V seguidas em casa. Miami sem Tyler Herro.', home:{name:'Houston',      logo:'rockets',   sub:'Conf. Oeste', pct:52}, away:{name:'Miami',       logo:'heat',      sub:'Conf. Leste', pct:45}, draw:3  },
+    { id:'b-sind', status:'upcoming', startTime:'2026-03-22T00:00:00Z', statusLabel:'Hoje · 21h BRT · AT&T Center',    competition:'NBA · Temporada Regular',     title:'San Antonio × Indiana',    bettvPick:'San Antonio', bettvConf:90, bettvReason:'Spurs 93.4% SportRadar. Wembanyama 24pts/12reb por jogo. Pacers sem Haliburton.', home:{name:'San Antonio',  logo:null,        sub:'Conf. Oeste', pct:89}, away:{name:'Indiana',     logo:null,        sub:'Conf. Leste', pct:7},  draw:4  },
+    { id:'b-agws', status:'upcoming', startTime:'2026-03-22T00:00:00Z', statusLabel:'Hoje · 21h BRT · State Farm Arena',competition:'NBA · Temporada Regular',     title:'Atlanta × Golden State',   bettvPick:'Atlanta',     bettvConf:75, bettvReason:'Hawks 78.3% SportRadar. Warriors em reconstrução — Curry fora por lesão no tornozelo.', home:{name:'Atlanta',      logo:null,        sub:'Conf. Leste', pct:76}, away:{name:'Golden State', logo:'warriors',  sub:'Conf. Oeste', pct:21}, draw:3  },
+    { id:'b-dlac', status:'upcoming', startTime:'2026-03-22T00:30:00Z', statusLabel:'Hoje · 21h30 BRT · Am. Airlines',  competition:'NBA · Temporada Regular',     title:'Dallas × LA Clippers',     bettvPick:'LA Clippers', bettvConf:68, bettvReason:'Clippers 71.7% SportRadar. Dallas rebuilding — sem Luka após troca polêmica.', home:{name:'Dallas',       logo:null,        sub:'Conf. Oeste', pct:28}, away:{name:'LA Clippers',  logo:null,        sub:'Conf. Oeste', pct:68}, draw:4  },
+    { id:'b-uphi', status:'upcoming', startTime:'2026-03-22T01:30:00Z', statusLabel:'Hoje · 22h30 BRT · Delta Center',  competition:'NBA · Temporada Regular',     title:'Utah × Philadelphia',      bettvPick:'Philadelphia', bettvConf:62, bettvReason:'76ers 66.3% SportRadar. Embiid voltou de lesão e está em grande fase.', home:{name:'Utah',         logo:null,        sub:'Conf. Oeste', pct:34}, away:{name:'Philadelphia', logo:null,        sub:'Conf. Leste', pct:62}, draw:4  },
+    { id:'b-pmil', status:'upcoming', startTime:'2026-03-22T02:00:00Z', statusLabel:'Hoje · 23h BRT · Footprint Center',competition:'NBA · Temporada Regular',     title:'Phoenix × Milwaukee',      bettvPick:'Phoenix',     bettvConf:80, bettvReason:'Suns 83.1% SportRadar. Bucks sem Giannis por lesão no joelho — temporada acabada.', home:{name:'Phoenix',      logo:'suns',      sub:'Conf. Oeste', pct:81}, away:{name:'Milwaukee',   logo:null,        sub:'Conf. Leste', pct:16}, draw:3  },
+    // ── NBA 22/03 ──
+    { id:'b-dpor', status:'upcoming', startTime:'2026-03-22T21:00:00Z', statusLabel:'Amanhã · 18h BRT · Ball Arena',   competition:'NBA · Temporada Regular',     title:'Denver × Portland',        bettvPick:'Denver',      bettvConf:72, bettvReason:'Nuggets favoritos em casa. Jokic triplo-duplo machine. Portland em reconstrução.', home:{name:'Denver',       logo:'nuggets',   sub:'Conf. Oeste', pct:73}, away:{name:'Portland',    logo:null,        sub:'Conf. Oeste', pct:19}, draw:8  },
+    { id:'b-bmin', status:'upcoming', startTime:'2026-03-23T00:00:00Z', statusLabel:'Dom · 21h BRT · TD Garden',       competition:'NBA · Temporada Regular',     title:'Boston × Minnesota',       bettvPick:'Boston',      bettvConf:58, bettvReason:'Celtics 1º do Leste em casa. Timberwolves fortes mas viajando 3.000 milhas.', home:{name:'Boston',       logo:'celtics',   sub:'1º Leste',    pct:58}, away:{name:'Minnesota',   logo:null,        sub:'Conf. Oeste', pct:35}, draw:7  },
+    { id:'b-pokc', status:'upcoming', startTime:'2026-03-23T23:00:00Z', statusLabel:'Seg · 20h BRT · Wells Fargo',     competition:'NBA · Temporada Regular',     title:'Philadelphia × OKC',       bettvPick:'Philadelphia', bettvConf:55, bettvReason:'76ers em casa surpreendentes. Embiid vs SGA — duelo dos MVPs da temporada.', home:{name:'Philadelphia', logo:null,        sub:'Conf. Leste', pct:52}, away:{name:'OKC Thunder',  logo:'okc',       sub:'1º Oeste',    pct:43}, draw:5  },
   ]},
   volei: { label:'Vôlei', items:[
     // ── Superliga — Semifinais Março/Abril 2026 ──
-    { id:'v1', status:'upcoming', startTime:'2026-03-28T19:00:00-03:00', statusLabel:'28/03 · 19h · Uberlândia',  competition:'Superliga Masc. 2025/26 · Semifinal Jogo 1', title:'Sada Cruzeiro × Minas', bettvPick:'Sada Cruzeiro',bettvConf:61, bettvReason:'Sada 1º lugar — melhor defesa. Minas 2º tem elenco forte mas Sada favorito.', home:{name:'Sada Cruzeiro',logo:null,sub:'1º Superliga',pct:60}, away:{name:'Minas',logo:null,sub:'2º Superliga',pct:29}, draw:11 },
-    { id:'v2', status:'upcoming', startTime:'2026-03-28T21:00:00-03:00', statusLabel:'28/03 · 21h · São Paulo', competition:'Superliga Fem. 2025/26 · Semifinal Jogo 1',  title:'Sesc Flamengo × Praia Clube', bettvPick:'Sesc Flamengo',bettvConf:57, bettvReason:'Sesc favoritada. Praia especialista em playoffs mas Sesc mais consistente.', home:{name:'Sesc Flamengo',logo:null,sub:'1º Fem.',pct:55}, away:{name:'Praia Clube',logo:null,sub:'3º Fem.',pct:30}, draw:15 },
-    // ── Liga das Nações — Maio/Junho 2026 ──
-    { id:'v3', status:'upcoming', startTime:'2026-05-20T19:00:00-03:00', statusLabel:'20/05 · 19h · Rio de Janeiro', competition:'VNL Masculino 2026 · Semana 1', title:'Brasil × França',bettvPick:'Brasil',bettvConf:65, bettvReason:'Brasil Nº2 mundial em casa no Rio. França Nº4. Leal e Flávio superiores.', home:{name:'Brasil',logo:null,sub:'Nº2 Mundial',pct:64}, away:{name:'França',logo:null,sub:'Nº4 Mundial',pct:24}, draw:12 },
-    { id:'v4', status:'upcoming', startTime:'2026-05-22T19:00:00-03:00', statusLabel:'22/05 · 19h · Rio de Janeiro', competition:'VNL Masculino 2026 · Semana 1', title:'Brasil × Polônia',bettvPick:'Equilíbrio',bettvConf:42, bettvReason:'Brasil vs Polônia H2H 50/50 historicamente. Duelo técnico muito equilibrado.', home:{name:'Brasil',logo:null,sub:'Nº2 Mundial',pct:45}, away:{name:'Polônia',logo:null,sub:'Nº3 Mundial',pct:44}, draw:11 },
+    { id:'v-scsf', status:'upcoming', startTime:'2026-03-28T19:00:00-03:00', statusLabel:'28/03 · 19h · Uberlândia',   competition:'Superliga Masc. 2025/26 · Semifinal J.1', title:'Sada Cruzeiro × Minas', bettvPick:'Sada Cruzeiro',bettvConf:61, bettvReason:'Sada 1º lugar — melhor campanha. Minas 2º forte mas Sada favorito por retrospecto.', home:{name:'Sada Cruzeiro',logo:null,sub:'1º Superliga', pct:60},away:{name:'Minas',       logo:null,sub:'2º Superliga',pct:29}, draw:11 },
+    { id:'v-sfsf', status:'upcoming', startTime:'2026-03-28T21:00:00-03:00', statusLabel:'28/03 · 21h · São Paulo',    competition:'Superliga Fem. 2025/26 · Semifinal J.1', title:'Sesc Flamengo × Praia', bettvPick:'Sesc Flamengo',bettvConf:57, bettvReason:'Sesc favoritada. Praia especialista em playoffs mas Sesc mais consistente na fase regular.', home:{name:'Sesc Flamengo',logo:null,sub:'1ª Fem.',    pct:55},away:{name:'Praia Clube', logo:null,sub:'3ª Fem.',    pct:30}, draw:15 },
+    // ── VNL Masculino — Maio/Junho 2026 ──
+    { id:'v-bfr',  status:'upcoming', startTime:'2026-05-20T19:00:00-03:00', statusLabel:'20/05 · 19h · Rio de Janeiro',competition:'VNL Masculino 2026 · Semana 1', title:'Brasil × França',bettvPick:'Brasil',bettvConf:65, bettvReason:'Brasil Nº2 mundial em casa. França Nº4. Leal e Flávio superiores em ataque.', home:{name:'Brasil',logo:null,sub:'Nº2 Mundial',pct:64},away:{name:'França',logo:null,sub:'Nº4 Mundial',pct:24}, draw:12 },
+    { id:'v-bpol', status:'upcoming', startTime:'2026-05-22T19:00:00-03:00', statusLabel:'22/05 · 19h · Rio de Janeiro',competition:'VNL Masculino 2026 · Semana 1', title:'Brasil × Polônia',bettvPick:'Equilíbrio',bettvConf:42, bettvReason:'H2H 50/50 historicamente. Wilfredo León vs Leal — duelo técnico equilibrado.', home:{name:'Brasil',logo:null,sub:'Nº2 Mundial',pct:45},away:{name:'Polônia',logo:null,sub:'Nº3 Mundial',pct:44}, draw:11 },
   ]},
   mma: { label:'MMA / UFC', items:[
-    // ── UFC FN 271 — Seattle 28/03 (PRÓXIMO — verificado CBS Sports) ──
-    { id:'m-ufcfn271', status:'upcoming', startTime:'2026-03-28T21:00:00-07:00', statusLabel:'28/03 · 21h PT · Seattle',    competition:'UFC Fight Night 271 · Main Event', title:'Adesanya × Pyfer',         bettvPick:'Adesanya',   bettvConf:58, bettvReason:'Adesanya ex-campeão MW top 4. Pyfer #14 resiliente mas Izzy tem alcance e técnica superiores.', home:{name:'I. Adesanya', logo:null,sub:'24-5 · Nº4 MW',   pct:55}, away:{name:'J. Pyfer',   logo:null,sub:'15-3 · Nº14 MW',pct:35}, draw:10 },
-    // ── UFC FN 272 — Las Vegas 04/04 (verificado Sherdog) ──
-    { id:'m-ufcfn272', status:'upcoming', startTime:'2026-04-04T20:00:00-07:00', statusLabel:'04/04 · 20h PT · Las Vegas',  competition:'UFC Fight Night 272 · Main Event', title:'Moicano × Duncan',          bettvPick:'Moicano',    bettvConf:60, bettvReason:'Moicano Nº11 leve mais experiente. Duncan surpresa da temporada mas nível acima contra Renato.', home:{name:'R. Moicano', logo:null,sub:'20-7 · Nº11 LW',   pct:58}, away:{name:'C. Duncan',  logo:null,sub:'15-2 · LW',      pct:30}, draw:12 },
-    // ── UFC 327 — Miami 11/04 (verificado CBS Sports) ──
-    { id:'m-ufc327',   status:'upcoming', startTime:'2026-04-11T21:00:00-04:00', statusLabel:'11/04 · 21h ET · Miami',     competition:'UFC 327 · Main Event',             title:'Prochazka × Ulberg',        bettvPick:'Prochazka',  bettvConf:55, bettvReason:'Prochazka ex-campeão LHW mais experiente. Ulberg ascendente mas primeiro titulo shot.', home:{name:'J. Prochazka',logo:null,sub:'32-5 · Ex-camp LHW',pct:54},away:{name:'C. Ulberg', logo:null,sub:'14-1 · Nº3 LHW',pct:36}, draw:10 },
-    // ── UFC FN 273 — 18/04 (verificado Sherdog) ──
-    { id:'m-ufcfn273', status:'upcoming', startTime:'2026-04-18T20:00:00-07:00', statusLabel:'18/04 · 20h PT · Las Vegas',  competition:'UFC Fight Night 273 · Main Event', title:'Burns × Malott',            bettvPick:'Burns',       bettvConf:57, bettvReason:'Gilbert Burns veterano do WW. Malott estreia no main event — Burns mais completo.', home:{name:'G. Burns',   logo:null,sub:'Top 10 WW',        pct:56}, away:{name:'M. Malott', logo:null,sub:'WW',               pct:33}, draw:11 },
-    // ── UFC Pantoja × Royval II — São Paulo Maio ──
-    { id:'m-pantoja',  status:'upcoming', startTime:'2026-05-09T20:00:00-03:00', statusLabel:'09/05 · 20h · São Paulo',    competition:'UFC FN Brasil · Main Event',       title:'Pantoja × Royval II',       bettvPick:'Pantoja',     bettvConf:67, bettvReason:'Pantoja campeão venceu Royval em 2023. Defende cinturão em casa no Brasil.', home:{name:'A. Pantoja', logo:null,sub:'Camp. Mosca',      pct:66}, away:{name:'B. Royval',  logo:null,sub:'Top 5 Mosca',     pct:23}, draw:11 },
+    // ── UFC FN 271 — Seattle 28/03 (CBS Sports confirmado) ──
+    { id:'m-fn271', status:'upcoming', startTime:'2026-03-29T00:00:00Z', statusLabel:'28/03 · 21h PT · Seattle',        competition:'UFC Fight Night 271 · Main Event', title:'Adesanya × Pyfer',    bettvPick:'Adesanya',bettvConf:58, bettvReason:'Adesanya ex-campeão MW Nº4 com 24-5. Pyfer Nº14 com 15-3 — falta nível de elite.', home:{name:'I. Adesanya',logo:null,sub:'Nº4 MW · 24-5',pct:55},away:{name:'J. Pyfer',  logo:null,sub:'Nº14 MW · 15-3',pct:35}, draw:10 },
+    // ── UFC FN 272 — Las Vegas 04/04 (Sherdog confirmado) ──
+    { id:'m-fn272', status:'upcoming', startTime:'2026-04-05T03:00:00Z', statusLabel:'04/04 · 20h PT · Las Vegas',       competition:'UFC Fight Night 272 · Main Event', title:'Moicano × Duncan',    bettvPick:'Moicano',bettvConf:60, bettvReason:'Moicano Nº11 leve mais experiente com 20-7. Duncan 15-2 surpreendente mas nível menor.', home:{name:'R. Moicano',logo:null,sub:'Nº11 LW · 20-7',pct:58},away:{name:'C. Duncan', logo:null,sub:'LW · 15-2',     pct:30}, draw:12 },
+    // ── UFC 327 — Miami 11/04 (CBS Sports) ──
+    { id:'m-327',   status:'upcoming', startTime:'2026-04-12T01:00:00Z', statusLabel:'11/04 · 21h ET · Miami',           competition:'UFC 327 · Main Event',             title:'Prochazka × Ulberg', bettvPick:'Prochazka',bettvConf:55, bettvReason:'Prochazka ex-campeão LHW 32-5. Ulberg 14-1 ascendente mas primeiro title shot.', home:{name:'J. Prochazka',logo:null,sub:'32-5 · Ex-camp LHW',pct:54},away:{name:'C. Ulberg',logo:null,sub:'14-1 · Nº3 LHW',  pct:36}, draw:10 },
+    // ── UFC FN 273 — 18/04 (Sherdog) ──
+    { id:'m-fn273', status:'upcoming', startTime:'2026-04-19T03:00:00Z', statusLabel:'18/04 · 20h PT · Las Vegas',       competition:'UFC Fight Night 273 · Main Event', title:'Burns × Malott',     bettvPick:'Burns',bettvConf:57, bettvReason:'Gilbert Burns veterano top 10 WW. Malott em grande momento mas Burns mais completo.', home:{name:'G. Burns',  logo:null,sub:'Top 10 WW',       pct:56},away:{name:'M. Malott',logo:null,sub:'WW contender',     pct:33}, draw:11 },
+    // ── UFC Brasil — São Paulo Maio ──
+    { id:'m-bra',   status:'upcoming', startTime:'2026-05-10T00:00:00Z', statusLabel:'09/05 · 20h BRT · São Paulo',      competition:'UFC Fight Night Brasil · Main Event', title:'Pantoja × Royval II',bettvPick:'Pantoja',bettvConf:67, bettvReason:'Alexandre Pantoja campeão peso-mosca defende cinturão em casa. Venceu Royval em 2023.', home:{name:'A. Pantoja',logo:null,sub:'Camp. Mosca',       pct:66},away:{name:'B. Royval',logo:null,sub:'Top 5 Mosca',      pct:23}, draw:11 },
   ]},
   tenis: { label:'Tênis', items:[
-    // ── Miami Open QF — AO VIVO AGORA 21/03 ──
-    { id:'t-sin',  status:'live',     startTime:'2026-03-21T18:00:00-05:00', statusLabel:'AO VIVO · Miami Open · QF',  competition:'ATP Miami Open 2026 · Quartas',    title:'Sinner × Tsitsipas',       bettvPick:'Sinner',      bettvConf:74, bettvReason:'Sinner venceu IW sem perder set. Nº2 dominante em 2026. Tsitsipas outsider.', home:{name:'J. Sinner',   logo:'sinner',    sub:'Nº2 · IW Campeão',pct:73}, away:{name:'S. Tsitsipas',logo:'tsitsipas',sub:'Nº7 ATP',     pct:19}, draw:8 },
-    { id:'t-alc',  status:'live',     startTime:'2026-03-21T20:00:00-05:00', statusLabel:'AO VIVO · Miami Open · QF',  competition:'ATP Miami Open 2026 · Quartas',    title:'Alcaraz × Fritz',          bettvPick:'Alcaraz',     bettvConf:66, bettvReason:'Alcaraz venceu AO 2026. Chegou sem drop sets em Miami. Fritz resiliente outsider.', home:{name:'C. Alcaraz',  logo:'alcaraz',   sub:'Nº1 ATP',         pct:65}, away:{name:'T. Fritz',    logo:'fritz',    sub:'Nº5 ATP',     pct:22}, draw:13 },
-    { id:'t-sab',  status:'live',     startTime:'2026-03-21T16:00:00-05:00', statusLabel:'AO VIVO · Miami Open · WTA QF',competition:'WTA Miami Open 2026 · Quartas',  title:'Sabalenka × Rybakina',     bettvPick:'Sabalenka',   bettvConf:60, bettvReason:'Sabalenka Nº1 WTA. Campeã Miami 2025. H2H favorável 4-2 vs Rybakina.', home:{name:'A. Sabalenka',logo:'sabalenka', sub:'Nº1 WTA',         pct:59}, away:{name:'E. Rybakina', logo:null,       sub:'Nº4 WTA',     pct:29}, draw:12 },
-    // ── Miami Open SF 26-27/03 ──
-    { id:'t-sfwta',status:'upcoming', startTime:'2026-03-26T14:00:00-05:00', statusLabel:'26/03 · 15h · WTA Semifinal', competition:'WTA Miami Open 2026 · Semifinal',  title:'Sabalenka × Gauff',        bettvPick:'Sabalenka',   bettvConf:58, bettvReason:'Sabalenka Nº1 campeã Miami. Gauff Nº3 forte mas H2H desfavorável (2V-5D).', home:{name:'A. Sabalenka',logo:'sabalenka', sub:'Nº1 WTA',         pct:57}, away:{name:'C. Gauff',    logo:'gauff',    sub:'Nº3 WTA',     pct:32}, draw:11 },
-    { id:'t-sfatp',status:'upcoming', startTime:'2026-03-27T14:00:00-05:00', statusLabel:'27/03 · 15h · ATP Semifinal', competition:'ATP Miami Open 2026 · Semifinal',  title:'Sinner × Alcaraz SF',      bettvPick:'Sinner',      bettvConf:47, bettvReason:'H2H histórico 6-6. Sinner tem 2 finais em Miami. Alcaraz venceu IW. Equilíbrio total.', home:{name:'J. Sinner',   logo:'sinner',    sub:'Nº2 ATP',         pct:44}, away:{name:'C. Alcaraz',  logo:'alcaraz',  sub:'Nº1 ATP',     pct:38}, draw:18 },
-    { id:'t-finatp',status:'upcoming',startTime:'2026-03-29T14:00:00-05:00', statusLabel:'29/03 · 15h · Final Miami',  competition:'ATP Miami Open 2026 · Final',       title:'Final Miami Open ATP',     bettvPick:'Alcaraz',     bettvConf:43, bettvReason:'Alcaraz 2 títulos em 2026 (AO+IW). Sunshine Double na mira. Sinner pode surpreender.', home:{name:'C. Alcaraz',  logo:'alcaraz',   sub:'Nº1 ATP',         pct:48}, away:{name:'J. Sinner',   logo:'sinner',   sub:'Nº2 ATP',     pct:38}, draw:14 },
-    // ── Roland Garros Maio ──
-    { id:'t-rg',   status:'upcoming', startTime:'2026-05-25T10:00:00+02:00', statusLabel:'25/05 · Paris · Roland Garros',competition:'Roland Garros 2026',              title:'Roland Garros 2026',       bettvPick:'Alcaraz',     bettvConf:41, bettvReason:'Alcaraz bicampeão RG (2023-24). Saibro é sua superfície. Sinner e Zverev ameaças.', home:{name:'C. Alcaraz',  logo:'alcaraz',   sub:'Bicampeão RG',    pct:38}, away:{name:'J. Sinner',   logo:'sinner',   sub:'Finalista 2025',pct:22}, draw:40 },
+    // ── Miami Open hoje 21/03 — R2/R3 em andamento ──
+    // Sinner×Dzumhur R2 hoje (13h ET = 14h BRT)
+    { id:'t-sdzu', status:'upcoming', startTime:'2026-03-21T17:00:00Z', statusLabel:'Hoje · 14h BRT · Miami Open R2',  competition:'ATP Miami Open 2026 · R2',       title:'Sinner × Dzumhur',         bettvPick:'Sinner',    bettvConf:88, bettvReason:'Sinner campeão Indian Wells 2026 s/ perder sets. Dzumhur Nº76 taticamente limitado.', home:{name:'J. Sinner',   logo:'sinner',    sub:'Nº2 · IW Campeão',pct:88}, away:{name:'D. Dzumhur',  logo:null,       sub:'Nº76 ATP',    pct:8},  draw:4  },
+    // Alcaraz×Korda R3 hoje (noite)
+    { id:'t-akrd', status:'upcoming', startTime:'2026-03-22T00:00:00Z', statusLabel:'Hoje · 21h BRT · Miami Open R3',  competition:'ATP Miami Open 2026 · R3',       title:'Alcaraz × Korda',           bettvPick:'Alcaraz',   bettvConf:78, bettvReason:'Alcaraz Nº1 invicto em 2026 (17-1). Korda perigoso em casa mas nível abaixo.', home:{name:'C. Alcaraz',  logo:'alcaraz',   sub:'Nº1 ATP · 17-1',  pct:78}, away:{name:'S. Korda',    logo:null,       sub:'Nº24 ATP',    pct:15}, draw:7  },
+    // ── Miami Open R16 — 23-24/03 ──
+    { id:'t-sin16', status:'upcoming', startTime:'2026-03-23T17:00:00Z', statusLabel:'23/03 · 14h BRT · Miami Open R16',competition:'ATP Miami Open 2026 · R16',      title:'Sinner × oponente R16',     bettvPick:'Sinner',    bettvConf:78, bettvReason:'Sinner favorito absoluto até as quartas. Defende título Miami 2024.', home:{name:'J. Sinner',   logo:'sinner',    sub:'Nº2 ATP · Campeão 2024',pct:78},away:{name:'Oponente R16',logo:null,       sub:'ATP',         pct:15}, draw:7  },
+    // ── Miami Open QF — 25-26/03 ──
+    { id:'t-mqf',   status:'upcoming', startTime:'2026-03-25T17:00:00Z', statusLabel:'25/03 · 14h BRT · Miami QF',      competition:'ATP Miami Open 2026 · Quartas', title:'QF Miami Open ATP',         bettvPick:'Sinner',    bettvConf:52, bettvReason:'Sinner favorito até as quartas. Alcaraz pode cruzar no mesmo lado do chaveamento.', home:{name:'J. Sinner',   logo:'sinner',    sub:'Nº2 ATP · Fav.',  pct:48}, away:{name:'C. Alcaraz',  logo:'alcaraz',  sub:'Nº1 ATP',     pct:38}, draw:14 },
+    // ── Miami Open SF — 27-28/03 ──
+    { id:'t-msf',   status:'upcoming', startTime:'2026-03-27T17:00:00Z', statusLabel:'27/03 · 14h BRT · Miami SF ATP',  competition:'ATP Miami Open 2026 · Semifinal',title:'Sinner × Alcaraz SF',       bettvPick:'Sinner',    bettvConf:47, bettvReason:'H2H histórico 6-6. Sinner campeão Miami 2024. Alcaraz venceu IW. Equilíbrio total.', home:{name:'J. Sinner',   logo:'sinner',    sub:'Nº2 ATP',         pct:44}, away:{name:'C. Alcaraz',  logo:'alcaraz',  sub:'Nº1 ATP',     pct:38}, draw:18 },
+    // ── Miami Open Final — 29/03 ──
+    { id:'t-mfin',  status:'upcoming', startTime:'2026-03-29T17:00:00Z', statusLabel:'29/03 · 14h BRT · Final Miami',   competition:'ATP Miami Open 2026 · Final',    title:'Final Miami Open ATP 2026', bettvPick:'Alcaraz',   bettvConf:43, bettvReason:'Alcaraz busca Sunshine Double (IW+Miami). Sinner pode vencer — Miami é sua praia.', home:{name:'C. Alcaraz',  logo:'alcaraz',   sub:'Nº1 ATP',         pct:48}, away:{name:'J. Sinner',   logo:'sinner',   sub:'Nº2 ATP',     pct:38}, draw:14 },
+    // ── Roland Garros ──
+    { id:'t-rg',    status:'upcoming', startTime:'2026-05-25T09:00:00Z', statusLabel:'25/05 · Paris · Roland Garros',   competition:'Roland Garros 2026',             title:'Roland Garros 2026',        bettvPick:'Alcaraz',   bettvConf:41, bettvReason:'Alcaraz bicampeão RG 2023-24. Saibro é sua superfície. Sinner e Zverev ameaças.', home:{name:'C. Alcaraz',  logo:'alcaraz',   sub:'Bicampeão RG',    pct:38}, away:{name:'J. Sinner',   logo:'sinner',   sub:'Finalista 2025',pct:22}, draw:40 },
   ]},
   esports: { label:'E-sports', items:[
-    // ── CBLOL 2026 Etapa 1 — começa 28/03 (confirmado Riot Games) ──
-    { id:'e1', status:'upcoming', startTime:'2026-03-28T13:00:00-03:00', statusLabel:'28/03 · Riot Arena SP · 13h', competition:'CBLOL 2026 · Etapa 1 · Rodada 1', title:'LOUD × paiN Gaming',  bettvPick:'LOUD',   bettvConf:66, bettvReason:'LOUD campeã Copa CBLOL 2026. Bull e RedBert dominantes. paiN sem título desde 2023.', home:{name:'LOUD',        logo:'loud',sub:'Campeã Copa 2026',pct:62}, away:{name:'paiN Gaming', logo:null,sub:'4º Copa',    pct:24}, draw:14 },
-    { id:'e2', status:'upcoming', startTime:'2026-03-28T15:00:00-03:00', statusLabel:'28/03 · Riot Arena SP · 15h', competition:'CBLOL 2026 · Etapa 1 · Rodada 1', title:'FURIA × RED Canids', bettvPick:'FURIA',  bettvConf:54, bettvReason:'FURIA bootcampou Coreia. RED Canids inconstante mas Grevthar diferencial.', home:{name:'FURIA',       logo:'furia',sub:'Americas Cup', pct:52}, away:{name:'RED Canids', logo:null,sub:'5º Copa',    pct:32}, draw:16 },
-    { id:'e3', status:'upcoming', startTime:'2026-04-04T13:00:00-03:00', statusLabel:'04/04 · Riot Arena SP · 13h', competition:'CBLOL 2026 · Etapa 1 · Rodada 2', title:'LOUD × FURIA',      bettvPick:'LOUD',   bettvConf:55, bettvReason:'LOUD lidera H2H histórico vs FURIA (12V-8D). FURIA motivada pós-bootcamp Korea.', home:{name:'LOUD',        logo:'loud',sub:'Campeã Copa',    pct:53}, away:{name:'FURIA',       logo:'furia',sub:'Americas Cup',pct:35}, draw:12 },
-    // ── LCK Playoffs Coreia — Abril (verificado lolesports) ──
-    { id:'e4', status:'upcoming', startTime:'2026-04-05T17:00:00+09:00', statusLabel:'05/04 · 05h BRT · LCK · Seoul', competition:'LCK Spring 2026 · Playoffs SF',   title:'T1 × Gen.G',         bettvPick:'T1',     bettvConf:58, bettvReason:'T1 e Faker históricos nos playoffs da LCK. Gen.G com Chovy mas T1 tem mais experiência em finais.', home:{name:'T1',          logo:'t1',  sub:'1º LCK',      pct:56}, away:{name:'Gen.G',        logo:null,sub:'2º LCK',     pct:32}, draw:12 },
-    // ── CS2 Major 2026 — confirmado pela ESL/PGL ──
-    { id:'e5', status:'upcoming', startTime:'2026-05-01T14:00:00+02:00', statusLabel:'01/05 · 09h BRT · CS2 Major', competition:'CS2 Major 2026 · Quartas',        title:'NaVi × FaZe Clan',   bettvPick:'NaVi',   bettvConf:53, bettvReason:'NaVi com s1mple ao melhor nível. FaZe forte mas NaVi tem mais títulos em Majors (3).', home:{name:'Natus Vincere',logo:null,sub:'Top 5 CS2',   pct:52}, away:{name:'FaZe Clan',    logo:null,sub:'Top 5 CS2',  pct:35}, draw:13 },
+    // ── CBLOL 2026 Etapa 1 — confirmado pela Riot Brasil ──
+    { id:'e-loud1', status:'upcoming', startTime:'2026-03-28T16:00:00Z', statusLabel:'28/03 · Riot Arena SP · 13h',    competition:'CBLOL 2026 · Etapa 1 · Rodada 1', title:'LOUD × paiN Gaming', bettvPick:'LOUD',  bettvConf:66, bettvReason:'LOUD campeã Copa CBLOL 2026. Bull e RedBert dominantes. paiN sem título desde 2023.', home:{name:'LOUD',        logo:'loud', sub:'Campeã Copa 2026', pct:62},away:{name:'paiN Gaming', logo:null,sub:'4º Copa',    pct:24}, draw:14 },
+    { id:'e-fur1',  status:'upcoming', startTime:'2026-03-28T18:00:00Z', statusLabel:'28/03 · Riot Arena SP · 15h',    competition:'CBLOL 2026 · Etapa 1 · Rodada 1', title:'FURIA × RED Canids',bettvPick:'FURIA', bettvConf:54, bettvReason:'FURIA bootcampou na Coreia pré-temporada. RED Canids inconstante na Copa.', home:{name:'FURIA',       logo:'furia',sub:'Americas Cup',   pct:52},away:{name:'RED Canids', logo:null,sub:'5º Copa',    pct:32}, draw:16 },
+    { id:'e-loud2', status:'upcoming', startTime:'2026-04-04T16:00:00Z', statusLabel:'04/04 · Riot Arena SP · 13h',    competition:'CBLOL 2026 · Etapa 1 · Rodada 2', title:'LOUD × FURIA',     bettvPick:'LOUD',  bettvConf:55, bettvReason:'LOUD lidera H2H histórico vs FURIA (12V-8D). FURIA motivada pós-bootcamp Korea.', home:{name:'LOUD',        logo:'loud', sub:'Campeã Copa',     pct:53},away:{name:'FURIA',       logo:'furia',sub:'Americas',   pct:35}, draw:12 },
+    // ── LCK Spring 2026 Playoffs — confirmado lolesports ──
+    { id:'e-t1gg',  status:'upcoming', startTime:'2026-04-05T08:00:00Z', statusLabel:'05/04 · 05h BRT · LCK · Seoul',  competition:'LCK Spring 2026 · Playoffs SF',   title:'T1 × Gen.G',        bettvPick:'T1',    bettvConf:58, bettvReason:'T1 e Faker históricos em playoffs LCK. Gen.G com Chovy mas T1 tem mais experiência decisiva.', home:{name:'T1',          logo:'t1', sub:'1º LCK',          pct:56},away:{name:'Gen.G',       logo:null,sub:'2º LCK',     pct:32}, draw:12 },
+    // ── CS2 Major 2026 ──
+    { id:'e-cs2',   status:'upcoming', startTime:'2026-05-01T12:00:00Z', statusLabel:'01/05 · 09h BRT · CS2 Major',    competition:'CS2 Major 2026 · Quartas',        title:'NaVi × FaZe Clan',  bettvPick:'NaVi',  bettvConf:53, bettvReason:'s1mple ao melhor nível em 2026. FaZe forte mas NaVi tem mais títulos em Majors (3).', home:{name:'Natus Vincere',logo:null,sub:'Top 5 CS2',       pct:52},away:{name:'FaZe Clan',   logo:null,sub:'Top 5 CS2',  pct:35}, draw:13 },
   ]},
 }
-
-const CRYPTO_DATA = [
-  {id:'btc', symbol:'BTC', name:'Bitcoin',         price:87420,  change24h:+2.3, bettvPick:'ALTA',   bettvConf:67, bettvReason:'Dominância 54%. ETFs acumulando. Resistência $90k próxima.', logo:'https://cryptologos.cc/logos/bitcoin-btc-logo.png'},
-  {id:'eth', symbol:'ETH', name:'Ethereum',         price:2015,   change24h:-0.8, bettvPick:'NEUTRO', bettvConf:45, bettvReason:'Luta com resistência $2100. Dencun ativo mas demanda fraca.', logo:'https://cryptologos.cc/logos/ethereum-eth-logo.png'},
-  {id:'sol', symbol:'SOL', name:'Solana',           price:142.5,  change24h:+4.1, bettvPick:'ALTA',   bettvConf:62, bettvReason:'Ganha market share em DEX. Volume Raydium recorde semanal.', logo:'https://cryptologos.cc/logos/solana-sol-logo.png'},
-  {id:'bnb', symbol:'BNB', name:'BNB',              price:598,    change24h:+1.2, bettvPick:'ALTA',   bettvConf:55, bettvReason:'BNB Chain TVL cresce 8% na semana. Queima trimestral positiva.', logo:'https://cryptologos.cc/logos/bnb-bnb-logo.png'},
-  {id:'xrp', symbol:'XRP', name:'XRP',              price:0.524,  change24h:-1.4, bettvPick:'QUEDA',  bettvConf:52, bettvReason:'Perde momentum após alta de 40% em fevereiro. Correção provável.', logo:'https://cryptologos.cc/logos/xrp-xrp-logo.png'},
-  {id:'usdc',symbol:'USDC',name:'USD Coin',         price:1.00,   change24h:0.0,  bettvPick:'NEUTRO', bettvConf:99, bettvReason:'Stablecoin atrelada ao dólar. Sem variação esperada.', logo:'https://cryptologos.cc/logos/usd-coin-usdc-logo.png'},
-  {id:'ada', symbol:'ADA', name:'Cardano',          price:0.387,  change24h:+1.8, bettvPick:'ALTA',   bettvConf:48, bettvReason:'Upgrade Chang 2 ativado. Staking crescendo, preço lateral.', logo:'https://cryptologos.cc/logos/cardano-ada-logo.png'},
-  {id:'avax',symbol:'AVAX',name:'Avalanche',        price:24.8,   change24h:+2.9, bettvPick:'ALTA',   bettvConf:57, bettvReason:'Subnet Teleporter ganha adoção. TVL DeFi em recuperação.', logo:'https://cryptologos.cc/logos/avalanche-avax-logo.png'},
-  {id:'doge',symbol:'DOGE',name:'Dogecoin',         price:0.178,  change24h:+5.2, bettvPick:'ALTA',   bettvConf:43, bettvReason:'Alta especulativa com buzz Musk/Tesla. Sem fundamento técnico.', logo:'https://cryptologos.cc/logos/dogecoin-doge-logo.png'},
-  {id:'dot', symbol:'DOT', name:'Polkadot',         price:5.82,   change24h:-0.5, bettvPick:'NEUTRO', bettvConf:44, bettvReason:'Polkadot 2.0 em implementação. Consolidação lateral esperada.', logo:'https://cryptologos.cc/logos/polkadot-new-dot-logo.png'},
-  {id:'link',symbol:'LINK',name:'Chainlink',        price:14.2,   change24h:+3.1, bettvPick:'ALTA',   bettvConf:59, bettvReason:'CCIP adotado por grandes bancos. Oráculos DeFi em alta demanda.', logo:'https://cryptologos.cc/logos/chainlink-link-logo.png'},
-  {id:'matic',symbol:'POL',name:'Polygon',          price:0.392,  change24h:-2.1, bettvPick:'QUEDA',  bettvConf:53, bettvReason:'Migração POL completa mas preço sob pressão. L2 perdendo para ARB.', logo:'https://cryptologos.cc/logos/polygon-matic-logo.png'},
-  {id:'uni', symbol:'UNI', name:'Uniswap',          price:8.74,   change24h:+1.5, bettvPick:'ALTA',   bettvConf:50, bettvReason:'Uniswap v4 no ar. Volume DEX recorde. Proposta de taxa de protocolo.', logo:'https://cryptologos.cc/logos/uniswap-uni-logo.png'},
-  {id:'near',symbol:'NEAR',name:'NEAR Protocol',    price:3.21,   change24h:+6.8, bettvPick:'ALTA',   bettvConf:61, bettvReason:'AI integrations ganhando tração. Sharding fase 3 entregue.', logo:'https://cryptologos.cc/logos/near-protocol-near-logo.png'},
-  {id:'arb', symbol:'ARB', name:'Arbitrum',         price:0.481,  change24h:+2.4, bettvPick:'ALTA',   bettvConf:55, bettvReason:'Lidera L2 em TVL ($18B). Stylus VM atrai devs de C++/Rust.', logo:'https://cryptologos.cc/logos/arbitrum-arb-logo.png'},
-  {id:'op',  symbol:'OP',  name:'Optimism',         price:1.02,   change24h:+1.8, bettvPick:'ALTA',   bettvConf:51, bettvReason:'Superchain crescendo. Coinbase Base usa OP Stack. TVL em expansão.', logo:'https://cryptologos.cc/logos/optimism-ethereum-op-logo.png'},
-  {id:'sui', symbol:'SUI', name:'Sui',              price:2.84,   change24h:+7.3, bettvPick:'ALTA',   bettvConf:65, bettvReason:'Maior ganhador da semana. TVL DeFi triplica em 30 dias.', logo:'https://cryptologos.cc/logos/sui-sui-logo.png'},
-  {id:'ton', symbol:'TON', name:'Toncoin',          price:3.74,   change24h:+2.1, bettvPick:'ALTA',   bettvConf:60, bettvReason:'Integração Telegram 900M usuários. Mini-apps em explosão.', logo:'https://cryptologos.cc/logos/toncoin-ton-logo.png'},
-  {id:'apt', symbol:'APT', name:'Aptos',            price:5.67,   change24h:+3.2, bettvPick:'ALTA',   bettvConf:54, bettvReason:'DeFi TVL em máxima histórica. Integração Google Cloud ativa.', logo:'https://cryptologos.cc/logos/aptos-apt-logo.png'},
-  {id:'tia', symbol:'TIA', name:'Celestia',         price:3.87,   change24h:+5.1, bettvPick:'ALTA',   bettvConf:58, bettvReason:'Modular blockchain em alta adoção. Rollups migrando para DA layer.', logo:'https://cryptologos.cc/logos/celestia-tia-logo.png'},
-  {id:'sei', symbol:'SEI', name:'Sei',              price:0.247,  change24h:+8.2, bettvPick:'ALTA',   bettvConf:62, bettvReason:'SEI v2 paralelização. L1 mais rápido para trading on-chain.', logo:'https://cryptologos.cc/logos/sei-sei-logo.png'},
-  {id:'inj', symbol:'INJ', name:'Injective',        price:18.4,   change24h:+4.5, bettvPick:'ALTA',   bettvConf:59, bettvReason:'Lidera DeFi em trading perpétuo. Nova integração com Cosmos.', logo:'https://cryptologos.cc/logos/injective-inj-logo.png'},
-  {id:'rndr',symbol:'RNDR',name:'Render',           price:4.92,   change24h:+5.7, bettvPick:'ALTA',   bettvConf:60, bettvReason:'GPU computing para IA em boom. Parceria Nvidia reforça tese.', logo:'https://cryptologos.cc/logos/render-token-rndr-logo.png'},
-  {id:'fet', symbol:'FET', name:'Fetch.ai',         price:1.13,   change24h:+9.1, bettvPick:'ALTA',   bettvConf:63, bettvReason:'Narrativa AI+crypto forte. ASI Alliance valoriza ecossistema.', logo:'https://cryptologos.cc/logos/fetch-ai-fet-logo.png'},
-  {id:'jup', symbol:'JUP', name:'Jupiter',          price:0.582,  change24h:+4.3, bettvPick:'ALTA',   bettvConf:57, bettvReason:'Maior DEX aggregator da Solana. Volume $1B/dia consistente.', logo:'https://cryptologos.cc/logos/jupiter-jup-logo.png'},
-  {id:'aave',symbol:'AAVE',name:'Aave',             price:162,    change24h:+2.5, bettvPick:'ALTA',   bettvConf:58, bettvReason:'$15B TVL líder DeFi lending. GHO stablecoin em crescimento.', logo:'https://cryptologos.cc/logos/aave-aave-logo.png'},
-  {id:'mkr', symbol:'MKR', name:'MakerDAO',         price:1240,   change24h:+1.9, bettvPick:'ALTA',   bettvConf:52, bettvReason:'DAI $8B circulação. Sky Protocol expansão ativa.', logo:'https://cryptologos.cc/logos/maker-mkr-logo.png'},
-  {id:'stx', symbol:'STX', name:'Stacks',           price:0.847,  change24h:+3.6, bettvPick:'ALTA',   bettvConf:56, bettvReason:'Bitcoin DeFi ganha tração. sBTC lançado como garantia DeFi.', logo:'https://cryptologos.cc/logos/stacks-stx-logo.png'},
-  {id:'kas', symbol:'KAS', name:'Kaspa',            price:0.082,  change24h:+4.2, bettvPick:'ALTA',   bettvConf:55, bettvReason:'PoW mais rápido do mundo. Mineradores migrando do ETC.', logo:'https://cryptologos.cc/logos/kaspa-kas-logo.png'},
-  {id:'blur',symbol:'BLUR',name:'Blur',             price:0.148,  change24h:+6.1, bettvPick:'ALTA',   bettvConf:49, bettvReason:'Marketplace NFT recupera volume. Season 3 airdrop no horizonte.', logo:'https://cryptologos.cc/logos/blur-blur-logo.png'},
-  {id:'wld', symbol:'WLD', name:'Worldcoin',        price:1.42,   change24h:-3.1, bettvPick:'QUEDA',  bettvConf:54, bettvReason:'Preocupações regulatórias na Europa. Pressão de venda insiders.', logo:'https://cryptologos.cc/logos/worldcoin-wld-logo.png'},
-  {id:'atom',symbol:'ATOM',name:'Cosmos',           price:4.12,   change24h:-1.0, bettvPick:'NEUTRO', bettvConf:42, bettvReason:'IBC crescendo mas ATOM inflacionário. Sem catalisador curto prazo.', logo:'https://cryptologos.cc/logos/cosmos-atom-logo.png'},
-  {id:'ltc', symbol:'LTC', name:'Litecoin',         price:76.3,   change24h:+0.9, bettvPick:'NEUTRO', bettvConf:41, bettvReason:'Segue BTC como prata digital. Halving 2027 no radar.', logo:'https://cryptologos.cc/logos/litecoin-ltc-logo.png'},
-  {id:'fil', symbol:'FIL', name:'Filecoin',         price:3.15,   change24h:-1.2, bettvPick:'NEUTRO', bettvConf:43, bettvReason:'Armazenamento descentralizado sem novo catalisador. Lateral.', logo:'https://cryptologos.cc/logos/filecoin-fil-logo.png'},
-  {id:'grt', symbol:'GRT', name:'The Graph',        price:0.134,  change24h:+3.4, bettvPick:'ALTA',   bettvConf:52, bettvReason:'Infraestrutura de indexação web3 crescendo com DeFi bull.', logo:'https://cryptologos.cc/logos/the-graph-grt-logo.png'},
-  {id:'icp', symbol:'ICP', name:'Internet Computer',price:8.24,   change24h:+2.0, bettvPick:'ALTA',   bettvConf:48, bettvReason:'Computação on-chain inovadora. Novos dApps lançados este mês.', logo:'https://cryptologos.cc/logos/internet-computer-icp-logo.png'},
-  {id:'hbar',symbol:'HBAR',name:'Hedera',           price:0.063,  change24h:+1.4, bettvPick:'ALTA',   bettvConf:47, bettvReason:'Governança enterprise IBM/Google. Tokenização RWA em alta.', logo:'https://cryptologos.cc/logos/hedera-hbar-logo.png'},
-  {id:'egld',symbol:'EGLD',name:'MultiversX',       price:27.4,   change24h:+2.8, bettvPick:'ALTA',   bettvConf:50, bettvReason:'Ecossistema DeFi crescendo. xPortal app com 2M usuários.', logo:'https://cryptologos.cc/logos/elrond-egld-logo.png'},
-  {id:'algo',symbol:'ALGO',name:'Algorand',         price:0.162,  change24h:-0.8, bettvPick:'NEUTRO', bettvConf:39, bettvReason:'Sem catalisador. Parcerias governamentais não movem preço.', logo:'https://cryptologos.cc/logos/algorand-algo-logo.png'},
-  {id:'sand',symbol:'SAND',name:'The Sandbox',      price:0.287,  change24h:+1.1, bettvPick:'NEUTRO', bettvConf:38, bettvReason:'Metaverse perdeu hype. Nova parceria gaming aquece levemente.', logo:'https://cryptologos.cc/logos/the-sandbox-sand-logo.png'},
-  {id:'xlm', symbol:'XLM', name:'Stellar',          price:0.094,  change24h:+1.7, bettvPick:'NEUTRO', bettvConf:42, bettvReason:'Pagamentos internacionais estáveis. Sem catalisador de curto prazo.', logo:'https://cryptologos.cc/logos/stellar-xlm-logo.png'},
-  {id:'crv', symbol:'CRV', name:'Curve',            price:0.342,  change24h:-0.7, bettvPick:'NEUTRO', bettvConf:44, bettvReason:'TVL estável $2.1B. Problemas de governança afastam especuladores.', logo:'https://cryptologos.cc/logos/curve-dao-token-crv-logo.png'},
-  {id:'w',   symbol:'W',   name:'Wormhole',         price:0.192,  change24h:+3.8, bettvPick:'ALTA',   bettvConf:51, bettvReason:'Bridge: $50B+ volume acumulado. Adoção cross-chain em alta.', logo:'https://cryptologos.cc/logos/wormhole-w-logo.png'},
-  {id:'zk',  symbol:'ZK',  name:'ZKsync',           price:0.094,  change24h:-1.5, bettvPick:'NEUTRO', bettvConf:45, bettvReason:'L2 promissor mas concorrência dura com Starknet e Linea.', logo:'https://cryptologos.cc/logos/zksync-zk-logo.png'},
-  {id:'bch', symbol:'BCH', name:'Bitcoin Cash',     price:336,    change24h:+1.4, bettvPick:'ALTA',   bettvConf:48, bettvReason:'Segue BTC com delay. Momentum pós-halving BTC ainda presente.', logo:'https://cryptologos.cc/logos/bitcoin-cash-bch-logo.png'},
-  {id:'etc', symbol:'ETC', name:'Ethereum Classic', price:18.6,   change24h:-0.3, bettvPick:'NEUTRO', bettvConf:38, bettvReason:'Estável. Sem novidades no ecossistema. Movimentos seguem ETH.', logo:'https://cryptologos.cc/logos/ethereum-classic-etc-logo.png'},
-  {id:'pyth',symbol:'PYTH',name:'Pyth Network',     price:0.312,  change24h:+2.7, bettvPick:'ALTA',   bettvConf:53, bettvReason:'Oráculo líder em Solana. 200+ novos feeds adicionados em março.', logo:'https://cryptologos.cc/logos/pyth-network-pyth-logo.png'},
-  {id:'snx', symbol:'SNX', name:'Synthetix',        price:1.28,   change24h:+1.3, bettvPick:'NEUTRO', bettvConf:42, bettvReason:'Perp trading v3 no ar mas concorrência forte com GMX.', logo:'https://cryptologos.cc/logos/synthetix-network-token-snx-logo.png'},
-  {id:'op2', symbol:'ARB', name:'Arbitrum',         price:0.481,  change24h:+2.4, bettvPick:'ALTA',   bettvConf:55, bettvReason:'Líder L2 em TVL. Stylus VM e forte ecossistema de devs.', logo:'https://cryptologos.cc/logos/arbitrum-arb-logo.png'},
-  {id:'vet', symbol:'VET', name:'VeChain',          price:0.028,  change24h:+0.5, bettvPick:'NEUTRO', bettvConf:40, bettvReason:'Supply chain blockchain com adoção empresarial estável.', logo:'https://cryptologos.cc/logos/vechain-vet-logo.png'},
-]
-
-const MOEDAS_DATA = [
-  {id:'usd', symbol:'USD', name:'Dólar Americano',   flag:'🇺🇸', priceBRL:5.12,  change24h:-0.3, bettvPick:'QUEDA',  bettvConf:55, bettvReason:'Fed mantém juros. Dados de emprego abaixo do esperado pressionam o dólar.'},
-  {id:'eur', symbol:'EUR', name:'Euro',              flag:'🇪🇺', priceBRL:5.54,  change24h:+0.4, bettvPick:'ALTA',   bettvConf:52, bettvReason:'BCE sinalizou pausa nos cortes. Zona do euro cresce 0.4% no 1T26.'},
-  {id:'gbp', symbol:'GBP', name:'Libra Esterlina',  flag:'🇬🇧', priceBRL:6.64,  change24h:+0.2, bettvPick:'ALTA',   bettvConf:50, bettvReason:'BOE conservador. Inflação UK em queda. Libra estável ante dólar.'},
-  {id:'jpy', symbol:'JPY', name:'Iene Japonês',     flag:'🇯🇵', priceBRL:0.034, change24h:-0.5, bettvPick:'QUEDA',  bettvConf:57, bettvReason:'BOJ ainda dovish. Diferencial de juros EUA-Japão mantém pressão.'},
-  {id:'cny', symbol:'CNY', name:'Yuan Chinês',      flag:'🇨🇳', priceBRL:0.707, change24h:+0.1, bettvPick:'NEUTRO', bettvConf:48, bettvReason:'PBOC gerencia valorização. Estímulos fiscais em andamento na China.'},
-  {id:'chf', symbol:'CHF', name:'Franco Suíço',     flag:'🇨🇭', priceBRL:5.69,  change24h:+0.3, bettvPick:'ALTA',   bettvConf:54, bettvReason:'SNB comprador de ouro. Franco seguro em cenário de risco global.'},
-  {id:'cad', symbol:'CAD', name:'Dólar Canadense',  flag:'🇨🇦', priceBRL:3.72,  change24h:-0.2, bettvPick:'NEUTRO', bettvConf:46, bettvReason:'Petróleo WTI estável. BOC em pausa. CAD lateral vs USD.'},
-  {id:'aud', symbol:'AUD', name:'Dólar Australiano',flag:'🇦🇺', priceBRL:3.25,  change24h:+0.6, bettvPick:'ALTA',   bettvConf:53, bettvReason:'Commodities em alta favorecem AUD. RBA corta menos que esperado.'},
-  {id:'brl', symbol:'BRL', name:'Real Brasileiro',  flag:'🇧🇷', priceBRL:1.00,  change24h:-0.4, bettvPick:'QUEDA',  bettvConf:56, bettvReason:'Fiscal preocupa. Copom mantém Selic 14.75%. BRL pressionado.'},
-  {id:'mxn', symbol:'MXN', name:'Peso Mexicano',    flag:'🇲🇽', priceBRL:0.257, change24h:-0.8, bettvPick:'QUEDA',  bettvConf:55, bettvReason:'Nearshoring desacelera. Banxico corta juros agressivamente.'},
-  {id:'ars', symbol:'ARS', name:'Peso Argentino',   flag:'🇦🇷', priceBRL:0.005, change24h:-1.2, bettvPick:'QUEDA',  bettvConf:72, bettvReason:'Argentina: inflação 180% a.a. Peso em desvalorização estrutural.'},
-  {id:'clp', symbol:'CLP', name:'Peso Chileno',     flag:'🇨🇱', priceBRL:0.005, change24h:-0.3, bettvPick:'NEUTRO', bettvConf:44, bettvReason:'Cobre estável. BCCh em ciclo de corte gradual. Peso lateral.'},
-  {id:'krw', symbol:'KRW', name:'Won Coreano',      flag:'🇰🇷', priceBRL:0.019, change24h:-0.4, bettvPick:'NEUTRO', bettvConf:45, bettvReason:'Samsung e SK Hynix em recuperação. BOK cauteloso. Won estável.'},
-  {id:'inr', symbol:'INR', name:'Rúpia Indiana',    flag:'🇮🇳', priceBRL:0.061, change24h:-0.2, bettvPick:'QUEDA',  bettvConf:50, bettvReason:'RBI intervém mas pressão estrutural no déficit em conta corrente.'},
-  {id:'sgd', symbol:'SGD', name:'Dólar de Singapura',flag:'🇸🇬',priceBRL:3.86,  change24h:+0.2, bettvPick:'ALTA',   bettvConf:51, bettvReason:'MAS aprecia SGD para controlar inflação. Economia resiliente.'},
-  {id:'hkd', symbol:'HKD', name:'Dólar de Hong Kong',flag:'🇭🇰',priceBRL:0.658, change24h:0.0,  bettvPick:'NEUTRO', bettvConf:95, bettvReason:'HKD atrelado ao USD (currency board). Sem variação esperada.'},
-  {id:'sek', symbol:'SEK', name:'Coroa Sueca',      flag:'🇸🇪', priceBRL:0.468, change24h:+0.4, bettvPick:'ALTA',   bettvConf:49, bettvReason:'Riksbank pausou cortes. Exportações industriais em recuperação.'},
-  {id:'nok', symbol:'NOK', name:'Coroa Norueguesa', flag:'🇳🇴', priceBRL:0.450, change24h:+0.3, bettvPick:'ALTA',   bettvConf:51, bettvReason:'Petróleo Brent apoia NOK. Norges Bank hawkish.'},
-  {id:'pln', symbol:'PLN', name:'Zloty Polonês',    flag:'🇵🇱', priceBRL:1.254, change24h:+0.5, bettvPick:'ALTA',   bettvConf:53, bettvReason:'Polônia cresce 3.1% no 1T26. NBP conservador favorece PLN.'},
-  {id:'try', symbol:'TRY', name:'Lira Turca',       flag:'🇹🇷', priceBRL:0.147, change24h:-1.3, bettvPick:'QUEDA',  bettvConf:70, bettvReason:'Turquia: inflação 40%+. CBRT tenta estabilizar mas TRY cai.'},
-  {id:'rub', symbol:'RUB', name:'Rublo Russo',      flag:'🇷🇺', priceBRL:0.056, change24h:-0.9, bettvPick:'QUEDA',  bettvConf:66, bettvReason:'Sanções ocidentais e inflação persistente pressionam RUB.'},
-  {id:'zar', symbol:'ZAR', name:'Rand Sul-Africano',flag:'🇿🇦', priceBRL:0.275, change24h:+0.7, bettvPick:'ALTA',   bettvConf:50, bettvReason:'Ouro e platina valorizam. GNU government traz estabilidade.'},
-  {id:'thb', symbol:'THB', name:'Baht Tailandês',   flag:'🇹🇭', priceBRL:0.152, change24h:+0.2, bettvPick:'NEUTRO', bettvConf:44, bettvReason:'BOT estável. Turismo tailandês em recuperação pós-pandemia.'},
-  {id:'myr', symbol:'MYR', name:'Ringgit Malaio',   flag:'🇲🇾', priceBRL:1.142, change24h:+0.5, bettvPick:'ALTA',   bettvConf:51, bettvReason:'BNM hawkish. Exportações semicondutores da Malásia em alta.'},
-  {id:'aed', symbol:'AED', name:'Dirham dos EAU',   flag:'🇦🇪', priceBRL:1.393, change24h:-0.1, bettvPick:'NEUTRO', bettvConf:90, bettvReason:'AED atrelado ao USD. Expectativa: sem variação. Dubai estável.'},
-  {id:'sar', symbol:'SAR', name:'Riyal Saudita',    flag:'🇸🇦', priceBRL:1.368, change24h:-0.1, bettvPick:'NEUTRO', bettvConf:88, bettvReason:'SAR atrelado ao USD. ARAMCO apoia reservas. Estável.'},
-  {id:'ils', symbol:'ILS', name:'Shekel Israelense',flag:'🇮🇱', priceBRL:1.40,  change24h:-0.4, bettvPick:'NEUTRO', bettvConf:46, bettvReason:'BOI intervém ativamente. Risco geopolítico mantém volatilidade.'},
-  {id:'cop', symbol:'COP', name:'Peso Colombiano',  flag:'🇨🇴', priceBRL:0.001, change24h:-0.5, bettvPick:'QUEDA',  bettvConf:51, bettvReason:'Petróleo Brent recua. BanRep corta juros. COP sob pressão.'},
-  {id:'pen', symbol:'PEN', name:'Sol Peruano',      flag:'🇵🇪', priceBRL:1.37,  change24h:+0.1, bettvPick:'NEUTRO', bettvConf:43, bettvReason:'Peru: mineração de cobre estável. BCRP mantém juros. Lateral.'},
-  {id:'nzd', symbol:'NZD', name:'Dólar Neozelandês',flag:'🇳🇿', priceBRL:2.96,  change24h:+0.3, bettvPick:'ALTA',   bettvConf:48, bettvReason:'RBNZ pausou cortes. Exportações agro da NZ em recuperação.'},
-  {id:'czk', symbol:'CZK', name:'Coroa Tcheca',     flag:'🇨🇿', priceBRL:0.219, change24h:+0.3, bettvPick:'ALTA',   bettvConf:48, bettvReason:'CNB em pausa. Economia tcheca resiliente. CZK valorizada.'},
-  {id:'huf', symbol:'HUF', name:'Forint Húngaro',   flag:'🇭🇺', priceBRL:0.014, change24h:-0.6, bettvPick:'QUEDA',  bettvConf:52, bettvReason:'MNB corta juros agressivamente. HUF volátil da região.'},
-  {id:'dkk', symbol:'DKK', name:'Coroa Dinamarquesa',flag:'🇩🇰',priceBRL:0.743, change24h:+0.4, bettvPick:'ALTA',   bettvConf:50, bettvReason:'DKK atrelado ao EUR. Segue movimento europeu positivo.'},
-  {id:'uah', symbol:'UAH', name:'Hryvnia Ucraniana',flag:'🇺🇦', priceBRL:0.123, change24h:-0.6, bettvPick:'QUEDA',  bettvConf:65, bettvReason:'Ucrânia: guerra e instabilidade. UAH em desvalorização controlada.'},
-  {id:'qar', symbol:'QAR', name:'Riyal Catarí',     flag:'🇶🇦', priceBRL:1.403, change24h:0.0,  bettvPick:'NEUTRO', bettvConf:92, bettvReason:'QAR atrelado ao USD. Qatar apoia com reservas do fundo soberano.'},
-  {id:'idr', symbol:'IDR', name:'Rupia Indonésia',  flag:'🇮🇩', priceBRL:0.0003,change24h:-0.4, bettvPick:'NEUTRO', bettvConf:43, bettvReason:'BI intervém para estabilizar. Comodities sustentam mas juros pesam.'},
-  {id:'php', symbol:'PHP', name:'Peso Filipino',    flag:'🇵🇭', priceBRL:0.087, change24h:-0.3, bettvPick:'NEUTRO', bettvConf:44, bettvReason:'BSP cortou juros. Remessas de OFW sustentam PHP. Lateral.'},
-  {id:'pkr', symbol:'PKR', name:'Rupia Paquistanesa',flag:'🇵🇰',priceBRL:0.018, change24h:-0.7, bettvPick:'QUEDA',  bettvConf:64, bettvReason:'Paquistão: crise de dívida externa. FMI empresta mas PKR fraco.'},
-  {id:'egp', symbol:'EGP', name:'Libra Egípcia',    flag:'🇪🇬', priceBRL:0.102, change24h:-0.5, bettvPick:'QUEDA',  bettvConf:60, bettvReason:'CBE corta juros mas inflação persistente. EGP sob pressão.'},
-  {id:'ngn', symbol:'NGN', name:'Naira Nigeriana',  flag:'🇳🇬', priceBRL:0.003, change24h:-1.0, bettvPick:'QUEDA',  bettvConf:68, bettvReason:'Nigéria: escassez de dólares e inflação 28%. NGN em desvalorização.'},
-  {id:'kwd', symbol:'KWD', name:'Dinar Kuwaitiano', flag:'🇰🇼', priceBRL:16.85, change24h:-0.1, bettvPick:'NEUTRO', bettvConf:85, bettvReason:'KWD mais valorizada do mundo. Atrelada ao cesto de moedas.'},
-  {id:'twd', symbol:'TWD', name:'Dólar de Taiwan',  flag:'🇹🇼', priceBRL:0.159, change24h:+0.3, bettvPick:'ALTA',   bettvConf:52, bettvReason:'Taiwan: exportações TSMC recordes. Tensão China monitorada.'},
-  {id:'bdt', symbol:'BDT', name:'Taka Bangladeshi', flag:'🇧🇩', priceBRL:0.046, change24h:-0.4, bettvPick:'NEUTRO', bettvConf:42, bettvReason:'Bangladesh: exportações têxteis estáveis. BB gerencia câmbio.'},
-  {id:'kes', symbol:'KES', name:'Shilling Queniano',flag:'🇰🇪', priceBRL:0.040, change24h:+0.3, bettvPick:'NEUTRO', bettvConf:45, bettvReason:'Quênia: inflação em queda. CBK estabiliza. KES em lenta recuperação.'},
-  {id:'jod', symbol:'JOD', name:'Dinar Jordaniano', flag:'🇯🇴', priceBRL:7.22,  change24h:0.0,  bettvPick:'NEUTRO', bettvConf:88, bettvReason:'JOD atrelado ao USD. CBJ defende paridade com reservas.'},
-  {id:'omr', symbol:'OMR', name:'Rial Omanense',    flag:'🇴🇲', priceBRL:13.29, change24h:-0.1, bettvPick:'NEUTRO', bettvConf:85, bettvReason:'OMR atrelado ao USD. Petróleo sustenta reservas. Estável.'},
-  {id:'bam', symbol:'BAM', name:'Marco Bósnio',     flag:'🇧🇦', priceBRL:2.83,  change24h:+0.4, bettvPick:'ALTA',   bettvConf:49, bettvReason:'BAM atrelado ao EUR (currency board). Segue valorização europeia.'},
-  {id:'vnd', symbol:'VND', name:'Dong Vietnamita',  flag:'🇻🇳', priceBRL:0.0002,change24h:0.0,  bettvPick:'NEUTRO', bettvConf:80, bettvReason:'SBV gerencia câmbio rigidamente. VND quasi-fixo ao USD.'},
-  {id:'sgd2',symbol:'HRK', name:'Kuna Croata',      flag:'🇭🇷', priceBRL:0.736, change24h:+0.4, bettvPick:'ALTA',   bettvConf:50, bettvReason:'Croácia na Zona Euro desde 2023. Kuna substituída pelo EUR.'},
-]
-
 
 const TABS = [
   { key:'todos',    label:'Todos'     },
@@ -277,29 +178,122 @@ const TABS = [
 
 const INTERVAL = 2*60*60*1000
 
+// ─── PROMPTS DE BUSCA POR CATEGORIA ──────────────────────────────────────────
+const CATEGORY_SEARCH_PROMPTS = {
+  futebol: (nowISO) => `Hoje é ${nowISO}. Use web_search para buscar partidas de futebol AO VIVO e FUTURAS (próximos 30 dias) nas seguintes competições: Premier League, La Liga, Champions League, Brasileirão Série A, Copa do Brasil. Busque resultados reais com datas e horários exatos. Depois retorne SOMENTE um JSON array com os eventos encontrados (máximo 12, priorizando ao vivo e mais próximos):
+[{"id":"f-UNIQUE","title":"Time A × Time B","competition":"Nome da Competição · Rodada","startTime":"ISO8601","statusLabel":"DD/MM · HHh BRT · Local","bettvPick":"Time A|Time B|Empate","bettvConf":50,"bettvReason":"max 100 chars baseado em dados reais","home":{"name":"Time A","logo":null,"sub":"posição/pts","pct":50},"away":{"name":"Time B","logo":null,"sub":"posição/pts","pct":30},"draw":20}]`,
+
+  basquete: (nowISO) => `Hoje é ${nowISO}. Use web_search para buscar jogos de basquete AO VIVO e FUTUROS (próximos 7 dias): NBA (hoje e amanhã), NBB Brasil. Busque placares ao vivo e probabilidades reais. Retorne SOMENTE JSON array (máximo 10 jogos):
+[{"id":"b-UNIQUE","title":"Time A × Time B","competition":"NBA · Data","startTime":"ISO8601","statusLabel":"Hoje · HHh BRT · Arena","bettvPick":"Time","bettvConf":60,"bettvReason":"prob% SportRadar/ESPN. Contexto real","home":{"name":"Time A","logo":null,"sub":"conferência/pos","pct":60},"away":{"name":"Time B","logo":null,"sub":"conferência/pos","pct":35},"draw":5}]`,
+
+  volei: (nowISO) => `Hoje é ${nowISO}. Use web_search para buscar jogos de vôlei (próximos 30 dias): Superliga Masculina Brasil, Superliga Feminina Brasil, VNL Liga das Nações. Retorne SOMENTE JSON array (máximo 6 jogos reais com datas verificadas):
+[{"id":"v-UNIQUE","title":"Time A × Time B","competition":"Competição · Fase","startTime":"ISO8601","statusLabel":"DD/MM · HHh · Local","bettvPick":"Time","bettvConf":55,"bettvReason":"contexto real da partida","home":{"name":"Time A","logo":null,"sub":"posição","pct":55},"away":{"name":"Time B","logo":null,"sub":"posição","pct":30},"draw":15}]`,
+
+  mma: (nowISO) => `Hoje é ${nowISO}. Use web_search para buscar próximos eventos UFC confirmados (próximos 60 dias) com card principal verificado no site da UFC ou CBS Sports. Retorne SOMENTE JSON array (máximo 6 lutas):
+[{"id":"m-UNIQUE","title":"Lutador A × Lutador B","competition":"UFC Evento · Main/Co-main","startTime":"ISO8601","statusLabel":"DD/MM · HHh PT · Cidade","bettvPick":"Lutador","bettvConf":55,"bettvReason":"record real. motivo técnico concreto","home":{"name":"Lutador A","logo":null,"sub":"record · ranking","pct":55},"away":{"name":"Lutador B","logo":null,"sub":"record · ranking","pct":35},"draw":10}]`,
+
+  tenis: (nowISO) => `Hoje é ${nowISO}. Use web_search para buscar partidas de tênis AO VIVO e FUTURAS (próximos 30 dias): Miami Open ATP/WTA, Roland Garros. Busque schedule oficial do ATP Tour e WTA. Retorne SOMENTE JSON array (máximo 8 partidas reais com datas verificadas):
+[{"id":"t-UNIQUE","title":"Jogador A × Jogador B","competition":"Torneio · Rodada","startTime":"ISO8601","statusLabel":"DD/MM · HHh BRT · Rodada","bettvPick":"Jogador","bettvConf":65,"bettvReason":"ranking real, h2h real, contexto real","home":{"name":"Jogador A","logo":null,"sub":"Nº ranking","pct":65},"away":{"name":"Jogador B","logo":null,"sub":"Nº ranking","pct":28},"draw":7}]`,
+
+  esports: (nowISO) => `Hoje é ${nowISO}. Use web_search para buscar partidas de e-sports AO VIVO e FUTURAS (próximos 60 dias): CBLOL 2026, LCK Spring 2026, CS2 Major 2026. Busque schedule oficial da Riot Games e ESL. Retorne SOMENTE JSON array (máximo 6 partidas verificadas):
+[{"id":"e-UNIQUE","title":"Time A × Time B","competition":"Liga · Fase · Rodada","startTime":"ISO8601","statusLabel":"DD/MM · HHh BRT · Arena","bettvPick":"Time","bettvConf":55,"bettvReason":"contexto real da liga","home":{"name":"Time A","logo":null,"sub":"posição","pct":55},"away":{"name":"Time B","logo":null,"sub":"posição","pct":35},"draw":10}]`,
+
+  loterias: () => `Retorne SOMENTE JSON array com previsões atualizadas para as loterias da Caixa. Use análise de frequência histórica:
+[{"id":"mega","guruNums":[n,n,n,n,n,n],"guruConf":18,"guruAnalise":"análise max 120 chars"},{"id":"lotofacil","guruNums":[15 números 1-25],"guruConf":34,"guruAnalise":"..."},{"id":"quina","guruNums":[5 números 1-80],"guruConf":22,"guruAnalise":"..."},{"id":"timemania","guruNums":[7 números 1-80],"guruConf":12,"guruAnalise":"..."},{"id":"duplasena","guruNums":[6 números 1-50],"guruConf":15,"guruAnalise":"..."},{"id":"diadesorte","guruNums":[7 números 1-31],"guruConf":14,"guruAnalise":"..."}]`,
+
+  crypto: () => `Analise tendências do mercado cripto hoje com base no seu conhecimento atualizado. Retorne SOMENTE JSON array (todos os 50 itens) com previsão ALTA/QUEDA/NEUTRO:
+[{"id":"btc","bettvPick":"ALTA|QUEDA|NEUTRO","bettvConf":65,"bettvReason":"max 100 chars","change24h":2.3}]`,
+
+  moedas: () => `Analise tendências do mercado de câmbio hoje. Retorne SOMENTE JSON array (todos os 50 itens):
+[{"id":"usd","bettvPick":"ALTA|QUEDA|NEUTRO","bettvConf":55,"bettvReason":"max 100 chars","change24h":-0.3}]`,
+}
+
+// ─── ENGINE PRINCIPAL — busca dados reais + gera previsões ───────────────────
 async function callClaude(data, category) {
-  const hora = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})
-  const now = new Date()
-  const system = 'Você é o motor de análise esportiva do BetTv. Responda SOMENTE JSON válido, sem markdown, sem explicações. Data atual: ' + now.toISOString()
-  let prompt = ''
-  if (category==='loterias') {
-    prompt = 'Recalcule previsões das loterias Caixa com base em frequência histórica. Dados: ' + JSON.stringify(data.loterias.map(l=>({id:l.id,guruNums:l.guruNums,guruConf:l.guruConf}))) + ' Retorne JSON array: [{"id":"mega","guruNums":[n,n,n,n,n,n],"guruConf":18,"guruAnalise":"max 120 chars"},{"id":"lotofacil","guruNums":[15 de 1-25],"guruConf":34,"guruAnalise":"..."},{"id":"quina","guruNums":[5 de 1-80],"guruConf":22,"guruAnalise":"..."},{"id":"timemania","guruNums":[7 de 1-80],"guruConf":12,"guruAnalise":"..."},{"id":"duplasena","guruNums":[6 de 1-50],"guruConf":15,"guruAnalise":"..."},{"id":"diadesorte","guruNums":[7 de 1-31],"guruConf":14,"guruAnalise":"..."}]'
-  } else {
-    if (category==='crypto') {
-    prompt = 'Analise o mercado de crypto de hoje. Dados atuais: ' + JSON.stringify(data.crypto.map(c=>({id:c.id,symbol:c.symbol,name:c.name,price:c.price,change24h:c.change24h}))) + ' Retorne JSON array com previsão do dia: [{"id":"...","bettvPick":"ALTA|QUEDA|NEUTRO","bettvConf":0-95,"bettvReason":"max 100 chars","change24h":0.0}] para TODOS os itens.'
-  } else if (category==='moedas') {
-    prompt = 'Analise o mercado de câmbio de hoje. Dados: ' + JSON.stringify(data.moedas.map(m=>({id:m.id,symbol:m.symbol,name:m.name,change24h:m.change24h}))) + ' Retorne JSON array: [{"id":"...","bettvPick":"ALTA|QUEDA|NEUTRO","bettvConf":0-95,"bettvReason":"max 100 chars","change24h":0.0}] para TODOS os itens.'
-  } else {
-    const esp=data.esportes[category]; if (!esp) return null
-    const nowISO = new Date().toISOString()
-    prompt = 'Atualize as previsões de ' + esp.label + '. Data/hora atual: ' + nowISO + '. IMPORTANTE: Só retorne itens cujos eventos ainda não ocorreram ou estão ao vivo agora. Dados: ' + JSON.stringify(esp.items.map(i=>({id:i.id,title:i.title,startTime:i.startTime,status:i.status,bettvPick:i.bettvPick,bettvConf:i.bettvConf}))) + ' Retorne JSON array SOMENTE para eventos válidos: [{"id":"...","bettvPick":"...","bettvConf":50,"bettvReason":"max 100 chars","homePct":50,"awayPct":30,"draw":20}]. Se um evento já ocorreu, NÃO inclua no retorno.'
+  const nowISO = new Date().toISOString()
+  const nowBRT = new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})
+  const isEsporte = !['loterias','crypto','moedas'].includes(category)
+
+  const system = [
+    'Você é o motor de dados esportivos do BetTv.',
+    'Data e hora atual (BRT): ' + nowBRT,
+    'Data UTC: ' + nowISO,
+    'REGRAS ABSOLUTAS:',
+    '1. Responda SOMENTE com JSON válido — sem markdown, sem explicações, sem texto antes ou depois.',
+    '2. Para categorias esportivas, use web_search para buscar dados REAIS e ATUAIS antes de responder.',
+    '3. NUNCA invente partidas, datas ou resultados.',
+    '4. Inclua SOMENTE eventos que ainda não terminaram (ao vivo ou futuros).',
+    '5. startTime DEVE ser uma data ISO 8601 real e verificada.',
+    '6. IDs devem ser únicos: use "cat-initials-timestamp" ex: "f-livche-1742".',
+  ].join('\n')
+
+  const prompt = isEsporte
+    ? CATEGORY_SEARCH_PROMPTS[category]?.(nowISO) || ''
+    : (CATEGORY_SEARCH_PROMPTS[category]?.() || '')
+
+  if (!prompt) return null
+
+  // Use web_search tool for sports categories to get real live data
+  const tools = isEsporte ? [{type:'web_search_20250305', name:'web_search'}] : []
+
+  const body = {
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 4000,
+    system,
+    tools: tools.length ? tools : undefined,
+    messages: [{role:'user', content: prompt}],
   }
-  }
-  const res = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,system,messages:[{role:'user',content:prompt}]})})
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': API_KEY,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
+    body: JSON.stringify(body),
+  })
+
   if (!res.ok) throw new Error('API ' + res.status)
   const json = await res.json()
-  const txt = json.content?.find(b=>b.type==='text')?.text||'[]'
-  return JSON.parse(txt.replace(/```json|```/g,'').trim())
+
+  // Extract text from response — may include tool_use + tool_result blocks
+  const textBlock = json.content?.find(b => b.type === 'text')
+  if (!textBlock?.text) {
+    // If the model used web_search and stopped — do a follow-up to extract JSON
+    if (json.stop_reason === 'tool_use') {
+      const toolUse = json.content?.find(b => b.type === 'tool_use')
+      const toolResult = json.content?.find(b => b.type === 'tool_result')
+      const followUpRes = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': API_KEY,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true',
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 4000,
+          system,
+          tools,
+          messages: [
+            {role:'user', content: prompt},
+            {role:'assistant', content: json.content},
+            ...(toolUse ? [{role:'user', content:[{type:'tool_result',tool_use_id:toolUse.id,content:'Search results retrieved. Now compile the JSON array based on the real data found.'}]}] : []),
+          ],
+        }),
+      })
+      if (!followUpRes.ok) throw new Error('API follow-up ' + followUpRes.status)
+      const followJson = await followUpRes.json()
+      const followText = followJson.content?.find(b => b.type === 'text')?.text || '[]'
+      return JSON.parse(followText.replace(/```json|```/g,'').trim())
+    }
+    return []
+  }
+
+  return JSON.parse(textBlock.text.replace(/```json|```/g,'').trim())
 }
 
 function useAutoUpdate(seed) {
@@ -320,7 +314,7 @@ function useAutoUpdate(seed) {
 
   const runCycle=useCallback(async(cur,manual=false)=>{
     setUpdating(true)
-    // Auto-purge: remove eventos que já terminaram (started > 4h ago and not live)
+    // Purge: remove events that ended more than 4h ago
     const now = Date.now()
     const purgedEsportes = {}
     Object.entries(cur.esportes).forEach(([cat, catData]) => {
@@ -328,22 +322,22 @@ function useAutoUpdate(seed) {
         ...catData,
         items: catData.items.filter(item => {
           if (!item.startTime) return true
-          if (item.status==='live'||item.status==='inprogress') return true
-          return new Date(item.startTime).getTime() > now - 4*60*60*1000
+          const start = new Date(item.startTime).getTime()
+          return start > now - 4*60*60*1000
         })
       }
     })
     const cats=['loterias',...Object.keys(ESPORTES),'crypto','moedas']
     setQueue([...cats])
-    addLog(manual?'Atualização manual':'Ciclo automático — purge + recalculate','start')
+    addLog(manual?'Atualização manual — buscando dados reais':'Ciclo automático — buscando eventos frescos','start')
     const nd={loterias:[...cur.loterias],esportes:purgedEsportes,crypto:[...(cur.crypto||CRYPTO_DATA)],moedas:[...(cur.moedas||MOEDAS_DATA)]}
     let ok=0
     for (const cat of cats) {
       setQueue(q=>q.filter(c=>c!==cat))
-      addLog('Analisando: '+cat,'loading')
+      addLog('Buscando: '+cat,'loading')
       try {
         const upd=await callClaude(nd,cat)
-        if (!upd||!Array.isArray(upd)){addLog(cat+': inválido','warn');continue}
+        if (!upd||!Array.isArray(upd)||upd.length===0){addLog(cat+': sem dados','warn');continue}
         if (cat==='loterias'){
           nd.loterias=nd.loterias.map(l=>{const u=upd.find(x=>x.id===l.id);return u?{...l,...u}:l})
         } else if (cat==='crypto') {
@@ -351,25 +345,38 @@ function useAutoUpdate(seed) {
         } else if (cat==='moedas') {
           nd.moedas=nd.moedas.map(m=>{const u=upd.find(x=>x.id===m.id);return u?{...m,...u}:m})
         } else {
+          // For sports: REPLACE the items array entirely with fresh data from web
           if (!nd.esportes[cat]) continue
-          nd.esportes[cat]={...nd.esportes[cat],items:nd.esportes[cat].items.map(item=>{
-            const u=upd.find(x=>x.id===item.id)
-            if (!u) return item
-            return{...item,bettvPick:u.bettvPick||item.bettvPick,bettvConf:u.bettvConf??item.bettvConf,bettvReason:u.bettvReason||item.bettvReason,home:{...item.home,pct:u.homePct??item.home.pct},away:{...item.away,pct:u.awayPct??item.away.pct},draw:u.draw??item.draw}
-          })}
+          // Validate: only keep items with valid startTime in the future or very recent
+          const validItems = upd.filter(item => {
+            if (!item.startTime) return false
+            if (!item.title || !item.home || !item.away) return false
+            const start = new Date(item.startTime).getTime()
+            return !isNaN(start) && start > now - 4*60*60*1000
+          }).map(item => ({
+            ...item,
+            status: 'upcoming', // never hardcode live — always use time-based detection
+          }))
+          if (validItems.length > 0) {
+            nd.esportes[cat] = {...nd.esportes[cat], items: validItems}
+            addLog(cat+': '+validItems.length+' eventos reais','success')
+          } else {
+            // Keep existing purged data if new data is invalid
+            addLog(cat+': mantendo dados anteriores ('+nd.esportes[cat].items.length+')','warn')
+          }
         }
         setAppData({...nd})
         ok++
-        addLog(cat+': '+upd.length+' itens','success')
-      } catch(e){addLog(cat+': '+e.message,'error')}
-      await new Promise(r=>setTimeout(r,400))
+        if (cat==='loterias'||cat==='crypto'||cat==='moedas') addLog(cat+': '+upd.length+' itens','success')
+      } catch(e){addLog(cat+': erro — '+e.message,'error')}
+      await new Promise(r=>setTimeout(r,800))
     }
     const ts=new Date()
     setLastAt(ts)
     setNextAt(new Date(ts.getTime()+INTERVAL))
     setUpdating(false)
     setQueue([])
-    addLog('Concluído — '+ok+'/'+cats.length,'done')
+    addLog('Concluído — '+ok+'/'+cats.length+' categorias','done')
   },[addLog])
 
   useEffect(()=>{
@@ -558,9 +565,10 @@ function KalshiSportCard({item, catKey, onSelect, catUpdating}) {
     const now = Date.now()
     const start = new Date(item.startTime).getTime()
     // Dynamic window based on sport type — must have started and within max duration
-    const maxDur = {futebol:120, basquete:150, tenis:240, mma:180, volei:120, esports:180}
-    const dur = (maxDur[catKey] || 150) * 60 * 1000
-    return now >= start - 5*60*1000 && now <= start + dur
+    // Never use hardcoded status:'upcoming' — calculate purely from time
+    const durations = {futebol:130, basquete:180, tenis:300, mma:420, volei:150, esports:240}
+    const dur = (durations[catKey] || 150) * 60 * 1000
+    return now >= start && now <= start + dur
   })()
   const live = isActuallyLive
   const catColor=T.cat[catKey]||T.black
@@ -739,9 +747,10 @@ function SportCard({item, catKey, onSelect, catUpdating}) {
     const now = Date.now()
     const start = new Date(item.startTime).getTime()
     // Dynamic window based on sport type — must have started and within max duration
-    const maxDur = {futebol:120, basquete:150, tenis:240, mma:180, volei:120, esports:180}
-    const dur = (maxDur[catKey] || 150) * 60 * 1000
-    return now >= start - 5*60*1000 && now <= start + dur
+    // Never use hardcoded status:'upcoming' — calculate purely from time
+    const durations = {futebol:130, basquete:180, tenis:300, mma:420, volei:150, esports:240}
+    const dur = (durations[catKey] || 150) * 60 * 1000
+    return now >= start && now <= start + dur
   })()
   const live = isActuallyLive; const [hov,setHov]=useState(false)
   const catColor=T.cat[catKey]||T.black
@@ -1906,11 +1915,11 @@ export default function App() {
 
   // Real-time live check
   function isReallyLive(item) {
-    if (item.status !== 'live' && item.status !== 'inprogress') return false
-    if (!item.startTime) return true
+    if (!item.startTime) return false
     const now = Date.now()
     const start = new Date(item.startTime).getTime()
-    return now >= start - 5*60*1000 && now <= start + 240*60*1000
+    // Live = event has started and within max duration
+    return now >= start && now <= start + 6*60*60*1000
   }
 
   const currentItems = isLoto
