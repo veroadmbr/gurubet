@@ -6,8 +6,8 @@ const T = {
   green:'#00D672', black:'#111111', white:'#FFFFFF',
   bg:'#F7F7F5', border:'#E8E8E4', gray1:'#737373',
   gray2:'#F0F0ED', gray3:'#D4D4CC', red:'#E53935',
-  cat:{ loterias:'#1A7A4A', futebol:'#1A7A4A', basquete:'#B45309', volei:'#5B21B6', mma:'#B91C1C', tenis:'#0369A1', esports:'#6D28D9', crypto:'#D97706', moedas:'#0891B2' },
-  catBg:{ loterias:'#D1FAE5', futebol:'#DCFCE7', basquete:'#FEF3C7', volei:'#EDE9FE', mma:'#FEE2E2', tenis:'#DBEAFE', esports:'#F3E8FF', crypto:'#FEF3C7', moedas:'#CFFAFE' },
+  cat:{ loterias:'#1A7A4A', futebol:'#1A7A4A', basquete:'#B45309', mma:'#B91C1C', tenis:'#0369A1', esports:'#6D28D9', crypto:'#D97706', moedas:'#0891B2' },
+  catBg:{ loterias:'#D1FAE5', futebol:'#DCFCE7', basquete:'#FEF3C7', mma:'#FEE2E2', tenis:'#DBEAFE', esports:'#F3E8FF', crypto:'#FEF3C7', moedas:'#CFFAFE' },
   r:{ sm:8, md:12, lg:16, pill:999 },
 }
 
@@ -44,8 +44,7 @@ const IcoCrypto    = ({size=16,color='currentColor'}) => <svg width={size} heigh
 const IcoMoedas    = ({size=16,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'block',flexShrink:0}}><circle cx="12" cy="12" r="10"/><path d="M12 6v2m0 8v2M8 12h8"/><path d="M9 9h.01M15 15h.01"/></svg>
 
 const TAB_ICON = {
-  todos: IcoAll, loterias: IcoLottery, futebol: IcoSoccer, basquete: IcoBasket,
-  volei: IcoVolley, mma: IcoMMA, tenis: IcoTennis, esports: IcoEsports,
+  todos: IcoAll, loterias: IcoLottery, futebol: IcoSoccer, basquete: IcoBasket, mma: IcoMMA, tenis: IcoTennis, esports: IcoEsports,
   crypto: IcoCrypto, moedas: IcoMoedas,
 }
 
@@ -282,7 +281,6 @@ const TABS = [
   { key:'loterias', label:'Loterias'  },
   { key:'futebol',  label:'Futebol'   },
   { key:'basquete', label:'Basquete'  },
-  { key:'volei',    label:'Vôlei'     },
   { key:'mma',      label:'MMA / UFC' },
   { key:'tenis',    label:'Tênis'     },
   { key:'esports',  label:'E-sports'  },
