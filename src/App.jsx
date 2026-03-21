@@ -1622,11 +1622,8 @@ export default function App() {
       return (
         <div style={{background:T.bg,minHeight:'100vh',paddingBottom:80}}>
           <style>{CSS}</style>
-          {/* Header */}
-          <div style={{background:T.white,borderBottom:`1px solid ${T.border}`,position:'sticky',top:0,zIndex:50,padding:'12px 16px 10px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-            <div style={{fontSize:18,fontWeight:800,color:T.black}}>Social</div>
-            <button onClick={()=>handlePage('categorias')} style={{background:'none',border:'none',cursor:'pointer',color:T.gray1,fontSize:13}}>← Início</button>
-          </div>
+          {/* Header — same as MobileHeader but for Social */}
+          <MobileHeader tab={tab} onTab={handleTab} page={page} onPage={handlePage} updating={updating} countdown={countdown} queue={queue} force={force}/>
           <div style={{padding:'16px'}}>
             <div style={{fontSize:12,fontWeight:700,color:T.gray1,letterSpacing:'0.06em',marginBottom:12}}>ESCOLHA UMA CATEGORIA</div>
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
