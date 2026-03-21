@@ -1131,15 +1131,31 @@ export default function App() {
 
           {!isLoto&&(
             <div style={{display:'flex',gap:6,marginBottom:14,overflowX:'auto',scrollbarWidth:'none',paddingBottom:2}}>
-              {['all','live','upcoming'].map(f=>{
+              {[
+                {f:'all',    label:'Todos'},
+                {f:'live',   label:'Ao Vivo'},
+                {f:'upcoming',label:'Próximos'},
+              ].map(({f,label})=>{
                 const active=activeFilter===f
-                const liveCount=allEvents.filter(i=>i.status==='live').length
                 return (
                   <button key={f} onClick={()=>setActiveFilter(f)}
-                    style={{padding:'7px 16px',borderRadius:T.r.pill,border:`1.5px solid ${active?T.black:T.border}`,background:active?T.black:T.white,color:active?T.white:T.black,fontSize:13,fontWeight:active?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0,transition:'all 0.15s',display:'flex',alignItems:'center',gap:6}}>
-                    {f==='all'?`Todos · ${isTodos?allEvents.length:espItems.length}`:
-                     f==='live'?<><IcoLiveDot/><span style={{marginLeft:4}}>{`Ao Vivo${liveCount>0?' · '+liveCount:''}`}</span></>:
-                     'Próximos'}
+                    style={{padding:'7px 16px',borderRadius:T.r.pill,
+                      border:'1.5px solid '+(active?T.black:T.border),
+                      background:active?T.black:T.white,
+                      color:active?T.white:T.black,
+                      fontSize:13,fontWeight:active?700:500,cursor:'pointer',
+                      whiteSpace:'nowrap',flexShrink:0,transition:'all 0.15s',
+                      display:'flex',alignItems:'center',gap:5}}>
+                    {f==='live'&&<IcoLiveDot/>}
+                    {label}
+                    {f==='all'&&<span style={{opacity:0.6,fontSize:11}}>
+                      {' '}({isTodos?allEvents.length:espItems.length})
+                    </span>}
+                    {f==='live'&&allEvents.filter(i=>i.status==='live').length>0&&(
+                      <span style={{fontSize:11,opacity:0.7}}>
+                        {' '}·{' '}{allEvents.filter(i=>i.status==='live').length}
+                      </span>
+                    )}
                   </button>
                 )
               })}
