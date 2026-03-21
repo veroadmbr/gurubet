@@ -1923,13 +1923,15 @@ export default function App() {
                 <h1 style={{fontSize:24,fontWeight:800,color:T.black,letterSpacing:'-0.04em'}}>
                   {isLoto?'Loterias':isCrypto?'Crypto · Previsões do Dia':isMoedas?'Moedas · Câmbio do Dia':isTodos?'Todos os Eventos':TABS.find(t=>t.key===tab)?.label}
                 </h1>
-                <div style={{display:'flex',gap:7}}>
-                  {(isLoto?['all','acumulado']:['all','live','upcoming']).map(f=>(
-                    <button key={f} onClick={()=>setActiveFilter(f)} style={{padding:'6px 15px',borderRadius:T.r.pill,border:`1px solid ${activeFilter===f?T.black:T.border}`,background:activeFilter===f?T.black:T.white,color:activeFilter===f?T.white:T.black,fontSize:12,fontWeight:activeFilter===f?700:500,cursor:'pointer',transition:'all 0.15s'}}>
-                      {f==='all'?'Todos':f==='live'?'Ao Vivo':f==='upcoming'?'Próximos':'Acumulados'}
-                    </button>
-                  ))}
-                </div>
+                {!isCrypto&&!isMoedas&&(
+                  <div style={{display:'flex',gap:7}}>
+                    {(isLoto?['all','acumulado']:['all','live','upcoming']).map(f=>(
+                      <button key={f} onClick={()=>setActiveFilter(f)} style={{padding:'6px 15px',borderRadius:T.r.pill,border:`1px solid ${activeFilter===f?T.black:T.border}`,background:activeFilter===f?T.black:T.white,color:activeFilter===f?T.white:T.black,fontSize:12,fontWeight:activeFilter===f?700:500,cursor:'pointer',transition:'all 0.15s'}}>
+                        {f==='all'?'Todos':f==='live'?'Ao Vivo':f==='upcoming'?'Próximos':'Acumulados'}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
               {isLoto&&<div style={{background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:T.r.md,padding:'10px 16px',marginBottom:18,fontSize:12,color:'#78350F',lineHeight:1.6}}><strong>Jogo responsável.</strong> Sugestões baseadas em estatística histórica.</div>}
               <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:14,alignItems:'start'}}>
