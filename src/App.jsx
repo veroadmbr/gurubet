@@ -1666,87 +1666,166 @@ function MobileEventsList({tab, appData, onSelect, onBack, updating, countdown, 
 }
 
 // ─── CRYPTO CARD ──────────────────────────────────────────────────────────────
-function CryptoCard({item, onSelect}) {
+// ─── CRYPTO CARD — same style as KalshiSportCard ─────────────────────────────
+function CryptoCard({item}) {
   const [hov,setHov]=useState(false)
   const [imgErr,setImgErr]=useState(false)
-  const isUp = item.bettvPick==='ALTA'
+  const catColor = T.cat.crypto||'#D97706'
+  const catBg    = T.catBg.crypto||'#FEF3C7'
+  const isUp   = item.bettvPick==='ALTA'
   const isDown = item.bettvPick==='QUEDA'
   const pickColor = isUp?'#16A34A':isDown?T.red:T.gray1
-  const pickBg = isUp?'#F0FDF4':isDown?'#FEF2F2':'#F8F8F6'
+  const pickBg    = isUp?'#F0FDF4':isDown?'#FEF2F2':'#F8F8F5'
   const chg = item.change24h||0
   const chgColor = chg>0?'#16A34A':chg<0?T.red:T.gray1
+  const fmtPrice = item.price>=1000
+    ? '$'+Number(item.price).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0})
+    : item.price>=1 ? '$'+Number(item.price).toFixed(2)
+    : '$'+Number(item.price).toFixed(5)
+
+  // Bar width: map 0–100% based on 7-day trend signal
+  const barW = Math.min(95, Math.max(5, 50 + (chg * 4)))
+
   return (
-    <div onClick={()=>onSelect&&onSelect(item)}
-      onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-      style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C0C0BB':T.border}`,
-        padding:'14px 16px',cursor:'pointer',display:'flex',alignItems:'center',gap:12,
-        boxShadow:hov?'0 2px 12px rgba(0,0,0,0.08)':'none',transition:'all 0.12s'}}>
-      {/* Logo */}
-      {item.logo&&!imgErr
-        ?<img src={item.logo} alt={item.symbol} onError={()=>setImgErr(true)}
-            style={{width:36,height:36,borderRadius:'50%',objectFit:'contain',flexShrink:0}}/>
-        :<div style={{width:36,height:36,borderRadius:'50%',background:T.catBg.crypto||'#FEF3C7',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:13,fontWeight:800,color:T.cat.crypto}}>{item.symbol?.slice(0,3)}</div>
-      }
-      {/* Name + symbol */}
-      <div style={{flex:1,minWidth:0}}>
-        <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:2}}>
-          <span style={{fontSize:14,fontWeight:700,color:T.black}}>{item.symbol}</span>
-          <span style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.name}</span>
+    <div onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+      style={{height:CARD_H,background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C0C0BB':T.border}`,
+        boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',
+        transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden'}}>
+
+      {/* Header */}
+      <div style={{padding:'11px 14px 9px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
+        <div style={{display:'flex',alignItems:'center',gap:8}}>
+          <div style={{width:22,height:22,borderRadius:6,background:catBg,display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <IcoCrypto size={12} color={catColor}/>
+          </div>
+          <span style={{fontSize:11,fontWeight:700,color:catColor,letterSpacing:'0.04em',textTransform:'uppercase'}}>CRYPTO</span>
         </div>
-        <div style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.bettvReason||'—'}</div>
+        <span style={{fontSize:11,color:T.gray1}}>Mercado 24h</span>
       </div>
-      {/* Price + change */}
-      <div style={{textAlign:'right',flexShrink:0}}>
-        <div style={{fontSize:14,fontWeight:700,color:T.black,marginBottom:3}}>
-          {item.price>=1000?'$'+item.price.toLocaleString('pt-BR'):item.price>=1?'$'+item.price.toFixed(2):'$'+item.price.toFixed(4)}
+
+      {/* Logo + name */}
+      <div style={{padding:'10px 14px 8px',flexShrink:0,display:'flex',alignItems:'center',gap:12}}>
+        {item.logo&&!imgErr
+          ?<img src={item.logo} alt={item.symbol} onError={()=>setImgErr(true)}
+              style={{width:40,height:40,objectFit:'contain',flexShrink:0}}/>
+          :<div style={{width:40,height:40,borderRadius:'50%',background:catBg,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:14,fontWeight:800,color:catColor}}>{(item.symbol||'').slice(0,3)}</div>
+        }
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontSize:15,fontWeight:800,color:T.black,letterSpacing:'-0.03em'}}>{item.symbol}</div>
+          <div style={{fontSize:12,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.name}</div>
         </div>
-        <div style={{fontSize:12,fontWeight:600,color:chgColor}}>{chg>0?'+':''}{chg.toFixed(1)}%</div>
       </div>
-      {/* Pick badge */}
-      <div style={{background:pickBg,borderRadius:T.r.sm,padding:'4px 10px',flexShrink:0,textAlign:'center',minWidth:58}}>
-        <div style={{fontSize:11,fontWeight:800,color:pickColor}}>{item.bettvPick||'—'}</div>
-        <div style={{fontSize:10,color:T.gray1}}>{item.bettvConf||0}%</div>
+
+      {/* Price block */}
+      <div style={{padding:'0 14px',flex:1,minHeight:0}}>
+        <div style={{display:'flex',alignItems:'baseline',gap:10,padding:'8px 0',borderBottom:`1px solid ${T.border}`}}>
+          <span style={{fontSize:22,fontWeight:900,color:T.black,letterSpacing:'-0.04em'}}>{fmtPrice}</span>
+          <span style={{fontSize:14,fontWeight:700,color:chgColor}}>{chg>0?'+':''}{chg.toFixed(2)}%</span>
+        </div>
+        {/* Trend bar */}
+        <div style={{padding:'10px 0 8px'}}>
+          <div style={{display:'flex',justifyContent:'space-between',marginBottom:5}}>
+            <span style={{fontSize:10,fontWeight:700,color:T.gray1,letterSpacing:'0.05em'}}>TENDÊNCIA DO DIA</span>
+            <span style={{fontSize:10,color:T.gray1}}>{chg>=0?'Alta':'Queda'}</span>
+          </div>
+          <div style={{height:4,borderRadius:2,background:T.gray2,overflow:'hidden'}}>
+            <div style={{height:'100%',width:`${barW}%`,background:isUp?'#16A34A':isDown?T.red:T.gray3,borderRadius:2,transition:'width 0.5s'}}/>
+          </div>
+        </div>
+      </div>
+
+      {/* BetTv strip */}
+      <div style={{margin:'8px 14px 0',background:'#F8F8F5',borderRadius:T.r.sm,padding:'7px 10px',flexShrink:0}}>
+        <div style={{display:'flex',alignItems:'flex-start',gap:6}}>
+          <span style={{fontSize:10,fontWeight:700,color:catColor,whiteSpace:'nowrap',paddingTop:1,flexShrink:0}}>BetTv</span>
+          <span style={{fontSize:11,color:T.gray1,lineHeight:1.4,flex:1,overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical'}}>{item.bettvReason||'—'}</span>
+          <span style={{fontSize:12,fontWeight:900,color:T.white,background:pickColor,borderRadius:T.r.pill,padding:'2px 8px',flexShrink:0,whiteSpace:'nowrap'}}>{item.bettvPick||'—'}</span>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div style={{padding:'8px 14px 11px',display:'flex',justifyContent:'space-between',alignItems:'center',flexShrink:0}}>
+        <span style={{fontSize:11,color:T.gray1}}>Confiança BetTv</span>
+        <span style={{fontSize:13,fontWeight:800,color:pickColor}}>{item.bettvConf||0}%</span>
       </div>
     </div>
   )
 }
 
-// ─── MOEDAS CARD ──────────────────────────────────────────────────────────────
-function MoedasCard({item, onSelect}) {
+// ─── MOEDAS CARD — same style as KalshiSportCard ─────────────────────────────
+function MoedasCard({item}) {
   const [hov,setHov]=useState(false)
-  const isUp = item.bettvPick==='ALTA'
+  const catColor = T.cat.moedas||'#0891B2'
+  const catBg    = T.catBg.moedas||'#CFFAFE'
+  const isUp   = item.bettvPick==='ALTA'
   const isDown = item.bettvPick==='QUEDA'
   const pickColor = isUp?'#16A34A':isDown?T.red:T.gray1
-  const pickBg = isUp?'#F0FDF4':isDown?'#FEF2F2':'#F8F8F6'
   const chg = item.change24h||0
   const chgColor = chg>0?'#16A34A':chg<0?T.red:T.gray1
+  const fmtBRL = item.priceBRL>=1
+    ? 'R$ '+Number(item.priceBRL).toFixed(2)
+    : 'R$ '+Number(item.priceBRL).toFixed(5)
+  const barW = Math.min(95, Math.max(5, 50 + (chg * 5)))
+
   return (
-    <div onClick={()=>onSelect&&onSelect(item)}
-      onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-      style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C0C0BB':T.border}`,
-        padding:'14px 16px',cursor:'pointer',display:'flex',alignItems:'center',gap:12,
-        boxShadow:hov?'0 2px 12px rgba(0,0,0,0.08)':'none',transition:'all 0.12s'}}>
-      {/* Flag emoji */}
-      <div style={{width:36,height:36,borderRadius:'50%',background:T.catBg.moedas||'#CFFAFE',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:20}}>{item.flag||'💱'}</div>
-      {/* Name */}
-      <div style={{flex:1,minWidth:0}}>
-        <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:2}}>
-          <span style={{fontSize:14,fontWeight:700,color:T.black}}>{item.symbol}</span>
-          <span style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.name}</span>
+    <div onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+      style={{height:CARD_H,background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C0C0BB':T.border}`,
+        boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',
+        transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden'}}>
+
+      {/* Header */}
+      <div style={{padding:'11px 14px 9px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
+        <div style={{display:'flex',alignItems:'center',gap:8}}>
+          <div style={{width:22,height:22,borderRadius:6,background:catBg,display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <IcoMoedas size={12} color={catColor}/>
+          </div>
+          <span style={{fontSize:11,fontWeight:700,color:catColor,letterSpacing:'0.04em',textTransform:'uppercase'}}>CÂMBIO</span>
         </div>
-        <div style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.bettvReason||'—'}</div>
+        <span style={{fontSize:11,color:T.gray1}}>vs BRL · Hoje</span>
       </div>
-      {/* Price in BRL */}
-      <div style={{textAlign:'right',flexShrink:0}}>
-        <div style={{fontSize:14,fontWeight:700,color:T.black,marginBottom:3}}>
-          {item.priceBRL>=1?'R$'+item.priceBRL.toFixed(2):'R$'+item.priceBRL.toFixed(4)}
+
+      {/* Flag + name */}
+      <div style={{padding:'10px 14px 8px',flexShrink:0,display:'flex',alignItems:'center',gap:12}}>
+        <div style={{width:44,height:44,borderRadius:10,background:catBg,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:26,lineHeight:1}}>
+          {item.flag||'💱'}
         </div>
-        <div style={{fontSize:12,fontWeight:600,color:chgColor}}>{chg>0?'+':''}{chg.toFixed(1)}%</div>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontSize:15,fontWeight:800,color:T.black,letterSpacing:'-0.03em'}}>{item.symbol}</div>
+          <div style={{fontSize:12,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.name}</div>
+        </div>
       </div>
-      {/* Pick badge */}
-      <div style={{background:pickBg,borderRadius:T.r.sm,padding:'4px 10px',flexShrink:0,textAlign:'center',minWidth:58}}>
-        <div style={{fontSize:11,fontWeight:800,color:pickColor}}>{item.bettvPick||'—'}</div>
-        <div style={{fontSize:10,color:T.gray1}}>{item.bettvConf||0}%</div>
+
+      {/* Price block */}
+      <div style={{padding:'0 14px',flex:1,minHeight:0}}>
+        <div style={{display:'flex',alignItems:'baseline',gap:10,padding:'8px 0',borderBottom:`1px solid ${T.border}`}}>
+          <span style={{fontSize:22,fontWeight:900,color:T.black,letterSpacing:'-0.04em'}}>{fmtBRL}</span>
+          <span style={{fontSize:14,fontWeight:700,color:chgColor}}>{chg>0?'+':''}{chg.toFixed(2)}%</span>
+        </div>
+        {/* Trend bar */}
+        <div style={{padding:'10px 0 8px'}}>
+          <div style={{display:'flex',justifyContent:'space-between',marginBottom:5}}>
+            <span style={{fontSize:10,fontWeight:700,color:T.gray1,letterSpacing:'0.05em'}}>TENDÊNCIA DO DIA</span>
+            <span style={{fontSize:10,color:T.gray1}}>{chg>=0?'Valorização':'Desvalorização'}</span>
+          </div>
+          <div style={{height:4,borderRadius:2,background:T.gray2,overflow:'hidden'}}>
+            <div style={{height:'100%',width:`${barW}%`,background:isUp?'#16A34A':isDown?T.red:T.gray3,borderRadius:2,transition:'width 0.5s'}}/>
+          </div>
+        </div>
+      </div>
+
+      {/* BetTv strip */}
+      <div style={{margin:'8px 14px 0',background:'#F8F8F5',borderRadius:T.r.sm,padding:'7px 10px',flexShrink:0}}>
+        <div style={{display:'flex',alignItems:'flex-start',gap:6}}>
+          <span style={{fontSize:10,fontWeight:700,color:catColor,whiteSpace:'nowrap',paddingTop:1,flexShrink:0}}>BetTv</span>
+          <span style={{fontSize:11,color:T.gray1,lineHeight:1.4,flex:1,overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical'}}>{item.bettvReason||'—'}</span>
+          <span style={{fontSize:12,fontWeight:900,color:T.white,background:pickColor,borderRadius:T.r.pill,padding:'2px 8px',flexShrink:0,whiteSpace:'nowrap'}}>{item.bettvPick||'—'}</span>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div style={{padding:'8px 14px 11px',display:'flex',justifyContent:'space-between',alignItems:'center',flexShrink:0}}>
+        <span style={{fontSize:11,color:T.gray1}}>Confiança BetTv</span>
+        <span style={{fontSize:13,fontWeight:800,color:pickColor}}>{item.bettvConf||0}%</span>
       </div>
     </div>
   )
@@ -1853,21 +1932,16 @@ export default function App() {
                 </div>
               </div>
               {isLoto&&<div style={{background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:T.r.md,padding:'10px 16px',marginBottom:18,fontSize:12,color:'#78350F',lineHeight:1.6}}><strong>Jogo responsável.</strong> Sugestões baseadas em estatística histórica.</div>}
-              {isCrypto||isMoedas?(
-                <div style={{display:'flex',flexDirection:'column',gap:8}}>
-                  {isCrypto
+              <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:14,alignItems:'start'}}>
+                {isLoto
+                  ?currentItems.map(lot=><KalshiLotoCard key={lot.id} lot={lot} onSelect={setSelItem} catUpdating={catUpd}/>)
+                  :isCrypto
                     ?currentItems.map(item=><CryptoCard key={item.id} item={item}/>)
-                    :currentItems.map(item=><MoedasCard key={item.id} item={item}/>)
-                  }
-                </div>
-              ):(
-                <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:14,alignItems:'start'}}>
-                  {isLoto
-                    ?currentItems.map(lot=><KalshiLotoCard key={lot.id} lot={lot} onSelect={setSelItem} catUpdating={catUpd}/>)
-                    :currentItems.map(item=><KalshiSportCard key={item.id} item={item} catKey={item._catKey||tab} onSelect={setSelItem} catUpdating={isTodos?false:catUpd}/>)
-                  }
-                </div>
-              )}
+                    :isMoedas
+                      ?currentItems.map(item=><MoedasCard key={item.id} item={item}/>)
+                      :currentItems.map(item=><KalshiSportCard key={item.id} item={item} catKey={item._catKey||tab} onSelect={setSelItem} catUpdating={isTodos?false:catUpd}/>)
+                }
+              </div>
             </div>
           )}
         </div>
@@ -1996,11 +2070,11 @@ export default function App() {
             {currentItems.map(lot=><LotoCard key={lot.id} lot={lot} onSelect={setSelItem} catUpdating={catUpd}/>)}
           </div>
         ):isCrypto?(
-          <div style={{display:'flex',flexDirection:'column',gap:8}}>
+          <div style={{display:'grid',gridTemplateColumns:isTablet?'repeat(2,1fr)':'1fr',gap:12}}>
             {currentItems.map(item=><CryptoCard key={item.id} item={item}/>)}
           </div>
         ):isMoedas?(
-          <div style={{display:'flex',flexDirection:'column',gap:8}}>
+          <div style={{display:'grid',gridTemplateColumns:isTablet?'repeat(2,1fr)':'1fr',gap:12}}>
             {currentItems.map(item=><MoedasCard key={item.id} item={item}/>)}
           </div>
         ):(
