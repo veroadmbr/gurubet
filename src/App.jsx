@@ -73,6 +73,173 @@ const LOTERIAS = [
   { id:'diadesorte',nome:'Dia de Sorte', dias:'Ter · Qui · Sáb', concurso:'1212', data:'22/03/2026', premio:'R$ 73.000.000', acumulado:true,  ultimoResultado:[4,7,13,18,22,24,29],                      aposta:'R$ 3,50',  descricao:'7 de 31 + Mês da Sorte', regras:'Acerte 4 a 7',     guruNums:[7,13,18,22,24,28,29],                        guruConf:14, guruAnalise:'R$ 73M acumulados. Atraso estratégico favorece dezenas 7, 13 e 18.' },
 ]
 
+
+const ESPORTES = {
+  futebol: { label:'Futebol', items:[
+    { id:'f1',  status:'live',     startTime:'2026-03-21T21:30:00-03:00', statusLabel:'Hoje · 21h30 · Morumbis',         competition:'Brasileirão · Rd 8',      title:'São Paulo × Palmeiras',        bettvPick:'Palmeiras',   bettvConf:62, bettvReason:'Palmeiras lidera com saldo +11. SP sem Lucas Moura.', home:{name:'São Paulo',    logo:'saopaulo',    sub:'2º · 65pts',pct:31}, away:{name:'Palmeiras',    logo:'palmeiras',   sub:'1º · 68pts',pct:48}, draw:21 },
+    { id:'f2',  status:'live',     startTime:'2026-03-21T20:30:00-03:00', statusLabel:'Hoje · 20h30 · Neo Química',       competition:'Brasileirão · Rd 8',      title:'Corinthians × Flamengo',       bettvPick:'Flamengo',    bettvConf:44, bettvReason:'Corinthians 5 sem vencer. Flamengo em 4V seguidas.', home:{name:'Corinthians',  logo:'corinthians', sub:'9º · 32pts', pct:30}, away:{name:'Flamengo',     logo:'flamengo',    sub:'4º · 54pts',pct:44}, draw:26 },
+    { id:'f3',  status:'live',     startTime:'2026-03-21T19:00:00-03:00', statusLabel:'Hoje · 19h · Arena Fonte Nova',    competition:'Brasileirão · Rd 8',      title:'Bahia × Botafogo',             bettvPick:'Bahia',       bettvConf:51, bettvReason:'Bahia em casa com calor. Botafogo irregular fora.', home:{name:'Bahia',        logo:'bahia',       sub:'3º · 57pts', pct:50}, away:{name:'Botafogo',     logo:'botafogo',    sub:'6º · 46pts',pct:27}, draw:23 },
+    { id:'f4',  status:'live',     startTime:'2026-03-21T12:30:00+00:00', statusLabel:'Hoje · 09h30 · Falmer Stadium',   competition:'Premier League · Rd 31',  title:'Brighton × Liverpool',         bettvPick:'Liverpool',   bettvConf:57, bettvReason:'Liverpool 3º (63pts). Salah na melhor fase da carreira.', home:{name:'Brighton',    logo:'brighton',    sub:'6º · 50pts', pct:29}, away:{name:'Liverpool',    logo:'liverpool',   sub:'3º · 63pts',pct:56}, draw:15 },
+    { id:'f5',  status:'live',     startTime:'2026-03-21T17:30:00+00:00', statusLabel:'Hoje · 14h30 · Goodison Park',   competition:'Premier League · Rd 31',  title:'Everton × Chelsea',            bettvPick:'Chelsea',     bettvConf:54, bettvReason:'Chelsea 4º (62pts). Palmer em 8 gols nos últimos 5 jogos.', home:{name:'Everton',     logo:'everton',     sub:'13º · 31pts',pct:28}, away:{name:'Chelsea',      logo:'chelsea',     sub:'4º · 62pts',pct:55}, draw:17 },
+    { id:'f6',  status:'upcoming', startTime:'2026-03-22T12:00:00+00:00', statusLabel:'22/03 · 09h · St. James Park',   competition:'Premier League · Rd 31',  title:'Newcastle × Sunderland',       bettvPick:'Newcastle',   bettvConf:63, bettvReason:'Newcastle 5º em casa. Sunderland promovido, 19º.', home:{name:'Newcastle',   logo:'newcastle',   sub:'5º · 55pts', pct:62}, away:{name:'Sunderland',   logo:null,          sub:'19º · 19pts',pct:16}, draw:22 },
+    { id:'f7',  status:'upcoming', startTime:'2026-03-22T14:15:00+00:00', statusLabel:'22/03 · 11h15 · Villa Park',     competition:'Premier League · Rd 31',  title:'Aston Villa × West Ham',       bettvPick:'Aston Villa', bettvConf:58, bettvReason:'Villa busca top 4. West Ham 15º oscilando.', home:{name:'Aston Villa',  logo:'astonvilla',  sub:'7º · 48pts', pct:57}, away:{name:'West Ham',     logo:null,          sub:'15º · 28pts',pct:22}, draw:21 },
+    { id:'f8',  status:'upcoming', startTime:'2026-03-22T21:00:00+01:00', statusLabel:'22/03 · 17h · Bernabéu',         competition:'La Liga · Jornada 29',    title:'Real Madrid × Barcelona',      bettvPick:'Real Madrid', bettvConf:48, bettvReason:'El Clásico no Bernabéu. Barça lidera (70pts). Mbappé vs Yamal.', home:{name:'Real Madrid', logo:'realmadrid',  sub:'2º · 68pts', pct:46}, away:{name:'Barcelona',    logo:'barcelona',   sub:'1º · 70pts',pct:36}, draw:18 },
+    { id:'f9',  status:'upcoming', startTime:'2026-03-21T15:30:00+01:00', statusLabel:'21/03 · 11h30 · Allianz Arena', competition:'Bundesliga · Rd 27',      title:'Bayern × Leverkusen',          bettvPick:'Bayern',      bettvConf:55, bettvReason:'Bayern 1º em casa. Kane artilheiro. Leverkusen 2º oscila fora.', home:{name:'Bayern',      logo:'bayernmunich',sub:'1º · 63pts', pct:52}, away:{name:'Leverkusen',   logo:null,          sub:'2º · 58pts',pct:28}, draw:20 },
+    { id:'f10', status:'upcoming', startTime:'2026-04-07T20:00:00+02:00', statusLabel:'07/04 · 15h · Etihad',           competition:'Champions League · QF',   title:'Man. City × PSG',              bettvPick:'Man. City',   bettvConf:52, bettvReason:'City em casa. PSG eliminado por City em 2021.', home:{name:'Man. City',   logo:'mancity',     sub:'QF · ING',   pct:50}, away:{name:'PSG',           logo:'psg',         sub:'QF · FRA',  pct:30}, draw:20 },
+    { id:'f11', status:'upcoming', startTime:'2026-04-01T20:00:00-03:00', statusLabel:'01/04 · 20h · Beira-Rio',        competition:'Brasileirão · Rd 9',      title:'Internacional × São Paulo',    bettvPick:'São Paulo',   bettvConf:49, bettvReason:'SP 2º lugar. Inter em casa com apoio da Beira-Rio.', home:{name:'Internacional',logo:'internacional',sub:'12º · 30pts',pct:38}, away:{name:'São Paulo',    logo:'saopaulo',    sub:'2º · 65pts',pct:42}, draw:20 },
+    { id:'f12', status:'upcoming', startTime:'2026-04-02T16:00:00-03:00', statusLabel:'02/04 · 16h · Arena MRV',        competition:'Brasileirão · Rd 9',      title:'Atlético-MG × Flamengo',       bettvPick:'Flamengo',    bettvConf:47, bettvReason:'Arena MRV é fortaleza. Fla com melhor elenco e sequência positiva.', home:{name:'Atlético-MG', logo:'atleticmg',   sub:'8º · 40pts', pct:36}, away:{name:'Flamengo',     logo:'flamengo',    sub:'4º · 54pts',pct:44}, draw:20 },
+  ]},
+  basquete: { label:'Basquete', items:[
+    { id:'b1',  status:'live',     startTime:'2026-03-21T19:00:00-03:00', statusLabel:'Hoje · 19h · Ibirapuera',         competition:'NBB 2025/26 · Rd 30',    title:'Flamengo × Pinheiros',         bettvPick:'Flamengo',    bettvConf:61, bettvReason:'Fla virou 15pts recentemente. Pinheiros 1º mas Fla crescendo.', home:{name:'Flamengo',    logo:'flamengo',   sub:'3º · 21V',   pct:58}, away:{name:'Pinheiros',    logo:null,         sub:'1º · 26V',   pct:30}, draw:12 },
+    { id:'b2',  status:'upcoming', startTime:'2026-03-21T21:00:00-03:00', statusLabel:'Hoje · 21h · Capital One Arena', competition:'NBA · Regular Season',    title:'Washington × OKC Thunder',     bettvPick:'OKC Thunder', bettvConf:92, bettvReason:'OKC 95.7% SportRadar. Líder do Oeste vs pior equipe da liga.', home:{name:'Washington',  logo:null,         sub:'Conf. Leste', pct:4},  away:{name:'OKC Thunder',  logo:'okc',        sub:'1º Oeste',   pct:93}, draw:3  },
+    { id:'b3',  status:'upcoming', startTime:'2026-03-21T23:00:00-03:00', statusLabel:'Hoje · 23h · Kaseya Center',     competition:'NBA · Regular Season',    title:'Orlando × LA Lakers',          bettvPick:'LA Lakers',   bettvConf:54, bettvReason:'Lakers 58.6% SportRadar. LeBron e AD dominam.', home:{name:'Orlando',     logo:null,         sub:'Conf. Leste', pct:42}, away:{name:'LA Lakers',    logo:'lakers',     sub:'Conf. Oeste',pct:54}, draw:4  },
+    { id:'b4',  status:'upcoming', startTime:'2026-03-21T23:00:00-03:00', statusLabel:'Hoje · 23h · Smoothie King',     competition:'NBA · Regular Season',    title:'New Orleans × Cleveland',      bettvPick:'Cleveland',   bettvConf:58, bettvReason:'Cleveland 63.2% SportRadar. Vine em 3V seguidas.', home:{name:'New Orleans',  logo:null,         sub:'Conf. Leste', pct:37}, away:{name:'Cleveland',    logo:'cavaliers',  sub:'3º Leste',   pct:58}, draw:5  },
+    { id:'b5',  status:'upcoming', startTime:'2026-03-22T00:00:00-03:00', statusLabel:'Hoje · 00h · Toyota Center',    competition:'NBA · Regular Season',    title:'Houston × Miami',              bettvPick:'Houston',     bettvConf:53, bettvReason:'Houston 57.4% SportRadar. Venceu 5 seguidos em casa.', home:{name:'Houston',     logo:'rockets',    sub:'Conf. Oeste', pct:54}, away:{name:'Miami',         logo:'heat',       sub:'Conf. Leste',pct:43}, draw:3  },
+    { id:'b6',  status:'upcoming', startTime:'2026-04-04T20:00:00+02:00', statusLabel:'04/04 · 15h · EuroLeague',      competition:'EuroLeague · Playoffs',   title:'Barcelona × Real Madrid',      bettvPick:'Real Madrid', bettvConf:52, bettvReason:'Real Madrid 6 títulos na Euroliga. Campazzo liderando.', home:{name:'Barcelona',   logo:'barcelona',  sub:'3º Euroliga', pct:45}, away:{name:'Real Madrid',  logo:'realmadrid', sub:'1º Euroliga', pct:47}, draw:8  },
+  ]},
+  volei: { label:'Vôlei', items:[
+    { id:'v1',  status:'live',     startTime:'2026-03-21T21:00:00-03:00', statusLabel:'Hoje · 21h · Arena Paulo Skaf',  competition:'Superliga Masc. · Rd 10', title:'Joinville × Sada Cruzeiro',    bettvPick:'Sada Cruzeiro',bettvConf:67, bettvReason:'Sada tem melhor defesa. Wallace e Douglas dominam.', home:{name:'Joinville',   logo:null, sub:'6º lugar', pct:25}, away:{name:'Sada Cruzeiro',logo:null, sub:'1º lugar', pct:65}, draw:10 },
+    { id:'v2',  status:'live',     startTime:'2026-03-21T20:00:00-03:00', statusLabel:'Hoje · 20h · Mineirinho',        competition:'Superliga Fem. · Rd 10',  title:'Praia Clube × Sesc Flamengo',  bettvPick:'Sesc Flamengo',bettvConf:60, bettvReason:'Sesc com Bernardinho mais consistente.', home:{name:'Praia Clube', logo:null, sub:'3º lugar', pct:31}, away:{name:'Sesc Flamengo',logo:null, sub:'1º lugar', pct:57}, draw:12 },
+    { id:'v3',  status:'upcoming', startTime:'2026-03-29T17:00:00-03:00', statusLabel:'29/03 · 17h · São Paulo',        competition:'Superliga Fem. · Semifinal',title:'Sesc Flamengo × Praia Clube', bettvPick:'Sesc Flamengo',bettvConf:57, bettvReason:'Sesc favoritada. Praia especialista em playoffs.', home:{name:'Sesc Flamengo',logo:null,sub:'1º lugar', pct:55}, away:{name:'Praia Clube',   logo:null,sub:'3º lugar', pct:30}, draw:15 },
+    { id:'v4',  status:'upcoming', startTime:'2026-06-03T19:00:00+09:00', statusLabel:'03/06 · 07h · VNL · Tóquio',    competition:'VNL Masc. 2026 · Rd 1',   title:'Brasil × Japão',               bettvPick:'Brasil',       bettvConf:72, bettvReason:'Brasil Nº2 mundial. Japão em casa mas Leal e Flávio superiores.', home:{name:'Japão',       logo:null, sub:'Nº5 Mundial', pct:22}, away:{name:'Brasil',        logo:null, sub:'Nº2 Mundial', pct:68}, draw:10 },
+  ]},
+  mma: { label:'MMA / UFC', items:[
+    { id:'m1',  status:'live',     startTime:'2026-03-21T17:00:00+00:00', statusLabel:'Hoje · UFC FN 270 · Londres',    competition:'UFC Fight Night 270',     title:'Evloev × Murphy',              bettvPick:'Decisão',     bettvConf:55, bettvReason:'Evloev 19-0 vs Murphy 17-0. Luta técnica — decisão provável.', home:{name:'L. Murphy',   logo:null, sub:'17-0 · Pena', pct:44}, away:{name:'M. Evloev',    logo:null, sub:'19-0 · Pena', pct:44}, draw:12 },
+    { id:'m2',  status:'live',     startTime:'2026-03-21T15:00:00+00:00', statusLabel:'Hoje · UFC FN 270 · Londres',    competition:'UFC Fight Night 270',     title:'Aspinall × Blaydes II',        bettvPick:'Aspinall',    bettvConf:62, bettvReason:'Aspinall 1º na divisão. Blaydes nunca venceu Aspinall.', home:{name:'T. Aspinall',  logo:null, sub:'Camp. Int.', pct:61}, away:{name:'C. Blaydes',    logo:null, sub:'Top 5 HW',   pct:29}, draw:10 },
+    { id:'m3',  status:'upcoming', startTime:'2026-04-12T22:00:00-05:00', statusLabel:'12/04 · Las Vegas · UFC 315',    competition:'UFC 315',                 title:'Poirier × Holloway III',       bettvPick:'Holloway',    bettvConf:52, bettvReason:'Holloway H2H 2V-0D. Mais consistente no striking.', home:{name:'D. Poirier',   logo:null, sub:'Ex-camp LW', pct:36}, away:{name:'M. Holloway',   logo:null, sub:'Camp. Pena', pct:52}, draw:12 },
+    { id:'m4',  status:'upcoming', startTime:'2026-04-26T20:00:00+04:00', statusLabel:'26/04 · Abu Dhabi · UFC 316',    competition:'UFC 316',                 title:'Makhachev × Oliveira II',      bettvPick:'Makhachev',   bettvConf:64, bettvReason:'Makhachev dominou o 1º duelo. Islam mais completo no grappling.', home:{name:'I. Makhachev', logo:null, sub:'Camp. Leve', pct:62}, away:{name:'C. Oliveira',   logo:null, sub:'Do Bronx',   pct:29}, draw:9  },
+    { id:'m5',  status:'upcoming', startTime:'2026-05-10T20:00:00-05:00', statusLabel:'10/05 · São Paulo · UFC FN 272', competition:'UFC FN 272',              title:'Pantoja × Royval II',          bettvPick:'Pantoja',     bettvConf:67, bettvReason:'Pantoja campeão venceu Royval em 2023. Luta em SP.', home:{name:'A. Pantoja',   logo:null, sub:'Camp. Mosca',pct:66}, away:{name:'B. Royval',     logo:null, sub:'Top 5',      pct:23}, draw:11 },
+    { id:'m6',  status:'upcoming', startTime:'2026-05-24T22:00:00-05:00', statusLabel:'24/05 · Las Vegas · UFC 317',    competition:'UFC 317',                 title:'Pereira × Prochazka III',      bettvPick:'Pereira',     bettvConf:55, bettvReason:'Poatan venceu os 2 duelos. Prochazka imprevisível.', home:{name:'A. Pereira',   logo:null, sub:'Camp. LHW',  pct:53}, away:{name:'J. Prochazka',  logo:null, sub:'2x Vice',    pct:38}, draw:9  },
+  ]},
+  tenis: { label:'Tênis', items:[
+    { id:'t1',  status:'live',     startTime:'2026-03-21T13:00:00-05:00', statusLabel:'Hoje · Miami Open · Quartas',    competition:'ATP Miami 2026 · QF',     title:'Sinner × Tsitsipas',           bettvPick:'Sinner',      bettvConf:74, bettvReason:'Sinner venceu IW sem perder set. Tsitsipas outsider.', home:{name:'J. Sinner',    logo:'sinner',     sub:'Nº2 · IW Camp.',pct:73}, away:{name:'S. Tsitsipas', logo:'tsitsipas',  sub:'Nº7 ATP',   pct:19}, draw:8  },
+    { id:'t2',  status:'live',     startTime:'2026-03-21T15:00:00-05:00', statusLabel:'Hoje · Miami Open · Quartas',    competition:'ATP Miami 2026 · QF',     title:'Alcaraz × Fritz',              bettvPick:'Alcaraz',     bettvConf:66, bettvReason:'Alcaraz venceu AO 2026 sem drop sets. Fritz outsider.', home:{name:'C. Alcaraz',   logo:'alcaraz',    sub:'Nº1 ATP',   pct:65}, away:{name:'T. Fritz',     logo:'fritz',      sub:'Nº5 ATP',   pct:22}, draw:13 },
+    { id:'t3',  status:'live',     startTime:'2026-03-21T11:00:00-05:00', statusLabel:'Hoje · Miami Open · WTA QF',    competition:'WTA Miami 2026 · QF',     title:'Sabalenka × Rybakina',         bettvPick:'Sabalenka',   bettvConf:60, bettvReason:'Sabalenka Nº1 WTA, campeã Miami 2025. H2H favorável.', home:{name:'A. Sabalenka', logo:'sabalenka',  sub:'Nº1 WTA',   pct:59}, away:{name:'E. Rybakina',   logo:null,         sub:'Nº4 WTA',   pct:29}, draw:12 },
+    { id:'t4',  status:'upcoming', startTime:'2026-03-27T13:00:00-05:00', statusLabel:'27/03 · Miami · ATP Semifinal', competition:'ATP Miami 2026 · SF',     title:'Sinner × Alcaraz',             bettvPick:'Sinner',      bettvConf:47, bettvReason:'Sinner tem 2 finais em Miami. Alcaraz venceu IW. H2H 6-6.', home:{name:'J. Sinner',    logo:'sinner',     sub:'Nº2 ATP',   pct:44}, away:{name:'C. Alcaraz',   logo:'alcaraz',    sub:'Nº1 ATP',   pct:38}, draw:18 },
+    { id:'t5',  status:'upcoming', startTime:'2026-03-29T13:00:00-05:00', statusLabel:'29/03 · Miami · ATP Final',     competition:'ATP Miami 2026 · Final',  title:'Final Miami Open 2026',        bettvPick:'Alcaraz',     bettvConf:43, bettvReason:'Alcaraz 2 títulos em 2026 (AO+IW). Sinner pode surpreender.', home:{name:'C. Alcaraz',  logo:'alcaraz',    sub:'Nº1 ATP',   pct:48}, away:{name:'J. Sinner',    logo:'sinner',     sub:'Nº2 ATP',   pct:38}, draw:14 },
+    { id:'t6',  status:'upcoming', startTime:'2026-05-25T11:00:00+02:00', statusLabel:'25/05-07/06 · Paris',           competition:'Roland Garros 2026',      title:'Roland Garros 2026',           bettvPick:'Alcaraz',     bettvConf:41, bettvReason:'Alcaraz bicampeão em Paris. Saibro é sua superfície favorita.', home:{name:'C. Alcaraz',  logo:'alcaraz',    sub:'Bicampeão RG', pct:38}, away:{name:'J. Sinner', logo:'sinner',     sub:'Finalista 2025',pct:22},draw:40},
+  ]},
+  esports: { label:'E-sports', items:[
+    { id:'e1',  status:'upcoming', startTime:'2026-03-28T13:00:00-03:00', statusLabel:'28/03 · Riot Arena · 13h',      competition:'CBLOL 2026 · Etapa 1',    title:'LOUD × paiN Gaming',           bettvPick:'LOUD',        bettvConf:66, bettvReason:'LOUD campeã Copa 2026. Bull e RedBert dominantes.', home:{name:'LOUD',        logo:'loud', sub:'Campeã Copa', pct:62}, away:{name:'paiN Gaming',  logo:null, sub:'4º Copa',    pct:24}, draw:14 },
+    { id:'e2',  status:'upcoming', startTime:'2026-03-28T15:00:00-03:00', statusLabel:'28/03 · Riot Arena · 15h',      competition:'CBLOL 2026 · Etapa 1',    title:'FURIA × RED Canids',           bettvPick:'FURIA',       bettvConf:54, bettvReason:'FURIA bootcampou na Coreia. RED Canids inconstante.', home:{name:'FURIA',       logo:null, sub:'Americas Cup', pct:52}, away:{name:'RED Canids',   logo:null, sub:'5º Copa',    pct:32}, draw:16 },
+    { id:'e3',  status:'upcoming', startTime:'2026-04-05T17:00:00+09:00', statusLabel:'05/04 · 05h · LCK · Seoul',    competition:'LCK Spring 2026 · SF',    title:'T1 × Gen.G',                   bettvPick:'T1',          bettvConf:58, bettvReason:'T1 e Faker históricos nos playoffs da LCK.', home:{name:'T1',          logo:'t1',   sub:'1º LCK',      pct:56}, away:{name:'Gen.G',         logo:null, sub:'2º LCK',     pct:32}, draw:12 },
+    { id:'e4',  status:'upcoming', startTime:'2026-05-01T14:00:00+02:00', statusLabel:'01/05 · 09h · CS2 Major',      competition:'CS2 Major 2026 · QF',     title:'NaVi × FaZe Clan',             bettvPick:'NaVi',        bettvConf:53, bettvReason:'NaVi com s1mple ao melhor nível. 3 títulos em Majors.', home:{name:'Natus Vincere',logo:null,  sub:'Top 5 CS2',   pct:52}, away:{name:'FaZe Clan',    logo:null, sub:'Top 5 CS2',  pct:35}, draw:13 },
+  ]},
+}
+
+const TABS = [
+  { key:'todos',    label:'Todos'     },
+  { key:'loterias', label:'Loterias'  },
+  { key:'futebol',  label:'Futebol'   },
+  { key:'basquete', label:'Basquete'  },
+  { key:'volei',    label:'Vôlei'     },
+  { key:'mma',      label:'MMA / UFC' },
+  { key:'tenis',    label:'Tênis'     },
+  { key:'esports',  label:'E-sports'  },
+]
+
+const INTERVAL = 2*60*60*1000
+
+async function callClaude(data, category) {
+  const hora = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})
+  const system = 'Você é o motor de análise do BetTv. Responda SOMENTE JSON válido, sem markdown. Hora: ' + hora
+  let prompt = ''
+  if (category==='loterias') {
+    prompt = 'Recalcule previsões das loterias Caixa. Dados: ' + JSON.stringify(data.loterias.map(l=>({id:l.id,guruNums:l.guruNums,guruConf:l.guruConf}))) + ' Retorne JSON array: [{"id":"mega","guruNums":[n,n,n,n,n,n],"guruConf":18,"guruAnalise":"max 120 chars"},{"id":"lotofacil","guruNums":[15 de 1-25],"guruConf":34,"guruAnalise":"..."},{"id":"quina","guruNums":[5 de 1-80],"guruConf":22,"guruAnalise":"..."},{"id":"timemania","guruNums":[7 de 1-80],"guruConf":12,"guruAnalise":"..."},{"id":"duplasena","guruNums":[6 de 1-50],"guruConf":15,"guruAnalise":"..."},{"id":"diadesorte","guruNums":[7 de 1-31],"guruConf":14,"guruAnalise":"..."}]'
+  } else {
+    const esp=data.esportes[category]; if (!esp) return null
+    prompt = 'Recalcule previsões para ' + esp.label + '. Dados: ' + JSON.stringify(esp.items.map(i=>({id:i.id,title:i.title,bettvPick:i.bettvPick,bettvConf:i.bettvConf}))) + ' Retorne JSON array: [{"id":"...","bettvPick":"...","bettvConf":50,"bettvReason":"max 100 chars","homePct":50,"awayPct":30,"draw":20}]'
+  }
+  const res = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,system,messages:[{role:'user',content:prompt}]})})
+  if (!res.ok) throw new Error('API ' + res.status)
+  const json = await res.json()
+  const txt = json.content?.find(b=>b.type==='text')?.text||'[]'
+  return JSON.parse(txt.replace(/```json|```/g,'').trim())
+}
+
+function useAutoUpdate(seed) {
+  const [appData,setAppData]=useState(seed)
+  const [logs,setLogs]=useState([])
+  const [updating,setUpdating]=useState(false)
+  const [lastAt,setLastAt]=useState(null)
+  const [nextAt,setNextAt]=useState(null)
+  const [queue,setQueue]=useState([])
+  const [countdown,setCountdown]=useState('')
+  const timerRef=useRef(null)
+  const cdRef=useRef(null)
+
+  const addLog=useCallback((msg,t='info')=>{
+    const ts=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})
+    setLogs(p=>[{msg,t,ts},...p].slice(0,50))
+  },[])
+
+  const runCycle=useCallback(async(cur,manual=false)=>{
+    setUpdating(true)
+    const cats=['loterias',...Object.keys(ESPORTES)]
+    setQueue([...cats])
+    addLog(manual?'Atualização manual':'Ciclo automático','start')
+    const nd={loterias:[...cur.loterias],esportes:{...cur.esportes}}
+    let ok=0
+    for (const cat of cats) {
+      setQueue(q=>q.filter(c=>c!==cat))
+      addLog('Analisando: '+cat,'loading')
+      try {
+        const upd=await callClaude(nd,cat)
+        if (!upd||!Array.isArray(upd)){addLog(cat+': inválido','warn');continue}
+        if (cat==='loterias'){
+          nd.loterias=nd.loterias.map(l=>{const u=upd.find(x=>x.id===l.id);return u?{...l,...u}:l})
+        } else {
+          if (!nd.esportes[cat]) continue
+          nd.esportes[cat]={...nd.esportes[cat],items:nd.esportes[cat].items.map(item=>{
+            const u=upd.find(x=>x.id===item.id)
+            if (!u) return item
+            return{...item,bettvPick:u.bettvPick||item.bettvPick,bettvConf:u.bettvConf??item.bettvConf,bettvReason:u.bettvReason||item.bettvReason,home:{...item.home,pct:u.homePct??item.home.pct},away:{...item.away,pct:u.awayPct??item.away.pct},draw:u.draw??item.draw}
+          })}
+        }
+        setAppData({...nd})
+        ok++
+        addLog(cat+': '+upd.length+' itens','success')
+      } catch(e){addLog(cat+': '+e.message,'error')}
+      await new Promise(r=>setTimeout(r,400))
+    }
+    const ts=new Date()
+    setLastAt(ts)
+    setNextAt(new Date(ts.getTime()+INTERVAL))
+    setUpdating(false)
+    setQueue([])
+    addLog('Concluído — '+ok+'/'+cats.length,'done')
+  },[addLog])
+
+  useEffect(()=>{
+    cdRef.current=setInterval(()=>{
+      if (!nextAt){setCountdown('');return}
+      const d=nextAt-Date.now()
+      if(d<=0){setCountdown('Agora');return}
+      const h=Math.floor(d/3600000),m=Math.floor((d%3600000)/60000),s=Math.floor((d%60000)/1000)
+      setCountdown(h+'h '+String(m).padStart(2,'0')+'m '+String(s).padStart(2,'0')+'s')
+    },1000)
+    return ()=>clearInterval(cdRef.current)
+  },[nextAt])
+
+  useEffect(()=>{
+    runCycle(seed)
+    timerRef.current=setInterval(()=>{setAppData(cur=>{runCycle(cur);return cur})},INTERVAL)
+    return ()=>clearInterval(timerRef.current)
+  },[]) // eslint-disable-line
+
+  const force=useCallback(()=>{if(!updating)setAppData(cur=>{runCycle(cur,true);return cur})},[updating,runCycle])
+  return {appData,logs,updating,lastAt,countdown,queue,force}
+}
+
+// ─── BALL ─────────────────────────────────────────────────────────────────────
+function Ball({n, size=24, bg=T.gray2, color=T.black}) {
+  return (
+    <div style={{width:size,height:size,minWidth:size,borderRadius:'50%',background:bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:Math.max(8,size*0.38),fontWeight:700,color,flexShrink:0,lineHeight:1}}>
+      {String(n).padStart(2,'0')}
+    </div>
+  )
+}
+
 // ─── AI IMAGE CACHE — busca URLs de imagens via Claude ───────────────────────
 const imageCache = {}
 const pendingFetches = new Set()
@@ -92,7 +259,7 @@ async function fetchImageUrl(name) {
     const json = await res.json()
     const url = json.content?.find(b=>b.type==='text')?.text?.trim()||''
     imageCache[name] = (url && url!=='NONE' && url.startsWith('http')) ? url : null
-  } catch { imageCache[name] = null }
+  } catch(e) { imageCache[name] = null }
   finally { pendingFetches.delete(name) }
 }
 
