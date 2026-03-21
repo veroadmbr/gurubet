@@ -35,6 +35,10 @@ const IcoCheck     = ({size=24,color='currentColor'}) => <svg width={size} heigh
 const IcoClose     = ({size=18,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'block',flexShrink:0}}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
 const IcoLiveDot   = () => <span style={{display:'inline-block',width:7,height:7,borderRadius:'50%',background:T.red,flexShrink:0}}/>
 
+const IcoSocial    = ({size=16,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'block',flexShrink:0}}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+const IcoSend      = ({size=16,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'block',flexShrink:0}}><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+const IcoThumb     = ({size=14,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'block',flexShrink:0}}><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+
 const TAB_ICON = {
   loterias: IcoLottery, futebol: IcoSoccer, basquete: IcoBasket,
   volei: IcoVolley, mma: IcoMMA, tenis: IcoTennis, esports: IcoEsports,
@@ -69,31 +73,67 @@ const LOTERIAS = [
 ]
 
 const ESPORTES = {
-  futebol:  { label:'Futebol',   items:[
-    { id:'f1', status:'live',     statusLabel:'Hoje · 21h30 · Morumbis',          competition:'Brasileirão · 8ª Rodada', title:'São Paulo × Palmeiras',      subtitle:'Choque-Rei pela liderança',          guruPick:'Palmeiras',    guruConf:62, guruReason:'Palmeiras líder com saldo +11. São Paulo sem Lucas Moura.',              home:{name:'São Paulo',    sub:'2º · 16pts',pct:31}, away:{name:'Palmeiras',    sub:'1º · 16pts',pct:48}, draw:21, vol:'R$ 18,4M' },
-    { id:'f2', status:'live',     statusLabel:'Hoje · 20h30 · Neo Química',       competition:'Brasileirão · 8ª Rodada', title:'Corinthians × Flamengo',     subtitle:'Clássico nacional em SP',            guruPick:'Empate',       guruConf:38, guruReason:'Corinthians em casa, 5 sem vencer. Fla em 4 vitórias seguidas.',         home:{name:'Corinthians',  sub:'9º · 8pts', pct:26}, away:{name:'Flamengo',     sub:'4º · 13pts',pct:44}, draw:30, vol:'R$ 14,2M' },
-    { id:'f3', status:'upcoming', statusLabel:'22/03 · 18h30 · Maracanã',         competition:'Brasileirão · 8ª Rodada', title:'Fluminense × Atlético-MG',   subtitle:'Duelo direto na tabela',             guruPick:'Fluminense',   guruConf:48, guruReason:'Fluminense em casa, 5º com 13pts. Atlético oscila fora.',               home:{name:'Fluminense',   sub:'5º · 13pts',pct:44}, away:{name:'Atlético-MG',  sub:'8º · 10pts',pct:32}, draw:24, vol:'R$ 7,1M' },
-    { id:'f4', status:'upcoming', statusLabel:'22/03 · 16h00 · Nilton Santos',    competition:'Brasileirão · 8ª Rodada', title:'Vasco × Grêmio',             subtitle:'Gigante da Colina vs Tricolor',      guruPick:'Vasco',        guruConf:52, guruReason:'Vasco em casa após 3×2 vs Flu. Grêmio com viagem longa.',              home:{name:'Vasco',        sub:'10º · 9pts',pct:45}, away:{name:'Grêmio',       sub:'7º · 11pts',pct:31}, draw:24, vol:'R$ 6,8M' },
+  futebol: { label:'Futebol', items:[
+    // Rodada 8 — ao vivo hoje 21/03
+    { id:'f1',  status:'live',     statusLabel:'Hoje · 21h30 · Morumbis',            competition:'Brasileirão · Rd 8',    title:'São Paulo × Palmeiras',         subtitle:'Choque-Rei pela liderança',              guruPick:'Palmeiras',    guruConf:62, guruReason:'Palmeiras lidera com saldo +11. SP sem Lucas Moura. Histórico: Palmas 7V nos últimos 10 clássicos.',         home:{name:'São Paulo',      sub:'2º · 16pts', pct:31}, away:{name:'Palmeiras',      sub:'1º · 16pts', pct:48}, draw:21, vol:'R$ 18,4M' },
+    { id:'f2',  status:'live',     statusLabel:'Hoje · 20h30 · Neo Química',          competition:'Brasileirão · Rd 8',    title:'Corinthians × Flamengo',        subtitle:'Clássico nacional em São Paulo',          guruPick:'Flamengo',     guruConf:44, guruReason:'Corinthians 5 sem vencer mas joga em casa. Flamengo em 4 vitórias seguidas, pressão por G4.',              home:{name:'Corinthians',    sub:'9º · 8pts',  pct:30}, away:{name:'Flamengo',       sub:'4º · 13pts', pct:44}, draw:26, vol:'R$ 14,2M' },
+    { id:'f3',  status:'live',     statusLabel:'Hoje · 19h · Arena Fonte Nova',       competition:'Brasileirão · Rd 8',    title:'Bahia × Botafogo',              subtitle:'Nordeste vs atual campeão',              guruPick:'Bahia',        guruConf:51, guruReason:'Bahia 3º colocado (14pts) joga em casa com fator altitude-calor. Botafogo campeão mas oscilando.',       home:{name:'Bahia',          sub:'3º · 14pts', pct:50}, away:{name:'Botafogo',       sub:'6º · 12pts', pct:27}, draw:23, vol:'R$ 9,1M' },
+    // Rodada 9 — 01-02/04
+    { id:'f4',  status:'upcoming', statusLabel:'01/04 · 20h · Beira-Rio',             competition:'Brasileirão · Rd 9',    title:'Internacional × São Paulo',     subtitle:'Gaúcho em recuperação recebe o Tricolor', guruPick:'São Paulo',    guruConf:49, guruReason:'SP vem de derrota no clássico. Inter em casa com apoio da Beira-Rio. H2H equilibrado (5V-5V-5E).',        home:{name:'Internacional',  sub:'12º · 7pts', pct:38}, away:{name:'São Paulo',      sub:'2º · 16pts', pct:42}, draw:20, vol:'R$ 8,2M' },
+    { id:'f5',  status:'upcoming', statusLabel:'01/04 · 21h30 · Neo Química',          competition:'Brasileirão · Rd 9',    title:'Corinthians × Mirassol',        subtitle:'Timão tenta sair do Z-4 moral',          guruPick:'Corinthians',  guruConf:58, guruReason:'Mirassol promovido em 2025, ainda se adaptando. Corinthians pressionado precisa dos 3 pts em casa.',     home:{name:'Corinthians',    sub:'9º · 8pts',  pct:54}, away:{name:'Mirassol',       sub:'19º · 3pts', pct:20}, draw:26, vol:'R$ 5,8M' },
+    { id:'f6',  status:'upcoming', statusLabel:'02/04 · 16h · Arena MRV',             competition:'Brasileirão · Rd 9',    title:'Atlético-MG × Flamengo',        subtitle:'Duelo de gigantes em BH',                guruPick:'Flamengo',     guruConf:47, guruReason:'Atlético-MG oscila mas Arena MRV é fortaleza. Fla tem melhor elenco e sequência positiva.',            home:{name:'Atlético-MG',    sub:'8º · 10pts', pct:36}, away:{name:'Flamengo',       sub:'4º · 13pts', pct:44}, draw:20, vol:'R$ 12,6M' },
+    { id:'f7',  status:'upcoming', statusLabel:'02/04 · 18h30 · Maracanã',            competition:'Brasileirão · Rd 9',    title:'Fluminense × Palmeiras',        subtitle:'Maracanã recebe o líder',                guruPick:'Palmeiras',    guruConf:55, guruReason:'Palmeiras lidera e vem de clássico vencido. Flu em casa mas irregular. Endrick e Estevão na melhor fase.', home:{name:'Fluminense',     sub:'5º · 13pts', pct:33}, away:{name:'Palmeiras',      sub:'1º · 16pts', pct:52}, draw:15, vol:'R$ 10,4M' },
+    // Rodada 10 — 04-05/04
+    { id:'f8',  status:'upcoming', statusLabel:'04/04 · 21h · Morumbis',              competition:'Brasileirão · Rd 10',   title:'São Paulo × Cruzeiro',          subtitle:'SP quer recuperar posição na tabela',    guruPick:'São Paulo',    guruConf:54, guruReason:'SP joga em casa e tem vantagem histórica no Morumbis. Cruzeiro irregular fora de BH (2V 5D).',         home:{name:'São Paulo',      sub:'2º · 16pts', pct:52}, away:{name:'Cruzeiro',       sub:'11º · 7pts', pct:25}, draw:23, vol:'R$ 7,1M' },
+    { id:'f9',  status:'upcoming', statusLabel:'05/04 · 18h · Nilton Santos',          competition:'Brasileirão · Rd 10',   title:'Vasco × Bahia',                 subtitle:'Cruz Maltina desafia 3º colocado',       guruPick:'Empate',       guruConf:36, guruReason:'Vasco 10º em casa, Bahia 3º mas longe da Fonte Nova. Equilíbrio por forças similares. H2H: 4V-4E-4D.',   home:{name:'Vasco',          sub:'10º · 9pts', pct:38}, away:{name:'Bahia',          sub:'3º · 14pts', pct:35}, draw:27, vol:'R$ 6,3M' },
+    // Copa Libertadores — Corinthians Grupo E
+    { id:'f10', status:'upcoming', statusLabel:'09/04 · 21h · Vicente López',          competition:'Copa Libertadores · Fase Grupos E', title:'Platense × Corinthians',  subtitle:'Estreia corintiana na Libertadores',     guruPick:'Empate',       guruConf:41, guruReason:'Corinthians forte mas joga fora. Platense defendendo em casa. H2H inexistente nessa Liberta.',           home:{name:'Platense',       sub:'Gr. E · ARG', pct:35}, away:{name:'Corinthians',   sub:'Gr. E · BRA', pct:38}, draw:27, vol:'R$ 5,2M' },
+    { id:'f11', status:'upcoming', statusLabel:'15/04 · 21h30 · Neo Química',          competition:'Copa Libertadores · Fase Grupos E', title:'Corinthians × Santa Fe',  subtitle:'Corinthians em casa na Libertadores',    guruPick:'Corinthians',  guruConf:61, guruReason:'Corinthians favorito em casa no Grupo E. Independiente Santa Fe (COL) vem de fase irregular.',         home:{name:'Corinthians',    sub:'Gr. E · BRA', pct:60}, away:{name:'Ind. Santa Fe',  sub:'Gr. E · COL', pct:18}, draw:22, vol:'R$ 6,8M' },
+    { id:'f12', status:'upcoming', statusLabel:'30/04 · 21h · Neo Química',            competition:'Copa Libertadores · Fase Grupos E', title:'Corinthians × Peñarol',   subtitle:'Clássico histórico da América',          guruPick:'Empate',       guruConf:38, guruReason:'Peñarol é sempre perigoso na Liberta. Corinthians em casa mas Peñarol tem retrospecto sólido.',          home:{name:'Corinthians',    sub:'Gr. E · BRA', pct:42}, away:{name:'Peñarol',        sub:'Gr. E · URU', pct:33}, draw:25, vol:'R$ 8,9M' },
   ]},
-  basquete: { label:'Basquete',  items:[
-    { id:'b1', status:'live',     statusLabel:'Hoje · 19h · Ibirapuera',          competition:'NBB 2025/26 · 30ª Rodada',title:'Flamengo × Pinheiros',       subtitle:'Líder recebe o Mengão em ascensão',  guruPick:'Flamengo',     guruConf:61, guruReason:'Fla virou 15pts de desvantagem. Muito motivado.',                       home:{name:'Flamengo',    sub:'3º · 21V',  pct:58}, away:{name:'Pinheiros',   sub:'1º · 26V',  pct:30}, draw:12, vol:'R$ 2,1M' },
-    { id:'b2', status:'upcoming', statusLabel:'21/03 · 20h · Arena Caixa',        competition:'NBB 2025/26 · 30ª Rodada',title:'Sesi Franca × Fortaleza BC', subtitle:'Tetracampeão busca mais vitória',     guruPick:'Sesi Franca',  guruConf:78, guruReason:'31pts de Lucas Dias. Franca venceu 8 dos últimos 10 jogos.',            home:{name:'Sesi Franca', sub:'2º · 24V',  pct:72}, away:{name:'Fortaleza BC',sub:'9º · 14V',  pct:16}, draw:12, vol:'R$ 1,4M' },
+  basquete: { label:'Basquete', items:[
+    // NBB 2025/26 — jogos atuais e próximos
+    { id:'b1',  status:'live',     statusLabel:'Hoje · 19h · Ibirapuera',             competition:'NBB 2025/26 · Rd 30',   title:'Flamengo × Pinheiros',          subtitle:'Líder recebe o Mengão em ascensão',      guruPick:'Flamengo',     guruConf:61, guruReason:'Fla virou 15pts de desvantagem recentemente (maior virada da temporada). Pinheiros 1º mas Fla crescendo.', home:{name:'Flamengo',      sub:'3º · 21V',   pct:58}, away:{name:'Pinheiros',      sub:'1º · 26V',   pct:30}, draw:12, vol:'R$ 2,1M' },
+    { id:'b2',  status:'live',     statusLabel:'Hoje · 20h · Arena Caixa',             competition:'NBB 2025/26 · Rd 30',   title:'Sesi Franca × Fortaleza BC',    subtitle:'Tetracampeão busca mais uma vitória',    guruPick:'Sesi Franca',  guruConf:78, guruReason:'31pts de Lucas Dias na última rodada. Franca venceu 8 dos últimos 10 jogos. Fortaleza 9º, outsider.', home:{name:'Sesi Franca',   sub:'2º · 24V',   pct:72}, away:{name:'Fortaleza BC',  sub:'9º · 14V',   pct:16}, draw:12, vol:'R$ 1,4M' },
+    { id:'b3',  status:'upcoming', statusLabel:'22/03 · 18h · Ginásio Nilson Nelson',  competition:'NBB 2025/26 · Rd 30',   title:'Brasília × Corinthians',        subtitle:'Capital quer subir na tabela',           guruPick:'Corinthians',  guruConf:55, guruReason:'Corinthians venceu 8 seguidos (recorde da temporada). Brasília instável em casa, 7º colocado.',       home:{name:'Brasília',       sub:'7º · 18V',   pct:33}, away:{name:'Corinthians',    sub:'4º · 22V',   pct:52}, draw:15, vol:'R$ 1,1M' },
+    { id:'b4',  status:'upcoming', statusLabel:'25/03 · 20h · Tijuca',                 competition:'NBB 2025/26 · Rd 31',   title:'Flamengo × Sesi Franca',        subtitle:'Clássico do NBB — definindo o G2',       guruPick:'Sesi Franca',  guruConf:52, guruReason:'Franca lidera o H2H na temporada (3V-1D). Fla em casa mas Franca tem maior consistência ofensiva.',    home:{name:'Flamengo',      sub:'3º · 21V',   pct:44}, away:{name:'Sesi Franca',   sub:'2º · 24V',   pct:48}, draw:8,  vol:'R$ 2,8M' },
+    { id:'b5',  status:'upcoming', statusLabel:'28/03 · 19h · Arena Caixa',            competition:'NBB 2025/26 · Rd 31',   title:'Sesi Franca × Pinheiros',       subtitle:'Disputa direta pela liderança',           guruPick:'Pinheiros',    guruConf:49, guruReason:'Pinheiros líder invicto em casa (12V). Franca tem viagens longas na semana, fator fadiga conta.',     home:{name:'Sesi Franca',   sub:'2º · 24V',   pct:45}, away:{name:'Pinheiros',      sub:'1º · 26V',   pct:46}, draw:9,  vol:'R$ 2,4M' },
+    { id:'b6',  status:'upcoming', statusLabel:'01/04 · 20h · Ibirapuera',             competition:'NBB 2025/26 · Rd 32',   title:'Pinheiros × Corinthians',       subtitle:'G2 em jogo — clássico paulista do NBB',  guruPick:'Pinheiros',    guruConf:58, guruReason:'Pinheiros em casa, liderança impecável no Ibirapuera. Corinthians viajou muito na semana.',            home:{name:'Pinheiros',     sub:'1º · 26V',   pct:57}, away:{name:'Corinthians',    sub:'4º · 22V',   pct:29}, draw:14, vol:'R$ 1,9M' },
   ]},
-  volei:    { label:'Vôlei',     items:[
-    { id:'v1', status:'live',     statusLabel:'Hoje · 21h · Arena Paulo Skaf',    competition:'Superliga Masc. · Rd 10', title:'Joinville × Sada Cruzeiro',  subtitle:'Decacampeão visita Joinville',       guruPick:'Sada Cruzeiro',guruConf:67, guruReason:'Sada tem a melhor defesa. Wallace e Douglas dominam.',                  home:{name:'Joinville',   sub:'6º lugar',  pct:25}, away:{name:'Sada Cruzeiro',sub:'1º lugar',  pct:65}, draw:10, vol:'R$ 1,2M' },
-    { id:'v2', status:'upcoming', statusLabel:'22/03 · 20h · Ginásio Mineirinho', competition:'Superliga Fem. · Rd 10',  title:'Praia Clube × Sesc Flamengo',subtitle:'Duelo de gigantes pelo topo',        guruPick:'Sesc Flamengo',guruConf:60, guruReason:'Sesc com Bernardinho é mais consistente na temporada.',                home:{name:'Praia Clube', sub:'3º lugar',  pct:31}, away:{name:'Sesc Flamengo',sub:'1º lugar',  pct:57}, draw:12, vol:'R$ 1,4M' },
+  volei: { label:'Vôlei', items:[
+    { id:'v1',  status:'live',     statusLabel:'Hoje · 21h · Arena Paulo Skaf',        competition:'Superliga Masc. · Rd 10',title:'Joinville × Sada Cruzeiro',    subtitle:'Decacampeão visita Joinville',           guruPick:'Sada Cruzeiro',guruConf:67, guruReason:'Sada Cruzeiro tem melhor defesa da liga. Wallace e Douglas Souza formam dupla dominante. 1º com folga.',  home:{name:'Joinville',     sub:'6º lugar',   pct:25}, away:{name:'Sada Cruzeiro', sub:'1º lugar',   pct:65}, draw:10, vol:'R$ 1,2M' },
+    { id:'v2',  status:'live',     statusLabel:'Hoje · 20h · Ginásio Mineirinho',      competition:'Superliga Fem. · Rd 10', title:'Praia Clube × Sesc Flamengo',  subtitle:'Duelo de gigantes pelo topo feminino',   guruPick:'Sesc Flamengo',guruConf:60, guruReason:'Sesc com Bernardinho mais consistente na temporada. Praia Clube perde sets importantes.',             home:{name:'Praia Clube',   sub:'3º lugar',   pct:31}, away:{name:'Sesc Flamengo', sub:'1º lugar',   pct:57}, draw:12, vol:'R$ 1,4M' },
+    { id:'v3',  status:'upcoming', statusLabel:'22/03 · 19h · Ginásio do Tijuca',      competition:'Superliga Masc. · Rd 10',title:'Renata × Taubaté',             subtitle:'Duelo para sair do Z-4',                 guruPick:'Renata',       guruConf:53, guruReason:'Renata em casa tem vantagem histórica vs Taubaté. Taubaté perde força sem Lucarelli, lesionado.',       home:{name:'Renata',        sub:'5º lugar',   pct:51}, away:{name:'Taubaté',        sub:'7º lugar',   pct:33}, draw:16, vol:'R$ 0,8M' },
+    { id:'v4',  status:'upcoming', statusLabel:'25/03 · 20h · Uberlândia',             competition:'Superliga Masc. · Rd 11',title:'Uberlândia × Sada Cruzeiro',   subtitle:'Minas derbi — Sada defende liderança',   guruPick:'Sada Cruzeiro',guruConf:71, guruReason:'Sada 1º com 9 pts de vantagem. Uberlândia irregular, 4º, mas caldeirão em Uberlândia é perigoso.',    home:{name:'Uberlândia',    sub:'4º lugar',   pct:21}, away:{name:'Sada Cruzeiro', sub:'1º lugar',   pct:70}, draw:9,  vol:'R$ 1,0M' },
+    { id:'v5',  status:'upcoming', statusLabel:'29/03 · 17h · São Paulo',              competition:'Superliga Fem. · Semifinal',title:'Sesc Flamengo × Praia Clube',subtitle:'Semifinal Superliga Feminina ida',       guruPick:'Sesc Flamengo',guruConf:57, guruReason:'Sesc favoritada na semifinal. Mas Praia Clube é especialista em playoffs — venceu em 2023 e 2024.',    home:{name:'Sesc Flamengo', sub:'1º lugar',   pct:55}, away:{name:'Praia Clube',   sub:'3º lugar',   pct:30}, draw:15, vol:'R$ 1,8M' },
+    { id:'v6',  status:'upcoming', statusLabel:'10/05 · 18h · Belo Horizonte',         competition:'Superliga Masc. · Final',  title:'Sada Cruzeiro × Taubaté',     subtitle:'Projeção: Grande Final da Superliga',    guruPick:'Sada Cruzeiro',guruConf:63, guruReason:'Sada favorito ao tricampeonato. Taubaté único rival histórico, mas elenco desfalcado em 2026.',         home:{name:'Sada Cruzeiro', sub:'Favorito',   pct:62}, away:{name:'Taubaté',        sub:'Vice favorito',pct:28},draw:10, vol:'R$ 2,2M' },
   ]},
-  mma:      { label:'MMA / UFC', items:[
-    { id:'m1', status:'live',     statusLabel:'Hoje · UFC FN 270 · Londres',      competition:'UFC Fight Night 270',     title:'Evloev × Murphy',            subtitle:'Dois invictos pelo cinturão',        guruPick:'Decisão',      guruConf:55, guruReason:'Evloev 19-0 vs Murphy 17-0. Britânico em casa. Decisão técnica.',      home:{name:'L. Murphy',   sub:'17-0 · Pena',pct:44},away:{name:'M. Evloev',  sub:'19-0 · Pena',pct:44},draw:12,vol:'R$ 8,4M' },
-    { id:'m2', status:'upcoming', statusLabel:'28/03 · Las Vegas',                competition:'UFC Fight Night',         title:'Adesanya × Pyfer',           subtitle:'Ex-campeão busca retorno ao top 5',  guruPick:'Adesanya',     guruConf:58, guruReason:'Melhor alcance, KO power e experiência de campeonato.',                home:{name:'I. Adesanya', sub:'25-4 · MW', pct:55}, away:{name:'J. Pyfer',   sub:'13-2 · Top15',pct:34},draw:11,vol:'R$ 6,2M' },
+  mma: { label:'MMA / UFC', items:[
+    { id:'m1',  status:'live',     statusLabel:'Hoje · UFC FN 270 · Londres',          competition:'UFC Fight Night 270',   title:'Evloev × Murphy',               subtitle:'Dois invictos pelo cinturão',            guruPick:'Decisão',      guruConf:55, guruReason:'Evloev 19-0 vs Murphy 17-0. Britânico em casa com público a favor. Luta técnica — decisão provável.',    home:{name:'L. Murphy',     sub:'17-0 · Pena',pct:44}, away:{name:'M. Evloev',    sub:'19-0 · Pena',pct:44}, draw:12, vol:'R$ 8,4M' },
+    { id:'m2',  status:'upcoming', statusLabel:'28/03 · Las Vegas · FN 271',           competition:'UFC Fight Night 271',   title:'Adesanya × Pyfer',              subtitle:'Ex-campeão busca retorno ao top 5',      guruPick:'Adesanya',     guruConf:58, guruReason:'Melhor alcance, KO power e experiência de campeonato. Pyfer pressiona mas carece de resistência.',    home:{name:'I. Adesanya',   sub:'25-4 · MW', pct:55}, away:{name:'J. Pyfer',     sub:'13-2 · Top15',pct:34},draw:11, vol:'R$ 6,2M' },
+    { id:'m3',  status:'upcoming', statusLabel:'12/04 · Las Vegas · UFC 315',          competition:'UFC 315',               title:'Poirier × Holloway III',         subtitle:'Trilogia pelo cinturão peso-pena',       guruPick:'Holloway',     guruConf:52, guruReason:'Holloway é mais consistente no H2H (2V-0D). Poirier aposentou depois, retorno pode custar performance.', home:{name:'D. Poirier',    sub:'Ex-camp · LW',pct:36},away:{name:'M. Holloway',  sub:'Camp. Pena',pct:52}, draw:12, vol:'R$ 18,2M' },
+    { id:'m4',  status:'upcoming', statusLabel:'26/04 · Abu Dhabi · UFC 316',          competition:'UFC 316',               title:'Islam × Oliveira II',            subtitle:'Revanche pelo cinturão leve',            guruPick:'Makhachev',    guruConf:64, guruReason:'Makhachev dominou o 1º duelo por decisão. Islam mais completo no grappling e com Dagestani game plan.',  home:{name:'I. Makhachev',  sub:'Camp. Leve',pct:62}, away:{name:'C. Oliveira',  sub:'Do Bronx · 35-9',pct:29},draw:9, vol:'R$ 24,1M' },
+    { id:'m5',  status:'upcoming', statusLabel:'10/05 · São Paulo · UFC FN 272',       competition:'UFC Fight Night 272',   title:'Pantoja × Royval II',            subtitle:'Brasil recebe o campeão peso-mosca',     guruPick:'Pantoja',      guruConf:67, guruReason:'Pantoja campeão venceu Royval em 2023. Luta em SP gera pressão extra para o brasileiro. Favorito claro.', home:{name:'A. Pantoja',    sub:'Camp. Mosca',pct:66}, away:{name:'B. Royval',    sub:'Top 5 · 18-8',pct:23}, draw:11, vol:'R$ 11,8M' },
+    { id:'m6',  status:'upcoming', statusLabel:'24/05 · Las Vegas · UFC 317',          competition:'UFC 317',               title:'Pereira × Prochazka III',        subtitle:'Trilogia histórica dos pesos-pesados leves',guruPick:'Pereira',   guruConf:55, guruReason:'Poatan venceu os 2 duelos mas Prochazka é imprevisível. 1V cada um em nocaute. Quem acertar primeiro.', home:{name:'A. Pereira',    sub:'Camp. LHW', pct:53}, away:{name:'J. Prochazka',sub:'2× vice camp.',pct:38},draw:9, vol:'R$ 21,4M' },
   ]},
-  tenis:    { label:'Tênis',     items:[
-    { id:'t1', status:'live',     statusLabel:'Hoje · Miami Open',                competition:'ATP Masters 1000 · Miami',title:'Sinner × Dzumhur',           subtitle:'Campeão IW estreia em Miami',        guruPick:'Sinner',       guruConf:92, guruReason:'Sinner venceu IW sem perder set. Dzumhur Nº74 sem histórico vs top5.',home:{name:'J. Sinner',   sub:'Nº2 · IW Camp.',pct:89},away:{name:'D. Dzumhur',sub:'Nº74 ATP',pct:8},  draw:3,  vol:'R$ 4,1M' },
-    { id:'t2', status:'upcoming', statusLabel:'~27/03 · Miami Open Final',        competition:'ATP Miami 2026 · Projeção',title:'Sinner × Alcaraz',          subtitle:'Sunshine Double em disputa',         guruPick:'Sinner',       guruConf:47, guruReason:'Sinner tem 2 finais e 1 título em Miami. Alcaraz 2º favorito.',        home:{name:'J. Sinner',   sub:'Nº2 · Fav.',pct:44}, away:{name:'C. Alcaraz', sub:'Nº1 · 16-1',pct:38}, draw:18, vol:'R$ 11,2M' },
+  tenis: { label:'Tênis', items:[
+    // Miami Open 2026 — 18-29/03
+    { id:'t1',  status:'live',     statusLabel:'Hoje · Miami Open · QF',              competition:'ATP Miami 2026 · Quartas',title:'Sinner × Tsitsipas',          subtitle:'Quartas de final em Miami',              guruPick:'Sinner',       guruConf:74, guruReason:'Sinner venceu IW sem perder set. Tsitsipas surpreendeu De Minaur mas Jannik é nível superior.',         home:{name:'J. Sinner',     sub:'Nº2 · IW Camp.',pct:73},away:{name:'S. Tsitsipas',sub:'Nº7 ATP',    pct:19}, draw:8,  vol:'R$ 5,2M' },
+    { id:'t2',  status:'live',     statusLabel:'Hoje · Miami Open · QF',              competition:'ATP Miami 2026 · Quartas',title:'Alcaraz × Fritz',             subtitle:'Americana vs Espanha nas quartas',        guruPick:'Alcaraz',      guruConf:66, guruReason:'Alcaraz ganhou o Australian Open 2026 e venceu Fonseca no caminho. Fritz é resiliente mas outsider.',     home:{name:'C. Alcaraz',    sub:'Nº1 ATP',    pct:65}, away:{name:'T. Fritz',     sub:'Nº5 ATP',    pct:22}, draw:13, vol:'R$ 4,8M' },
+    { id:'t3',  status:'upcoming', statusLabel:'27/03 · Miami Open · SF',             competition:'ATP Miami 2026 · Semis',  title:'Sinner × Alcaraz',            subtitle:'Semifinal — Sunshine Double em jogo',    guruPick:'Sinner',       guruConf:47, guruReason:'Sinner tem 2 finais e 1 título em Miami. Alcaraz venceu IW. Duelo histórico dos N1 e N2 do mundo.',    home:{name:'J. Sinner',     sub:'Nº2 · Fav.',pct:44}, away:{name:'C. Alcaraz',   sub:'Nº1 · 16-1', pct:38}, draw:18, vol:'R$ 11,2M' },
+    { id:'t4',  status:'upcoming', statusLabel:'29/03 · Miami Open · Final',          competition:'ATP Miami 2026 · Final',  title:'Final Miami Open',            subtitle:'Projeção: definindo o champion',          guruPick:'Alcaraz',      guruConf:43, guruReason:'Australian Open 2026 + IW 2026: Alcaraz já tem 2 títulos no ano. Sinner pode vencer mas pressão é maior.', home:{name:'C. Alcaraz',    sub:'Nº1 · 2T 2026',pct:48},away:{name:'J. Sinner',   sub:'Nº2 · IW Camp.',pct:38},draw:14,vol:'R$ 18,6M' },
+    // Monte Carlo — Abril
+    { id:'t5',  status:'upcoming', statusLabel:'05-12/04 · Monte Carlo',              competition:'ATP Monte Carlo · Masters',title:'Monte Carlo Masters 2026',   subtitle:'Início do swing de saibro europeu',      guruPick:'Alcaraz',      guruConf:44, guruReason:'Alcaraz é rei do saibro (Roland Garros 2023, 2024). Nadal-like no barro. Sinner menos dominante no clay.',home:{name:'C. Alcaraz',    sub:'Nº1 · Saibro',pct:42}, away:{name:'J. Sinner',   sub:'Nº2 ATP',    pct:28}, draw:30, vol:'R$ 8,1M' },
+    // Roland Garros — projections
+    { id:'t6',  status:'upcoming', statusLabel:'25/05-07/06 · Paris',                 competition:'Roland Garros 2026',      title:'Roland Garros 2026',          subtitle:'Grand Slam de saibro — o maior do ano', guruPick:'Alcaraz',      guruConf:41, guruReason:'Alcaraz bicampeão em Paris (2023-24). Saibro é sua superfície favorita. Sinner e Zverev podem ameaçar.',  home:{name:'C. Alcaraz',    sub:'Bicampeão Paris',pct:38},away:{name:'J. Sinner',  sub:'Finalista 2025',pct:22},draw:40,vol:'R$ 32,4M' },
   ]},
-  esports:  { label:'E-sports',  items:[
-    { id:'e1', status:'upcoming', statusLabel:'28/03 · CBLOL Etapa 1',            competition:'CBLOL 2026 · Etapa 1',    title:'LOUD × paiN Gaming',         subtitle:'Campeã estreia na Etapa 1',          guruPick:'LOUD',         guruConf:66, guruReason:'LOUD campeã Copa CBLOL 2026. Bull e RedBert dominantes.',              home:{name:'LOUD',        sub:'Campeã Copa',pct:62}, away:{name:'paiN Gaming', sub:'4º Copa',   pct:24}, draw:14, vol:'R$ 1,8M' },
-    { id:'e2', status:'upcoming', statusLabel:'06/06 · Grande Final',             competition:'CBLOL 2026 · Campeão',    title:'LOUD vence o campeonato?',   subtitle:'Projeção Etapa 1 completa',          guruPick:'LOUD',         guruConf:42, guruReason:'LOUD bicampeã com coesão. FURIA com bootcamp na Coreia é ameaça.',     home:{name:'LOUD',        sub:'Bicampeã',   pct:40}, away:{name:'FURIA/RED',   sub:'Rivais',    pct:60}, draw:0,  vol:'R$ 5,6M' },
+  esports: { label:'E-sports', items:[
+    // CBLOL 2026 Etapa 1 — começa 28/03
+    { id:'e1',  status:'upcoming', statusLabel:'28/03 · Riot Arena · CBLOL',          competition:'CBLOL 2026 · Etapa 1 · Rd 1',title:'LOUD × paiN Gaming',    subtitle:'Campeã estreia na Etapa 1',              guruPick:'LOUD',         guruConf:66, guruReason:'LOUD campeã Copa CBLOL 2026 com Bull e RedBert dominantes. paiN Gaming sem título desde 2023.',        home:{name:'LOUD',          sub:'Campeã Copa', pct:62}, away:{name:'paiN Gaming',   sub:'4º Copa',    pct:24}, draw:14, vol:'R$ 1,8M' },
+    { id:'e2',  status:'upcoming', statusLabel:'28/03 · Riot Arena · CBLOL',          competition:'CBLOL 2026 · Etapa 1 · Rd 1',title:'FURIA × RED Canids',    subtitle:'Bootcamp Korea vs consistência RED',     guruPick:'FURIA',        guruConf:54, guruReason:'FURIA bootcampou na Coreia pré-temporada. RED Canids inconstante mas Grevthar é diferencial.',         home:{name:'FURIA',         sub:'Americas Cup',pct:52}, away:{name:'RED Canids',    sub:'5º Copa',    pct:32}, draw:16, vol:'R$ 1,4M' },
+    { id:'e3',  status:'upcoming', statusLabel:'29/03 · Riot Arena · CBLOL',          competition:'CBLOL 2026 · Etapa 1 · Rd 1',title:'Fluxo × Vivo Keyd',     subtitle:'Fluxo quer boa estreia na Etapa',        guruPick:'Fluxo',        guruConf:57, guruReason:'Fluxo com lineup estável há 6 meses. Vivo Keyd com mudanças no roster e ainda se adaptando.',          home:{name:'Fluxo',         sub:'3º Copa',    pct:56}, away:{name:'Vivo Keyd',     sub:'6º Copa',    pct:28}, draw:16, vol:'R$ 1,1M' },
+    { id:'e4',  status:'upcoming', statusLabel:'04/04 · Riot Arena · CBLOL',          competition:'CBLOL 2026 · Etapa 1 · Rd 2',title:'LOUD × FURIA',         subtitle:'O maior clássico do LoL nacional',       guruPick:'LOUD',         guruConf:55, guruReason:'LOUD lidera o H2H histórico vs FURIA (12V-8D). Mas FURIA com motivação pós-bootcamp na Coreia.',       home:{name:'LOUD',          sub:'Campeã Copa', pct:53}, away:{name:'FURIA',          sub:'Americas Cup',pct:35}, draw:12, vol:'R$ 2,2M' },
+    { id:'e5',  status:'upcoming', statusLabel:'06/06 · Riot Arena · CBLOL',          competition:'CBLOL 2026 · Etapa 1 · Final',title:'LOUD vence o campeonato?',subtitle:'Projeção Final Etapa 1 — MSI em jogo', guruPick:'LOUD',         guruConf:42, guruReason:'LOUD bicampeã com coesão de equipe. FURIA com bootcamp na Coreia é principal ameaça ao tricampeonato.', home:{name:'LOUD',          sub:'Bicampeã',   pct:40}, away:{name:'FURIA/RED/Outro',sub:'Rivais',    pct:60}, draw:0,  vol:'R$ 5,6M' },
   ]},
 }
 
@@ -600,6 +640,179 @@ function InfoModal({item, isLoto, catKey, onClose}) {
   )
 }
 
+// ─── SOCIAL PAGE ──────────────────────────────────────────────────────────────
+const INITIAL_COMMENTS = {
+  f1: [{id:1,user:'Fabio_SP',time:'2min',text:'Palmeiras tá dominando, 2×0 parece certo',likes:8},
+       {id:2,user:'Viviane_Santos',time:'5min',text:'Lucas Moura faz falta demais pro SP',likes:3}],
+  f2: [{id:1,user:'Marcos_RJ',time:'1min',text:'Flamengo vai virar, Memphis tá demais',likes:12}],
+  t3: [{id:1,user:'AnaTenis',time:'10min',text:'Sinner vs Alcaraz vai ser épico!',likes:19}],
+}
+
+function SocialPage({appData}) {
+  const [selectedCat, setSelectedCat] = useState('futebol')
+  const [selectedCard, setSelectedCard] = useState(null)
+  const [comments, setComments] = useState(INITIAL_COMMENTS)
+  const [newComment, setNewComment] = useState('')
+  const [userName, setUserName] = useState('')
+  const [likedIds, setLikedIds] = useState([])
+
+  // All items for selected category
+  const catItems = selectedCat === 'loterias'
+    ? appData.loterias.map(l => ({...l, id:l.id, title:l.nome, subtitle:l.descricao, status:'upcoming'}))
+    : (appData.esportes[selectedCat]?.items || [])
+
+  const card = selectedCard ? catItems.find(i=>i.id===selectedCard) : null
+  const cardComments = selectedCard ? (comments[selectedCard]||[]) : []
+
+  function postComment() {
+    if (!newComment.trim() || !selectedCard) return
+    const name = userName.trim() || 'Anônimo'
+    const c = {id:Date.now(), user:name, time:'agora', text:newComment.trim(), likes:0}
+    setComments(prev=>({...prev, [selectedCard]:[...(prev[selectedCard]||[]), c]}))
+    setNewComment('')
+  }
+
+  function toggleLike(commentId) {
+    const key = `${selectedCard}-${commentId}`
+    if (likedIds.includes(key)) return
+    setLikedIds(p=>[...p,key])
+    setComments(prev=>({...prev, [selectedCard]:prev[selectedCard].map(c=>c.id===commentId?{...c,likes:c.likes+1}:c)}))
+  }
+
+  const totalComments = Object.values(comments).reduce((a,b)=>a+b.length,0)
+
+  return (
+    <div style={{display:'flex',gap:0,height:'100%',minHeight:'calc(100vh - 110px)'}}>
+      {/* Left panel — category + card selector */}
+      <div style={{width:280,flexShrink:0,borderRight:`1px solid ${T.border}`,overflowY:'auto',background:T.white}}>
+        <div style={{padding:'16px 16px 8px',borderBottom:`1px solid ${T.border}`}}>
+          <div style={{fontSize:12,fontWeight:700,color:T.black,letterSpacing:'0.06em',marginBottom:10}}>CATEGORIAS</div>
+          <div style={{display:'flex',flexDirection:'column',gap:2}}>
+            {TABS.map(({key,label})=>{
+              const Ico=TAB_ICON[key]||IcoLottery
+              const active=key===selectedCat
+              return (
+                <button key={key} onClick={()=>{setSelectedCat(key);setSelectedCard(null)}}
+                  style={{display:'flex',alignItems:'center',gap:9,padding:'9px 12px',borderRadius:T.r.md,border:'none',background:active?T.bg:'transparent',color:active?T.black:T.gray1,fontSize:13,fontWeight:active?700:500,cursor:'pointer',textAlign:'left',transition:'all 0.12s'}}>
+                  <Ico size={14} color={active?T.cat[key]:T.gray3}/>
+                  {label}
+                  {/* comment count badge */}
+                  {(() => {
+                    const items = key==='loterias' ? appData.loterias : (appData.esportes[key]?.items||[])
+                    const cnt = items.reduce((a,i)=>a+(comments[i.id]?.length||0),0)
+                    return cnt>0 ? <span style={{marginLeft:'auto',fontSize:10,fontWeight:700,background:T.green,color:T.white,borderRadius:T.r.pill,padding:'1px 7px'}}>{cnt}</span> : null
+                  })()}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+        {/* Event list */}
+        <div style={{padding:'10px 10px'}}>
+          <div style={{fontSize:11,fontWeight:700,color:T.gray1,letterSpacing:'0.05em',marginBottom:8,paddingLeft:4}}>EVENTOS</div>
+          {catItems.map(item=>{
+            const cnt=(comments[item.id]||[]).length
+            const active=item.id===selectedCard
+            const live=item.status==='live'
+            return (
+              <button key={item.id} onClick={()=>setSelectedCard(item.id)}
+                style={{width:'100%',display:'flex',alignItems:'flex-start',gap:8,padding:'10px 10px',borderRadius:T.r.md,border:`1px solid ${active?T.black:T.border}`,background:active?'#F9F9F7':T.white,cursor:'pointer',marginBottom:6,textAlign:'left',transition:'all 0.12s'}}>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{display:'flex',alignItems:'center',gap:5,marginBottom:2}}>
+                    {live&&<IcoLiveDot/>}
+                    <span style={{fontSize:11,fontWeight:700,color:live?T.red:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.title||item.nome}</span>
+                  </div>
+                  <div style={{fontSize:10,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.statusLabel||item.dias}</div>
+                </div>
+                {cnt>0&&<span style={{fontSize:10,fontWeight:700,color:T.gray1,flexShrink:0,paddingTop:1}}>{cnt}</span>}
+                <IcoSocial size={12} color={cnt>0?T.green:T.gray3}/>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* Right panel — comments */}
+      <div style={{flex:1,display:'flex',flexDirection:'column',overflowY:'auto'}}>
+        {!selectedCard ? (
+          <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:12,color:T.gray1,padding:40}}>
+            <IcoSocial size={40} color={T.gray3}/>
+            <div style={{fontSize:14,fontWeight:600,color:T.gray1}}>Selecione um evento para ver e deixar comentários</div>
+            <div style={{fontSize:12,color:T.gray3}}>{totalComments} comentários em {Object.keys(comments).length} eventos</div>
+          </div>
+        ) : (
+          <>
+            {/* Card header */}
+            <div style={{padding:'16px 20px',borderBottom:`1px solid ${T.border}`,background:T.white,flexShrink:0}}>
+              <div style={{fontSize:11,fontWeight:700,color:T.cat[selectedCat]||T.black,letterSpacing:'0.05em',marginBottom:4,textTransform:'uppercase'}}>{TABS.find(t=>t.key===selectedCat)?.label}</div>
+              <div style={{fontSize:16,fontWeight:800,color:T.black,letterSpacing:'-0.03em'}}>{card?.title||card?.nome}</div>
+              <div style={{fontSize:12,color:T.gray1,marginTop:2}}>{card?.competition||card?.descricao} · {card?.statusLabel||card?.dias}</div>
+              {/* Mini odds strip */}
+              {card?.home && (
+                <div style={{display:'flex',gap:8,marginTop:10}}>
+                  {[{n:card.home.name,p:card.home.pct,c:T.cat[selectedCat]||T.black},{n:'Empate',p:card.draw,c:T.gray1},{n:card.away.name,p:card.away.pct,c:T.gray1}].map(({n,p,c},i)=>(
+                    <div key={i} style={{background:T.bg,borderRadius:T.r.sm,padding:'6px 10px',fontSize:11,color:T.gray1}}>
+                      <span style={{fontWeight:800,color:c,fontSize:13}}>{p}%</span> <span style={{color:T.gray1}}>{n}</span>
+                    </div>
+                  ))}
+                  <div style={{marginLeft:'auto',background:'#F0FDF4',borderRadius:T.r.sm,padding:'6px 10px',fontSize:11}}>
+                    <span style={{fontWeight:800,color:'#15803D'}}>{card.guruConf}%</span> <span style={{color:T.gray1}}>Guru: {card.guruPick}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Comments list */}
+            <div style={{flex:1,overflowY:'auto',padding:'16px 20px',display:'flex',flexDirection:'column',gap:10}}>
+              {cardComments.length===0&&(
+                <div style={{textAlign:'center',padding:'32px 0',color:T.gray1}}>
+                  <IcoSocial size={28} color={T.gray3}/>
+                  <div style={{marginTop:8,fontSize:13}}>Seja o primeiro a comentar!</div>
+                </div>
+              )}
+              {cardComments.map(c=>(
+                <div key={c.id} style={{background:T.white,borderRadius:T.r.md,border:`1px solid ${T.border}`,padding:'12px 14px'}}>
+                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:6}}>
+                    <div style={{display:'flex',alignItems:'center',gap:8}}>
+                      <div style={{width:28,height:28,borderRadius:'50%',background:T.green,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:800,color:T.white,flexShrink:0}}>
+                        {c.user.charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <div style={{fontSize:12,fontWeight:700,color:T.black}}>{c.user}</div>
+                        <div style={{fontSize:10,color:T.gray1}}>{c.time}</div>
+                      </div>
+                    </div>
+                    <button onClick={()=>toggleLike(c.id)} style={{display:'flex',alignItems:'center',gap:4,background:'none',border:'none',cursor:'pointer',color:likedIds.includes(`${selectedCard}-${c.id}`)?T.green:T.gray1,padding:'4px 8px',borderRadius:T.r.sm}}>
+                      <IcoThumb size={13} color={likedIds.includes(`${selectedCard}-${c.id}`)?T.green:T.gray1}/>
+                      <span style={{fontSize:11,fontWeight:600}}>{c.likes}</span>
+                    </button>
+                  </div>
+                  <p style={{fontSize:13,color:T.black,lineHeight:1.5,margin:0}}>{c.text}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Comment input */}
+            <div style={{padding:'14px 20px',borderTop:`1px solid ${T.border}`,background:T.white,flexShrink:0}}>
+              <div style={{display:'flex',gap:8,marginBottom:8}}>
+                <input value={userName} onChange={e=>setUserName(e.target.value)} placeholder="Seu nome (opcional)" style={{flex:'0 0 160px',padding:'9px 12px',borderRadius:T.r.sm,border:`1px solid ${T.border}`,fontSize:12,color:T.black,outline:'none',fontFamily:'inherit',background:T.bg}}/>
+              </div>
+              <div style={{display:'flex',gap:8}}>
+                <textarea value={newComment} onChange={e=>setNewComment(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();postComment()}}} placeholder="Compartilhe sua análise sobre este evento..." rows={2}
+                  style={{flex:1,padding:'10px 12px',borderRadius:T.r.sm,border:`1px solid ${T.border}`,fontSize:13,color:T.black,outline:'none',fontFamily:'inherit',resize:'none',background:T.bg,lineHeight:1.5}}/>
+                <button onClick={postComment} disabled={!newComment.trim()}
+                  style={{width:44,borderRadius:T.r.sm,border:'none',background:newComment.trim()?T.green:T.gray2,cursor:newComment.trim()?'pointer':'default',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                  <IcoSend size={16} color={newComment.trim()?T.white:T.gray1}/>
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
+
 // ─── ENGINE LOG ───────────────────────────────────────────────────────────────
 const LOG_C={info:T.gray1,start:'#7C3AED',loading:'#D97706',success:'#059669',warn:'#D97706',error:'#DC2626',done:'#0369A1'}
 
@@ -640,7 +853,7 @@ function EngineLog({logs,updating,lastAt,countdown,queue,force}) {
 }
 
 // ─── DESKTOP NAV ──────────────────────────────────────────────────────────────
-function DesktopNav({tab, onTab, updating, countdown, queue, showLog, force}) {
+function DesktopNav({tab, onTab, page, onPage, updating, countdown, queue, force}) {
   return (
     <div style={{background:T.white,borderBottom:`1px solid ${T.border}`,position:'sticky',top:0,zIndex:50}}>
       {/* Top bar */}
@@ -649,11 +862,19 @@ function DesktopNav({tab, onTab, updating, countdown, queue, showLog, force}) {
           <div style={{display:'flex',alignItems:'center'}}>
             <LogoSVG height={30}/>
           </div>
-          <nav>
-            <button style={{padding:'5px 12px',borderRadius:T.r.sm,border:'none',background:'transparent',color:T.black,fontSize:13,fontWeight:700,cursor:'pointer',letterSpacing:'0.01em',position:'relative'}}>
-              MERCADOS
-              <div style={{position:'absolute',bottom:-1,left:0,right:0,height:2,background:T.black,borderRadius:1}}/>
-            </button>
+          <nav style={{display:'flex',gap:2}}>
+            {[
+              {key:'categorias', label:'CATEGORIAS'},
+              {key:'social',     label:'SOCIAL', icon:<IcoSocial size={13} color={page==='social'?T.black:T.gray1}/>},
+            ].map(({key,label,icon})=>{
+              const active=page===key
+              return (
+                <button key={key} onClick={()=>onPage(key)} style={{display:'flex',alignItems:'center',gap:6,padding:'5px 14px',borderRadius:T.r.sm,border:'none',background:'transparent',color:active?T.black:T.gray1,fontSize:13,fontWeight:active?700:500,cursor:'pointer',letterSpacing:'0.01em',position:'relative'}}>
+                  {icon}{label}
+                  {active&&<div style={{position:'absolute',bottom:-1,left:0,right:0,height:2,background:T.black,borderRadius:1}}/>}
+                </button>
+              )
+            })}
           </nav>
         </div>
         <div style={{display:'flex',alignItems:'center',gap:10}}>
@@ -676,27 +897,29 @@ function DesktopNav({tab, onTab, updating, countdown, queue, showLog, force}) {
         </div>
       </div>
 
-      {/* Category tabs */}
-      <div style={{maxWidth:1280,margin:'0 auto',padding:'0 40px',display:'flex',alignItems:'center',borderTop:`1px solid ${T.border}`,overflowX:'auto'}}>
-        {TABS.map(({key,label})=>{
-          const active=key===tab
-          const Ico=TAB_ICON[key]||IcoLottery
-          const catColor=T.cat[key]||T.black
-          return (
-            <button key={key} onClick={()=>onTab(key)}
-              style={{display:'flex',alignItems:'center',gap:7,padding:'11px 15px',border:'none',background:'transparent',color:active?T.black:T.gray1,fontSize:13,fontWeight:active?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0,position:'relative',borderBottom:`2px solid ${active?T.black:'transparent'}`,transition:'color 0.15s',marginBottom:-1}}>
-              <Ico size={14} color={active?catColor:T.gray3}/>
-              {label}
-            </button>
-          )
-        })}
-      </div>
+      {/* Category tabs — only when on categorias page */}
+      {page==='categorias'&&(
+        <div style={{maxWidth:1280,margin:'0 auto',padding:'0 40px',display:'flex',alignItems:'center',borderTop:`1px solid ${T.border}`,overflowX:'auto'}}>
+          {TABS.map(({key,label})=>{
+            const active=key===tab
+            const Ico=TAB_ICON[key]||IcoLottery
+            const catColor=T.cat[key]||T.black
+            return (
+              <button key={key} onClick={()=>onTab(key)}
+                style={{display:'flex',alignItems:'center',gap:7,padding:'11px 15px',border:'none',background:'transparent',color:active?T.black:T.gray1,fontSize:13,fontWeight:active?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0,position:'relative',borderBottom:`2px solid ${active?T.black:'transparent'}`,transition:'color 0.15s',marginBottom:-1}}>
+                <Ico size={14} color={active?catColor:T.gray3}/>
+                {label}
+              </button>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }
 
 // ─── MOBILE HEADER ────────────────────────────────────────────────────────────
-function MobileHeader({tab, onTab, updating, countdown, queue, showLog, onToggleLog, force}) {
+function MobileHeader({tab, onTab, page, onPage, updating, countdown, queue, force}) {
   return (
     <div style={{background:T.white,borderBottom:`1px solid ${T.border}`,position:'sticky',top:0,zIndex:50}}>
       <div style={{padding:'12px 16px 9px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
@@ -723,17 +946,22 @@ function MobileHeader({tab, onTab, updating, countdown, queue, showLog, onToggle
       {/* Tab bar */}
       <div style={{display:'flex',overflowX:'auto',borderTop:`1px solid ${T.border}`,scrollbarWidth:'none'}}>
         {TABS.map(({key,label})=>{
-          const active=key===tab&&!showLog
+          const active=key===tab&&page!=='social'
           const Ico=TAB_ICON[key]||IcoLottery
           const catColor=T.cat[key]||T.black
           return (
-            <button key={key} onClick={()=>onTab(key)}
+            <button key={key} onClick={()=>{onPage('categorias');onTab(key)}}
               style={{display:'flex',alignItems:'center',gap:5,padding:'10px 13px',border:'none',borderBottom:`2px solid ${active?T.black:'transparent'}`,background:'transparent',color:active?T.black:T.gray1,fontSize:12,fontWeight:active?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0,transition:'all 0.12s',marginBottom:-1}}>
               <Ico size={13} color={active?catColor:T.gray3}/>
               {label}
             </button>
           )
         })}
+        <button onClick={()=>onPage('social')}
+          style={{display:'flex',alignItems:'center',gap:5,padding:'10px 13px',border:'none',borderBottom:`2px solid ${page==='social'?T.black:'transparent'}`,background:'transparent',color:page==='social'?T.black:T.gray1,fontSize:12,fontWeight:page==='social'?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0,transition:'all 0.12s',marginBottom:-1}}>
+          <IcoSocial size={13} color={page==='social'?T.black:T.gray3}/>
+          Social
+        </button>
       </div>
     </div>
   )
@@ -761,6 +989,7 @@ const SEED={loterias:LOTERIAS,esportes:ESPORTES}
 
 export default function App() {
   const [tab,setTab]=useState('loterias')
+  const [page,setPage]=useState('categorias') // 'categorias' | 'social'
   const [selItem,setSelItem]=useState(null)
   const [showLog,setShowLog]=useState(false)
   const [activeFilter,setActiveFilter]=useState('all')
@@ -774,6 +1003,7 @@ export default function App() {
   const totalLive=Object.values(appData.esportes).flatMap(d=>d.items).filter(i=>i.status==='live').length
 
   function handleTab(key){setTab(key);setShowLog(false);setActiveFilter('all')}
+  function handlePage(p){setPage(p);setShowLog(false)}
 
   // ── DESKTOP ──
   if (isDesktop) {
@@ -784,8 +1014,11 @@ export default function App() {
     return (
       <div style={{display:'flex',flexDirection:'column',height:'100vh',background:T.bg}}>
         <style>{CSS}</style>
-        <DesktopNav tab={tab} onTab={handleTab} updating={updating} countdown={countdown} queue={queue} showLog={showLog} force={force}/>
-        <div style={{flex:1,overflowY:'auto'}}>
+        <DesktopNav tab={tab} onTab={handleTab} page={page} onPage={handlePage} updating={updating} countdown={countdown} queue={queue} force={force}/>
+        <div style={{flex:1,overflowY:page==='social'?'hidden':'auto'}}>
+          {page==='social' ? (
+            <SocialPage appData={appData}/>
+          ) : (
           <div style={{maxWidth:1280,margin:'0 auto',padding:'28px 40px 56px'}}>
             {showLog?(
               <EngineLog logs={logs} updating={updating} lastAt={lastAt} countdown={countdown} queue={queue} force={force}/>
@@ -811,6 +1044,7 @@ export default function App() {
               </>
             )}
           </div>
+          )}
         </div>
         {selItem&&<InfoModal item={selItem} isLoto={isLoto} catKey={tab} onClose={()=>setSelItem(null)}/>}
       </div>
@@ -821,9 +1055,11 @@ export default function App() {
   return (
     <div style={{background:T.bg,minHeight:'100vh'}}>
       <style>{CSS}</style>
-      <MobileHeader tab={tab} onTab={handleTab} updating={updating} countdown={countdown} queue={queue} showLog={showLog} onToggleLog={()=>setShowLog(v=>!v)} force={force}/>
+      <MobileHeader tab={tab} onTab={handleTab} page={page} onPage={handlePage} updating={updating} countdown={countdown} queue={queue} force={force}/>
       <div style={{padding:isTablet?'22px 26px 100px':'14px 14px 100px',maxWidth:isTablet?880:'100%',margin:'0 auto'}}>
-        {showLog?(
+        {page==='social'?(
+          <SocialPage appData={appData}/>
+        ):showLog?(
           <EngineLog logs={logs} updating={updating} lastAt={lastAt} countdown={countdown} queue={queue} force={force}/>
         ):(
           <>
@@ -850,18 +1086,18 @@ export default function App() {
       {isMobile&&(
         <div style={{position:'fixed',bottom:0,left:0,right:0,background:T.white,borderTop:`1px solid ${T.border}`,display:'flex',justifyContent:'space-around',paddingTop:9,paddingBottom:'env(safe-area-inset-bottom,18px)',zIndex:100}}>
           {[
-            {key:'home',    label:'Início',  Ico:IcoHome,     badge:0,         dot:false},
-            {key:'play',    label:'Apostar', Ico:IcoPlay,     badge:totalLive, dot:false},
-            {key:'settings',label:'Motor',   Ico:IcoSettings, badge:0,         dot:updating},
-            {key:'profile', label:'Perfil',  Ico:IcoPerson,   badge:0,         dot:false},
-          ].map(({key,label,Ico,badge,dot})=>{
-            const active=key==='settings'?showLog:false
+            {key:'home',    label:'Início',  Ico:IcoHome,     badge:0,         dot:false, action:()=>setPage('categorias')},
+            {key:'social',  label:'Social',   Ico:IcoSocial,   badge:0,         dot:false, action:()=>setPage('social')},
+            {key:'play',    label:'Ao Vivo',  Ico:IcoPlay,     badge:totalLive, dot:false, action:null},
+            {key:'profile', label:'Perfil',   Ico:IcoPerson,   badge:0,         dot:false, action:null},
+          ].map(({key,label,Ico,badge,dot,action})=>{
+            const active=key==='social'?page==='social':key==='home'?page==='categorias':false
             const col=active?T.black:T.gray1
             return (
-              <button key={key} onClick={()=>{if(key==='settings')setShowLog(v=>!v)}}
+              <button key={key} onClick={()=>{if(action)action()}}
                 style={{background:'none',border:'none',display:'flex',flexDirection:'column',alignItems:'center',gap:3,cursor:'pointer',position:'relative',minWidth:56,padding:'3px 0',color:col}}>
                 {badge>0&&<span style={{position:'absolute',top:-1,right:5,background:T.red,color:T.white,fontSize:9,fontWeight:900,borderRadius:T.r.pill,padding:'1px 4px',lineHeight:1.5}}>{badge}</span>}
-                {dot&&!showLog&&<span style={{position:'absolute',top:0,right:7,width:7,height:7,borderRadius:'50%',background:'#F59E0B',border:`2px solid ${T.white}`,animation:'pulse 1.5s infinite'}}/>}
+                {dot&&<span style={{position:'absolute',top:0,right:7,width:7,height:7,borderRadius:'50%',background:'#F59E0B',border:`2px solid ${T.white}`,animation:'pulse 1.5s infinite'}}/>}
                 <Ico size={22} color={col}/>
                 <span style={{fontSize:10,fontWeight:active?700:400}}>{label}</span>
               </button>
