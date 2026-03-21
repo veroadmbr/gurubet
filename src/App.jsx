@@ -447,8 +447,8 @@ function KalshiSportCard({item, catKey, onSelect, catUpdating}) {
       <div style={{margin:'8px 14px 0',background:'#F8F8F5',borderRadius:T.r.sm,padding:'7px 10px',flexShrink:0}}>
         <div style={{display:'flex',alignItems:'flex-start',gap:6}}>
           <span style={{fontSize:10,fontWeight:700,color:catColor,whiteSpace:'nowrap',paddingTop:1,flexShrink:0}}>BetTv</span>
-          <span style={{fontSize:11,color:T.gray1,lineHeight:1.4,flex:1,overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical'}}>{catUpdating?'Atualizando...':`${item.guruPick} · ${item.guruReason}`}</span>
-          <span style={{fontSize:11,fontWeight:800,color:T.black,flexShrink:0,paddingLeft:4}}>{item.guruConf}%</span>
+          <span style={{fontSize:11,color:T.gray1,lineHeight:1.4,flex:1,overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical'}}>{catUpdating?'Atualizando...':`${item.bettvPick||item.guruPick||'—'} · ${item.bettvReason||item.guruReason||'—'}`}</span>
+          <span style={{fontSize:11,fontWeight:800,color:T.black,flexShrink:0,paddingLeft:4}}>{item.bettvConf||item.guruConf||0}%</span>
         </div>
       </div>
 
@@ -596,10 +596,10 @@ function SportCard({item, catKey, onSelect, catUpdating}) {
         </div>
         <div style={{background:T.bg,borderRadius:T.r.md,padding:'9px 11px',marginBottom:12,display:'flex',alignItems:'flex-start',gap:8}}>
           <div style={{flex:1}}>
-            <span style={{fontSize:11,fontWeight:700,color:T.black}}>{catUpdating?'Atualizando...':`BetTv: ${item.bettvPick||item.guruPick}`}</span>
-            {!catUpdating&&( item.bettvReason||item.guruReason)&&<p style={{fontSize:11,color:T.gray1,margin:'2px 0 0',lineHeight:1.5}}>{item.guruReason}</p>}
+            <span style={{fontSize:11,fontWeight:700,color:T.black}}>{catUpdating?'Atualizando...':`BetTv: ${item.bettvPick||item.guruPick||'—'}`}</span>
+            {!catUpdating&&( item.bettvReason||item.guruReason)&&<p style={{fontSize:11,color:T.gray1,margin:'2px 0 0',lineHeight:1.5}}>{item.bettvReason||item.guruReason}</p>}
           </div>
-          <div style={{background:catUpdating?T.gray3:T.black,color:T.white,borderRadius:T.r.pill,padding:'3px 9px',fontSize:11,fontWeight:800,flexShrink:0}}>{item.guruConf}%</div>
+          <div style={{background:catUpdating?T.gray3:T.black,color:T.white,borderRadius:T.r.pill,padding:'3px 9px',fontSize:11,fontWeight:800,flexShrink:0}}>{item.bettvConf||item.guruConf||0}%</div>
         </div>
         <div style={{display:'flex',flexDirection:'column',gap:9}}>
           {[item.home,item.away].map((side,i)=>(
@@ -709,7 +709,7 @@ function InfoModal({item, isLoto, catKey, onClose}) {
             <div style={{background:T.bg,borderRadius:T.r.md,padding:'14px 16px'}}>
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:12}}>
                 <span style={{fontSize:11,fontWeight:700,color:T.black,letterSpacing:'0.06em'}}>BetTv SUGERE — Conc. {item.concurso}</span>
-                <span style={{fontSize:13,fontWeight:800,background:T.green,color:T.white,borderRadius:T.r.pill,padding:'3px 12px'}}>{item.guruConf}% conf.</span>
+                <span style={{fontSize:13,fontWeight:800,background:T.green,color:T.white,borderRadius:T.r.pill,padding:'3px 12px'}}>{item.bettvConf||item.guruConf||0}% conf.</span>
               </div>
               <div style={{display:'flex',gap:5,flexWrap:'wrap',marginBottom:12}}>
                 {(item.guruNums||[]).map(n=><Ball key={n} n={n} size={30} bg={T.black} color={T.white}/>)}
@@ -763,10 +763,10 @@ function InfoModal({item, isLoto, catKey, onClose}) {
             <div style={{background:T.bg,borderRadius:T.r.md,padding:'14px 16px'}}>
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
                 <span style={{fontSize:11,fontWeight:700,color:T.black,letterSpacing:'0.06em'}}>PICK BetTv</span>
-                <span style={{fontSize:13,fontWeight:800,background:T.green,color:T.white,borderRadius:T.r.pill,padding:'3px 12px'}}>{item.guruConf}% conf.</span>
+                <span style={{fontSize:13,fontWeight:800,background:T.green,color:T.white,borderRadius:T.r.pill,padding:'3px 12px'}}>{item.bettvConf||item.guruConf||0}% conf.</span>
               </div>
-              <div style={{fontSize:18,fontWeight:900,color:catColor,letterSpacing:'-0.02em',marginBottom:6}}>{item.guruPick}</div>
-              <p style={{fontSize:12,color:T.gray1,lineHeight:1.6,margin:0}}>{item.guruReason}</p>
+              <div style={{fontSize:18,fontWeight:900,color:catColor,letterSpacing:'-0.02em',marginBottom:6}}>{item.bettvPick||item.guruPick||"—"}</div>
+              <p style={{fontSize:12,color:T.gray1,lineHeight:1.6,margin:0}}>{item.bettvReason||item.guruReason||"—"}</p>
             </div>
 
             {/* Volume info */}
@@ -915,7 +915,7 @@ function SocialPage({appData}) {
                     </div>
                   ))}
                   <div style={{marginLeft:'auto',background:'#F0FDF4',borderRadius:T.r.sm,padding:'6px 10px',fontSize:11}}>
-                    <span style={{fontWeight:800,color:'#15803D'}}>{card.guruConf}%</span> <span style={{color:T.gray1}}>BetTv: {card.guruPick}</span>
+                    <span style={{fontWeight:800,color:'#15803D'}}>{card.bettvConf||card.guruConf||0}%</span> <span style={{color:T.gray1}}>BetTv: {card.bettvPick||card.guruPick||"—"}</span>
                   </div>
                 </div>
               )}
