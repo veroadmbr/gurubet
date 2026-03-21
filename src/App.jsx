@@ -685,18 +685,13 @@ const CSS=`
 const SEED={loterias:LOTERIAS,esportes:ESPORTES}
 
 export default function App() {
-  const [splash,setSplash]=useState(true)
   const [tab,setTab]=useState('loterias')
   const [selItem,setSelItem]=useState(null)
   const [showLog,setShowLog]=useState(false)
   const [activeFilter,setActiveFilter]=useState('all')
 
-  useEffect(()=>{const t=setTimeout(()=>setSplash(false),2000);return()=>clearTimeout(t)},[])
-
   const {appData,logs,updating,lastAt,countdown,queue,force}=useAutoUpdate(SEED)
   const {isMobile,isTablet,isDesktop}=useBreakpoint()
-
-  if (splash) return <><style>{CSS}</style><SplashScreen/></>
 
   const isLoto=tab==='loterias'
   const espData=appData.esportes[tab]; const espItems=espData?.items||[]
