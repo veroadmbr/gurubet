@@ -999,9 +999,9 @@ function SocialPage({appData}) {
   const totalComments = Object.values(comments).reduce((a,b)=>a+b.length,0)
 
   return (
-    <div style={{display:'flex',gap:0,height:'100%',minHeight:'calc(100vh - 110px)'}}>
+    <div style={{maxWidth:1280,margin:'0 auto',width:'100%',display:'flex',gap:0,height:'calc(100vh - 54px)',overflow:'hidden',borderLeft:`1px solid ${T.border}`,borderRight:`1px solid ${T.border}`}}>
       {/* Left panel — category + card selector */}
-      <div style={{width:280,flexShrink:0,borderRight:`1px solid ${T.border}`,overflowY:'auto',background:T.white}}>
+      <div style={{width:260,flexShrink:0,borderRight:`1px solid ${T.border}`,overflowY:'auto',background:T.white}}>
         <div style={{padding:'16px 16px 8px',borderBottom:`1px solid ${T.border}`}}>
           <div style={{fontSize:12,fontWeight:700,color:T.black,letterSpacing:'0.06em',marginBottom:10}}>CATEGORIAS</div>
           <div style={{display:'flex',flexDirection:'column',gap:2}}>
