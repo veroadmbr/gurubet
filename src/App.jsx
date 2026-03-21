@@ -976,7 +976,17 @@ function SocialPage({appData}) {
   // All items for selected category
   const catItems = selectedCat === 'loterias'
     ? appData.loterias.map(l => ({...l, id:l.id, title:l.nome, subtitle:l.descricao, status:'upcoming'}))
-    : (appData.esportes[selectedCat]?.items || [])
+    : selectedCat === 'todos'
+      ? Object.entries(appData.esportes).flatMap(([catKey,cat])=>
+          cat.items.map(item=>({...item, _catKey:catKey}))
+        ).sort((a,b)=>{
+          const aL=(a.status==='live')?0:1, bL=(b.status==='live')?0:1
+          if(aL!==bL) return aL-bL
+          return new Date(a.startTime||'2099')-new Date(b.startTime||'2099')
+        })
+      : selectedCat === 'crypto' || selectedCat === 'moedas'
+        ? [] // crypto/moedas não têm chat
+        : (appData.esportes[selectedCat]?.items || [])
 
   const card = selectedCard ? catItems.find(i=>i.id===selectedCard) : null
   const cardComments = selectedCard ? (comments[selectedCard]||[]) : []
