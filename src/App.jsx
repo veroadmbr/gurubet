@@ -355,28 +355,29 @@ function Ball({n, size=24, bg=T.gray2, color=T.black}) {
 }
 
 // ─── TEAM / PLAYER LOGO ───────────────────────────────────────────────────────
-// Shows image if logo key exists and loads; shows nothing if no logo key or load fails
 function TeamLogo({logo, name, size=26}) {
   const [err, setErr] = useState(false)
   const url = logo ? LOGOS[logo] : null
+  const initials = name
+    ? name.replace(/[^a-zA-ZÀ-ÿ\s]/g,'').split(/\s+/).filter(Boolean).map(w=>w[0].toUpperCase()).slice(0,2).join('')
+    : '?'
+  const colors = ['#E8F4FD','#FEF3C7','#D1FAE5','#EDE9FE','#FEE2E2','#DBEAFE','#F3E8FF']
+  const bg = colors[(name||'').charCodeAt(0) % colors.length] || '#F0F0ED'
+  const fg = '#374151'
 
-  // Always render consistently — no early return before hooks
   if (!url || err) {
-    // No logo key or image failed — render nothing (empty space to keep layout)
-    return <div style={{width:size, height:size, minWidth:size, flexShrink:0}}/>
+    return (
+      <div style={{width:size,height:size,minWidth:size,borderRadius:6,background:bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:size*0.33,fontWeight:700,color:fg,flexShrink:0,letterSpacing:'-0.02em'}}>
+        {initials}
+      </div>
+    )
   }
   return (
     <img
       src={url}
       alt={name}
       onError={() => setErr(true)}
-      style={{
-        width: size, height: size, minWidth: size,
-        borderRadius: 4,
-        objectFit: 'contain',
-        background: 'transparent',
-        flexShrink: 0,
-      }}
+      style={{width:size,height:size,minWidth:size,borderRadius:6,objectFit:'contain',background:'transparent',flexShrink:0}}
     />
   )
 }
