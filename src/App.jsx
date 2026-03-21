@@ -195,7 +195,6 @@ const TABS = [
 
 
 // ─── AUTO-UPDATE HOOK ────────────────────────────────────────────────────────
-import { useState, useEffect, useCallback, useRef } from 'react'
 
 const INTERVAL = 2 * 60 * 60 * 1000 // 2 hours
 
@@ -355,7 +354,6 @@ function useAutoUpdate(seed) {
 
 
 // ─── COMPONENTS ──────────────────────────────────────────────────────────────
-import React, { useEffect } from 'react'
 
 function Splash({ onDone }) {
   useEffect(() => {
@@ -386,7 +384,6 @@ function Splash({ onDone }) {
   )
 }
 
-import React from 'react'
 
 function NumberBall({ n, size = 30, bg = T.gray2, color = T.black, bold = false }) {
   return (
@@ -406,7 +403,6 @@ function NumberBall({ n, size = 30, bg = T.gray2, color = T.black, bold = false 
   )
 }
 
-import React from 'react'
 
 function LotoCard({ lot, onSelect, catUpdating }) {
   return (
@@ -521,7 +517,6 @@ function LotoCard({ lot, onSelect, catUpdating }) {
   )
 }
 
-import React from 'react'
 
 function SportCard({ item, accentColor, onSelect, catUpdating }) {
   const live = item.status === 'live'
@@ -638,7 +633,6 @@ function SportCard({ item, accentColor, onSelect, catUpdating }) {
   )
 }
 
-import React, { useState } from 'react'
 
 function Overlay({ onClose }) {
   return (
@@ -957,7 +951,6 @@ function BetSheet({ item, isLoto, onClose }) {
   )
 }
 
-import React from 'react'
 
 const LOG_COLORS = {
   info:    T.gray1,
@@ -1065,7 +1058,6 @@ function EngineLog({ logs, updating, lastAt, countdown, queue, force }) {
   )
 }
 
-import React from 'react'
 
 function Header({ tab, onTab, updating, countdown, queue }) {
   return (
@@ -1164,7 +1156,6 @@ function Header({ tab, onTab, updating, countdown, queue }) {
   )
 }
 
-import React from 'react'
 
 function IconDiscover({ active }) {
   const c = active ? T.black : T.gray1
@@ -1278,7 +1269,6 @@ function BottomNav({ navKey, onNav, liveCount, engineUpdating }) {
 
 
 // ─── APP ROOT ─────────────────────────────────────────────────────────────────
-import React, { useState } from 'react'
 
 
 const SEED = { loterias: LOTERIAS, esportes: ESPORTES }
