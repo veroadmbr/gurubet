@@ -439,7 +439,7 @@ function BetSheet({item, isLoto, onClose}) {
               <IcoCheck size={26} color={T.white}/>
             </div>
             <div style={{fontSize:21,fontWeight:900,color:T.black,letterSpacing:'-0.04em',marginBottom:8}}>{isLoto?'Boa sorte!':'Aposta registrada!'}</div>
-            <div style={{fontSize:13,color:T.gray1,lineHeight:1.6,marginBottom:22}}>{isLoto?<>R$ {na.toFixed(2)} na <strong style={{color:T.black}}>{item.nome}</strong><br/>Sorteio em {item.data}</>:<>R$ {na.toFixed(2)} em <strong style={{color:T.black}}>{choice==='yes'?item.home?.name:item.away?.name}</>}</div>
+            <div style={{fontSize:13,color:T.gray1,lineHeight:1.6,marginBottom:22}}>{isLoto?<>R$ {na.toFixed(2)} na <strong style={{color:T.black}}>{item.nome}</strong><br/>Sorteio em {item.data}</>:<>R$ {na.toFixed(2)} em <strong style={{color:T.black}}>{choice==='yes'?item.home?.name:item.away?.name}</strong></>}</div>
             <button onClick={onClose} style={{width:'100%',padding:'15px',borderRadius:T.r.md,background:T.black,border:'none',color:T.white,fontSize:15,fontWeight:700,cursor:'pointer'}}>Voltar aos mercados</button>
           </div>
         ):(
