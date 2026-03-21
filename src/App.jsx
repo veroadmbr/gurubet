@@ -901,46 +901,136 @@ function DesktopNav({tab, onTab, page, onPage, updating, countdown, queue, force
 function MobileHeader({tab, onTab, page, onPage, updating, countdown, queue, force}) {
   return (
     <div style={{background:T.white,borderBottom:`1px solid ${T.border}`,position:'sticky',top:0,zIndex:50}}>
-      <div style={{padding:'12px 16px 9px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-        <div>
-          <LogoSVG height={26}/>
-        </div>
-        <button onClick={force} disabled={updating} style={{display:'flex',alignItems:'center',gap:5,padding:'6px 11px',borderRadius:T.r.pill,background:updating?T.gray2:T.green,border:'none',color:updating?T.gray1:T.white,fontSize:12,fontWeight:700,cursor:updating?'not-allowed':'pointer'}}>
+      {/* Top bar — logo + botão atualizar */}
+      <div style={{padding:'10px 16px 8px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+        <LogoSVG height={24}/>
+        <button onClick={force} disabled={updating}
+          style={{display:'flex',alignItems:'center',gap:5,padding:'7px 14px',borderRadius:T.r.pill,background:updating?T.gray2:T.green,border:'none',color:updating?T.gray1:T.white,fontSize:12,fontWeight:700,cursor:updating?'not-allowed':'pointer',flexShrink:0}}>
           <IcoRefresh size={13} color={updating?T.gray1:T.white}/>
           {updating?'Analisando...':'Atualizar'}
         </button>
       </div>
+
+      {/* Status bar */}
       {!updating&&countdown&&(
-        <div style={{margin:'0 16px 7px',background:T.gray2,borderRadius:T.r.sm,padding:'4px 11px',display:'flex',justifyContent:'space-between'}}>
+        <div style={{margin:'0 16px 6px',background:T.gray2,borderRadius:T.r.sm,padding:'4px 12px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
           <span style={{fontSize:11,color:T.gray1}}>Próxima atualização</span>
           <span style={{fontSize:11,fontWeight:800,color:T.black,fontVariantNumeric:'tabular-nums'}}>{countdown}</span>
         </div>
       )}
       {updating&&queue.length>0&&(
-        <div style={{margin:'0 16px 7px',background:'#FFF8E1',borderRadius:T.r.sm,padding:'4px 11px',display:'flex',alignItems:'center',gap:7}}>
+        <div style={{margin:'0 16px 6px',background:'#FFF8E1',borderRadius:T.r.sm,padding:'4px 12px',display:'flex',alignItems:'center',gap:7}}>
           <div style={{width:7,height:7,borderRadius:'50%',border:'2px solid #F59E0B',borderTopColor:'transparent',animation:'spin 0.8s linear infinite',flexShrink:0}}/>
-          <span style={{fontSize:11,color:'#78350F'}}>Analisando <strong>{queue[0]}</strong> — {queue.length} restante(s)</span>
+          <span style={{fontSize:11,color:'#78350F'}}>Analisando <strong>{queue[0]}</strong></span>
         </div>
       )}
-      {/* Tab bar */}
-      <div style={{display:'flex',overflowX:'auto',borderTop:`1px solid ${T.border}`,scrollbarWidth:'none'}}>
+
+      {/* Tab bar — scroll horizontal */}
+      <div style={{display:'flex',overflowX:'auto',scrollbarWidth:'none',WebkitOverflowScrolling:'touch'}}>
         {TABS.map(({key,label})=>{
-          const active=key===tab&&page!=='social'
-          const Ico=TAB_ICON[key]||IcoLottery
-          const catColor=T.cat[key]||T.black
+          const active = key===tab && page==='categorias'
+          const Ico = TAB_ICON[key]||IcoLottery
+          const catColor = T.cat[key]||T.black
           return (
             <button key={key} onClick={()=>{onPage('categorias');onTab(key)}}
-              style={{display:'flex',alignItems:'center',gap:5,padding:'10px 13px',border:'none',borderBottom:`2px solid ${active?T.black:'transparent'}`,background:'transparent',color:active?T.black:T.gray1,fontSize:12,fontWeight:active?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0,transition:'all 0.12s',marginBottom:-1}}>
+              style={{display:'flex',alignItems:'center',gap:4,padding:'9px 12px',border:'none',
+                borderBottom:`2px solid ${active?catColor:'transparent'}`,
+                background:'transparent',color:active?catColor:T.gray1,
+                fontSize:12,fontWeight:active?700:500,cursor:'pointer',
+                whiteSpace:'nowrap',flexShrink:0,marginBottom:-1,transition:'all 0.12s'}}>
               <Ico size={13} color={active?catColor:T.gray3}/>
               {label}
             </button>
           )
         })}
         <button onClick={()=>onPage('social')}
-          style={{display:'flex',alignItems:'center',gap:5,padding:'10px 13px',border:'none',borderBottom:`2px solid ${page==='social'?T.black:'transparent'}`,background:'transparent',color:page==='social'?T.black:T.gray1,fontSize:12,fontWeight:page==='social'?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0,transition:'all 0.12s',marginBottom:-1}}>
+          style={{display:'flex',alignItems:'center',gap:4,padding:'9px 12px',border:'none',
+            borderBottom:`2px solid ${page==='social'?T.black:'transparent'}`,
+            background:'transparent',color:page==='social'?T.black:T.gray1,
+            fontSize:12,fontWeight:page==='social'?700:500,cursor:'pointer',
+            whiteSpace:'nowrap',flexShrink:0,marginBottom:-1}}>
           <IcoSocial size={13} color={page==='social'?T.black:T.gray3}/>
           Social
         </button>
+      </div>
+    </div>
+  )
+}
+
+// ─── MOBILE SPORT CARD — redesenhado ─────────────────────────────────────────
+function MobileSportCard({item, catKey, onSelect}) {
+  const catColor = T.cat[catKey]||T.black
+  const catBg    = T.catBg[catKey]||T.gray2
+  const label    = TABS.find(t=>t.key===catKey)?.label||catKey
+
+  const isActuallyLive = (() => {
+    if (item.status!=='live'&&item.status!=='inprogress') return false
+    if (!item.startTime) return item.status==='live'
+    const now=Date.now(), start=new Date(item.startTime).getTime()
+    return now>=start-10*60*1000 && now<=start+150*60*1000
+  })()
+
+  return (
+    <div onClick={()=>onSelect(item)}
+      style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${T.border}`,
+        marginBottom:10,overflow:'hidden',cursor:'pointer',
+        boxShadow:'0 1px 4px rgba(0,0,0,0.05)'}}>
+
+      {/* Header: categoria + competição */}
+      <div style={{padding:'10px 14px 0',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+        <div style={{display:'flex',alignItems:'center',gap:6}}>
+          <div style={{width:22,height:22,borderRadius:5,background:catBg,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+            {(() => { const I=TAB_ICON[catKey]||IcoLottery; return <I size={12} color={catColor}/> })()}
+          </div>
+          <span style={{fontSize:10,fontWeight:700,color:catColor,letterSpacing:'0.04em',textTransform:'uppercase'}}>{label}</span>
+        </div>
+        <span style={{fontSize:10,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:160}}>{item.competition}</span>
+      </div>
+
+      {/* Título + status */}
+      <div style={{padding:'6px 14px 8px'}}>
+        <div style={{fontSize:15,fontWeight:800,color:T.black,letterSpacing:'-0.03em',lineHeight:1.25,marginBottom:3}}>{item.title}</div>
+        <div style={{display:'flex',alignItems:'center',gap:4}}>
+          {isActuallyLive&&<><IcoLiveDot/><span style={{fontSize:10,fontWeight:700,color:T.red,marginLeft:2}}>AO VIVO</span><span style={{fontSize:10,color:T.gray1,margin:'0 3px'}}>·</span></>}
+          <span style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.statusLabel}</span>
+        </div>
+      </div>
+
+      {/* Times com logos + probabilidades */}
+      <div style={{padding:'0 14px',borderTop:`1px solid ${T.border}`}}>
+        {[item.home,item.away].map((side,i)=>{
+          const winner=side.pct>(i===0?item.away.pct:item.home.pct)
+          return (
+            <div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'9px 0',borderBottom:i===0?`1px solid ${T.border}`:'none'}}>
+              <TeamLogo logo={side.logo} name={side.name} size={28}/>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:14,fontWeight:winner?700:500,color:T.black,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',marginBottom:4}}>{side.name}</div>
+                <div style={{height:3,borderRadius:2,background:T.gray2,overflow:'hidden'}}>
+                  <div style={{width:`${Math.max(5,side.pct)}%`,height:'100%',background:winner?catColor:T.gray3,borderRadius:2,transition:'width 0.5s'}}/>
+                </div>
+              </div>
+              <div style={{minWidth:52,textAlign:'center',padding:'5px 10px',borderRadius:T.r.pill,
+                border:`1.5px solid ${winner?catColor:T.gray3}`,
+                color:winner?catColor:T.gray1,fontSize:14,fontWeight:800,
+                background:winner?catBg:T.white,flexShrink:0}}>
+                {side.pct}%
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* BetTv strip */}
+      <div style={{padding:'8px 14px',background:'#F8F8F6',display:'flex',alignItems:'flex-start',gap:7}}>
+        <span style={{fontSize:10,fontWeight:700,color:catColor,flexShrink:0,paddingTop:1,letterSpacing:'0.02em'}}>BetTv</span>
+        <span style={{fontSize:11,color:T.black,fontWeight:600,flexShrink:0}}>{item.bettvPick||item.guruPick||'—'}</span>
+        <span style={{fontSize:11,color:T.gray1,flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>· {item.bettvReason||item.guruReason||'—'}</span>
+        <span style={{fontSize:11,fontWeight:800,color:T.white,background:catColor,borderRadius:T.r.pill,padding:'2px 8px',flexShrink:0}}>{item.bettvConf||item.guruConf||0}%</span>
+      </div>
+
+      {/* Footer */}
+      <div style={{padding:'6px 14px 10px',display:'flex',justifyContent:'flex-end'}}>
+        <span style={{fontSize:11,color:T.gray1}}>Empate {item.draw}%</span>
       </div>
     </div>
   )
@@ -953,9 +1043,7 @@ const CSS=`
   body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;}
   svg{display:block;overflow:visible;}
   button{font-family:inherit;}
-  ::-webkit-scrollbar{width:6px;height:6px;}
-  ::-webkit-scrollbar-track{background:transparent;}
-  ::-webkit-scrollbar-thumb{background:#E0E0E0;border-radius:3px;}
+  ::-webkit-scrollbar{width:0;height:0;}
   input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;}
   @keyframes spin{to{transform:rotate(360deg)}}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
@@ -968,133 +1056,143 @@ const SEED={loterias:LOTERIAS,esportes:ESPORTES}
 
 export default function App() {
   const [tab,setTab]=useState('todos')
-  const [page,setPage]=useState('categorias') // 'categorias' | 'social'
+  const [page,setPage]=useState('categorias')
   const [selItem,setSelItem]=useState(null)
-  const [showLog,setShowLog]=useState(false)
   const [activeFilter,setActiveFilter]=useState('all')
+  const [showLog,setShowLog]=useState(false)
 
   const {appData,logs,updating,lastAt,countdown,queue,force}=useAutoUpdate(SEED)
   const {isMobile,isTablet,isDesktop}=useBreakpoint()
 
-  const isLoto=tab==='loterias'
-  const espData=appData.esportes[tab]; const espItems=espData?.items||[]
-  const catUpd=updating&&queue.includes(tab)
+  const isLoto  = tab==='loterias'
+  const isTodos = tab==='todos'
+  const espData = appData.esportes[tab]
+  const espItems= espData?.items||[]
+  const catUpd  = updating&&queue.includes(tab)
   const totalLive=Object.values(appData.esportes).flatMap(d=>d.items).filter(i=>i.status==='live').length
 
-  function handleTab(key){setTab(key);setShowLog(false);setActiveFilter('all')}
-  function handlePage(p){setPage(p);setShowLog(false)}
+  const allEvents = Object.entries(appData.esportes).flatMap(([catKey,cat])=>
+    cat.items.map(item=>({...item,_catKey:catKey}))
+  ).sort((a,b)=>new Date(a.startTime||'2099')-new Date(b.startTime||'2099'))
+
+  const currentItems = isLoto
+    ? appData.loterias.filter(l=>activeFilter==='all'||(activeFilter==='acumulado'&&l.acumulado))
+    : isTodos
+      ? allEvents.filter(i=>activeFilter==='all'||(activeFilter==='live'&&i.status==='live')||(activeFilter==='upcoming'&&i.status==='upcoming'))
+      : espItems.filter(i=>activeFilter==='all'||(activeFilter==='live'&&i.status==='live')||(activeFilter==='upcoming'&&i.status==='upcoming'))
+
+  function handleTab(k){setTab(k);setActiveFilter('all')}
+  function handlePage(p){setPage(p)}
 
   // ── DESKTOP ──
   if (isDesktop) {
-    const isTodos=tab==='todos'
-    // All events sorted by startTime for "Todos" tab
-    const allEvents=isTodos?Object.entries(appData.esportes).flatMap(([catKey,cat])=>
-      cat.items.map(item=>({...item,_catKey:catKey}))
-    ).sort((a,b)=>new Date(a.startTime||'2099')-new Date(b.startTime||'2099')):[]
-
-    const filtered=isLoto
-      ?appData.loterias.filter(l=>activeFilter==='all'||(activeFilter==='acumulado'&&l.acumulado))
-      :isTodos?allEvents.filter(i=>activeFilter==='all'||(activeFilter==='live'&&i.status==='live')||(activeFilter==='upcoming'&&i.status==='upcoming'))
-      :espItems.filter(i=>activeFilter==='all'||(activeFilter==='live'&&i.status==='live')||(activeFilter==='upcoming'&&i.status==='upcoming'))
-
     return (
       <div style={{display:'flex',flexDirection:'column',height:'100vh',background:T.bg}}>
         <style>{CSS}</style>
         <DesktopNav tab={tab} onTab={handleTab} page={page} onPage={handlePage} updating={updating} countdown={countdown} queue={queue} force={force}/>
         <div style={{flex:1,overflowY:page==='social'?'hidden':'auto'}}>
-          {page==='social' ? (
-            <SocialPage appData={appData}/>
-          ) : (
-          <div style={{maxWidth:1280,margin:'0 auto',padding:'28px 40px 56px'}}>
-            {showLog?(
-              <EngineLog logs={logs} updating={updating} lastAt={lastAt} countdown={countdown} queue={queue} force={force}/>
-            ):(
-              <>
-                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:22}}>
-                  <h1 style={{fontSize:24,fontWeight:800,color:T.black,letterSpacing:'-0.04em'}}>{isLoto?'Loterias':tab==='todos'?'Todos os Eventos':TABS.find(t=>t.key===tab)?.label}</h1>
-                  <div style={{display:'flex',gap:7,alignItems:'center'}}>
-                    {(!isLoto?['all','live','upcoming']:['all','acumulado']).map(f=>(
-                      <button key={f} onClick={()=>setActiveFilter(f)} style={{padding:'6px 15px',borderRadius:T.r.pill,border:`1px solid ${activeFilter===f?T.black:T.border}`,background:activeFilter===f?T.black:T.white,color:activeFilter===f?T.white:T.black,fontSize:12,fontWeight:activeFilter===f?700:500,cursor:'pointer',transition:'all 0.15s'}}>
-                        {f==='all'?'Todos':f==='live'?'Ao Vivo':f==='upcoming'?'Próximos':'Acumulados'}
-                      </button>
-                    ))}
-                  </div>
+          {page==='social'?<SocialPage appData={appData}/>:(
+            <div style={{maxWidth:1280,margin:'0 auto',padding:'28px 40px 56px'}}>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:22}}>
+                <h1 style={{fontSize:24,fontWeight:800,color:T.black,letterSpacing:'-0.04em'}}>
+                  {isLoto?'Loterias':isTodos?'Todos os Eventos':TABS.find(t=>t.key===tab)?.label}
+                </h1>
+                <div style={{display:'flex',gap:7}}>
+                  {(isLoto?['all','acumulado']:['all','live','upcoming']).map(f=>(
+                    <button key={f} onClick={()=>setActiveFilter(f)} style={{padding:'6px 15px',borderRadius:T.r.pill,border:`1px solid ${activeFilter===f?T.black:T.border}`,background:activeFilter===f?T.black:T.white,color:activeFilter===f?T.white:T.black,fontSize:12,fontWeight:activeFilter===f?700:500,cursor:'pointer',transition:'all 0.15s'}}>
+                      {f==='all'?'Todos':f==='live'?'Ao Vivo':f==='upcoming'?'Próximos':'Acumulados'}
+                    </button>
+                  ))}
                 </div>
-                {isLoto&&<div style={{background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:T.r.md,padding:'10px 16px',marginBottom:18,fontSize:12,color:'#78350F',lineHeight:1.6}}><strong>Jogo responsável.</strong> Sugestões baseadas em estatística histórica — não garantem resultado.</div>}
-                <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:14,alignItems:'start'}}>
-                  {isLoto
-                    ?filtered.map(lot=><KalshiLotoCard key={lot.id} lot={lot} onSelect={setSelItem} catUpdating={catUpd}/>)
-                    :isTodos
-                      ?filtered.map(item=><KalshiSportCard key={item.id} item={item} catKey={item._catKey||tab} onSelect={setSelItem} catUpdating={false}/>)
-                      :filtered.map(item=><KalshiSportCard key={item.id} item={item} catKey={tab} onSelect={setSelItem} catUpdating={catUpd}/>)
-                  }
-                </div>
-              </>
-            )}
-          </div>
+              </div>
+              {isLoto&&<div style={{background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:T.r.md,padding:'10px 16px',marginBottom:18,fontSize:12,color:'#78350F',lineHeight:1.6}}><strong>Jogo responsável.</strong> Sugestões baseadas em estatística histórica.</div>}
+              <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:14,alignItems:'start'}}>
+                {isLoto
+                  ?currentItems.map(lot=><KalshiLotoCard key={lot.id} lot={lot} onSelect={setSelItem} catUpdating={catUpd}/>)
+                  :currentItems.map(item=><KalshiSportCard key={item.id} item={item} catKey={item._catKey||tab} onSelect={setSelItem} catUpdating={isTodos?false:catUpd}/>)
+                }
+              </div>
+            </div>
           )}
         </div>
-        {selItem&&<InfoModal item={selItem} isLoto={isLoto} catKey={tab} onClose={()=>setSelItem(null)}/>}
+        {selItem&&<InfoModal item={selItem} isLoto={isLoto} catKey={selItem._catKey||tab} onClose={()=>setSelItem(null)}/>}
       </div>
     )
   }
 
-  // ── TABLET / MOBILE ──
+  // ── MOBILE / TABLET ──
   return (
-    <div style={{background:T.bg,minHeight:'100vh'}}>
+    <div style={{background:T.bg,minHeight:'100vh',paddingBottom:80}}>
       <style>{CSS}</style>
       <MobileHeader tab={tab} onTab={handleTab} page={page} onPage={handlePage} updating={updating} countdown={countdown} queue={queue} force={force}/>
-      <div style={{padding:isTablet?'22px 26px 100px':'14px 14px 100px',maxWidth:isTablet?880:'100%',margin:'0 auto'}}>
-        {page==='social'?(
-          <SocialPage appData={appData}/>
-        ):showLog?(
-          <EngineLog logs={logs} updating={updating} lastAt={lastAt} countdown={countdown} queue={queue} force={force}/>
-        ):(
-          <>
-            {isLoto&&<div style={{background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:T.r.md,padding:'10px 14px',marginBottom:14,fontSize:12,color:'#78350F',lineHeight:1.6}}><strong>Jogo responsável.</strong> Sugestões baseadas em estatística — não garantem resultado.</div>}
-            {!isLoto&&(
-              <div style={{display:'flex',overflowX:'auto',borderBottom:`1px solid ${T.border}`,marginLeft:-14,marginRight:-14,paddingLeft:14,marginBottom:14,scrollbarWidth:'none'}}>
-                {['all','live','upcoming'].map(f=>(
-                  <button key={f} style={{padding:'9px 13px',border:'none',borderBottom:`2px solid ${activeFilter===f?T.black:'transparent'}`,background:'transparent',color:activeFilter===f?T.black:T.gray1,fontSize:12,fontWeight:activeFilter===f?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0,marginBottom:-1}} onClick={()=>setActiveFilter(f)}>
-                    {f==='all'?`Todos (${espItems.length})`:f==='live'?'Ao Vivo':'Próximos'}
-                  </button>
-                ))}
-              </div>
-            )}
-            <div style={{display:'grid',gridTemplateColumns:isTablet?'repeat(2,1fr)':'1fr',gap:isTablet?14:0}}>
-              {isLoto
-                ?appData.loterias.map(lot=><LotoCard key={lot.id} lot={lot} onSelect={setSelItem} catUpdating={catUpd}/>)
-                :espItems.filter(i=>activeFilter==='all'||(activeFilter==='live'&&i.status==='live')||(activeFilter==='upcoming'&&i.status==='upcoming')).map(item=><SportCard key={item.id} item={item} catKey={tab} onSelect={setSelItem} catUpdating={catUpd}/>)
-              }
-            </div>
-          </>
-        )}
-      </div>
 
-      {isMobile&&(
-        <div style={{position:'fixed',bottom:0,left:0,right:0,background:T.white,borderTop:`1px solid ${T.border}`,display:'flex',justifyContent:'space-around',paddingTop:9,paddingBottom:'env(safe-area-inset-bottom,18px)',zIndex:100}}>
-          {[
-            {key:'home',    label:'Início',  Ico:IcoHome,     badge:0,         dot:false, action:()=>setPage('categorias')},
-            {key:'social',  label:'Social',   Ico:IcoSocial,   badge:0,         dot:false, action:()=>setPage('social')},
-            {key:'play',    label:'Ao Vivo',  Ico:IcoPlay,     badge:totalLive, dot:false, action:null},
-            {key:'profile', label:'Perfil',   Ico:IcoPerson,   badge:0,         dot:false, action:null},
-          ].map(({key,label,Ico,badge,dot,action})=>{
-            const active=key==='social'?page==='social':key==='home'?page==='categorias':false
-            const col=active?T.black:T.gray1
-            return (
-              <button key={key} onClick={()=>{if(action)action()}}
-                style={{background:'none',border:'none',display:'flex',flexDirection:'column',alignItems:'center',gap:3,cursor:'pointer',position:'relative',minWidth:56,padding:'3px 0',color:col}}>
-                {badge>0&&<span style={{position:'absolute',top:-1,right:5,background:T.red,color:T.white,fontSize:9,fontWeight:900,borderRadius:T.r.pill,padding:'1px 4px',lineHeight:1.5}}>{badge}</span>}
-                {dot&&<span style={{position:'absolute',top:0,right:7,width:7,height:7,borderRadius:'50%',background:'#F59E0B',border:`2px solid ${T.white}`,animation:'pulse 1.5s infinite'}}/>}
-                <Ico size={22} color={col}/>
-                <span style={{fontSize:10,fontWeight:active?700:400}}>{label}</span>
-              </button>
-            )
-          })}
+      {page==='social'?<SocialPage appData={appData}/>:(
+        <div style={{padding:isTablet?'20px 24px':'12px 14px',maxWidth:isTablet?860:'100%',margin:'0 auto'}}>
+
+          {!isLoto&&(
+            <div style={{display:'flex',gap:6,marginBottom:14,overflowX:'auto',scrollbarWidth:'none',paddingBottom:2}}>
+              {['all','live','upcoming'].map(f=>{
+                const active=activeFilter===f
+                const liveCount=allEvents.filter(i=>i.status==='live').length
+                return (
+                  <button key={f} onClick={()=>setActiveFilter(f)}
+                    style={{padding:'7px 16px',borderRadius:T.r.pill,border:`1.5px solid ${active?T.black:T.border}`,background:active?T.black:T.white,color:active?T.white:T.black,fontSize:13,fontWeight:active?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0,transition:'all 0.15s',display:'flex',alignItems:'center',gap:6}}>
+                    {f==='all'?`Todos · ${isTodos?allEvents.length:espItems.length}`:
+                     f==='live'?<><IcoLiveDot/><span style={{marginLeft:4}}>{`Ao Vivo${liveCount>0?' · '+liveCount:''}`}</span></>:
+                     'Próximos'}
+                  </button>
+                )
+              })}
+            </div>
+          )}
+
+          {isLoto&&<div style={{background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:T.r.md,padding:'10px 14px',marginBottom:14,fontSize:12,color:'#78350F',lineHeight:1.6}}><strong>Jogo responsável.</strong> Sugestões baseadas em estatística.</div>}
+
+          {isLoto?(
+            <div style={{display:'grid',gridTemplateColumns:isTablet?'repeat(2,1fr)':'1fr',gap:12}}>
+              {currentItems.map(lot=><LotoCard key={lot.id} lot={lot} onSelect={setSelItem} catUpdating={catUpd}/>)}
+            </div>
+          ):(
+            <div style={{display:'flex',flexDirection:'column',gap:0}}>
+              {currentItems.length===0?(
+                <div style={{textAlign:'center',padding:'56px 0',color:T.gray1}}>
+                  <div style={{fontSize:36,marginBottom:12}}>📋</div>
+                  <div style={{fontSize:15,fontWeight:600,color:T.black}}>Nenhum evento</div>
+                  <div style={{fontSize:13,marginTop:4}}>Tente mudar o filtro acima</div>
+                </div>
+              ):(
+                currentItems.map(item=>(
+                  <MobileSportCard key={item.id} item={item} catKey={item._catKey||tab} onSelect={setSelItem}/>
+                ))
+              )}
+            </div>
+          )}
         </div>
       )}
 
-      {selItem&&<InfoModal item={selItem} isLoto={isLoto} catKey={tab} onClose={()=>setSelItem(null)}/>}
+      {/* Bottom nav */}
+      <div style={{position:'fixed',bottom:0,left:0,right:0,background:T.white,borderTop:`1px solid ${T.border}`,display:'flex',paddingTop:8,paddingBottom:'env(safe-area-inset-bottom,16px)',zIndex:100,boxShadow:'0 -2px 12px rgba(0,0,0,0.06)'}}>
+        {[
+          {key:'home',   label:'Início', Ico:IcoHome,  action:()=>{handlePage('categorias');handleTab('todos');setActiveFilter('all')}},
+          {key:'social', label:'Social', Ico:IcoSocial,action:()=>handlePage('social')},
+          {key:'live',   label:'Ao Vivo',Ico:IcoPlay,  badge:totalLive,action:()=>{handlePage('categorias');setActiveFilter('live');if(isTodos||!tab||tab==='loterias')handleTab('todos')}},
+          {key:'profile',label:'Perfil', Ico:IcoPerson,action:null},
+        ].map(({key,label,Ico,badge,action})=>{
+          const active=key==='home'?(page==='categorias'&&tab==='todos'&&activeFilter==='all'):key==='social'?page==='social':key==='live'?activeFilter==='live':false
+          const col=active?T.black:T.gray1
+          return (
+            <button key={key} onClick={()=>action&&action()}
+              style={{background:'none',border:'none',display:'flex',flexDirection:'column',alignItems:'center',gap:2,cursor:'pointer',position:'relative',flex:1,padding:'3px 0'}}>
+              {badge>0&&<span style={{position:'absolute',top:-2,right:'calc(50% - 18px)',background:T.red,color:T.white,fontSize:9,fontWeight:900,borderRadius:T.r.pill,padding:'1px 5px',lineHeight:1.5}}>{badge}</span>}
+              <Ico size={22} color={col}/>
+              <span style={{fontSize:10,fontWeight:active?700:400,color:col}}>{label}</span>
+              {active&&<div style={{width:4,height:4,borderRadius:'50%',background:T.black,marginTop:1}}/>}
+            </button>
+          )
+        })}
+      </div>
+
+      {selItem&&<InfoModal item={selItem} isLoto={isLoto} catKey={selItem._catKey||tab} onClose={()=>setSelItem(null)}/>}
     </div>
   )
 }
