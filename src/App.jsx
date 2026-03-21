@@ -6,8 +6,8 @@ const T = {
   green:'#00D672', black:'#111111', white:'#FFFFFF',
   bg:'#F7F7F5', border:'#E8E8E4', gray1:'#737373',
   gray2:'#F0F0ED', gray3:'#D4D4CC', red:'#E53935',
-  cat:{ loterias:'#1A7A4A', futebol:'#1A7A4A', basquete:'#B45309', volei:'#5B21B6', mma:'#B91C1C', tenis:'#0369A1', esports:'#6D28D9' },
-  catBg:{ loterias:'#D1FAE5', futebol:'#DCFCE7', basquete:'#FEF3C7', volei:'#EDE9FE', mma:'#FEE2E2', tenis:'#DBEAFE', esports:'#F3E8FF' },
+  cat:{ loterias:'#1A7A4A', futebol:'#1A7A4A', basquete:'#B45309', volei:'#5B21B6', mma:'#B91C1C', tenis:'#0369A1', esports:'#6D28D9', crypto:'#D97706', moedas:'#0891B2' },
+  catBg:{ loterias:'#D1FAE5', futebol:'#DCFCE7', basquete:'#FEF3C7', volei:'#EDE9FE', mma:'#FEE2E2', tenis:'#DBEAFE', esports:'#F3E8FF', crypto:'#FEF3C7', moedas:'#CFFAFE' },
   r:{ sm:8, md:12, lg:16, pill:999 },
 }
 
@@ -40,9 +40,13 @@ const IcoSocial    = ({size=16,color='currentColor'}) => <svg width={size} heigh
 const IcoSend      = ({size=16,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'block',flexShrink:0}}><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
 const IcoThumb     = ({size=14,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'block',flexShrink:0}}><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
 
+const IcoCrypto    = ({size=16,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'block',flexShrink:0}}><path d="M11.767 19.089c4.924.868 6.14-6.025 1.216-6.894m-1.216 6.894L5.86 18.047m5.908 1.042-.347 1.97m1.563-8.864c4.924.869 6.14-6.025 1.215-6.893m-1.215 6.893-3.94-.694m5.155-6.2L8.29 4.26m5.908 1.042.348-1.97M7.48 20.364l3.126-17.727"/></svg>
+const IcoMoedas    = ({size=16,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'block',flexShrink:0}}><circle cx="12" cy="12" r="10"/><path d="M12 6v2m0 8v2M8 12h8"/><path d="M9 9h.01M15 15h.01"/></svg>
+
 const TAB_ICON = {
   todos: IcoAll, loterias: IcoLottery, futebol: IcoSoccer, basquete: IcoBasket,
   volei: IcoVolley, mma: IcoMMA, tenis: IcoTennis, esports: IcoEsports,
+  crypto: IcoCrypto, moedas: IcoMoedas,
 }
 
 const LogoSVG = ({height=32}) => (
@@ -154,6 +158,116 @@ const ESPORTES = {
   ]},
 }
 
+// ─── CRYPTO — 50 principais moedas (previsão diária BetTv) ──────────────────
+// Atualizado automaticamente pela IA a cada ciclo de 2h
+const CRYPTO_DATA = [
+  {id:'btc',  symbol:'BTC',  name:'Bitcoin',          price:87420,  change24h:+2.3,  bettvPick:'ALTA',   bettvConf:67, bettvReason:'Dominância BTC em 54%. ETFs acumulam. Resistência $90k próxima.', logo:'https://cryptologos.cc/logos/bitcoin-btc-logo.png'},
+  {id:'eth',  symbol:'ETH',  name:'Ethereum',          price:2015,   change24h:-0.8,  bettvPick:'NEUTRO', bettvConf:45, bettvReason:'ETH luta com resistência $2100. Dencun ativo mas demanda fraca.', logo:'https://cryptologos.cc/logos/ethereum-eth-logo.png'},
+  {id:'sol',  symbol:'SOL',  name:'Solana',            price:142.5,  change24h:+4.1,  bettvPick:'ALTA',   bettvConf:62, bettvReason:'Solana ganha market share em DEX. Volume Raydium recorde semanal.', logo:'https://cryptologos.cc/logos/solana-sol-logo.png'},
+  {id:'bnb',  symbol:'BNB',  name:'BNB',               price:598,    change24h:+1.2,  bettvPick:'ALTA',   bettvConf:55, bettvReason:'BNB Chain TVL cresce 8% na semana. Queima trimestral positiva.', logo:'https://cryptologos.cc/logos/bnb-bnb-logo.png'},
+  {id:'xrp',  symbol:'XRP',  name:'XRP',               price:0.524,  change24h:-1.4,  bettvPick:'QUEDA',  bettvConf:52, bettvReason:'XRP perde momentum após alta de 40% em fevereiro. Correção provável.', logo:'https://cryptologos.cc/logos/xrp-xrp-logo.png'},
+  {id:'usdc', symbol:'USDC', name:'USD Coin',           price:1.00,   change24h:0.0,   bettvPick:'NEUTRO', bettvConf:99, bettvReason:'Stablecoin atrelada ao dólar. Sem variação esperada.', logo:'https://cryptologos.cc/logos/usd-coin-usdc-logo.png'},
+  {id:'ada',  symbol:'ADA',  name:'Cardano',            price:0.387,  change24h:+1.8,  bettvPick:'ALTA',   bettvConf:48, bettvReason:'Cardano: upgrade Chang 2 ativado. Staking crescendo mas preço lateral.', logo:'https://cryptologos.cc/logos/cardano-ada-logo.png'},
+  {id:'avax', symbol:'AVAX', name:'Avalanche',          price:24.8,   change24h:+2.9,  bettvPick:'ALTA',   bettvConf:57, bettvReason:'AVAX subnet Teleporter ganha adoção. TVL DeFi em recuperação.', logo:'https://cryptologos.cc/logos/avalanche-avax-logo.png'},
+  {id:'doge', symbol:'DOGE', name:'Dogecoin',           price:0.178,  change24h:+5.2,  bettvPick:'ALTA',   bettvConf:43, bettvReason:'DOGE em alta com buzz Musk/Tesla. Movimento especulativo sem fundamento.', logo:'https://cryptologos.cc/logos/dogecoin-doge-logo.png'},
+  {id:'dot',  symbol:'DOT',  name:'Polkadot',           price:5.82,   change24h:-0.5,  bettvPick:'NEUTRO', bettvConf:44, bettvReason:'Polkadot 2.0 em implementação. Consolidação lateral esperada.', logo:'https://cryptologos.cc/logos/polkadot-new-dot-logo.png'},
+  {id:'link', symbol:'LINK', name:'Chainlink',          price:14.2,   change24h:+3.1,  bettvPick:'ALTA',   bettvConf:59, bettvReason:'LINK: CCIP adotado por grandes bancos. Oráculos DeFi em alta demanda.', logo:'https://cryptologos.cc/logos/chainlink-link-logo.png'},
+  {id:'matic',symbol:'POL',  name:'Polygon',            price:0.392,  change24h:-2.1,  bettvPick:'QUEDA',  bettvConf:53, bettvReason:'POL migração completa mas preço sob pressão. L2 perdendo para Arbitrum.', logo:'https://cryptologos.cc/logos/polygon-matic-logo.png'},
+  {id:'uni',  symbol:'UNI',  name:'Uniswap',            price:8.74,   change24h:+1.5,  bettvPick:'ALTA',   bettvConf:50, bettvReason:'Uniswap v4 no ar. Volume DEX recorde. Proposta de taxa de protocolo.', logo:'https://cryptologos.cc/logos/uniswap-uni-logo.png'},
+  {id:'atom', symbol:'ATOM', name:'Cosmos',             price:4.12,   change24h:-1.0,  bettvPick:'NEUTRO', bettvConf:42, bettvReason:'Cosmos IBC crescendo mas ATOM inflacionário. Sem catalisador de curto prazo.', logo:'https://cryptologos.cc/logos/cosmos-atom-logo.png'},
+  {id:'ltc',  symbol:'LTC',  name:'Litecoin',           price:76.3,   change24h:+0.9,  bettvPick:'NEUTRO', bettvConf:41, bettvReason:'LTC segue BTC como "prata digital". Halving 2027 no radar de traders.', logo:'https://cryptologos.cc/logos/litecoin-ltc-logo.png'},
+  {id:'etc',  symbol:'ETC',  name:'Ethereum Classic',   price:18.6,   change24h:-0.3,  bettvPick:'NEUTRO', bettvConf:38, bettvReason:'ETC estável. Sem novidades no ecossistema. Movimentos seguem ETH.', logo:'https://cryptologos.cc/logos/ethereum-classic-etc-logo.png'},
+  {id:'near', symbol:'NEAR', name:'NEAR Protocol',      price:3.21,   change24h:+6.8,  bettvPick:'ALTA',   bettvConf:61, bettvReason:'NEAR AI integrations ganhando tração. Sharding fase 3 entregue.', logo:'https://cryptologos.cc/logos/near-protocol-near-logo.png'},
+  {id:'arb',  symbol:'ARB',  name:'Arbitrum',           price:0.481,  change24h:+2.4,  bettvPick:'ALTA',   bettvConf:55, bettvReason:'Arbitrum lidera L2 em TVL ($18B). Stylus VM atrai devs de C++/Rust.', logo:'https://cryptologos.cc/logos/arbitrum-arb-logo.png'},
+  {id:'op',   symbol:'OP',   name:'Optimism',           price:1.02,   change24h:+1.8,  bettvPick:'ALTA',   bettvConf:51, bettvReason:'Superchain crescendo. Coinbase Base usa OP Stack. TVL em expansão.', logo:'https://cryptologos.cc/logos/optimism-ethereum-op-logo.png'},
+  {id:'sui',  symbol:'SUI',  name:'Sui',                price:2.84,   change24h:+7.3,  bettvPick:'ALTA',   bettvConf:65, bettvReason:'SUI: maior ganhador da semana. TVL DeFi triplica em 30 dias. Momentum forte.', logo:'https://cryptologos.cc/logos/sui-sui-logo.png'},
+  {id:'apt',  symbol:'APT',  name:'Aptos',              price:5.67,   change24h:+3.2,  bettvPick:'ALTA',   bettvConf:54, bettvReason:'Aptos DeFi TVL em máxima histórica. Integração com Google Cloud ativa.', logo:'https://cryptologos.cc/logos/aptos-apt-logo.png'},
+  {id:'fet',  symbol:'FET',  name:'Fetch.ai',           price:1.13,   change24h:+9.1,  bettvPick:'ALTA',   bettvConf:63, bettvReason:'FET: narrativa AI+crypto forte. Merger ASI Alliance valoriza ecossistema.', logo:'https://cryptologos.cc/logos/fetch-ai-fet-logo.png'},
+  {id:'inj',  symbol:'INJ',  name:'Injective',          price:18.4,   change24h:+4.5,  bettvPick:'ALTA',   bettvConf:59, bettvReason:'Injective lidera DeFi em trading perpétuo. Nova integração com Cosmos.', logo:'https://cryptologos.cc/logos/injective-inj-logo.png'},
+  {id:'rndr', symbol:'RNDR', name:'Render',             price:4.92,   change24h:+5.7,  bettvPick:'ALTA',   bettvConf:60, bettvReason:'RNDR: GPU computing para IA em boom. Parceria Nvidia reforça tese.', logo:'https://cryptologos.cc/logos/render-token-rndr-logo.png'},
+  {id:'fil',  symbol:'FIL',  name:'Filecoin',           price:3.15,   change24h:-1.2,  bettvPick:'NEUTRO', bettvConf:43, bettvReason:'FIL armazenamento descentralizado sem novo catalisador. Lateral.', logo:'https://cryptologos.cc/logos/filecoin-fil-logo.png'},
+  {id:'icp',  symbol:'ICP',  name:'Internet Computer',  price:8.24,   change24h:+2.0,  bettvPick:'ALTA',   bettvConf:48, bettvReason:'ICP: computação on-chain inovadora. Novos dApps lançados este mês.', logo:'https://cryptologos.cc/logos/internet-computer-icp-logo.png'},
+  {id:'algo', symbol:'ALGO', name:'Algorand',           price:0.162,  change24h:-0.8,  bettvPick:'NEUTRO', bettvConf:39, bettvReason:'ALGO sem catalisador. Parcerias governamentais não movem o preço.', logo:'https://cryptologos.cc/logos/algorand-algo-logo.png'},
+  {id:'grt',  symbol:'GRT',  name:'The Graph',          price:0.134,  change24h:+3.4,  bettvPick:'ALTA',   bettvConf:52, bettvReason:'GRT: infraestrutura de indexação web3 crescendo com DeFi bull.', logo:'https://cryptologos.cc/logos/the-graph-grt-logo.png'},
+  {id:'sand', symbol:'SAND', name:'The Sandbox',        price:0.287,  change24h:+1.1,  bettvPick:'NEUTRO', bettvConf:38, bettvReason:'SAND: Metaverse perdeu hype mas nova parceria gaming aquece mercado.', logo:'https://cryptologos.cc/logos/the-sandbox-sand-logo.png'},
+  {id:'mana', symbol:'MANA', name:'Decentraland',       price:0.341,  change24h:-0.4,  bettvPick:'NEUTRO', bettvConf:36, bettvReason:'MANA: usuários ativos estáveis mas narrativa Metaverse enfraquecida.', logo:'https://cryptologos.cc/logos/decentraland-mana-logo.png'},
+  {id:'xlm',  symbol:'XLM',  name:'Stellar',            price:0.094,  change24h:+1.7,  bettvPick:'NEUTRO', bettvConf:42, bettvReason:'XLM: pagamentos internacionais estáveis. Sem catalisador de curto prazo.', logo:'https://cryptologos.cc/logos/stellar-xlm-logo.png'},
+  {id:'vet',  symbol:'VET',  name:'VeChain',            price:0.028,  change24h:+0.5,  bettvPick:'NEUTRO', bettvConf:40, bettvReason:'VET: supply chain blockchain com adoção empresarial. Estável.', logo:'https://cryptologos.cc/logos/vechain-vet-logo.png'},
+  {id:'egld', symbol:'EGLD', name:'MultiversX',         price:27.4,   change24h:+2.8,  bettvPick:'ALTA',   bettvConf:50, bettvReason:'MultiversX: ecossistema DeFi em crescimento. xPortal app com 2M usuários.', logo:'https://cryptologos.cc/logos/elrond-egld-logo.png'},
+  {id:'hbar', symbol:'HBAR', name:'Hedera',             price:0.063,  change24h:+1.4,  bettvPick:'ALTA',   bettvConf:47, bettvReason:'HBAR: governança enterprise IBM/Google. Tokenização RWA em alta.', logo:'https://cryptologos.cc/logos/hedera-hbar-logo.png'},
+  {id:'tia',  symbol:'TIA',  name:'Celestia',           price:3.87,   change24h:+5.1,  bettvPick:'ALTA',   bettvConf:58, bettvReason:'TIA: modular blockchain em alta adoção. Rollups migrando para DA layer.', logo:'https://cryptologos.cc/logos/celestia-tia-logo.png'},
+  {id:'sei',  symbol:'SEI',  name:'Sei',                price:0.247,  change24h:+8.2,  bettvPick:'ALTA',   bettvConf:62, bettvReason:'SEI v2 parallelização lança em março. L1 mais rápido para trading.', logo:'https://cryptologos.cc/logos/sei-sei-logo.png'},
+  {id:'jup',  symbol:'JUP',  name:'Jupiter',            price:0.582,  change24h:+4.3,  bettvPick:'ALTA',   bettvConf:57, bettvReason:'JUP: maior DEX aggregator da Solana. Volume $1B/dia consistente.', logo:'https://cryptologos.cc/logos/jupiter-jup-logo.png'},
+  {id:'pyth', symbol:'PYTH', name:'Pyth Network',       price:0.312,  change24h:+2.7,  bettvPick:'ALTA',   bettvConf:53, bettvReason:'PYTH: oráculo líder em Solana. 200+ novos feeds adicionados em março.', logo:'https://cryptologos.cc/logos/pyth-network-pyth-logo.png'},
+  {id:'wld',  symbol:'WLD',  name:'Worldcoin',          price:1.42,   change24h:-3.1,  bettvPick:'QUEDA',  bettvConf:54, bettvReason:'WLD: preocupações regulatórias na Europa. Pressão de venda de insiders.', logo:'https://cryptologos.cc/logos/worldcoin-wld-logo.png'},
+  {id:'stx',  symbol:'STX',  name:'Stacks',             price:0.847,  change24h:+3.6,  bettvPick:'ALTA',   bettvConf:56, bettvReason:'STX: Bitcoin DeFi ganha tração. sBTC lançado — BTC como garantia DeFi.', logo:'https://cryptologos.cc/logos/stacks-stx-logo.png'},
+  {id:'mkr',  symbol:'MKR',  name:'MakerDAO',           price:1240,   change24h:+1.9,  bettvPick:'ALTA',   bettvConf:52, bettvReason:'MKR: DAI stablecoin $8B circulação. Sky Protocol expansão ativa.', logo:'https://cryptologos.cc/logos/maker-mkr-logo.png'},
+  {id:'aave', symbol:'AAVE', name:'Aave',               price:162,    change24h:+2.5,  bettvPick:'ALTA',   bettvConf:58, bettvReason:'AAVE: $15B TVL líder DeFi lending. GHO stablecoin em crescimento.', logo:'https://cryptologos.cc/logos/aave-aave-logo.png'},
+  {id:'crv',  symbol:'CRV',  name:'Curve',              price:0.342,  change24h:-0.7,  bettvPick:'NEUTRO', bettvConf:44, bettvReason:'CRV: TVL estável $2.1B. Problemas de governança afastam especuladores.', logo:'https://cryptologos.cc/logos/curve-dao-token-crv-logo.png'},
+  {id:'snx',  symbol:'SNX',  name:'Synthetix',          price:1.28,   change24h:+1.3,  bettvPick:'NEUTRO', bettvConf:42, bettvReason:'SNX: perp trading v3 no ar mas concorrência forte com GMX.', logo:'https://cryptologos.cc/logos/synthetix-network-token-snx-logo.png'},
+  {id:'blur', symbol:'BLUR', name:'Blur',               price:0.148,  change24h:+6.1,  bettvPick:'ALTA',   bettvConf:49, bettvReason:'BLUR: marketplace NFT recupera volume. Season 3 airdrop no horizonte.', logo:'https://cryptologos.cc/logos/blur-blur-logo.png'},
+  {id:'w',    symbol:'W',    name:'Wormhole',           price:0.192,  change24h:+3.8,  bettvPick:'ALTA',   bettvConf:51, bettvReason:'Wormhole bridge: $50B+ volume acumulado. Adoção cross-chain em alta.', logo:'https://cryptologos.cc/logos/wormhole-w-logo.png'},
+  {id:'zk',   symbol:'ZK',   name:'ZKsync',             price:0.094,  change24h:-1.5,  bettvPick:'NEUTRO', bettvConf:45, bettvReason:'ZK: L2 promissor mas concorrência dura com Starknet e Linea.', logo:'https://cryptologos.cc/logos/zksync-zk-logo.png'},
+  {id:'kas',  symbol:'KAS',  name:'Kaspa',              price:0.082,  change24h:+4.2,  bettvPick:'ALTA',   bettvConf:55, bettvReason:'KAS: PoW mais rápido do mundo. Mineradores migrando do ETC para KAS.', logo:'https://cryptologos.cc/logos/kaspa-kas-logo.png'},
+  {id:'ton',  symbol:'TON',  name:'Toncoin',            price:3.74,   change24h:+2.1,  bettvPick:'ALTA',   bettvConf:60, bettvReason:'TON: integração Telegram com 900M usuários. Mini-apps em explosão.', logo:'https://cryptologos.cc/logos/toncoin-ton-logo.png'},
+  {id:'bch',  symbol:'BCH',  name:'Bitcoin Cash',       price:336,    change24h:+1.4,  bettvPick:'ALTA',   bettvConf:48, bettvReason:'BCH segue BTC com delay. Halving BTC em 2024 ainda impulsiona.', logo:'https://cryptologos.cc/logos/bitcoin-cash-bch-logo.png'},
+]
+
+// ─── MOEDAS FIAT — 50 principais do mundo (previsão diária BetTv) ──────────────
+// Previsão baseada em movimentos macroeconômicos e tendências técnicas
+const MOEDAS_DATA = [
+  {id:'usd', symbol:'USD', name:'Dólar Americano',    flag:'🇺🇸', price:1.000,  vs:'BRL', priceBRL:5.12,  change24h:-0.3, bettvPick:'QUEDA',  bettvConf:55, bettvReason:'Fed mantém juros. Dados de emprego abaixo do esperado pressionam o dólar.'},
+  {id:'eur', symbol:'EUR', name:'Euro',               flag:'🇪🇺', price:1.082,  vs:'BRL', priceBRL:5.54,  change24h:+0.4, bettvPick:'ALTA',   bettvConf:52, bettvReason:'BCE sinalizou pausa nos cortes. Zona do euro cresce 0.4% no 1T26.'},
+  {id:'gbp', symbol:'GBP', name:'Libra Esterlina',   flag:'🇬🇧', price:1.297,  vs:'BRL', priceBRL:6.64,  change24h:+0.2, bettvPick:'ALTA',   bettvConf:50, bettvReason:'BOE conservador. Inflação UK em queda. Libra estável ante dólar.'},
+  {id:'jpy', symbol:'JPY', name:'Iene Japonês',      flag:'🇯🇵', price:0.0067, vs:'BRL', priceBRL:0.034, change24h:-0.5, bettvPick:'QUEDA',  bettvConf:57, bettvReason:'BOJ ainda dovish. Diferencial de juros EUA-Japão mantém pressão no iene.'},
+  {id:'cny', symbol:'CNY', name:'Yuan Chinês',       flag:'🇨🇳', price:0.138,  vs:'BRL', priceBRL:0.707, change24h:+0.1, bettvPick:'NEUTRO', bettvConf:48, bettvReason:'PBOC gerencia valorização. Estímulos fiscais em andamento na China.'},
+  {id:'chf', symbol:'CHF', name:'Franco Suíço',      flag:'🇨🇭', price:1.111,  vs:'BRL', priceBRL:5.69,  change24h:+0.3, bettvPick:'ALTA',   bettvConf:54, bettvReason:'SNB comprador líquido de ouro. Franco seguro em cenário de risco.'},
+  {id:'cad', symbol:'CAD', name:'Dólar Canadense',   flag:'🇨🇦', price:0.727,  vs:'BRL', priceBRL:3.72,  change24h:-0.2, bettvPick:'NEUTRO', bettvConf:46, bettvReason:'Petróleo WTI estável. BOC em pausa. CAD lateral vs USD.'},
+  {id:'aud', symbol:'AUD', name:'Dólar Australiano', flag:'🇦🇺', price:0.634,  vs:'BRL', priceBRL:3.25,  change24h:+0.6, bettvPick:'ALTA',   bettvConf:53, bettvReason:'Commodities em alta favorecem AUD. RBA corta menos que esperado.'},
+  {id:'nzd', symbol:'NZD', name:'Dólar Neozelandês', flag:'🇳🇿', price:0.578,  vs:'BRL', priceBRL:2.96,  change24h:+0.3, bettvPick:'ALTA',   bettvConf:48, bettvReason:'RBNZ pausou cortes. Exportações agro da NZ em recuperação.'},
+  {id:'brl', symbol:'BRL', name:'Real Brasileiro',   flag:'🇧🇷', price:1.000,  vs:'USD', priceBRL:1.00,  change24h:-0.4, bettvPick:'QUEDA',  bettvConf:56, bettvReason:'Fiscal preocupa. Copom mantém Selic em 14.75%. BRL pressionado externamente.'},
+  {id:'mxn', symbol:'MXN', name:'Peso Mexicano',     flag:'🇲🇽', price:0.0501, vs:'BRL', priceBRL:0.257, change24h:-0.8, bettvPick:'QUEDA',  bettvConf:55, bettvReason:'Nearshoring desacelera. Banxico corta juros agressivamente.'},
+  {id:'ars', symbol:'ARS', name:'Peso Argentino',    flag:'🇦🇷', price:0.00101,vs:'BRL', priceBRL:0.00518,change24h:-1.2,bettvPick:'QUEDA',  bettvConf:72, bettvReason:'Argentina: inflação 180% a.a. Peso em desvalorização estrutural contínua.'},
+  {id:'clp', symbol:'CLP', name:'Peso Chileno',      flag:'🇨🇱', price:0.00103,vs:'BRL', priceBRL:0.00527,change24h:-0.3,bettvPick:'NEUTRO', bettvConf:44, bettvReason:'Cobre estável. BCCh em ciclo de corte gradual. Peso lateral.'},
+  {id:'cop', symbol:'COP', name:'Peso Colombiano',   flag:'🇨🇴', price:0.000243,vs:'BRL',priceBRL:0.00124,change24h:-0.5,bettvPick:'QUEDA', bettvConf:51, bettvReason:'Petróleo Brent recua. BanRep corta juros. COP sob pressão.'},
+  {id:'pen', symbol:'PEN', name:'Sol Peruano',       flag:'🇵🇪', price:1.374,  vs:'BRL', priceBRL:7.04,  change24h:+0.1, bettvPick:'NEUTRO', bettvConf:43, bettvReason:'Peru: mineração de cobre estável. BCRP mantém juros. Sol estável.'},
+  {id:'krw', symbol:'KRW', name:'Won Coreano',       flag:'🇰🇷', price:0.00374,vs:'BRL', priceBRL:0.0192, change24h:-0.4, bettvPick:'NEUTRO', bettvConf:45, bettvReason:'Samsung e SK Hynix em recuperação. BOK cauteloso. Won estável.'},
+  {id:'inr', symbol:'INR', name:'Rúpia Indiana',     flag:'🇮🇳', price:0.0596, vs:'BRL', priceBRL:0.305,  change24h:-0.2, bettvPick:'QUEDA',  bettvConf:50, bettvReason:'RBI intervém mas pressão estrutural no déficit em conta corrente.'},
+  {id:'hkd', symbol:'HKD', name:'Dólar de HK',       flag:'🇭🇰', price:0.132,  vs:'BRL', priceBRL:0.676,  change24h:0.0,  bettvPick:'NEUTRO', bettvConf:95, bettvReason:'HKD atrelado ao USD (currency board). Sem variação esperada.'},
+  {id:'sgd', symbol:'SGD', name:'Dólar de Singapura',flag:'🇸🇬', price:0.753,  vs:'BRL', priceBRL:3.86,  change24h:+0.2, bettvPick:'ALTA',   bettvConf:51, bettvReason:'MAS aprecia SGD para controlar inflação. Economia resiliente.'},
+  {id:'sek', symbol:'SEK', name:'Coroa Sueca',       flag:'🇸🇪', price:0.0913, vs:'BRL', priceBRL:0.468,  change24h:+0.4, bettvPick:'ALTA',   bettvConf:49, bettvReason:'Riksbank pausou cortes. Suécia exportações industriais em recuperação.'},
+  {id:'nok', symbol:'NOK', name:'Coroa Norueguesa',  flag:'🇳🇴', price:0.0879, vs:'BRL', priceBRL:0.450,  change24h:+0.3, bettvPick:'ALTA',   bettvConf:51, bettvReason:'Petróleo Brent apoia NOK. Norges Bank hawkish.'},
+  {id:'dkk', symbol:'DKK', name:'Coroa Dinamarquesa',flag:'🇩🇰', price:0.145,  vs:'BRL', priceBRL:0.743,  change24h:+0.4, bettvPick:'ALTA',   bettvConf:50, bettvReason:'DKK atrelado ao EUR. Segue movimento europeu positivo.'},
+  {id:'pln', symbol:'PLN', name:'Zloty Polonês',     flag:'🇵🇱', price:0.245,  vs:'BRL', priceBRL:1.254,  change24h:+0.5, bettvPick:'ALTA',   bettvConf:53, bettvReason:'Polônia cresce 3.1% no 1T26. NBP conservador favorece PLN.'},
+  {id:'czk', symbol:'CZK', name:'Coroa Tcheca',      flag:'🇨🇿', price:0.0427, vs:'BRL', priceBRL:0.219,  change24h:+0.3, bettvPick:'ALTA',   bettvConf:48, bettvReason:'CNB em pausa. Economia tcheca resiliente. CZK ligeiramente valorizada.'},
+  {id:'huf', symbol:'HUF', name:'Forint Húngaro',    flag:'🇭🇺', price:0.00265,vs:'BRL', priceBRL:0.0136, change24h:-0.6, bettvPick:'QUEDA',  bettvConf:52, bettvReason:'MNB corta juros agressivamente. HUF mais volátil da CE.'},
+  {id:'rub', symbol:'RUB', name:'Rublo Russo',       flag:'🇷🇺', price:0.00611,vs:'BRL', priceBRL:0.0313, change24h:-0.9, bettvPick:'QUEDA',  bettvConf:66, bettvReason:'Sanções ocidentais e inflação persistente pressionam RUB estruturalmente.'},
+  {id:'try', symbol:'TRY', name:'Lira Turca',        flag:'🇹🇷', price:0.0147, vs:'BRL', priceBRL:0.0753, change24h:-1.3, bettvPick:'QUEDA',  bettvConf:70, bettvReason:'Turquia: inflação 40%+ a.a. CBRT tenta estabilizar mas TRY em queda.'},
+  {id:'zar', symbol:'ZAR', name:'Rand Sul-Africano', flag:'🇿🇦', price:0.0537, vs:'BRL', priceBRL:0.275,  change24h:+0.7, bettvPick:'ALTA',   bettvConf:50, bettvReason:'Ouro e platina valorizam. GNU government traz estabilidade política.'},
+  {id:'ils', symbol:'ILS', name:'Shekel Israelense', flag:'🇮🇱', price:0.274,  vs:'BRL', priceBRL:1.40,  change24h:-0.4, bettvPick:'NEUTRO', bettvConf:46, bettvReason:'BOI intervém ativamente. Risco geopolítico mantém volatilidade.'},
+  {id:'aed', symbol:'AED', name:'Dirham dos EAU',    flag:'🇦🇪', price:0.272,  vs:'BRL', priceBRL:1.393,  change24h:-0.1, bettvPick:'NEUTRO', bettvConf:90, bettvReason:'AED atrelado ao USD. Expectativa: sem variação. Dubai estável.'},
+  {id:'sar', symbol:'SAR', name:'Riyal Saudita',     flag:'🇸🇦', price:0.267,  vs:'BRL', priceBRL:1.368,  change24h:-0.1, bettvPick:'NEUTRO', bettvConf:88, bettvReason:'SAR atrelado ao USD. ARAMCO apoia reservas. Estável.'},
+  {id:'thb', symbol:'THB', name:'Baht Tailandês',    flag:'🇹🇭', price:0.148,  vs:'BRL', priceBRL:0.758,  change24h:+0.2, bettvPick:'NEUTRO', bettvConf:44, bettvReason:'BOT estável. Turismo tailandês em recuperação pós-pandemia.'},
+  {id:'myr', symbol:'MYR', name:'Ringgit Malaio',    flag:'🇲🇾', price:0.223,  vs:'BRL', priceBRL:1.142,  change24h:+0.5, bettvPick:'ALTA',   bettvConf:51, bettvReason:'BNM hawkish. Exportações semicondutores da Malásia em alta.'},
+  {id:'idr', symbol:'IDR', name:'Rupia Indonésia',   flag:'🇮🇩', price:0.0000317,vs:'BRL',priceBRL:0.000162,change24h:-0.4,bettvPick:'NEUTRO',bettvConf:43,'bettvReason':'BI intervém para estabilizar. Comodities sustentam mas juros altos pesam.'},
+  {id:'php', symbol:'PHP', name:'Peso Filipino',     flag:'🇵🇭', price:0.0170, vs:'BRL', priceBRL:0.0870, change24h:-0.3, bettvPick:'NEUTRO', bettvConf:44, bettvReason:'BSP cortou juros. Remessas de OFW sustentam PHP. Lateral esperado.'},
+  {id:'vnd', symbol:'VND', name:'Dong Vietnamita',   flag:'🇻🇳', price:0.0000394,vs:'BRL',priceBRL:0.000202,change24h:0.0,bettvPick:'NEUTRO',bettvConf:80,'bettvReason':'SBV gerencia câmbio rigidamente. VND quasi-fixo ao USD.'},
+  {id:'pkr', symbol:'PKR', name:'Rupia Paquistanesa',flag:'🇵🇰', price:0.00357,vs:'BRL', priceBRL:0.0183, change24h:-0.7, bettvPick:'QUEDA',  bettvConf:64, bettvReason:'Paquistão: crise de dívida externa. FMI empresta mas PKR fraco.'},
+  {id:'egp', symbol:'EGP', name:'Libra Egípcia',     flag:'🇪🇬', price:0.0200, vs:'BRL', priceBRL:0.102,  change24h:-0.5, bettvPick:'QUEDA',  bettvConf:60, bettvReason:'CBE corta juros mas inflação persistente. EGP sob pressão cambial.'},
+  {id:'ngn', symbol:'NGN', name:'Naira Nigeriana',   flag:'🇳🇬', price:0.000640,vs:'BRL',priceBRL:0.00328,change24h:-1.0,bettvPick:'QUEDA',  bettvConf:68, bettvReason:'Nigéria: escassez de dólares e inflação 28%. NGN em desvalorização.'},
+  {id:'kwd', symbol:'KWD', name:'Dinar Kuwaitiano',  flag:'🇰🇼', price:3.29,   vs:'BRL', priceBRL:16.85,  change24h:-0.1, bettvPick:'NEUTRO', bettvConf:85, bettvReason:'KWD mais valorizada do mundo. Atrelada ao cesto de moedas. Estável.'},
+  {id:'bdt', symbol:'BDT', name:'Taka Bangladeshi',  flag:'🇧🇩', price:0.00898,vs:'BRL', priceBRL:0.046,  change24h:-0.4, bettvPick:'NEUTRO', bettvConf:42, bettvReason:'Bangladesh: exportações têxteis estáveis. BB gerencia câmbio.'},
+  {id:'uah', symbol:'UAH', name:'Hryvnia Ucraniana', flag:'🇺🇦', price:0.0241, vs:'BRL', priceBRL:0.123,  change24h:-0.6, bettvPick:'QUEDA',  bettvConf:65, bettvReason:'Ucrânia: guerra e instabilidade. UAH em desvalorização lenta controlada.'},
+  {id:'qar', symbol:'QAR', name:'Riyal Catarí',      flag:'🇶🇦', price:0.274,  vs:'BRL', priceBRL:1.403,  change24h:0.0,  bettvPick:'NEUTRO', bettvConf:92, bettvReason:'QAR atrelado ao USD. Qatar apoia com reservas do fundo soberano.'},
+  {id:'kes', symbol:'KES', name:'Shilling Queniano', flag:'🇰🇪', price:0.00773,vs:'BRL', priceBRL:0.0396, change24h:+0.3, bettvPick:'NEUTRO', bettvConf:45, bettvReason:'Quênia: inflação em queda. CBK estabiliza. KES em lenta recuperação.'},
+  {id:'twd', symbol:'TWD', name:'Dólar de Taiwan',   flag:'🇹🇼', price:0.0311, vs:'BRL', priceBRL:0.159,  change24h:+0.3, bettvPick:'ALTA',   bettvConf:52, bettvReason:'Taiwan: exportações TSMC recordes. Tensão China-Taiwan monitorada.'},
+  {id:'bnd', symbol:'BND', name:'Dólar de Brunei',   flag:'🇧🇳', price:0.753,  vs:'BRL', priceBRL:3.86,  change24h:+0.2, bettvPick:'NEUTRO', bettvConf:90, bettvReason:'BND atrelado 1:1 ao SGD. Segue Singapura.'},
+  {id:'omr', symbol:'OMR', name:'Rial Omanense',     flag:'🇴🇲', price:2.595,  vs:'BRL', priceBRL:13.29,  change24h:-0.1, bettvPick:'NEUTRO', bettvConf:85, bettvReason:'OMR atrelado ao USD. Petróleo sustenta reservas. Estável.'},
+  {id:'jod', symbol:'JOD', name:'Dinar Jordaniano',  flag:'🇯🇴', price:1.410,  vs:'BRL', priceBRL:7.22,  change24h:0.0,  bettvPick:'NEUTRO', bettvConf:88, bettvReason:'JOD atrelado ao USD. CBJ defende a paridade com reservas.'},
+  {id:'bam', symbol:'BAM', name:'Marco da Bósnia',   flag:'🇧🇦', price:0.553,  vs:'BRL', priceBRL:2.83,  change24h:+0.4, bettvPick:'ALTA',   bettvConf:49, bettvReason:'BAM atrelado ao EUR (currency board). Segue valorização europeia.'},
+]
+
+
 const TABS = [
   { key:'todos',    label:'Todos'     },
   { key:'loterias', label:'Loterias'  },
@@ -163,6 +277,8 @@ const TABS = [
   { key:'mma',      label:'MMA / UFC' },
   { key:'tenis',    label:'Tênis'     },
   { key:'esports',  label:'E-sports'  },
+  { key:'crypto',   label:'Crypto'    },
+  { key:'moedas',   label:'Moedas'    },
 ]
 
 const INTERVAL = 2*60*60*1000
@@ -174,8 +290,14 @@ async function callClaude(data, category) {
   if (category==='loterias') {
     prompt = 'Recalcule previsões das loterias Caixa. Dados: ' + JSON.stringify(data.loterias.map(l=>({id:l.id,guruNums:l.guruNums,guruConf:l.guruConf}))) + ' Retorne JSON array: [{"id":"mega","guruNums":[n,n,n,n,n,n],"guruConf":18,"guruAnalise":"max 120 chars"},{"id":"lotofacil","guruNums":[15 de 1-25],"guruConf":34,"guruAnalise":"..."},{"id":"quina","guruNums":[5 de 1-80],"guruConf":22,"guruAnalise":"..."},{"id":"timemania","guruNums":[7 de 1-80],"guruConf":12,"guruAnalise":"..."},{"id":"duplasena","guruNums":[6 de 1-50],"guruConf":15,"guruAnalise":"..."},{"id":"diadesorte","guruNums":[7 de 1-31],"guruConf":14,"guruAnalise":"..."}]'
   } else {
+    if (category==='crypto') {
+    prompt = 'Analise o mercado de crypto de hoje. Dados atuais: ' + JSON.stringify(data.crypto.map(c=>({id:c.id,symbol:c.symbol,name:c.name,price:c.price,change24h:c.change24h}))) + ' Retorne JSON array com previsão do dia: [{"id":"...","bettvPick":"ALTA|QUEDA|NEUTRO","bettvConf":0-95,"bettvReason":"max 100 chars","change24h":0.0}] para TODOS os itens.'
+  } else if (category==='moedas') {
+    prompt = 'Analise o mercado de câmbio de hoje. Dados: ' + JSON.stringify(data.moedas.map(m=>({id:m.id,symbol:m.symbol,name:m.name,change24h:m.change24h}))) + ' Retorne JSON array: [{"id":"...","bettvPick":"ALTA|QUEDA|NEUTRO","bettvConf":0-95,"bettvReason":"max 100 chars","change24h":0.0}] para TODOS os itens.'
+  } else {
     const esp=data.esportes[category]; if (!esp) return null
     prompt = 'Recalcule previsões para ' + esp.label + '. Dados: ' + JSON.stringify(esp.items.map(i=>({id:i.id,title:i.title,bettvPick:i.bettvPick,bettvConf:i.bettvConf}))) + ' Retorne JSON array: [{"id":"...","bettvPick":"...","bettvConf":50,"bettvReason":"max 100 chars","homePct":50,"awayPct":30,"draw":20}]'
+  }
   }
   const res = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,system,messages:[{role:'user',content:prompt}]})})
   if (!res.ok) throw new Error('API ' + res.status)
@@ -202,7 +324,7 @@ function useAutoUpdate(seed) {
 
   const runCycle=useCallback(async(cur,manual=false)=>{
     setUpdating(true)
-    const cats=['loterias',...Object.keys(ESPORTES)]
+    const cats=['loterias',...Object.keys(ESPORTES),'crypto','moedas']
     setQueue([...cats])
     addLog(manual?'Atualização manual':'Ciclo automático','start')
     const nd={loterias:[...cur.loterias],esportes:{...cur.esportes}}
@@ -215,6 +337,10 @@ function useAutoUpdate(seed) {
         if (!upd||!Array.isArray(upd)){addLog(cat+': inválido','warn');continue}
         if (cat==='loterias'){
           nd.loterias=nd.loterias.map(l=>{const u=upd.find(x=>x.id===l.id);return u?{...l,...u}:l})
+        } else if (cat==='crypto') {
+          nd.crypto=nd.crypto.map(c=>{const u=upd.find(x=>x.id===c.id);return u?{...c,...u}:c})
+        } else if (cat==='moedas') {
+          nd.moedas=nd.moedas.map(m=>{const u=upd.find(x=>x.id===m.id);return u?{...m,...u}:m})
         } else {
           if (!nd.esportes[cat]) continue
           nd.esportes[cat]={...nd.esportes[cat],items:nd.esportes[cat].items.map(item=>{
@@ -1048,7 +1174,7 @@ function DesktopNav({tab, onTab, page, onPage, updating, countdown, queue, force
   return (
     <div style={{background:T.white,borderBottom:`1px solid ${T.border}`,position:'sticky',top:0,zIndex:50}}>
       {/* Top bar */}
-      <div style={{maxWidth:1280,margin:'0 auto',padding:'0 40px',display:'flex',alignItems:'center',justifyContent:'space-between',height:54}}>
+      <div style={{maxWidth:1280,margin:'0 auto',padding:'0 40px',display:'flex',alignItems:'center',justifyContent:'space-between',height:54,width:'100%'}}>
         <div style={{display:'flex',alignItems:'center',gap:28}}>
           <div style={{display:'flex',alignItems:'center'}}>
             <LogoSVG height={30}/>
@@ -1390,7 +1516,12 @@ function MobileEventsList({tab, appData, onSelect, onBack, updating, countdown, 
 
   const allEvents = Object.entries(appData.esportes).flatMap(([catKey,cat])=>
     cat.items.map(item=>({...item,_catKey:catKey}))
-  ).sort((a,b)=>new Date(a.startTime||'2099')-new Date(b.startTime||'2099'))
+  ).sort((a,b)=>{
+    const aLive = (a.status==='live'||a.status==='inprogress')?0:1
+    const bLive = (b.status==='live'||b.status==='inprogress')?0:1
+    if (aLive!==bLive) return aLive-bLive
+    return new Date(a.startTime||'2099')-new Date(b.startTime||'2099')
+  })
 
   const espItems = appData.esportes[tab]?.items||[]
 
@@ -1427,7 +1558,7 @@ function MobileEventsList({tab, appData, onSelect, onBack, updating, countdown, 
         </div>
 
         {/* Filter pills */}
-        {!isLoto&&(
+        {!isLoto&&!isCrypto&&!isMoedas&&(
           <div style={{display:'flex',gap:6,padding:'0 16px 12px',overflowX:'auto',scrollbarWidth:'none'}}>
             {[
               {f:'all',label:'Todos',count:isTodos?allEvents.length:espItems.length},
@@ -1534,6 +1665,94 @@ function MobileEventsList({tab, appData, onSelect, onBack, updating, countdown, 
   )
 }
 
+// ─── CRYPTO CARD ──────────────────────────────────────────────────────────────
+function CryptoCard({item, onSelect}) {
+  const [hov,setHov]=useState(false)
+  const [imgErr,setImgErr]=useState(false)
+  const isUp = item.bettvPick==='ALTA'
+  const isDown = item.bettvPick==='QUEDA'
+  const pickColor = isUp?'#16A34A':isDown?T.red:T.gray1
+  const pickBg = isUp?'#F0FDF4':isDown?'#FEF2F2':'#F8F8F6'
+  const chg = item.change24h||0
+  const chgColor = chg>0?'#16A34A':chg<0?T.red:T.gray1
+  return (
+    <div onClick={()=>onSelect&&onSelect(item)}
+      onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+      style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C0C0BB':T.border}`,
+        padding:'14px 16px',cursor:'pointer',display:'flex',alignItems:'center',gap:12,
+        boxShadow:hov?'0 2px 12px rgba(0,0,0,0.08)':'none',transition:'all 0.12s'}}>
+      {/* Logo */}
+      {item.logo&&!imgErr
+        ?<img src={item.logo} alt={item.symbol} onError={()=>setImgErr(true)}
+            style={{width:36,height:36,borderRadius:'50%',objectFit:'contain',flexShrink:0}}/>
+        :<div style={{width:36,height:36,borderRadius:'50%',background:T.catBg.crypto||'#FEF3C7',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:13,fontWeight:800,color:T.cat.crypto}}>{item.symbol?.slice(0,3)}</div>
+      }
+      {/* Name + symbol */}
+      <div style={{flex:1,minWidth:0}}>
+        <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:2}}>
+          <span style={{fontSize:14,fontWeight:700,color:T.black}}>{item.symbol}</span>
+          <span style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.name}</span>
+        </div>
+        <div style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.bettvReason||'—'}</div>
+      </div>
+      {/* Price + change */}
+      <div style={{textAlign:'right',flexShrink:0}}>
+        <div style={{fontSize:14,fontWeight:700,color:T.black,marginBottom:3}}>
+          {item.price>=1000?'$'+item.price.toLocaleString('pt-BR'):item.price>=1?'$'+item.price.toFixed(2):'$'+item.price.toFixed(4)}
+        </div>
+        <div style={{fontSize:12,fontWeight:600,color:chgColor}}>{chg>0?'+':''}{chg.toFixed(1)}%</div>
+      </div>
+      {/* Pick badge */}
+      <div style={{background:pickBg,borderRadius:T.r.sm,padding:'4px 10px',flexShrink:0,textAlign:'center',minWidth:58}}>
+        <div style={{fontSize:11,fontWeight:800,color:pickColor}}>{item.bettvPick||'—'}</div>
+        <div style={{fontSize:10,color:T.gray1}}>{item.bettvConf||0}%</div>
+      </div>
+    </div>
+  )
+}
+
+// ─── MOEDAS CARD ──────────────────────────────────────────────────────────────
+function MoedasCard({item, onSelect}) {
+  const [hov,setHov]=useState(false)
+  const isUp = item.bettvPick==='ALTA'
+  const isDown = item.bettvPick==='QUEDA'
+  const pickColor = isUp?'#16A34A':isDown?T.red:T.gray1
+  const pickBg = isUp?'#F0FDF4':isDown?'#FEF2F2':'#F8F8F6'
+  const chg = item.change24h||0
+  const chgColor = chg>0?'#16A34A':chg<0?T.red:T.gray1
+  return (
+    <div onClick={()=>onSelect&&onSelect(item)}
+      onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+      style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C0C0BB':T.border}`,
+        padding:'14px 16px',cursor:'pointer',display:'flex',alignItems:'center',gap:12,
+        boxShadow:hov?'0 2px 12px rgba(0,0,0,0.08)':'none',transition:'all 0.12s'}}>
+      {/* Flag emoji */}
+      <div style={{width:36,height:36,borderRadius:'50%',background:T.catBg.moedas||'#CFFAFE',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:20}}>{item.flag||'💱'}</div>
+      {/* Name */}
+      <div style={{flex:1,minWidth:0}}>
+        <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:2}}>
+          <span style={{fontSize:14,fontWeight:700,color:T.black}}>{item.symbol}</span>
+          <span style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.name}</span>
+        </div>
+        <div style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.bettvReason||'—'}</div>
+      </div>
+      {/* Price in BRL */}
+      <div style={{textAlign:'right',flexShrink:0}}>
+        <div style={{fontSize:14,fontWeight:700,color:T.black,marginBottom:3}}>
+          {item.priceBRL>=1?'R$'+item.priceBRL.toFixed(2):'R$'+item.priceBRL.toFixed(4)}
+        </div>
+        <div style={{fontSize:12,fontWeight:600,color:chgColor}}>{chg>0?'+':''}{chg.toFixed(1)}%</div>
+      </div>
+      {/* Pick badge */}
+      <div style={{background:pickBg,borderRadius:T.r.sm,padding:'4px 10px',flexShrink:0,textAlign:'center',minWidth:58}}>
+        <div style={{fontSize:11,fontWeight:800,color:pickColor}}>{item.bettvPick||'—'}</div>
+        <div style={{fontSize:10,color:T.gray1}}>{item.bettvConf||0}%</div>
+      </div>
+    </div>
+  )
+}
+
+
 // ─── GLOBAL CSS ───────────────────────────────────────────────────────────────
 const CSS=`
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -1551,7 +1770,7 @@ const CSS=`
 `
 
 // ─── APP ROOT ─────────────────────────────────────────────────────────────────
-const SEED={loterias:LOTERIAS,esportes:ESPORTES}
+const SEED={loterias:LOTERIAS,esportes:ESPORTES,crypto:CRYPTO_DATA,moedas:MOEDAS_DATA}
 
 export default function App() {
   const [tab,setTab]=useState('todos')
@@ -1566,18 +1785,28 @@ export default function App() {
   const {appData,logs,updating,lastAt,countdown,queue,force}=useAutoUpdate(SEED)
   const {isMobile,isTablet,isDesktop}=useBreakpoint()
 
-  const isLoto  = tab==='loterias'
-  const isTodos = tab==='todos'
-  const espData = appData.esportes[tab]
-  const espItems= espData?.items||[]
-  const catUpd  = updating&&queue.includes(tab)
-  const totalLive=Object.values(appData.esportes).flatMap(d=>d.items).filter(i=>i.status==='live').length
+  const isLoto   = tab==='loterias'
+  const isTodos  = tab==='todos'
+  const isCrypto = tab==='crypto'
+  const isMoedas = tab==='moedas'
+  const isSpecial = isCrypto||isMoedas
+  const espData  = (!isSpecial&&!isTodos) ? appData.esportes[tab] : null
+  const espItems = espData?.items||[]
+  const cryptoItems = appData.crypto||CRYPTO_DATA
+  const moedasItems = appData.moedas||MOEDAS_DATA
+  const catUpd   = updating&&queue.includes(tab)
+  const totalLive= Object.values(appData.esportes).flatMap(d=>d.items).filter(i=>i.status==='live').length
 
   const allEvents = Object.entries(appData.esportes).flatMap(([catKey,cat])=>
     cat.items.map(item=>({...item,_catKey:catKey}))
-  ).sort((a,b)=>new Date(a.startTime||'2099')-new Date(b.startTime||'2099'))
+  ).sort((a,b)=>{
+    const aLive = (a.status==='live'||a.status==='inprogress')?0:1
+    const bLive = (b.status==='live'||b.status==='inprogress')?0:1
+    if (aLive!==bLive) return aLive-bLive
+    return new Date(a.startTime||'2099')-new Date(b.startTime||'2099')
+  })
 
-  // Real-time live check — event must have status='live' AND be within its time window
+  // Real-time live check
   function isReallyLive(item) {
     if (item.status !== 'live' && item.status !== 'inprogress') return false
     if (!item.startTime) return true
@@ -1588,6 +1817,8 @@ export default function App() {
 
   const currentItems = isLoto
     ? appData.loterias.filter(l=>activeFilter==='all'||(activeFilter==='acumulado'&&l.acumulado))
+    : isCrypto ? cryptoItems
+    : isMoedas ? moedasItems
     : isTodos
       ? allEvents.filter(i=>activeFilter==='all'||(activeFilter==='live'&&isReallyLive(i))||(activeFilter==='upcoming'&&!isReallyLive(i)))
       : espItems.filter(i=>activeFilter==='all'||(activeFilter==='live'&&isReallyLive(i))||(activeFilter==='upcoming'&&!isReallyLive(i)))
@@ -1611,7 +1842,7 @@ export default function App() {
             <div style={{maxWidth:1280,margin:'0 auto',padding:'28px 40px 56px'}}>
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:22}}>
                 <h1 style={{fontSize:24,fontWeight:800,color:T.black,letterSpacing:'-0.04em'}}>
-                  {isLoto?'Loterias':isTodos?'Todos os Eventos':TABS.find(t=>t.key===tab)?.label}
+                  {isLoto?'Loterias':isCrypto?'Crypto · Previsões do Dia':isMoedas?'Moedas · Câmbio do Dia':isTodos?'Todos os Eventos':TABS.find(t=>t.key===tab)?.label}
                 </h1>
                 <div style={{display:'flex',gap:7}}>
                   {(isLoto?['all','acumulado']:['all','live','upcoming']).map(f=>(
@@ -1622,12 +1853,21 @@ export default function App() {
                 </div>
               </div>
               {isLoto&&<div style={{background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:T.r.md,padding:'10px 16px',marginBottom:18,fontSize:12,color:'#78350F',lineHeight:1.6}}><strong>Jogo responsável.</strong> Sugestões baseadas em estatística histórica.</div>}
-              <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:14,alignItems:'start'}}>
-                {isLoto
-                  ?currentItems.map(lot=><KalshiLotoCard key={lot.id} lot={lot} onSelect={setSelItem} catUpdating={catUpd}/>)
-                  :currentItems.map(item=><KalshiSportCard key={item.id} item={item} catKey={item._catKey||tab} onSelect={setSelItem} catUpdating={isTodos?false:catUpd}/>)
-                }
-              </div>
+              {isCrypto||isMoedas?(
+                <div style={{display:'flex',flexDirection:'column',gap:8}}>
+                  {isCrypto
+                    ?currentItems.map(item=><CryptoCard key={item.id} item={item}/>)
+                    :currentItems.map(item=><MoedasCard key={item.id} item={item}/>)
+                  }
+                </div>
+              ):(
+                <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:14,alignItems:'start'}}>
+                  {isLoto
+                    ?currentItems.map(lot=><KalshiLotoCard key={lot.id} lot={lot} onSelect={setSelItem} catUpdating={catUpd}/>)
+                    :currentItems.map(item=><KalshiSportCard key={item.id} item={item} catKey={item._catKey||tab} onSelect={setSelItem} catUpdating={isTodos?false:catUpd}/>)
+                  }
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -1721,7 +1961,7 @@ export default function App() {
       <div style={{padding:isTablet?'20px 24px':'12px 14px',maxWidth:isTablet?860:'100%',margin:'0 auto'}}>
 
         {/* Filter pills */}
-        {!isLoto&&(
+        {!isLoto&&!isCrypto&&!isMoedas&&(
           <div style={{display:'flex',gap:6,marginBottom:14,overflowX:'auto',scrollbarWidth:'none',paddingBottom:2}}>
             {[
               {f:'all',     label:'Todos'},
@@ -1754,6 +1994,14 @@ export default function App() {
         {isLoto?(
           <div style={{display:'grid',gridTemplateColumns:isTablet?'repeat(2,1fr)':'1fr',gap:12}}>
             {currentItems.map(lot=><LotoCard key={lot.id} lot={lot} onSelect={setSelItem} catUpdating={catUpd}/>)}
+          </div>
+        ):isCrypto?(
+          <div style={{display:'flex',flexDirection:'column',gap:8}}>
+            {currentItems.map(item=><CryptoCard key={item.id} item={item}/>)}
+          </div>
+        ):isMoedas?(
+          <div style={{display:'flex',flexDirection:'column',gap:8}}>
+            {currentItems.map(item=><MoedasCard key={item.id} item={item}/>)}
           </div>
         ):(
           <div style={{display:'flex',flexDirection:'column',gap:0}}>
