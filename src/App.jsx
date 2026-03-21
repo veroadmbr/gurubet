@@ -1203,6 +1203,302 @@ function MobileSportCard({item, catKey, onSelect}) {
   )
 }
 
+// ─── MOBILE CHAT PAGE ─────────────────────────────────────────────────────────
+// Página dedicada ao chat de um evento — seta para voltar, chat full screen
+function MobileChatPage({item, catKey, onBack, appData}) {
+  const [comments, setComments] = useState([])
+  const [newComment, setNewComment] = useState('')
+  const [userName, setUserName] = useState('')
+  const [likedIds, setLikedIds] = useState([])
+  const inputRef = useRef(null)
+
+  const catColor = T.cat[catKey]||T.black
+  const catBg    = T.catBg[catKey]||T.gray2
+  const label    = TABS.find(t=>t.key===catKey)?.label||catKey
+  const isLotoItem = !item.home && !item.away
+
+  const isActuallyLive = (() => {
+    if (item.status!=='live'&&item.status!=='inprogress') return false
+    if (!item.startTime) return item.status==='live'
+    const now=Date.now(), start=new Date(item.startTime).getTime()
+    return now>=start-10*60*1000 && now<=start+150*60*1000
+  })()
+
+  function post() {
+    if (!newComment.trim()) return
+    const c = {id:Date.now(), user:userName.trim()||'Anônimo', time:'agora', text:newComment.trim(), likes:0}
+    setComments(p=>[...p, c])
+    setNewComment('')
+  }
+
+  function toggleLike(id) {
+    if (likedIds.includes(id)) return
+    setLikedIds(p=>[...p, id])
+    setComments(p=>p.map(c=>c.id===id?{...c,likes:c.likes+1}:c))
+  }
+
+  return (
+    <div style={{position:'fixed',inset:0,background:T.bg,zIndex:200,display:'flex',flexDirection:'column'}}>
+
+      {/* Header com seta voltar */}
+      <div style={{background:T.white,borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
+        <div style={{display:'flex',alignItems:'center',gap:12,padding:'12px 16px 10px'}}>
+          <button onClick={onBack}
+            style={{width:36,height:36,borderRadius:'50%',background:T.gray2,border:'none',
+              display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0}}>
+            <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke={T.black} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"/><path d="m12 5-7 7 7 7"/></svg>
+          </button>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:2}}>
+              <div style={{width:18,height:18,borderRadius:4,background:catBg,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                {(() => { const I=TAB_ICON[catKey]||IcoLottery; return <I size={10} color={catColor}/> })()}
+              </div>
+              <span style={{fontSize:10,fontWeight:700,color:catColor,textTransform:'uppercase',letterSpacing:'0.04em'}}>{label}</span>
+              {isActuallyLive&&<><IcoLiveDot/><span style={{fontSize:10,fontWeight:700,color:T.red}}>AO VIVO</span></>}
+            </div>
+            <div style={{fontSize:15,fontWeight:800,color:T.black,letterSpacing:'-0.03em',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.title||item.nome}</div>
+            <div style={{fontSize:11,color:T.gray1}}>{item.statusLabel||item.dias}</div>
+          </div>
+        </div>
+
+        {/* Mini probabilidades */}
+        {item.home&&(
+          <div style={{padding:'0 16px 12px',display:'flex',gap:6}}>
+            {[
+              {name:item.home.name, pct:item.home.pct, logo:item.home.logo, winner:item.home.pct>item.away.pct},
+              {name:'Empate', pct:item.draw, logo:null, winner:false},
+              {name:item.away.name, pct:item.away.pct, logo:item.away.logo, winner:item.away.pct>item.home.pct},
+            ].map((s,i)=>(
+              <div key={i} style={{flex:1,background:s.winner?catBg:T.gray2,borderRadius:T.r.sm,padding:'6px 8px',textAlign:'center'}}>
+                <div style={{fontSize:13,fontWeight:800,color:s.winner?catColor:T.black}}>{s.pct}%</div>
+                <div style={{fontSize:10,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{s.name}</div>
+              </div>
+            ))}
+            <div style={{background:T.green,borderRadius:T.r.sm,padding:'6px 10px',textAlign:'center',flexShrink:0}}>
+              <div style={{fontSize:13,fontWeight:800,color:T.white}}>{item.bettvConf||item.guruConf||0}%</div>
+              <div style={{fontSize:10,color:'rgba(255,255,255,0.8)'}}>BetTv</div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Lista de comentários */}
+      <div style={{flex:1,overflowY:'auto',padding:'12px 16px',display:'flex',flexDirection:'column',gap:10}}>
+        {comments.length===0&&(
+          <div style={{textAlign:'center',padding:'48px 0 24px',color:T.gray1}}>
+            <IcoSocial size={32} color={T.gray3}/>
+            <div style={{marginTop:10,fontSize:14,fontWeight:600,color:T.black}}>Nenhum comentário ainda</div>
+            <div style={{fontSize:12,marginTop:4}}>Seja o primeiro a comentar!</div>
+          </div>
+        )}
+        {comments.map(c=>(
+          <div key={c.id} style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${T.border}`,padding:'12px 14px'}}>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:7}}>
+              <div style={{display:'flex',alignItems:'center',gap:8}}>
+                <div style={{width:30,height:30,borderRadius:'50%',background:catColor,display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:800,color:T.white,flexShrink:0}}>
+                  {c.user.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <div style={{fontSize:13,fontWeight:700,color:T.black}}>{c.user}</div>
+                  <div style={{fontSize:10,color:T.gray1}}>{c.time}</div>
+                </div>
+              </div>
+              <button onClick={()=>toggleLike(c.id)}
+                style={{display:'flex',alignItems:'center',gap:4,background:'none',border:'none',cursor:'pointer',
+                  color:likedIds.includes(c.id)?T.green:T.gray1,padding:'4px 8px',borderRadius:T.r.sm}}>
+                <IcoThumb size={14} color={likedIds.includes(c.id)?T.green:T.gray1}/>
+                <span style={{fontSize:12,fontWeight:600}}>{c.likes}</span>
+              </button>
+            </div>
+            <p style={{fontSize:14,color:T.black,lineHeight:1.5,margin:0}}>{c.text}</p>
+          </div>
+        ))}
+        <div style={{height:8}}/>
+      </div>
+
+      {/* Input de comentário — fixo no bottom */}
+      <div style={{background:T.white,borderTop:`1px solid ${T.border}`,padding:'10px 16px',paddingBottom:'env(safe-area-inset-bottom,12px)',flexShrink:0}}>
+        <div style={{display:'flex',gap:8,marginBottom:8}}>
+          <input value={userName} onChange={e=>setUserName(e.target.value)}
+            placeholder="Seu nome (opcional)"
+            style={{flex:1,padding:'8px 12px',borderRadius:T.r.sm,border:`1px solid ${T.border}`,fontSize:13,
+              color:T.black,outline:'none',fontFamily:'inherit',background:T.bg}}/>
+        </div>
+        <div style={{display:'flex',gap:8}}>
+          <input ref={inputRef} value={newComment} onChange={e=>setNewComment(e.target.value)}
+            onKeyDown={e=>e.key==='Enter'&&post()}
+            placeholder="Escreva um comentário..."
+            style={{flex:1,padding:'10px 14px',borderRadius:T.r.pill,border:`1.5px solid ${T.border}`,
+              fontSize:14,color:T.black,outline:'none',fontFamily:'inherit',background:T.bg}}/>
+          <button onClick={post} disabled={!newComment.trim()}
+            style={{width:44,height:44,borderRadius:'50%',border:'none',
+              background:newComment.trim()?T.green:T.gray2,cursor:newComment.trim()?'pointer':'default',
+              display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+            <IcoSend size={16} color={newComment.trim()?T.white:T.gray1}/>
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── MOBILE EVENTS LIST ────────────────────────────────────────────────────────
+// Lista de eventos para uma categoria — full screen com rows simples
+function MobileEventsList({tab, appData, onSelect, onBack, updating, countdown, force}) {
+  const [filter, setFilter] = useState('all')
+
+  const isLoto  = tab==='loterias'
+  const isTodos = tab==='todos'
+  const catLabel = TABS.find(t=>t.key===tab)?.label || 'Eventos'
+  const catColor = T.cat[tab]||T.black
+  const catBg    = T.catBg[tab]||T.gray2
+
+  const allEvents = Object.entries(appData.esportes).flatMap(([catKey,cat])=>
+    cat.items.map(item=>({...item,_catKey:catKey}))
+  ).sort((a,b)=>new Date(a.startTime||'2099')-new Date(b.startTime||'2099'))
+
+  const espItems = appData.esportes[tab]?.items||[]
+
+  const items = isLoto
+    ? appData.loterias.filter(l=>filter==='all'||(filter==='acumulado'&&l.acumulado))
+    : isTodos
+      ? allEvents.filter(i=>filter==='all'||(filter==='live'&&i.status==='live')||(filter==='upcoming'&&i.status==='upcoming'))
+      : espItems.filter(i=>filter==='all'||(filter==='live'&&i.status==='live')||(filter==='upcoming'&&i.status==='upcoming'))
+
+  const liveCount = allEvents.filter(i=>i.status==='live').length
+
+  return (
+    <div style={{position:'fixed',inset:0,background:T.bg,zIndex:100,display:'flex',flexDirection:'column'}}>
+
+      {/* Header */}
+      <div style={{background:T.white,borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
+        <div style={{display:'flex',alignItems:'center',gap:12,padding:'12px 16px 10px'}}>
+          <button onClick={onBack}
+            style={{width:36,height:36,borderRadius:'50%',background:T.gray2,border:'none',
+              display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0}}>
+            <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke={T.black} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"/><path d="m12 5-7 7 7 7"/></svg>
+          </button>
+          <div style={{flex:1}}>
+            <div style={{fontSize:18,fontWeight:800,color:T.black,letterSpacing:'-0.03em'}}>
+              {isTodos?'Todos os Eventos':catLabel}
+            </div>
+            <div style={{fontSize:11,color:T.gray1}}>{items.length} evento{items.length!==1?'s':''}</div>
+          </div>
+          <button onClick={force} disabled={updating}
+            style={{width:36,height:36,borderRadius:'50%',background:updating?T.gray2:T.green,border:'none',
+              display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0}}>
+            <IcoRefresh size={15} color={updating?T.gray1:T.white}/>
+          </button>
+        </div>
+
+        {/* Filter pills */}
+        {!isLoto&&(
+          <div style={{display:'flex',gap:6,padding:'0 16px 12px',overflowX:'auto',scrollbarWidth:'none'}}>
+            {[
+              {f:'all',label:'Todos',count:isTodos?allEvents.length:espItems.length},
+              {f:'live',label:'Ao Vivo',count:liveCount},
+              {f:'upcoming',label:'Próximos',count:null},
+            ].map(({f,label,count})=>{
+              const active=filter===f
+              return (
+                <button key={f} onClick={()=>setFilter(f)}
+                  style={{display:'flex',alignItems:'center',gap:5,padding:'6px 14px',borderRadius:T.r.pill,
+                    border:'1.5px solid '+(active?catColor:T.border),
+                    background:active?catColor:T.white,
+                    color:active?T.white:T.black,
+                    fontSize:12,fontWeight:active?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0}}>
+                  {f==='live'&&<IcoLiveDot/>}
+                  {label}
+                  {count!==null&&count>0&&<span style={{fontSize:11,opacity:active?0.8:0.5}}>·{count}</span>}
+                </button>
+              )
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Lista de eventos */}
+      <div style={{flex:1,overflowY:'auto',padding:'8px 0'}}>
+        {updating&&(
+          <div style={{padding:'8px 16px 4px',display:'flex',alignItems:'center',gap:7,background:'#FFF8E1',margin:'0 0 4px'}}>
+            <div style={{width:7,height:7,borderRadius:'50%',border:'2px solid #F59E0B',borderTopColor:'transparent',animation:'spin 0.8s linear infinite',flexShrink:0}}/>
+            <span style={{fontSize:12,color:'#78350F'}}>Atualizando previsões...</span>
+          </div>
+        )}
+
+        {items.length===0&&(
+          <div style={{textAlign:'center',padding:'64px 24px',color:T.gray1}}>
+            <div style={{fontSize:40,marginBottom:12}}>📋</div>
+            <div style={{fontSize:16,fontWeight:600,color:T.black}}>Nenhum evento</div>
+            <div style={{fontSize:13,marginTop:6}}>Tente outro filtro</div>
+          </div>
+        )}
+
+        {isLoto?items.map(lot=>(
+          <button key={lot.id} onClick={()=>onSelect(lot,'loterias')}
+            style={{width:'100%',display:'flex',alignItems:'center',gap:14,padding:'14px 18px',
+              background:T.white,border:'none',borderBottom:`1px solid ${T.border}`,cursor:'pointer',textAlign:'left'}}>
+            <div style={{width:40,height:40,borderRadius:10,background:lot.acumulado?'#FEF3C7':'#D1FAE5',
+              display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+              <IcoLottery size={20} color={lot.acumulado?'#B45309':T.cat.loterias}/>
+            </div>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:2}}>
+                <span style={{fontSize:15,fontWeight:700,color:T.black}}>{lot.nome}</span>
+                {lot.acumulado&&<span style={{fontSize:10,fontWeight:700,background:'#FEF3C7',color:'#B45309',borderRadius:4,padding:'1px 6px'}}>ACUM</span>}
+              </div>
+              <div style={{fontSize:12,color:T.gray1}}>{lot.dias} · Conc. {lot.concurso}</div>
+            </div>
+            <div style={{textAlign:'right',flexShrink:0}}>
+              <div style={{fontSize:15,fontWeight:900,color:T.black}}>{lot.premio}</div>
+              <div style={{fontSize:11,color:T.cat.loterias,fontWeight:600}}>{lot.guruConf}% conf.</div>
+            </div>
+            <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={T.gray3} strokeWidth="2" strokeLinecap="round"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        )):items.map(item=>{
+          const cKey = item._catKey||tab
+          const cc = T.cat[cKey]||T.black
+          const cb = T.catBg[cKey]||T.gray2
+          const cl = TABS.find(t=>t.key===cKey)?.label||cKey
+          const live = (() => {
+            if (item.status!=='live'&&item.status!=='inprogress') return false
+            if (!item.startTime) return item.status==='live'
+            const now=Date.now(),start=new Date(item.startTime).getTime()
+            return now>=start-10*60*1000&&now<=start+150*60*1000
+          })()
+          return (
+            <button key={item.id} onClick={()=>onSelect(item,cKey)}
+              style={{width:'100%',display:'flex',alignItems:'center',gap:12,padding:'13px 18px',
+                background:T.white,border:'none',borderBottom:`1px solid ${T.border}`,cursor:'pointer',textAlign:'left'}}>
+              {/* Category icon */}
+              <div style={{width:40,height:40,borderRadius:10,background:cb,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                {(() => { const I=TAB_ICON[cKey]||IcoLottery; return <I size={20} color={cc}/> })()}
+              </div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:3}}>
+                  {live&&<IcoLiveDot/>}
+                  <span style={{fontSize:11,color:live?T.red:T.gray1,fontWeight:live?700:400}}>{live?'AO VIVO':cl}</span>
+                  {!live&&isTodos&&<span style={{fontSize:10,color:T.gray3}}>· {cl}</span>}
+                </div>
+                <div style={{fontSize:15,fontWeight:700,color:T.black,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',marginBottom:2}}>{item.title}</div>
+                <div style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.statusLabel}</div>
+              </div>
+              <div style={{textAlign:'right',flexShrink:0,minWidth:50}}>
+                <div style={{fontSize:13,fontWeight:800,color:T.white,background:cc,borderRadius:T.r.pill,padding:'3px 8px',marginBottom:4}}>
+                  {item.bettvConf||item.guruConf||0}%
+                </div>
+                <div style={{fontSize:11,color:T.gray1,fontWeight:600,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:60}}>{item.bettvPick||item.guruPick||'—'}</div>
+              </div>
+              <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={T.gray3} strokeWidth="2" strokeLinecap="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          )
+        })}
+        <div style={{height:24}}/>
+      </div>
+    </div>
+  )
+}
+
 // ─── GLOBAL CSS ───────────────────────────────────────────────────────────────
 const CSS=`
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -1211,6 +1507,7 @@ const CSS=`
   svg{display:block;overflow:visible;}
   button{font-family:inherit;}
   ::-webkit-scrollbar{width:0;height:0;}
+  input{font-family:inherit;}
   input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;}
   @keyframes spin{to{transform:rotate(360deg)}}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
@@ -1222,6 +1519,237 @@ const CSS=`
 const SEED={loterias:LOTERIAS,esportes:ESPORTES}
 
 export default function App() {
+  const [tab,setTab]=useState('todos')
+  const [page,setPage]=useState('categorias')
+  // Mobile navigation stack: null | 'list' | 'chat'
+  const [mobileScreen,setMobileScreen]=useState(null) // null=home, 'list'=events, 'chat'=event chat
+  const [selItem,setSelItem]=useState(null)
+  const [selCatKey,setSelCatKey]=useState(null)
+  const [activeFilter,setActiveFilter]=useState('all')
+
+  const {appData,logs,updating,lastAt,countdown,queue,force}=useAutoUpdate(SEED)
+  const {isMobile,isTablet,isDesktop}=useBreakpoint()
+
+  const isLoto  = tab==='loterias'
+  const isTodos = tab==='todos'
+  const espData = appData.esportes[tab]
+  const espItems= espData?.items||[]
+  const catUpd  = updating&&queue.includes(tab)
+  const totalLive=Object.values(appData.esportes).flatMap(d=>d.items).filter(i=>i.status==='live').length
+
+  const allEvents = Object.entries(appData.esportes).flatMap(([catKey,cat])=>
+    cat.items.map(item=>({...item,_catKey:catKey}))
+  ).sort((a,b)=>new Date(a.startTime||'2099')-new Date(b.startTime||'2099'))
+
+  const currentItems = isLoto
+    ? appData.loterias.filter(l=>activeFilter==='all'||(activeFilter==='acumulado'&&l.acumulado))
+    : isTodos
+      ? allEvents.filter(i=>activeFilter==='all'||(activeFilter==='live'&&i.status==='live')||(activeFilter==='upcoming'&&i.status==='upcoming'))
+      : espItems.filter(i=>activeFilter==='all'||(activeFilter==='live'&&i.status==='live')||(activeFilter==='upcoming'&&i.status==='upcoming'))
+
+  function handleTab(k){setTab(k);setActiveFilter('all')}
+  function handlePage(p){setPage(p);setMobileScreen(null)}
+
+  // Open events list for a category
+  function openList(catKey) {
+    handleTab(catKey)
+    setMobileScreen('list')
+  }
+
+  // Open chat for an event
+  function openChat(item, catKey) {
+    setSelItem(item)
+    setSelCatKey(catKey)
+    setMobileScreen('chat')
+  }
+
+  // ── DESKTOP ──
+  if (isDesktop) {
+    return (
+      <div style={{display:'flex',flexDirection:'column',height:'100vh',background:T.bg}}>
+        <style>{CSS}</style>
+        <DesktopNav tab={tab} onTab={handleTab} page={page} onPage={handlePage} updating={updating} countdown={countdown} queue={queue} force={force}/>
+        <div style={{flex:1,overflowY:page==='social'?'hidden':'auto'}}>
+          {page==='social'?<SocialPage appData={appData}/>:(
+            <div style={{maxWidth:1280,margin:'0 auto',padding:'28px 40px 56px'}}>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:22}}>
+                <h1 style={{fontSize:24,fontWeight:800,color:T.black,letterSpacing:'-0.04em'}}>
+                  {isLoto?'Loterias':isTodos?'Todos os Eventos':TABS.find(t=>t.key===tab)?.label}
+                </h1>
+                <div style={{display:'flex',gap:7}}>
+                  {(isLoto?['all','acumulado']:['all','live','upcoming']).map(f=>(
+                    <button key={f} onClick={()=>setActiveFilter(f)} style={{padding:'6px 15px',borderRadius:T.r.pill,border:`1px solid ${activeFilter===f?T.black:T.border}`,background:activeFilter===f?T.black:T.white,color:activeFilter===f?T.white:T.black,fontSize:12,fontWeight:activeFilter===f?700:500,cursor:'pointer',transition:'all 0.15s'}}>
+                      {f==='all'?'Todos':f==='live'?'Ao Vivo':f==='upcoming'?'Próximos':'Acumulados'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              {isLoto&&<div style={{background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:T.r.md,padding:'10px 16px',marginBottom:18,fontSize:12,color:'#78350F',lineHeight:1.6}}><strong>Jogo responsável.</strong> Sugestões baseadas em estatística histórica.</div>}
+              <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:14,alignItems:'start'}}>
+                {isLoto
+                  ?currentItems.map(lot=><KalshiLotoCard key={lot.id} lot={lot} onSelect={i=>setSelItem(i)} catUpdating={catUpd}/>)
+                  :currentItems.map(item=><KalshiSportCard key={item.id} item={item} catKey={item._catKey||tab} onSelect={i=>setSelItem(i)} catUpdating={isTodos?false:catUpd}/>)
+                }
+              </div>
+            </div>
+          )}
+        </div>
+        {selItem&&<InfoModal item={selItem} isLoto={!selItem.home&&!selItem.away} catKey={selItem._catKey||tab} onClose={()=>setSelItem(null)}/>}
+      </div>
+    )
+  }
+
+  // ── MOBILE — SCREEN: CHAT ──
+  if (mobileScreen==='chat' && selItem) {
+    return (
+      <div>
+        <style>{CSS}</style>
+        <MobileChatPage
+          item={selItem}
+          catKey={selCatKey||tab}
+          onBack={()=>setMobileScreen('list')}
+          appData={appData}
+        />
+      </div>
+    )
+  }
+
+  // ── MOBILE — SCREEN: EVENTS LIST ──
+  if (mobileScreen==='list') {
+    return (
+      <div>
+        <style>{CSS}</style>
+        <MobileEventsList
+          tab={tab}
+          appData={appData}
+          onSelect={openChat}
+          onBack={()=>setMobileScreen(null)}
+          updating={updating}
+          countdown={countdown}
+          force={force}
+        />
+      </div>
+    )
+  }
+
+  // ── MOBILE — SCREEN: HOME (tab bar + categoria cards) ──
+  return (
+    <div style={{background:T.bg,minHeight:'100vh',paddingBottom:80}}>
+      <style>{CSS}</style>
+
+      {/* Header fixo */}
+      <div style={{background:T.white,borderBottom:`1px solid ${T.border}`,position:'sticky',top:0,zIndex:50}}>
+        <div style={{padding:'10px 16px 8px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <LogoSVG height={24}/>
+          <button onClick={force} disabled={updating}
+            style={{display:'flex',alignItems:'center',gap:5,padding:'7px 14px',borderRadius:T.r.pill,
+              background:updating?T.gray2:T.green,border:'none',color:updating?T.gray1:T.white,
+              fontSize:12,fontWeight:700,cursor:updating?'not-allowed':'pointer'}}>
+            <IcoRefresh size={13} color={updating?T.gray1:T.white}/>
+            {updating?'Analisando...':'Atualizar'}
+          </button>
+        </div>
+        {!updating&&countdown&&(
+          <div style={{margin:'0 16px 8px',background:T.gray2,borderRadius:T.r.sm,padding:'4px 12px',display:'flex',justifyContent:'space-between'}}>
+            <span style={{fontSize:11,color:T.gray1}}>Próxima atualização</span>
+            <span style={{fontSize:11,fontWeight:800,color:T.black,fontVariantNumeric:'tabular-nums'}}>{countdown}</span>
+          </div>
+        )}
+        {updating&&(
+          <div style={{margin:'0 16px 8px',background:'#FFF8E1',borderRadius:T.r.sm,padding:'4px 12px',display:'flex',alignItems:'center',gap:7}}>
+            <div style={{width:7,height:7,borderRadius:'50%',border:'2px solid #F59E0B',borderTopColor:'transparent',animation:'spin 0.8s linear infinite',flexShrink:0}}/>
+            <span style={{fontSize:11,color:'#78350F'}}>{queue.length>0?'Analisando '+queue[0]:'Atualizando...'}</span>
+          </div>
+        )}
+      </div>
+
+      {page==='social'?<SocialPage appData={appData}/>:(
+        <div style={{padding:'16px 16px 0'}}>
+
+          {/* Ao Vivo banner — se houver eventos live */}
+          {totalLive>0&&(
+            <button onClick={()=>openList('todos')}
+              style={{width:'100%',background:'#FEF2F2',border:'1.5px solid #FCA5A5',borderRadius:T.r.lg,
+                padding:'12px 16px',display:'flex',alignItems:'center',gap:12,cursor:'pointer',
+                marginBottom:16,textAlign:'left'}}>
+              <div style={{width:36,height:36,borderRadius:'50%',background:T.red,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                <div style={{width:12,height:12,borderRadius:'50%',background:T.white,animation:'pulse 1.5s infinite'}}/>
+              </div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:14,fontWeight:800,color:T.red}}>{totalLive} evento{totalLive!==1?'s':''} ao vivo agora</div>
+                <div style={{fontSize:12,color:'#991B1B',marginTop:1}}>Toque para ver todos</div>
+              </div>
+              <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke={T.red} strokeWidth="2.5" strokeLinecap="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          )}
+
+          {/* Grid de categorias */}
+          <div style={{fontSize:12,fontWeight:700,color:T.gray1,letterSpacing:'0.06em',marginBottom:10}}>CATEGORIAS</div>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:16}}>
+            {TABS.map(({key,label})=>{
+              const Ico = TAB_ICON[key]||IcoLottery
+              const cc  = T.cat[key]||T.black
+              const cb  = T.catBg[key]||T.gray2
+              const items = key==='todos'
+                ? allEvents
+                : key==='loterias'
+                  ? appData.loterias
+                  : appData.esportes[key]?.items||[]
+              const liveInCat = key==='todos'||key==='loterias' ? 0
+                : items.filter(i=>i.status==='live').length
+              return (
+                <button key={key} onClick={()=>openList(key)}
+                  style={{background:T.white,borderRadius:T.r.lg,border:`1.5px solid ${T.border}`,
+                    padding:'14px 16px',display:'flex',flexDirection:'column',gap:10,
+                    cursor:'pointer',textAlign:'left',transition:'all 0.12s',position:'relative',overflow:'hidden'}}>
+                  {liveInCat>0&&(
+                    <div style={{position:'absolute',top:8,right:8,background:T.red,color:T.white,
+                      fontSize:9,fontWeight:900,borderRadius:T.r.pill,padding:'1px 6px'}}>
+                      {liveInCat} AO VIVO
+                    </div>
+                  )}
+                  <div style={{width:44,height:44,borderRadius:12,background:cb,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                    <Ico size={22} color={cc}/>
+                  </div>
+                  <div>
+                    <div style={{fontSize:15,fontWeight:700,color:T.black,marginBottom:2}}>{label}</div>
+                    <div style={{fontSize:11,color:T.gray1}}>{items.length} evento{items.length!==1?'s':''}</div>
+                  </div>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Bottom nav */}
+      <div style={{position:'fixed',bottom:0,left:0,right:0,background:T.white,borderTop:`1px solid ${T.border}`,
+        display:'flex',paddingTop:8,paddingBottom:'env(safe-area-inset-bottom,16px)',zIndex:100,
+        boxShadow:'0 -2px 12px rgba(0,0,0,0.06)'}}>
+        {[
+          {key:'home',   label:'Início', Ico:IcoHome,  action:()=>handlePage('categorias')},
+          {key:'social', label:'Social', Ico:IcoSocial,action:()=>handlePage('social')},
+          {key:'live',   label:'Ao Vivo',Ico:IcoPlay,  badge:totalLive, action:()=>{handlePage('categorias');openList('todos')}},
+          {key:'perfil', label:'Perfil', Ico:IcoPerson,action:null},
+        ].map(({key,label,Ico,badge,action})=>{
+          const active = key==='home'?page==='categorias'&&mobileScreen===null : key==='social'?page==='social' : false
+          const col = active?T.black:T.gray1
+          return (
+            <button key={key} onClick={()=>action&&action()}
+              style={{background:'none',border:'none',display:'flex',flexDirection:'column',
+                alignItems:'center',gap:2,cursor:'pointer',position:'relative',flex:1,padding:'3px 0'}}>
+              {badge>0&&<span style={{position:'absolute',top:-2,right:'calc(50% - 18px)',background:T.red,
+                color:T.white,fontSize:9,fontWeight:900,borderRadius:T.r.pill,padding:'1px 5px',lineHeight:1.5}}>{badge}</span>}
+              <Ico size={22} color={col}/>
+              <span style={{fontSize:10,fontWeight:active?700:400,color:col}}>{label}</span>
+              {active&&<div style={{width:4,height:4,borderRadius:'50%',background:T.black,marginTop:1}}/>}
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
   const [tab,setTab]=useState('todos')
   const [page,setPage]=useState('categorias')
   const [selItem,setSelItem]=useState(null)
