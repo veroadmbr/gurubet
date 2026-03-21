@@ -1051,17 +1051,7 @@ function InfoModal({item, isLoto, catKey, onClose}) {
               <p style={{fontSize:12,color:T.gray1,lineHeight:1.6,margin:0}}>{item.bettvReason||item.guruReason||"—"}</p>
             </div>
 
-            {/* Volume info */}
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
-              {[
-                {label:'STATUS', value:item.status==='live'?'Ao Vivo':'Próximo'},
-              ].map(({label,value})=>(
-                <div key={label} style={{background:T.bg,borderRadius:T.r.sm,padding:'10px 12px'}}>
-                  <div style={{fontSize:9,fontWeight:700,color:T.gray1,letterSpacing:'0.06em',marginBottom:4}}>{label}</div>
-                  <div style={{fontSize:13,fontWeight:700,color:T.black}}>{value}</div>
-                </div>
-              ))}
-            </div>
+
           </>}
 
           {/* ── METHODOLOGY — always 1 paragraph ── */}
