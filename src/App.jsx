@@ -426,82 +426,175 @@ function SportCard({item, catKey, onSelect, catUpdating}) {
   )
 }
 
-// ─── BET SHEET ────────────────────────────────────────────────────────────────
-function BetSheet({item, isLoto, onClose}) {
-  const [amount,setAmount]=useState(''); const [choice,setChoice]=useState('yes')
-  const [betType,setBetType]=useState('simples'); const [done,setDone]=useState(false)
-  const {isMobile}=useBreakpoint(); if (!item) return null
-  const na=parseFloat(amount)||0
-  const yp=isLoto?50:(item.home?.pct||50); const np=isLoto?50:(item.away?.pct||50)
-  const unit=(choice==='yes'?yp:np)/100
-  const ret=na>0?(na/unit).toFixed(2):null; const luc=na>0?((na/unit)-na).toFixed(2):null
-  const panelStyle=isMobile
-    ?{width:'100%',maxWidth:520,background:T.white,borderRadius:'20px 20px 0 0',maxHeight:'92vh',overflowY:'auto',animation:'slideUp 0.28s cubic-bezier(0.32,0.72,0,1)'}
-    :{width:'100%',maxWidth:540,background:T.white,borderRadius:T.r.lg,maxHeight:'88vh',overflowY:'auto',boxShadow:'0 24px 64px rgba(0,0,0,0.18)',animation:'fadeIn 0.2s ease'}
+// ─── INFO MODAL ───────────────────────────────────────────────────────────────
+// Detailed preview info only — no betting options
+
+// Methodology text per category
+const METHODOLOGY = {
+  loterias: (item) =>
+    `A previsão é gerada analisando ${item.concurso ? `os ${item.concurso} sorteios históricos` : 'o histórico completo'} da ${item.nome}: frequência absoluta de cada dezena, ciclo de atraso (dezenas que estão atrasadas em relação à média), distribuição par/ímpar ideal (tipicamente 7-8 pares para Lotofácil, 3 pares para Mega-Sena), e padrão de soma das dezenas sorteadas. O algoritmo pondera esses quatro fatores para sugerir a combinação estatisticamente mais coerente com o perfil histórico do concurso — sem garantia de resultado, pois loteria é jogo de azar.`,
+
+  futebol: (item) =>
+    `A previsão combina quatro variáveis ponderadas: forma recente dos times (últimas 5 partidas, peso 40%), histórico de confrontos diretos (H2H dos últimos 3 anos, peso 25%), fator mando de campo calculado pelo aproveitamento histórico em casa vs fora (peso 20%) e contexto da competição — posição na tabela, pressão por resultado e desfalques divulgados (peso 15%). O índice de confiança reflete o grau de convergência entre esses fatores: quanto maior, mais os indicadores apontam na mesma direção.`,
+
+  basquete: (item) =>
+    `A previsão analisa o aproveitamento percentual dos times nas últimas 10 rodadas, média de pontos marcados e sofridos (offensive/defensive rating), desempenho em casa vs visitante e sequência atual de vitórias ou derrotas. O modelo atribui peso adicional ao fator psicológico de momentum — times em sequência positiva tendem a manter padrão de desempenho. O índice de confiança sobe quando todos esses indicadores convergem para o mesmo favorito.`,
+
+  volei: (item) =>
+    `A análise cruza o aproveitamento por set (não apenas por jogo) das últimas rodadas da Superliga, o desempenho em casa e fora, e os indicadores individuais dos atletas-chave (eficiência de saque e bloqueio). Equipes com melhor defesa por set tendem a ser mais consistentes em jogos equilibrados. O índice de confiança reflete o nível de consistência do favorito nos últimos confrontos diretos e a estabilidade do elenco atual.`,
+
+  mma: (item) =>
+    `A previsão considera o estilo de luta de cada atleta (striking vs grappling), aproveitamento nos últimos 5 combates, alcance e vantagens físicas, altitude e tempo de descanso desde o último evento. Em lutas entre invictos ou atletas de nível similar, o modelo tende a apontar "decisão" como resultado mais provável, refletindo o equilíbrio técnico. O índice de confiança é naturalmente menor no MMA por sua imprevisibilidade inerente.`,
+
+  tenis: (item) =>
+    `A análise utiliza o ranking ATP/WTA atual, o desempenho recente em superfície equivalente (saibro, grama ou dura), histórico de confrontos diretos e aproveitamento no torneio específico. Tenistas que vêm de títulos recentes na mesma superfície recebem bônus de momentum. O índice de confiança é calibrado pela diferença de ranking e pelo H2H — quanto mais desequilibrado, maior a confiança na previsão.`,
+
+  esports: (item) =>
+    `A previsão analisa o winrate recente das equipes nos últimos splits da liga, composição e coesão do lineup (tempo de jogo juntos), desempenho em fases de grupo vs playoffs e picks/bans mais utilizados. Equipes que vêm de títulos recentes com lineup estável recebem bônus de confiança. O modelo considera também o tier dos adversários enfrentados — vitórias contra times top pesam mais que vitórias contra equipes de menor nível.`,
+}
+
+function InfoModal({item, isLoto, catKey, onClose}) {
+  const {isMobile}=useBreakpoint()
+  if (!item) return null
+
+  const catColor = T.cat[catKey||'loterias'] || T.black
+  const catLabel = TABS.find(t=>t.key===catKey)?.label || 'Loteria'
+  const methodText = isLoto
+    ? METHODOLOGY.loterias(item)
+    : (METHODOLOGY[catKey] ? METHODOLOGY[catKey](item) : METHODOLOGY.futebol(item))
+
+  const panelStyle = isMobile
+    ? {width:'100%',maxWidth:560,background:T.white,borderRadius:'20px 20px 0 0',maxHeight:'92vh',overflowY:'auto',animation:'slideUp 0.28s cubic-bezier(0.32,0.72,0,1)'}
+    : {width:'100%',maxWidth:560,background:T.white,borderRadius:T.r.lg,maxHeight:'88vh',overflowY:'auto',boxShadow:'0 24px 64px rgba(0,0,0,0.18)',animation:'fadeIn 0.2s ease'}
 
   return (
-    <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.45)',zIndex:300,display:'flex',alignItems:isMobile?'flex-end':'center',justifyContent:'center'}}>
+    <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.5)',zIndex:300,display:'flex',alignItems:isMobile?'flex-end':'center',justifyContent:'center'}}>
       <div onClick={e=>e.stopPropagation()} style={panelStyle}>
-        {isMobile&&<div style={{display:'flex',justifyContent:'center',padding:'12px 0 4px'}}><div style={{width:36,height:4,borderRadius:2,background:T.border}}/></div>}
-        {!isMobile&&(
-          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'22px 26px 0'}}>
-            <span style={{fontSize:16,fontWeight:800,color:T.black}}>{isLoto?item.nome:item.title}</span>
-            <button onClick={onClose} style={{width:30,height:30,borderRadius:'50%',border:'none',background:T.gray2,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}}>
-              <IcoClose size={16} color={T.gray1}/>
-            </button>
+
+        {/* Handle bar (mobile) */}
+        {isMobile && <div style={{display:'flex',justifyContent:'center',padding:'12px 0 0'}}><div style={{width:36,height:4,borderRadius:2,background:T.border}}/></div>}
+
+        {/* Header */}
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',padding:'20px 24px 0'}}>
+          <div style={{flex:1,minWidth:0,paddingRight:12}}>
+            <div style={{fontSize:11,fontWeight:700,color:catColor,letterSpacing:'0.06em',textTransform:'uppercase',marginBottom:4}}>{catLabel}</div>
+            <div style={{fontSize:18,fontWeight:800,color:T.black,letterSpacing:'-0.03em',lineHeight:1.2}}>{isLoto?item.nome:item.title}</div>
+            {!isLoto&&<div style={{fontSize:12,color:T.gray1,marginTop:3}}>{item.competition} · {item.statusLabel}</div>}
+            {isLoto&&<div style={{fontSize:12,color:T.gray1,marginTop:3}}>Concurso {item.concurso} · Sorteio {item.data}</div>}
           </div>
-        )}
-        {done?(
-          <div style={{padding:'28px 26px 44px',textAlign:'center'}}>
-            <div style={{width:54,height:54,borderRadius:'50%',background:T.green,margin:'0 auto 14px',display:'flex',alignItems:'center',justifyContent:'center'}}>
-              <IcoCheck size={26} color={T.white}/>
+          <button onClick={onClose} style={{width:30,height:30,minWidth:30,borderRadius:'50%',border:'none',background:T.gray2,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',marginTop:2}}>
+            <IcoClose size={16} color={T.gray1}/>
+          </button>
+        </div>
+
+        <div style={{padding:'16px 24px 28px',display:'flex',flexDirection:'column',gap:12}}>
+
+          {/* ── LOTERIAS ── */}
+          {isLoto && <>
+            {/* Prize */}
+            <div style={{display:'flex',alignItems:'baseline',gap:10,paddingBottom:12,borderBottom:`1px solid ${T.border}`}}>
+              <span style={{fontSize:26,fontWeight:900,color:T.black,letterSpacing:'-0.04em'}}>{item.premio}</span>
+              {item.acumulado&&<span style={{fontSize:11,fontWeight:700,background:'#FEF3C7',color:'#B45309',borderRadius:4,padding:'2px 8px'}}>ACUMULADO</span>}
             </div>
-            <div style={{fontSize:21,fontWeight:900,color:T.black,letterSpacing:'-0.04em',marginBottom:8}}>{isLoto?'Boa sorte!':'Aposta registrada!'}</div>
-            <div style={{fontSize:13,color:T.gray1,lineHeight:1.6,marginBottom:22}}>{isLoto?<>R$ {na.toFixed(2)} na <strong style={{color:T.black}}>{item.nome}</strong><br/>Sorteio em {item.data}</>:<>R$ {na.toFixed(2)} em <strong style={{color:T.black}}>{choice==='yes'?item.home?.name:item.away?.name}</strong></>}</div>
-            <button onClick={onClose} style={{width:'100%',padding:'15px',borderRadius:T.r.md,background:T.black,border:'none',color:T.white,fontSize:15,fontWeight:700,cursor:'pointer'}}>Voltar aos mercados</button>
-          </div>
-        ):(
-          <div style={{padding:isMobile?'8px 22px 40px':'18px 26px 30px'}}>
-            <div style={{background:T.bg,borderRadius:T.r.md,padding:'13px 15px',marginBottom:14}}>
-              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:9}}>
-                <span style={{fontSize:10,fontWeight:700,color:T.black,letterSpacing:'0.06em'}}>ANÁLISE DO GURU</span>
-                <span style={{fontSize:12,fontWeight:800,background:T.green,color:T.white,borderRadius:T.r.pill,padding:'3px 11px'}}>{item.guruConf}%</span>
-              </div>
-              {isLoto?(<><p style={{fontSize:12,color:T.gray1,lineHeight:1.6,marginBottom:10}}>{item.guruAnalise}</p><div style={{fontSize:11,fontWeight:700,color:T.black,marginBottom:7}}>Números sugeridos — concurso {item.concurso}</div><div style={{display:'flex',gap:4,flexWrap:'wrap'}}>{(item.guruNums||[]).map(n=><Ball key={n} n={n} size={26} bg={T.black} color={T.white}/>)}</div></>)
-              :(<><div style={{fontSize:16,fontWeight:900,color:T.black,letterSpacing:'-0.03em',marginBottom:3}}>{item.guruPick}</div><p style={{fontSize:12,color:T.gray1,lineHeight:1.5,margin:0}}>{item.guruReason}</p></>)}
-            </div>
-            {isLoto&&<div style={{background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:T.r.sm,padding:'9px 13px',marginBottom:12,fontSize:11,color:'#78350F',lineHeight:1.5}}>Loteria é jogo de azar. Sugestão estatística sem garantia de resultado.</div>}
-            {!isLoto&&(<>
-              <div style={{display:'flex',background:T.bg,borderRadius:T.r.md,padding:3,marginBottom:12}}>
-                {['buy','sell'].map(m=><button key={m} style={{flex:1,padding:'9px',borderRadius:T.r.sm,border:'none',background:m==='buy'?T.white:'transparent',color:m==='buy'?T.black:T.gray1,fontWeight:m==='buy'?700:500,fontSize:13,cursor:'pointer'}}>{m==='buy'?'Comprar':'Vender'}</button>)}
-              </div>
-              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:9,marginBottom:12}}>
-                {[{key:'yes',label:'Sim',price:yp,name:item.home?.name},{key:'no',label:'Não',price:np,name:item.away?.name}].map(o=>(
-                  <button key={o.key} onClick={()=>setChoice(o.key)} style={{padding:'12px 9px',borderRadius:T.r.md,border:`2px solid ${choice===o.key?T.black:T.border}`,background:choice===o.key?T.bg:T.white,cursor:'pointer',textAlign:'center',transition:'all 0.15s'}}>
-                    <div style={{fontSize:16,fontWeight:900,color:T.black}}>{o.label} {o.price}¢</div>
-                    <div style={{fontSize:11,color:T.gray1,marginTop:2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{o.name}</div>
-                  </button>
-                ))}
-              </div>
-            </>)}
-            {isLoto&&<div style={{marginBottom:12}}><div style={{fontSize:12,fontWeight:700,color:T.black,marginBottom:7}}>Tipo de aposta</div><div style={{display:'flex',background:T.bg,borderRadius:T.r.md,padding:3}}>{['simples','bolão','teimosinha'].map(t=><button key={t} onClick={()=>setBetType(t)} style={{flex:1,padding:'8px 4px',borderRadius:T.r.sm,border:'none',background:betType===t?T.white:'transparent',color:betType===t?T.black:T.gray1,fontWeight:betType===t?700:500,fontSize:12,cursor:'pointer',textTransform:'capitalize'}}>{t}</button>)}</div></div>}
-            <div style={{border:`1.5px solid ${T.border}`,borderRadius:T.r.md,padding:'14px 16px',marginBottom:10}}>
-              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                <div><div style={{fontSize:13,fontWeight:700,color:T.black}}>Valor</div><div style={{fontSize:11,color:T.cat.loterias,fontWeight:600,marginTop:2}}>+3,25% de rendimento</div></div>
-                <div style={{display:'flex',alignItems:'center',gap:3}}><span style={{fontSize:18,color:T.gray1,fontWeight:300}}>R$</span><input type="number" value={amount} onChange={e=>setAmount(e.target.value)} placeholder="0" style={{width:88,fontSize:24,fontWeight:300,color:amount?T.black:T.gray3,border:'none',outline:'none',textAlign:'right',background:'transparent',fontFamily:'inherit'}}/></div>
+
+            {/* Last result */}
+            <div>
+              <div style={{fontSize:11,fontWeight:700,color:T.gray1,letterSpacing:'0.06em',marginBottom:8}}>ÚLTIMO RESULTADO — CONC. {parseInt(item.concurso)-1}</div>
+              <div style={{display:'flex',gap:5,flexWrap:'wrap'}}>
+                {item.ultimoResultado.map(n=><Ball key={n} n={n} size={30}/>)}
               </div>
             </div>
-            <div style={{display:'flex',gap:7,marginBottom:12}}>
-              {(isLoto?['3','6','10','25']:['10','25','50','100']).map(v=>(
-                <button key={v} onClick={()=>setAmount(v)} style={{flex:1,padding:'9px 0',borderRadius:T.r.sm,border:`1.5px solid ${amount===v?T.black:T.border}`,background:amount===v?T.black:T.bg,color:amount===v?T.white:T.black,fontSize:12,fontWeight:700,cursor:'pointer',transition:'all 0.15s'}}>R${v}</button>
+
+            {/* Guru prediction */}
+            <div style={{background:T.bg,borderRadius:T.r.md,padding:'14px 16px'}}>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:12}}>
+                <span style={{fontSize:11,fontWeight:700,color:T.black,letterSpacing:'0.06em'}}>GURU SUGERE — CONC. {item.concurso}</span>
+                <span style={{fontSize:13,fontWeight:800,background:T.green,color:T.white,borderRadius:T.r.pill,padding:'3px 12px'}}>{item.guruConf}% conf.</span>
+              </div>
+              <div style={{display:'flex',gap:5,flexWrap:'wrap',marginBottom:12}}>
+                {(item.guruNums||[]).map(n=><Ball key={n} n={n} size={30} bg={T.black} color={T.white}/>)}
+              </div>
+              <p style={{fontSize:12,color:T.gray1,lineHeight:1.6,margin:0}}>{item.guruAnalise}</p>
+            </div>
+
+            {/* Stats row */}
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8}}>
+              {[
+                {label:'MODALIDADE', value:item.descricao},
+                {label:'APOSTA MÍN.', value:item.aposta},
+                {label:'COMO GANHAR', value:item.regras},
+              ].map(({label,value})=>(
+                <div key={label} style={{background:T.bg,borderRadius:T.r.sm,padding:'10px 12px'}}>
+                  <div style={{fontSize:9,fontWeight:700,color:T.gray1,letterSpacing:'0.06em',marginBottom:4}}>{label}</div>
+                  <div style={{fontSize:12,fontWeight:700,color:T.black,lineHeight:1.3}}>{value}</div>
+                </div>
               ))}
             </div>
-            {!isLoto&&na>0&&<div style={{background:T.bg,borderRadius:T.r.md,padding:'11px 13px',marginBottom:12}}><div style={{display:'flex',justifyContent:'space-between',marginBottom:3}}><span style={{fontSize:12,color:T.gray1}}>Retorno total</span><span style={{fontSize:13,fontWeight:800,color:T.black}}>R$ {ret}</span></div><div style={{display:'flex',justifyContent:'space-between'}}><span style={{fontSize:11,color:T.gray1}}>Lucro se ganhar</span><span style={{fontSize:12,fontWeight:700,color:T.cat.loterias}}>+R$ {luc}</span></div></div>}
-            <button onClick={()=>{if(na>0)setDone(true)}} style={{width:'100%',padding:'16px',borderRadius:T.r.md,background:na>0?T.black:T.gray2,border:'none',color:na>0?T.white:T.gray1,fontSize:15,fontWeight:700,cursor:na>0?'pointer':'default',transition:'background 0.2s'}}>
-              {na>0?(isLoto?`Apostar R$ ${na.toFixed(2)} na ${item.nome}`:`Confirmar R$ ${na.toFixed(2)}`):'Digite o valor para continuar'}
-            </button>
+          </>}
+
+          {/* ── ESPORTES ── */}
+          {!isLoto && <>
+            {/* Teams probabilities */}
+            <div style={{display:'flex',flexDirection:'column',gap:0,borderRadius:T.r.md,overflow:'hidden',border:`1px solid ${T.border}`}}>
+              {[item.home, item.away].map((side,i)=>{
+                const winner=side.pct>(i===0?item.away.pct:item.home.pct)
+                return (
+                  <div key={i} style={{display:'flex',alignItems:'center',gap:14,padding:'14px 16px',borderBottom:i===0?`1px solid ${T.border}`:'none',background:winner?'#FAFAFA':T.white}}>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontSize:15,fontWeight:winner?800:600,color:T.black,marginBottom:2}}>{side.name}</div>
+                      <div style={{fontSize:11,color:T.gray1}}>{side.sub}</div>
+                      <div style={{height:3,borderRadius:2,background:winner?catColor:T.gray3,width:`${Math.max(10,side.pct)}%`,marginTop:6,transition:'width 0.6s'}}/>
+                    </div>
+                    <div style={{textAlign:'right',flexShrink:0}}>
+                      <div style={{fontSize:24,fontWeight:900,color:winner?T.black:T.gray1,letterSpacing:'-0.04em'}}>{side.pct}%</div>
+                      <div style={{fontSize:11,color:T.gray1}}>probabilidade</div>
+                    </div>
+                  </div>
+                )
+              })}
+              {/* Draw row */}
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'10px 16px',background:'#F8F8F6'}}>
+                <span style={{fontSize:12,color:T.gray1}}>Probabilidade de empate</span>
+                <span style={{fontSize:14,fontWeight:700,color:T.black}}>{item.draw}%</span>
+              </div>
+            </div>
+
+            {/* Guru pick */}
+            <div style={{background:T.bg,borderRadius:T.r.md,padding:'14px 16px'}}>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
+                <span style={{fontSize:11,fontWeight:700,color:T.black,letterSpacing:'0.06em'}}>PICK DO GURU</span>
+                <span style={{fontSize:13,fontWeight:800,background:T.green,color:T.white,borderRadius:T.r.pill,padding:'3px 12px'}}>{item.guruConf}% conf.</span>
+              </div>
+              <div style={{fontSize:18,fontWeight:900,color:catColor,letterSpacing:'-0.02em',marginBottom:6}}>{item.guruPick}</div>
+              <p style={{fontSize:12,color:T.gray1,lineHeight:1.6,margin:0}}>{item.guruReason}</p>
+            </div>
+
+            {/* Volume info */}
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
+              {[
+                {label:'VOLUME APOSTADO', value:item.vol},
+                {label:'STATUS', value:item.status==='live'?'Ao Vivo':'Próximo'},
+              ].map(({label,value})=>(
+                <div key={label} style={{background:T.bg,borderRadius:T.r.sm,padding:'10px 12px'}}>
+                  <div style={{fontSize:9,fontWeight:700,color:T.gray1,letterSpacing:'0.06em',marginBottom:4}}>{label}</div>
+                  <div style={{fontSize:13,fontWeight:700,color:T.black}}>{value}</div>
+                </div>
+              ))}
+            </div>
+          </>}
+
+          {/* ── METHODOLOGY — always 1 paragraph ── */}
+          <div style={{borderTop:`1px solid ${T.border}`,paddingTop:14}}>
+            <div style={{fontSize:11,fontWeight:700,color:T.black,letterSpacing:'0.06em',marginBottom:8}}>COMO A PREVISÃO É FEITA</div>
+            <p style={{fontSize:12,color:T.gray1,lineHeight:1.7,margin:0}}>{methodText}</p>
           </div>
-        )}
+
+          {/* Disclaimer */}
+          <div style={{background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:T.r.sm,padding:'10px 14px',fontSize:11,color:'#92400E',lineHeight:1.5}}>
+            <strong>Atenção:</strong> Previsões são baseadas em dados históricos e estatística. Não constituem garantia de resultado. Jogue com responsabilidade.
+          </div>
+
+        </div>
       </div>
     </div>
   )
@@ -719,7 +812,7 @@ export default function App() {
             )}
           </div>
         </div>
-        {selItem&&<BetSheet item={selItem} isLoto={isLoto} onClose={()=>setSelItem(null)}/>}
+        {selItem&&<InfoModal item={selItem} isLoto={isLoto} catKey={tab} onClose={()=>setSelItem(null)}/>}
       </div>
     )
   }
@@ -777,7 +870,7 @@ export default function App() {
         </div>
       )}
 
-      {selItem&&<BetSheet item={selItem} isLoto={isLoto} onClose={()=>setSelItem(null)}/>}
+      {selItem&&<InfoModal item={selItem} isLoto={isLoto} catKey={tab} onClose={()=>setSelItem(null)}/>}
     </div>
   )
 }
