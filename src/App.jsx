@@ -7,9 +7,7 @@ const T = {
   green:  '#00D672', black:  '#111111', white:  '#FFFFFF',
   bg:     '#F7F7F5', border: '#E8E8E4', gray1:  '#737373',
   gray2:  '#F0F0ED', gray3:  '#D4D4CC', red:    '#E53935',
-  // Kalshi-style category colors
   cat:{ loterias:'#1A7A4A', futebol:'#1A7A4A', basquete:'#B45309', volei:'#5B21B6', mma:'#B91C1C', tenis:'#0369A1', esports:'#6D28D9' },
-  // Kalshi category icon bg
   catBg:{ loterias:'#D1FAE5', futebol:'#DCFCE7', basquete:'#FEF3C7', volei:'#EDE9FE', mma:'#FEE2E2', tenis:'#DBEAFE', esports:'#F3E8FF' },
   r:{ sm:8, md:12, lg:16, pill:999 },
 }
@@ -22,6 +20,31 @@ function useBreakpoint() {
     window.addEventListener('resize', fn); return () => window.removeEventListener('resize', fn)
   }, [])
   return { isMobile: w < 768, isTablet: w >= 768 && w < 1100, isDesktop: w >= 1100, w }
+}
+
+// ─── MATERIAL ICONS (inline SVG, no emoji) ───────────────────────────────────
+const Icon = {
+  lottery: (c='currentColor',s=20) => <svg width={s} height={s} viewBox="0 0 24 24" fill={c}><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>,
+  soccer:  (c='currentColor',s=20) => <svg width={s} height={s} viewBox="0 0 24 24" fill={c}><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.93V15h2v1.93c-1.33.24-2.67.24-4 0zm5.36-.97l-.94-1.63 1.73-1 .94 1.64c-.53.4-1.1.73-1.73.99zM6.91 16.6l.94-1.64 1.73 1-.94 1.63c-.63-.26-1.2-.59-1.73-.99zm9.15-5.6H16v-2h.06c.06.32.1.65.1.99 0 .34-.04.67-.1 1.01zm-3.56-6.87V6h-2v-.87C11.56 5.04 11.77 5 12 5s.44.04.5.13zM8.06 9H8V7h.06C8.7 7.28 9.28 7.7 9.75 8.23L8.35 9h-.29zm6.65 0l-1.4-.77A5.04 5.04 0 0 1 15.94 7H16v2h-.29z"/></svg>,
+  basketball:(c='currentColor',s=20) => <svg width={s} height={s} viewBox="0 0 24 24" fill={c}><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4.27 14H2.05c.28-2.11 1.28-3.99 2.76-5.41L6.22 10 4.27 14zm1.44 3.44C4.23 16.05 3.38 14.12 3.1 12h2.17l1.6 3.78-1.16 1.66zm2.26 2.17l1.03-1.49 1.76.98c-.89.37-1.84.59-2.79.51zm5.03.36l-2.71-1.52.97-1.39 2.76 1.54-.95.97-.07-.6zm2.08-1.74l-2.76-1.54.74-1.07 2.49 1.39-.47 1.22zm1.44-2.65l-2.49-1.39L15 12l2.34 1.31-.82 1.27zm2.3-4.14l1.06.59c.26.7.4 1.46.4 2.24 0 .59-.09 1.16-.23 1.71l-1.59-.89.36-3.65zM12 4c2.1 0 4.03.78 5.52 2.06l-1.39.78-4.63-2.59c.17-.17.33-.13.5-.25zm-1 .35v-.04c-.35.05-.69.12-1.02.22l1.02 1.56V4.35zm-3.14 1.6L5.79 5c.59-.59 1.27-1.09 2.02-1.49L9.28 5.7l-.42.25zM5.26 5.58l1.89.93-1.28.72C5.54 6.73 5.38 6.16 5.26 5.58z"/></svg>,
+  volleyball:(c='currentColor',s=20) => <svg width={s} height={s} viewBox="0 0 24 24" fill={c}><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 2c.86 0 1.68.13 2.46.36-1.02 1.54-1.47 3.38-1.33 5.22L7.9 12.34C7.02 9.47 8.1 6.29 10.53 4.53 11.01 4.18 11.5 4 12 4zm-8 8c0-.53.06-1.04.16-1.54l4.3 4.3-.73 2.15C5.08 15.2 4 13.73 4 12zm8 8c-2.35 0-4.44-1.01-5.9-2.62l.81-2.42 5.22-1.74c1.08 1.49 2.66 2.5 4.45 2.72C15.44 18.78 13.83 20 12 20zm6.24-4.42c-1.49-.45-2.74-1.44-3.53-2.75l4.93-1.64c.23.86.36 1.76.36 2.7 0 .41-.04.81-.1 1.2-.52.17-1.09.49-1.66.49z"/></svg>,
+  mma:     (c='currentColor',s=20) => <svg width={s} height={s} viewBox="0 0 24 24" fill={c}><path d="M13 1l-2 4h3l-2 4h3l-4 8 1-5h-3l2-4H9l4-7zm-9 14l-2 7h16l-2-7H4z"/></svg>,
+  tennis:  (c='currentColor',s=20) => <svg width={s} height={s} viewBox="0 0 24 24" fill={c}><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 2c1.85 0 3.54.63 4.9 1.68-1.54 1.43-2.49 3.44-2.49 5.65 0 2.21.95 4.22 2.49 5.65C15.54 18.37 13.85 19 12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7zm4.9 1.68c1.05 1.36 1.68 3.05 1.68 4.9s-.63 3.54-1.68 4.9C15.5 12 15.5 12 16.9 5.68z"/></svg>,
+  esports: (c='currentColor',s=20) => <svg width={s} height={s} viewBox="0 0 24 24" fill={c}><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5S14.67 12 15.5 12s1.5.67 1.5 1.5S16.33 15 15.5 15zm3-3c-.83 0-1.5-.67-1.5-1.5S17.67 9 18.5 9s1.5.67 1.5 1.5S19.33 12 18.5 12z"/></svg>,
+  refresh: (c='currentColor',s=20) => <svg width={s} height={s} viewBox="0 0 24 24" fill={c}><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>,
+  home:    (c='currentColor',s=20) => <svg width={s} height={s} viewBox="0 0 24 24" fill={c}><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>,
+  play:    (c='currentColor',s=20) => <svg width={s} height={s} viewBox="0 0 24 24" fill={c}><path d="M8 5v14l11-7z"/></svg>,
+  settings:(c='currentColor',s=20) => <svg width={s} height={s} viewBox="0 0 24 24" fill={c}><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>,
+  person:  (c='currentColor',s=20) => <svg width={s} height={s} viewBox="0 0 24 24" fill={c}><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>,
+  check:   (c='currentColor',s=24) => <svg width={s} height={s} viewBox="0 0 24 24" fill={c}><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>,
+  close:   (c='currentColor',s=20) => <svg width={s} height={s} viewBox="0 0 24 24" fill={c}><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>,
+  live:    () => <span style={{display:'inline-block',width:7,height:7,borderRadius:'50%',background:T.red,flexShrink:0}}/>,
+}
+
+// Map tab key → icon render function
+const TAB_ICON = {
+  loterias: Icon.lottery, futebol: Icon.soccer, basquete: Icon.basketball,
+  volei: Icon.volleyball, mma: Icon.mma, tenis: Icon.tennis, esports: Icon.esports,
 }
 
 // ─── DATA ─────────────────────────────────────────────────────────────────────
@@ -54,23 +77,23 @@ const ESPORTES = {
     { id:'m2', status:'upcoming', statusLabel:'28/03 · Las Vegas',                competition:'UFC Fight Night',         title:'Adesanya × Pyfer',           subtitle:'Ex-campeão busca retorno ao top 5',   guruPick:'Adesanya',      guruConf:58, guruReason:'Melhor alcance, KO power e experiência de campeonato.',                 home:{name:'I. Adesanya',  sub:'25-4 · MW',  pct:55}, away:{name:'J. Pyfer',     sub:'13-2 · Top15',pct:34}, draw:11, vol:'R$ 6,2M' },
   ]},
   tenis:    { label:'Tênis',     items:[
-    { id:'t1', status:'live',     statusLabel:'Hoje · Miami Open',                competition:'ATP Masters 1000 · Miami',title:'Sinner × Dzumhur',           subtitle:'Campeão IW estreia em Miami',         guruPick:'Sinner',        guruConf:92, guruReason:'Sinner venceu IW sem perder set. Dzumhur Nº74 sem histórico vs top5.',  home:{name:'J. Sinner',    sub:'Nº2 · IW Camp.',pct:89},away:{name:'D. Dzumhur',sub:'Nº74 ATP',pct:8}, draw:3, vol:'R$ 4,1M' },
+    { id:'t1', status:'live',     statusLabel:'Hoje · Miami Open',                competition:'ATP Masters 1000 · Miami',title:'Sinner × Dzumhur',           subtitle:'Campeão IW estreia em Miami',         guruPick:'Sinner',        guruConf:92, guruReason:'Sinner venceu IW sem perder set. Dzumhur Nº74 sem histórico vs top5.',  home:{name:'J. Sinner',    sub:'Nº2 · IW Camp.',pct:89},away:{name:'D. Dzumhur',sub:'Nº74 ATP',pct:8},  draw:3,  vol:'R$ 4,1M' },
     { id:'t2', status:'upcoming', statusLabel:'~27/03 · Miami Open Final',        competition:'ATP Miami 2026 · Projeção',title:'Sinner × Alcaraz',          subtitle:'Sunshine Double em disputa',          guruPick:'Sinner',        guruConf:47, guruReason:'Sinner tem 2 finais e 1 título em Miami. Alcaraz 2º favorito.',         home:{name:'J. Sinner',    sub:'Nº2 · Fav.',pct:44}, away:{name:'C. Alcaraz',   sub:'Nº1 · 16-1',pct:38}, draw:18, vol:'R$ 11,2M' },
   ]},
   esports:  { label:'E-sports',  items:[
     { id:'e1', status:'upcoming', statusLabel:'28/03 · CBLOL Etapa 1',            competition:'CBLOL 2026 · Etapa 1',    title:'LOUD × paiN Gaming',         subtitle:'Campeã estreia na Etapa 1',           guruPick:'LOUD',          guruConf:66, guruReason:'LOUD campeã Copa CBLOL 2026. Bull e RedBert dominantes.',               home:{name:'LOUD',         sub:'Campeã Copa', pct:62}, away:{name:'paiN Gaming',  sub:'4º Copa',    pct:24}, draw:14, vol:'R$ 1,8M' },
-    { id:'e2', status:'upcoming', statusLabel:'06/06 · Grande Final',             competition:'CBLOL 2026 · Campeão',    title:'LOUD vence o campeonato?',   subtitle:'Projeção Etapa 1 completa',           guruPick:'LOUD',          guruConf:42, guruReason:'LOUD bicampeã com coesão. FURIA com bootcamp na Coreia é ameaça.',       home:{name:'LOUD',         sub:'Bicampeã',    pct:40}, away:{name:'FURIA/RED/Outro',sub:'Rivais',pct:60}, draw:0, vol:'R$ 5,6M' },
+    { id:'e2', status:'upcoming', statusLabel:'06/06 · Grande Final',             competition:'CBLOL 2026 · Campeão',    title:'LOUD vence o campeonato?',   subtitle:'Projeção Etapa 1 completa',           guruPick:'LOUD',          guruConf:42, guruReason:'LOUD bicampeã com coesão. FURIA com bootcamp na Coreia é ameaça.',       home:{name:'LOUD',         sub:'Bicampeã',    pct:40}, away:{name:'FURIA/RED/Outro',sub:'Rivais',pct:60}, draw:0,  vol:'R$ 5,6M' },
   ]},
 }
 
 const TABS = [
-  { key:'loterias', label:'Loterias',  icon:'🎰' },
-  { key:'futebol',  label:'Futebol',   icon:'⚽' },
-  { key:'basquete', label:'Basquete',  icon:'🏀' },
-  { key:'volei',    label:'Vôlei',     icon:'🏐' },
-  { key:'mma',      label:'MMA / UFC', icon:'🥊' },
-  { key:'tenis',    label:'Tênis',     icon:'🎾' },
-  { key:'esports',  label:'E-sports',  icon:'🎮' },
+  { key:'loterias', label:'Loterias'  },
+  { key:'futebol',  label:'Futebol'   },
+  { key:'basquete', label:'Basquete'  },
+  { key:'volei',    label:'Vôlei'     },
+  { key:'mma',      label:'MMA / UFC' },
+  { key:'tenis',    label:'Tênis'     },
+  { key:'esports',  label:'E-sports'  },
 ]
 
 // ─── AI ENGINE ────────────────────────────────────────────────────────────────
@@ -168,172 +191,157 @@ function useAutoUpdate(seed) {
   return{appData,logs,updating,lastAt,countdown,queue,force}
 }
 
-// ─── BALL (loterias) ──────────────────────────────────────────────────────────
-function Ball({n,size=26,bg=T.gray2,color=T.black}) {
-  return <div style={{width:size,height:size,borderRadius:'50%',background:bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,color,flexShrink:0}}>{String(n).padStart(2,'0')}</div>
+// ─── BALL (lottery numbers) ───────────────────────────────────────────────────
+function Ball({n,size=24,bg=T.gray2,color=T.black}) {
+  return <div style={{width:size,height:size,borderRadius:'50%',background:bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:9,fontWeight:700,color,flexShrink:0}}>{String(n).padStart(2,'0')}</div>
 }
 
-// ─── KALSHI SPORT CARD (desktop) ──────────────────────────────────────────────
+// ─── KALSHI SPORT CARD — fixed height ─────────────────────────────────────────
+// Card height is driven by a fixed inner structure: every card renders the same sections
+const CARD_H = 310 // px — uniform height for all desktop cards
+
 function KalshiSportCard({item,catKey,onSelect,catUpdating}) {
   const [hov,setHov]=useState(false)
   const live=item.status==='live'
   const catColor=T.cat[catKey]||T.black
   const catBg=T.catBg[catKey]||T.gray2
   const label=TABS.find(t=>t.key===catKey)?.label||catKey
-  const icon=TABS.find(t=>t.key===catKey)?.icon||'🏅'
+  const TabIcon=TAB_ICON[catKey]||Icon.soccer
 
   return (
     <div onClick={()=>onSelect(item)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-      style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C8C8C0':T.border}`,cursor:'pointer',overflow:'hidden',transition:'box-shadow 0.15s,border-color 0.15s',boxShadow:hov?'0 2px 16px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',display:'flex',flexDirection:'column'}}>
+      style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C0C0BB':T.border}`,cursor:'pointer',
+        boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',
+        transition:'box-shadow 0.15s,border-color 0.15s',
+        height:CARD_H, display:'flex', flexDirection:'column', overflow:'hidden'}}>
 
-      {/* Category header row */}
-      <div style={{padding:'12px 14px 10px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`}}>
+      {/* Category header */}
+      <div style={{padding:'12px 14px 10px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
-          <div style={{width:28,height:28,borderRadius:8,background:catBg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,flexShrink:0}}>
-            {icon}
+          <div style={{width:28,height:28,borderRadius:8,background:catBg,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+            <TabIcon c={catColor} s={16}/>
           </div>
-          <span style={{fontSize:11,fontWeight:700,color:catColor,letterSpacing:'0.03em',textTransform:'uppercase'}}>{label}</span>
+          <span style={{fontSize:11,fontWeight:700,color:catColor,letterSpacing:'0.04em',textTransform:'uppercase'}}>{label}</span>
         </div>
-        <span style={{fontSize:11,color:T.gray1,fontWeight:400}}>{item.competition}</span>
+        <span style={{fontSize:11,color:T.gray1}}>{item.competition}</span>
       </div>
 
       {/* Title + status */}
-      <div style={{padding:'12px 14px 10px'}}>
-        <div style={{fontSize:15,fontWeight:700,color:T.black,lineHeight:1.3,marginBottom:6,letterSpacing:'-0.02em'}}>{item.title}</div>
-        <div style={{display:'flex',alignItems:'center',gap:5}}>
-          {live && <><span style={{width:7,height:7,borderRadius:'50%',background:T.red,flexShrink:0,display:'inline-block'}}/>
-            <span style={{fontSize:11,fontWeight:700,color:T.red}}>AO VIVO</span>
-            <span style={{color:T.gray1,fontSize:11}}> · </span></>}
-          <span style={{fontSize:11,color:T.gray1}}>{item.statusLabel}</span>
+      <div style={{padding:'11px 14px 8px',flexShrink:0}}>
+        <div style={{fontSize:15,fontWeight:700,color:T.black,lineHeight:1.3,marginBottom:5,letterSpacing:'-0.02em',overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical'}}>{item.title}</div>
+        <div style={{display:'flex',alignItems:'center',gap:5,height:16}}>
+          {live&&<><Icon.live/><span style={{fontSize:11,fontWeight:700,color:T.red}}>AO VIVO</span><span style={{color:T.gray1,fontSize:11,margin:'0 2px'}}> · </span></>}
+          <span style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.statusLabel}</span>
         </div>
       </div>
 
-      {/* Teams rows — Kalshi style */}
+      {/* Teams — fixed 2 rows */}
       <div style={{padding:'0 14px',flex:1}}>
-        {[item.home, item.away].map((side,i)=>{
-          const isWinner = side.pct > (i===0 ? item.away.pct : item.home.pct)
-          const conf = catUpdating ? null : side.pct
+        {[item.home,item.away].map((side,i)=>{
+          const isWinner=side.pct>(i===0?item.away.pct:item.home.pct)
           return (
             <div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'7px 0',borderBottom:i===0?`1px solid ${T.border}`:'none'}}>
-              {/* name + underline bar */}
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:14,fontWeight:isWinner?700:500,color:T.black,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',marginBottom:3}}>{side.name}</div>
-                <div style={{height:2,borderRadius:1,background:isWinner?catColor:T.gray3,width:`${Math.max(20,side.pct)}%`,transition:'width 0.5s'}}/>
+                <div style={{fontSize:13,fontWeight:isWinner?700:500,color:T.black,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',marginBottom:3}}>{side.name}</div>
+                <div style={{height:2,borderRadius:1,background:isWinner?catColor:T.gray3,width:`${Math.max(15,side.pct)}%`,transition:'width 0.5s'}}/>
               </div>
-              {/* Probability pill — Kalshi green outlined */}
-              <div style={{
-                minWidth:52,textAlign:'center',
-                padding:'4px 10px',
-                borderRadius:T.r.pill,
-                border:`1.5px solid ${catUpdating?T.gray3:'#16A34A'}`,
-                color:catUpdating?T.gray1:'#15803D',
-                fontSize:13,fontWeight:800,
-                background:catUpdating?T.gray2:'#F0FDF4',
-                flexShrink:0,
-              }}>
-                {catUpdating?'—':`${conf}%`}
+              <div style={{minWidth:52,textAlign:'center',padding:'4px 10px',borderRadius:T.r.pill,border:`1.5px solid ${catUpdating?T.gray3:'#16A34A'}`,color:catUpdating?T.gray1:'#15803D',fontSize:13,fontWeight:800,background:catUpdating?T.gray2:'#F0FDF4',flexShrink:0}}>
+                {catUpdating?'—':`${side.pct}%`}
               </div>
             </div>
           )
         })}
       </div>
 
-      {/* Guru insight strip */}
-      {!catUpdating && (
-        <div style={{margin:'10px 14px 0',background:'#F8F8F5',borderRadius:T.r.sm,padding:'8px 10px',display:'flex',alignItems:'flex-start',gap:8}}>
-          <span style={{fontSize:10,fontWeight:700,color:catColor,whiteSpace:'nowrap',paddingTop:1}}>GURU</span>
-          <span style={{fontSize:11,color:T.gray1,lineHeight:1.4,flex:1}}>{item.guruPick} · {item.guruReason}</span>
+      {/* Guru strip */}
+      <div style={{margin:'8px 14px 0',background:'#F8F8F5',borderRadius:T.r.sm,padding:'7px 10px',flexShrink:0}}>
+        <div style={{display:'flex',alignItems:'flex-start',gap:6}}>
+          <span style={{fontSize:10,fontWeight:700,color:catColor,whiteSpace:'nowrap',paddingTop:1,flexShrink:0}}>GURU</span>
+          <span style={{fontSize:11,color:T.gray1,lineHeight:1.4,flex:1,overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical'}}>{item.guruPick} · {item.guruReason}</span>
           <span style={{fontSize:11,fontWeight:800,color:T.black,flexShrink:0}}>{item.guruConf}%</span>
         </div>
-      )}
+      </div>
 
       {/* Footer */}
-      <div style={{padding:'10px 14px 12px',display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:4}}>
-        <span style={{fontSize:12,color:T.gray1}}>{item.vol} vol.</span>
-        <span style={{fontSize:12,color:T.gray1}}>Empate {item.draw}%</span>
+      <div style={{padding:'8px 14px 12px',display:'flex',justifyContent:'space-between',flexShrink:0}}>
+        <span style={{fontSize:11,color:T.gray1}}>{item.vol} vol.</span>
+        <span style={{fontSize:11,color:T.gray1}}>Empate {item.draw}%</span>
       </div>
     </div>
   )
 }
 
-// ─── KALSHI LOTO CARD (desktop) ───────────────────────────────────────────────
+// ─── KALSHI LOTO CARD — same fixed height ────────────────────────────────────
 function KalshiLotoCard({lot,onSelect,catUpdating}) {
   const [hov,setHov]=useState(false)
   return (
     <div onClick={()=>onSelect(lot)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-      style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C8C8C0':T.border}`,cursor:'pointer',overflow:'hidden',transition:'box-shadow 0.15s,border-color 0.15s',boxShadow:hov?'0 2px 16px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',display:'flex',flexDirection:'column'}}>
+      style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C0C0BB':T.border}`,cursor:'pointer',
+        boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',
+        transition:'box-shadow 0.15s,border-color 0.15s',
+        height:CARD_H, display:'flex', flexDirection:'column', overflow:'hidden'}}>
 
       {/* Category header */}
-      <div style={{padding:'12px 14px 10px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`}}>
+      <div style={{padding:'12px 14px 10px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
-          <div style={{width:28,height:28,borderRadius:8,background:T.catBg.loterias,display:'flex',alignItems:'center',justifyContent:'center',fontSize:14}}>🎰</div>
-          <span style={{fontSize:11,fontWeight:700,color:T.cat.loterias,letterSpacing:'0.03em',textTransform:'uppercase'}}>LOTERIA</span>
+          <div style={{width:28,height:28,borderRadius:8,background:T.catBg.loterias,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+            <Icon.lottery c={T.cat.loterias} s={16}/>
+          </div>
+          <span style={{fontSize:11,fontWeight:700,color:T.cat.loterias,letterSpacing:'0.04em',textTransform:'uppercase'}}>LOTERIA</span>
         </div>
         <div style={{display:'flex',gap:6,alignItems:'center'}}>
-          {lot.acumulado && <span style={{fontSize:10,fontWeight:700,background:'#FEF3C7',color:'#B45309',borderRadius:4,padding:'2px 7px'}}>ACUMULADO</span>}
-          <span style={{fontSize:11,color:T.gray1}}>{lot.dias}</span>
+          {lot.acumulado&&<span style={{fontSize:10,fontWeight:700,background:'#FEF3C7',color:'#B45309',borderRadius:4,padding:'2px 7px',flexShrink:0}}>ACUMULADO</span>}
+          <span style={{fontSize:11,color:T.gray1,whiteSpace:'nowrap'}}>{lot.dias}</span>
         </div>
       </div>
 
       {/* Title + prize */}
-      <div style={{padding:'12px 14px 10px'}}>
-        <div style={{fontSize:16,fontWeight:800,color:T.black,letterSpacing:'-0.03em',marginBottom:3}}>{lot.nome}</div>
+      <div style={{padding:'11px 14px 8px',flexShrink:0}}>
+        <div style={{fontSize:16,fontWeight:800,color:T.black,letterSpacing:'-0.03em',marginBottom:2}}>{lot.nome}</div>
         <div style={{display:'flex',alignItems:'baseline',gap:8}}>
-          <span style={{fontSize:20,fontWeight:900,color:T.black,letterSpacing:'-0.04em'}}>{lot.premio}</span>
-          <span style={{fontSize:11,color:T.gray1}}>Sorteio {lot.data}</span>
+          <span style={{fontSize:18,fontWeight:900,color:T.black,letterSpacing:'-0.04em'}}>{lot.premio}</span>
+          <span style={{fontSize:11,color:T.gray1,whiteSpace:'nowrap'}}>Sorteio {lot.data}</span>
         </div>
       </div>
 
-      {/* Last result row */}
-      <div style={{padding:'0 14px 10px'}}>
-        <div style={{fontSize:10,fontWeight:700,color:T.gray1,letterSpacing:'0.05em',marginBottom:6}}>ÚLTIMO RESULTADO</div>
-        <div style={{display:'flex',gap:4,flexWrap:'wrap'}}>
-          {lot.ultimoResultado.map(n=><Ball key={n} n={n} size={24}/>)}
+      {/* Last result */}
+      <div style={{padding:'0 14px 8px',flexShrink:0}}>
+        <div style={{fontSize:10,fontWeight:700,color:T.gray1,letterSpacing:'0.05em',marginBottom:5}}>ÚLTIMO RESULTADO</div>
+        <div style={{display:'flex',gap:3,flexWrap:'wrap'}}>
+          {lot.ultimoResultado.slice(0,10).map(n=><Ball key={n} n={n} size={22}/>)}
+          {lot.ultimoResultado.length>10&&<span style={{fontSize:10,color:T.gray1,alignSelf:'center'}}>+{lot.ultimoResultado.length-10}</span>}
         </div>
       </div>
 
-      {/* Guru row — like Kalshi probability rows */}
-      <div style={{padding:'0 14px',flex:1}}>
-        <div style={{borderTop:`1px solid ${T.border}`,paddingTop:10,paddingBottom:8}}>
-          <div style={{display:'flex',alignItems:'flex-start',gap:10,marginBottom:10}}>
+      {/* Guru row */}
+      <div style={{padding:'0 14px',flex:1,borderTop:`1px solid ${T.border}`}}>
+        <div style={{paddingTop:8,paddingBottom:6}}>
+          <div style={{display:'flex',alignItems:'flex-start',gap:10,marginBottom:6}}>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:13,fontWeight:700,color:T.black,marginBottom:3}}>
-                {catUpdating?'Atualizando previsão...':'Guru sugere'}
-              </div>
+              <div style={{fontSize:12,fontWeight:700,color:T.black,marginBottom:4}}>{catUpdating?'Atualizando previsão...':'Guru sugere'}</div>
               <div style={{display:'flex',gap:3,flexWrap:'wrap'}}>
-                {(lot.guruNums||[]).map(n=><Ball key={n} n={n} size={24} bg={catUpdating?T.gray3:T.black} color={T.white}/>)}
+                {(lot.guruNums||[]).slice(0,10).map(n=><Ball key={n} n={n} size={22} bg={catUpdating?T.gray3:T.black} color={T.white}/>)}
+                {(lot.guruNums||[]).length>10&&<span style={{fontSize:10,color:T.gray1,alignSelf:'center'}}>+{lot.guruNums.length-10}</span>}
               </div>
             </div>
-            <div style={{
-              minWidth:52,textAlign:'center',
-              padding:'4px 10px',borderRadius:T.r.pill,
-              border:`1.5px solid ${catUpdating?T.gray3:'#16A34A'}`,
-              color:catUpdating?T.gray1:'#15803D',
-              fontSize:13,fontWeight:800,
-              background:catUpdating?T.gray2:'#F0FDF4',
-              flexShrink:0,marginTop:2,
-            }}>
+            <div style={{minWidth:52,textAlign:'center',padding:'4px 10px',borderRadius:T.r.pill,border:`1.5px solid ${catUpdating?T.gray3:'#16A34A'}`,color:catUpdating?T.gray1:'#15803D',fontSize:13,fontWeight:800,background:catUpdating?T.gray2:'#F0FDF4',flexShrink:0,marginTop:2}}>
               {catUpdating?'—':`${lot.guruConf}%`}
             </div>
           </div>
-          {!catUpdating && <p style={{fontSize:11,color:T.gray1,lineHeight:1.5,margin:0}}>{lot.guruAnalise}</p>}
+          {!catUpdating&&<p style={{fontSize:10,color:T.gray1,lineHeight:1.45,margin:0,overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical'}}>{lot.guruAnalise}</p>}
         </div>
       </div>
 
       {/* Footer */}
-      <div style={{padding:'8px 14px 12px',display:'flex',justifyContent:'space-between'}}>
-        <span style={{fontSize:12,color:T.gray1}}>Conc. {lot.concurso}</span>
-        <span style={{fontSize:12,color:T.gray1}}>Min {lot.aposta}</span>
+      <div style={{padding:'8px 14px 12px',display:'flex',justifyContent:'space-between',flexShrink:0}}>
+        <span style={{fontSize:11,color:T.gray1}}>Conc. {lot.concurso}</span>
+        <span style={{fontSize:11,color:T.gray1}}>Min {lot.aposta}</span>
       </div>
     </div>
   )
 }
 
-// ─── MOBILE CARDS (original style) ────────────────────────────────────────────
-function Ball2({n,size=28,bg=T.gray2,color=T.black}) {
-  return <div style={{width:size,height:size,borderRadius:'50%',background:bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,color,flexShrink:0}}>{String(n).padStart(2,'0')}</div>
-}
-
+// ─── MOBILE CARDS ─────────────────────────────────────────────────────────────
 function LotoCard({lot,onSelect,catUpdating}) {
   const [hov,setHov]=useState(false)
   return (
@@ -357,14 +365,14 @@ function LotoCard({lot,onSelect,catUpdating}) {
         <div style={{height:1,background:T.border,marginBottom:14}}/>
         <div style={{marginBottom:14}}>
           <div style={{fontSize:10,fontWeight:700,color:T.gray1,letterSpacing:'0.06em',marginBottom:8}}>ÚLTIMO RESULTADO</div>
-          <div style={{display:'flex',gap:5,flexWrap:'wrap'}}>{lot.ultimoResultado.map(n=><Ball2 key={n} n={n}/>)}</div>
+          <div style={{display:'flex',gap:4,flexWrap:'wrap'}}>{lot.ultimoResultado.map(n=><Ball key={n} n={n} size={26}/>)}</div>
         </div>
         <div style={{background:T.bg,borderRadius:T.r.md,padding:'12px 14px'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
             <span style={{fontSize:10,fontWeight:700,color:T.black,letterSpacing:'0.06em'}}>{catUpdating?'ATUALIZANDO...':'GURU SUGERE'}</span>
-            <span style={{fontSize:11,fontWeight:800,background:catUpdating?T.gray3:T.green,color:catUpdating?T.gray1:T.black,borderRadius:T.r.pill,padding:'2px 10px'}}>{lot.guruConf}% conf.</span>
+            <span style={{fontSize:11,fontWeight:800,background:catUpdating?T.gray3:T.green,color:T.white,borderRadius:T.r.pill,padding:'2px 10px'}}>{lot.guruConf}% conf.</span>
           </div>
-          <div style={{display:'flex',gap:5,flexWrap:'wrap',marginBottom:10}}>{(lot.guruNums||[]).map(n=><Ball2 key={n} n={n} bg={catUpdating?T.gray3:T.black} color={T.white}/>)}</div>
+          <div style={{display:'flex',gap:4,flexWrap:'wrap',marginBottom:10}}>{(lot.guruNums||[]).map(n=><Ball key={n} n={n} size={26} bg={catUpdating?T.gray3:T.black} color={T.white}/>)}</div>
           <p style={{fontSize:11,color:T.gray1,lineHeight:1.55,margin:0}}>{lot.guruAnalise}</p>
         </div>
         <div style={{display:'flex',justifyContent:'space-between',marginTop:12}}>
@@ -376,8 +384,9 @@ function LotoCard({lot,onSelect,catUpdating}) {
   )
 }
 
-function SportCard({item,onSelect,catUpdating}) {
+function SportCard({item,catKey,onSelect,catUpdating}) {
   const live=item.status==='live'; const [hov,setHov]=useState(false)
+  const catColor=T.cat[catKey]||T.black
   return (
     <div onClick={()=>onSelect(item)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
       style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${T.border}`,marginBottom:12,overflow:'hidden',cursor:'pointer',boxShadow:hov?'0 4px 24px rgba(0,0,0,0.09)':'none',transition:'box-shadow 0.15s'}}>
@@ -385,7 +394,7 @@ function SportCard({item,onSelect,catUpdating}) {
       <div style={{padding:'16px 20px'}}>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
           <div style={{display:'flex',alignItems:'center',gap:6}}>
-            {live&&<><div style={{width:7,height:7,borderRadius:'50%',background:T.red}}/><span style={{fontSize:11,fontWeight:700,color:T.red}}>AO VIVO</span><span style={{color:T.gray1}}> · </span></>}
+            {live&&<><Icon.live/><span style={{fontSize:11,fontWeight:700,color:T.red,marginLeft:4}}>AO VIVO</span><span style={{color:T.gray1,margin:'0 3px'}}> · </span></>}
             <span style={{fontSize:11,color:T.gray1}}>{item.statusLabel}</span>
           </div>
           <span style={{fontSize:11,color:T.gray1}}>{item.competition}</span>
@@ -399,7 +408,7 @@ function SportCard({item,onSelect,catUpdating}) {
             <span style={{fontSize:11,fontWeight:700,color:T.black}}>{catUpdating?'Atualizando...':`Guru: ${item.guruPick}`}</span>
             {!catUpdating&&item.guruReason&&<p style={{fontSize:11,color:T.gray1,margin:'3px 0 0',lineHeight:1.5}}>{item.guruReason}</p>}
           </div>
-          <div style={{background:catUpdating?T.gray3:T.black,color:catUpdating?T.gray1:T.white,borderRadius:T.r.pill,padding:'3px 10px',fontSize:11,fontWeight:800,flexShrink:0}}>{item.guruConf}%</div>
+          <div style={{background:catUpdating?T.gray3:T.black,color:T.white,borderRadius:T.r.pill,padding:'3px 10px',fontSize:11,fontWeight:800,flexShrink:0}}>{item.guruConf}%</div>
         </div>
         <div style={{display:'flex',flexDirection:'column',gap:10}}>
           {[item.home,item.away].map((side,i)=>(
@@ -412,7 +421,7 @@ function SportCard({item,onSelect,catUpdating}) {
               <div style={{textAlign:'right',flexShrink:0}}>
                 <div style={{fontSize:17,fontWeight:900,color:T.black}}>{side.pct}%</div>
                 <div style={{width:52,height:3,background:T.border,borderRadius:2,marginTop:3}}>
-                  <div style={{width:`${side.pct}%`,height:'100%',background:side.pct>50?T.black:T.gray3,borderRadius:2,transition:'width 0.5s'}}/>
+                  <div style={{width:`${side.pct}%`,height:'100%',background:side.pct>50?catColor:T.gray3,borderRadius:2,transition:'width 0.5s'}}/>
                 </div>
               </div>
             </div>
@@ -444,11 +453,11 @@ function BetSheet({item,isLoto,onClose}) {
     <div onClick={onClose} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.45)',zIndex:300,display:'flex',alignItems:isMobile?'flex-end':'center',justifyContent:'center'}}>
       <div onClick={e=>e.stopPropagation()} style={panelStyle}>
         {isMobile&&<div style={{display:'flex',justifyContent:'center',padding:'14px 0 6px'}}><div style={{width:36,height:4,borderRadius:2,background:T.border}}/></div>}
-        {!isMobile&&<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'24px 28px 0'}}><span style={{fontSize:17,fontWeight:800,color:T.black}}>{isLoto?item.nome:item.title}</span><button onClick={onClose} style={{width:32,height:32,borderRadius:'50%',border:'none',background:T.gray2,cursor:'pointer',fontSize:20,color:T.gray1,display:'flex',alignItems:'center',justifyContent:'center',lineHeight:1}}>×</button></div>}
+        {!isMobile&&<div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'24px 28px 0'}}><span style={{fontSize:17,fontWeight:800,color:T.black}}>{isLoto?item.nome:item.title}</span><button onClick={onClose} style={{width:32,height:32,borderRadius:'50%',border:'none',background:T.gray2,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}}><Icon.close c={T.gray1}/></button></div>}
         {done?(
           <div style={{padding:'28px 28px 44px',textAlign:'center'}}>
             <div style={{width:56,height:56,borderRadius:'50%',background:T.green,margin:'0 auto 16px',display:'flex',alignItems:'center',justifyContent:'center'}}>
-              <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke={T.black} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              <Icon.check c={T.white} s={28}/>
             </div>
             <div style={{fontSize:22,fontWeight:900,color:T.black,letterSpacing:'-0.04em',marginBottom:8}}>{isLoto?'Boa sorte!':'Aposta registrada!'}</div>
             <div style={{fontSize:14,color:T.gray1,lineHeight:1.6,marginBottom:24}}>{isLoto?<>R$ {na.toFixed(2)} na <strong style={{color:T.black}}>{item.nome}</strong><br/>Sorteio em {item.data}</>:<>R$ {na.toFixed(2)} em <strong style={{color:T.black}}>{choice==='yes'?item.home?.name:item.away?.name}</strong></>}</div>
@@ -459,15 +468,15 @@ function BetSheet({item,isLoto,onClose}) {
             <div style={{background:T.bg,borderRadius:T.r.md,padding:'14px 16px',marginBottom:16}}>
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
                 <span style={{fontSize:10,fontWeight:700,color:T.black,letterSpacing:'0.06em'}}>ANÁLISE DO GURU</span>
-                <span style={{fontSize:12,fontWeight:800,background:T.green,color:T.black,borderRadius:T.r.pill,padding:'3px 12px'}}>{item.guruConf}%</span>
+                <span style={{fontSize:12,fontWeight:800,background:T.green,color:T.white,borderRadius:T.r.pill,padding:'3px 12px'}}>{item.guruConf}%</span>
               </div>
-              {isLoto?(<><p style={{fontSize:12,color:T.gray1,lineHeight:1.6,marginBottom:10}}>{item.guruAnalise}</p><div style={{fontSize:11,fontWeight:700,color:T.black,marginBottom:8}}>Números — concurso {item.concurso}</div><div style={{display:'flex',gap:5,flexWrap:'wrap'}}>{(item.guruNums||[]).map(n=><Ball2 key={n} n={n} bg={T.black} color={T.white}/>)}</div></>)
+              {isLoto?(<><p style={{fontSize:12,color:T.gray1,lineHeight:1.6,marginBottom:10}}>{item.guruAnalise}</p><div style={{fontSize:11,fontWeight:700,color:T.black,marginBottom:8}}>Números — concurso {item.concurso}</div><div style={{display:'flex',gap:4,flexWrap:'wrap'}}>{(item.guruNums||[]).map(n=><Ball key={n} n={n} size={26} bg={T.black} color={T.white}/>)}</div></>)
               :(<><div style={{fontSize:17,fontWeight:900,color:T.black,letterSpacing:'-0.03em',marginBottom:4}}>{item.guruPick}</div><p style={{fontSize:12,color:T.gray1,lineHeight:1.5,margin:0}}>{item.guruReason}</p></>)}
             </div>
             {isLoto&&<div style={{background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:T.r.sm,padding:'10px 14px',marginBottom:14,fontSize:11,color:'#78350F',lineHeight:1.5}}>Loteria é jogo de azar. Sugestão estatística sem garantia.</div>}
             {!isLoto&&(<>
               <div style={{display:'flex',background:T.bg,borderRadius:T.r.md,padding:4,marginBottom:14}}>
-                {['buy','sell'].map(m=><button key={m} style={{flex:1,padding:'10px',borderRadius:T.r.sm,border:'none',background:m==='buy'?T.white:'transparent',color:m==='buy'?T.black:T.gray1,fontWeight:m==='buy'?700:500,fontSize:14,cursor:'pointer',boxShadow:m==='buy'?'0 1px 3px rgba(0,0,0,0.08)':'none'}}>{m==='buy'?'Comprar':'Vender'}</button>)}
+                {['buy','sell'].map(m=><button key={m} style={{flex:1,padding:'10px',borderRadius:T.r.sm,border:'none',background:m==='buy'?T.white:'transparent',color:m==='buy'?T.black:T.gray1,fontWeight:m==='buy'?700:500,fontSize:14,cursor:'pointer'}}>{m==='buy'?'Comprar':'Vender'}</button>)}
               </div>
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:14}}>
                 {[{key:'yes',label:'Sim',price:yp,name:item.home?.name},{key:'no',label:'Não',price:np,name:item.away?.name}].map(o=>(
@@ -513,8 +522,8 @@ function EngineLog({logs,updating,lastAt,countdown,queue,force}) {
             <div style={{fontSize:16,fontWeight:800,color:T.black}}>{updating?'Analisando...':'Motor ativo'}</div>
             <div style={{fontSize:12,color:T.gray1,marginTop:3}}>Última: {lastAt?lastAt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}):'Aguardando'}</div>
           </div>
-          <button onClick={force} disabled={updating} style={{padding:'10px 20px',borderRadius:T.r.pill,background:updating?T.gray2:T.black,border:'none',color:updating?T.gray1:T.white,fontSize:13,fontWeight:700,cursor:updating?'not-allowed':'pointer'}}>
-            {updating?'Analisando...':'Atualizar agora'}
+          <button onClick={force} disabled={updating} style={{display:'flex',alignItems:'center',gap:8,padding:'10px 20px',borderRadius:T.r.pill,background:updating?T.gray2:T.black,border:'none',color:updating?T.gray1:T.white,fontSize:13,fontWeight:700,cursor:updating?'not-allowed':'pointer'}}>
+            <Icon.refresh c={updating?T.gray1:T.white} s={16}/>{updating?'Analisando...':'Atualizar agora'}
           </button>
         </div>
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
@@ -527,7 +536,6 @@ function EngineLog({logs,updating,lastAt,countdown,queue,force}) {
             <div style={{fontSize:16,fontWeight:900,color:T.cat.loterias,fontVariantNumeric:'tabular-nums'}}>{countdown||'—'}</div>
           </div>
         </div>
-        {updating&&queue.length>0&&<div style={{marginTop:12}}><div style={{fontSize:11,color:T.gray1,marginBottom:6}}>Na fila:</div><div style={{display:'flex',gap:6,flexWrap:'wrap'}}>{queue.map(c=>{const m=TABS.find(t=>t.key===c);return<span key={c} style={{fontSize:11,background:T.bg,borderRadius:T.r.pill,padding:'3px 10px',color:T.black,fontWeight:600,border:`1px solid ${T.border}`}}>{m?.label||c}</span>})}</div></div>}
       </div>
       <div style={{background:'#EFF6FF',borderRadius:T.r.md,border:'1px solid #BFDBFE',padding:'14px 16px',marginBottom:14}}>
         <div style={{fontSize:13,fontWeight:800,color:'#1D4ED8',marginBottom:6}}>Como funciona</div>
@@ -547,72 +555,73 @@ function EngineLog({logs,updating,lastAt,countdown,queue,force}) {
   )
 }
 
-// ─── DESKTOP NAV (Kalshi-style top bar) ───────────────────────────────────────
-function DesktopNav({tab,onTab,updating,countdown,queue,showLog,onToggleLog}) {
+// ─── DESKTOP NAV (Kalshi style — centered content) ────────────────────────────
+function DesktopNav({tab,onTab,updating,countdown,queue,showLog,onToggleLog,force}) {
   return (
     <div style={{background:T.white,borderBottom:`1px solid ${T.border}`,position:'sticky',top:0,zIndex:50}}>
-      {/* Top bar */}
-      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0 32px',height:56}}>
-        {/* Logo */}
+      {/* Top bar — max-width centered like Kalshi */}
+      <div style={{maxWidth:1280,margin:'0 auto',padding:'0 40px',display:'flex',alignItems:'center',justifyContent:'space-between',height:56}}>
+        {/* Logo + primary nav */}
         <div style={{display:'flex',alignItems:'center',gap:32}}>
-          <div>
+          <div style={{display:'flex',alignItems:'center',gap:0}}>
             <span style={{fontSize:20,fontWeight:900,color:T.black,letterSpacing:'-0.04em'}}>Guru</span>
             <span style={{fontSize:20,fontWeight:900,color:T.cat.loterias,letterSpacing:'-0.04em'}}> das Bets</span>
           </div>
-          {/* Primary nav links */}
-          <nav style={{display:'flex',alignItems:'center',gap:4}}>
-            {[
-              {key:'markets',label:'MERCADOS',active:!showLog},
-              {key:'engine', label:'MOTOR IA', active:showLog, dot:updating},
-            ].map(n=>(
-              <button key={n.key} onClick={()=>{if(n.key==='engine')onToggleLog()}} style={{padding:'6px 14px',borderRadius:T.r.sm,border:'none',background:'transparent',color:n.active?T.black:T.gray1,fontSize:13,fontWeight:n.active?700:500,cursor:'pointer',letterSpacing:'0.02em',position:'relative',transition:'color 0.15s'}}>
-                {n.label}
-                {n.dot&&<span style={{position:'absolute',top:4,right:6,width:6,height:6,borderRadius:'50%',background:'#F59E0B'}}/>}
-                {n.active&&<div style={{position:'absolute',bottom:-1,left:0,right:0,height:2,background:T.black,borderRadius:1}}/>}
-              </button>
-            ))}
+          <nav style={{display:'flex',alignItems:'center',gap:2}}>
+            <button onClick={()=>{}} style={{padding:'6px 14px',borderRadius:T.r.sm,border:'none',background:'transparent',color:!showLog?T.black:T.gray1,fontSize:13,fontWeight:!showLog?700:500,cursor:'pointer',letterSpacing:'0.01em',position:'relative'}}>
+              MERCADOS
+              {!showLog&&<div style={{position:'absolute',bottom:-1,left:0,right:0,height:2,background:T.black,borderRadius:1}}/>}
+            </button>
           </nav>
         </div>
-        {/* Right side */}
-        <div style={{display:'flex',alignItems:'center',gap:12}}>
-          {/* Status */}
+
+        {/* Right side — status + reset button */}
+        <div style={{display:'flex',alignItems:'center',gap:10}}>
+          {/* Status pill */}
           {updating?(
             <div style={{display:'flex',alignItems:'center',gap:6,background:'#FFF8E1',borderRadius:T.r.pill,padding:'6px 14px',border:'1px solid #FFE082'}}>
-              <div style={{width:8,height:8,borderRadius:'50%',border:'2px solid #F59E0B',borderTopColor:'transparent',animation:'spin 0.8s linear infinite'}}/>
-              <span style={{fontSize:12,fontWeight:700,color:'#92400E'}}>{queue.length>0?`Analisando ${queue[0]}...`:'Analisando...'}</span>
+              <div style={{width:8,height:8,borderRadius:'50%',border:'2px solid #F59E0B',borderTopColor:'transparent',animation:'spin 0.8s linear infinite',flexShrink:0}}/>
+              <span style={{fontSize:12,fontWeight:600,color:'#92400E'}}>{queue.length>0?`Analisando ${queue[0]}...`:'Analisando...'}</span>
             </div>
           ):countdown?(
             <div style={{display:'flex',alignItems:'center',gap:6,background:'#F0FFF4',borderRadius:T.r.pill,padding:'6px 14px',border:'1px solid #A7F3D0'}}>
-              <div style={{width:8,height:8,borderRadius:'50%',background:T.green}}/>
-              <span style={{fontSize:12,fontWeight:600,color:'#065F46',fontVariantNumeric:'tabular-nums'}}>Próx. {countdown}</span>
+              <div style={{width:8,height:8,borderRadius:'50%',background:T.green,flexShrink:0}}/>
+              <span style={{fontSize:12,fontWeight:600,color:'#065F46',fontVariantNumeric:'tabular-nums'}}>Próxima atualização: {countdown}</span>
             </div>
           ):null}
-          {/* CTA button */}
-          <button style={{background:T.green,color:T.black,border:'none',borderRadius:T.r.pill,padding:'8px 20px',fontSize:14,fontWeight:700,cursor:'pointer',letterSpacing:'-0.01em'}}>
-            Apostar agora
+
+          {/* Reset/refresh button — replaces "Apostar agora" */}
+          <button
+            onClick={force}
+            disabled={updating}
+            style={{display:'flex',alignItems:'center',gap:7,background:updating?T.gray2:T.green,color:updating?T.gray1:T.white,border:'none',borderRadius:T.r.pill,padding:'8px 18px',fontSize:13,fontWeight:700,cursor:updating?'not-allowed':'pointer',transition:'background 0.15s',letterSpacing:'-0.01em'}}
+          >
+            <Icon.refresh c={updating?T.gray1:T.white} s={16}/>
+            {updating?'Atualizando...':'Resetar previsões'}
           </button>
         </div>
       </div>
 
-      {/* Category filter bar — Kalshi sub-nav */}
-      {!showLog&&(
-        <div style={{display:'flex',alignItems:'center',gap:0,padding:'0 32px',borderTop:`1px solid ${T.border}`,overflowX:'auto'}}>
-          {TABS.map(({key,label,icon})=>{
-            const active=key===tab
-            return (
-              <button key={key} onClick={()=>onTab(key)} style={{display:'flex',alignItems:'center',gap:6,padding:'12px 16px',border:'none',background:'transparent',color:active?T.black:T.gray1,fontSize:13,fontWeight:active?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0,position:'relative',borderBottom:`2px solid ${active?T.black:'transparent'}`,transition:'color 0.15s',marginBottom:-1}}>
-                <span style={{fontSize:15}}>{icon}</span>{label}
-              </button>
-            )
-          })}
-        </div>
-      )}
+      {/* Category sub-nav — centered */}
+      <div style={{maxWidth:1280,margin:'0 auto',padding:'0 40px',display:'flex',alignItems:'center',borderTop:`1px solid ${T.border}`,overflowX:'auto'}}>
+        {TABS.map(({key,label})=>{
+          const active=key===tab
+          const TabIcon=TAB_ICON[key]||Icon.soccer
+          const catColor=T.cat[key]||T.black
+          return (
+            <button key={key} onClick={()=>onTab(key)} style={{display:'flex',alignItems:'center',gap:7,padding:'12px 16px',border:'none',background:'transparent',color:active?T.black:T.gray1,fontSize:13,fontWeight:active?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0,position:'relative',borderBottom:`2px solid ${active?T.black:'transparent'}`,transition:'color 0.15s',marginBottom:-1}}>
+              <TabIcon c={active?catColor:T.gray3} s={15}/>
+              {label}
+            </button>
+          )
+        })}
+      </div>
     </div>
   )
 }
 
 // ─── MOBILE HEADER ────────────────────────────────────────────────────────────
-function MobileHeader({tab,onTab,updating,countdown,queue,showLog,onToggleLog}) {
+function MobileHeader({tab,onTab,updating,countdown,queue,showLog,onToggleLog,force}) {
   return (
     <div style={{background:T.white,borderBottom:`1px solid ${T.border}`,position:'sticky',top:0,zIndex:50}}>
       <div style={{padding:'14px 18px 10px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
@@ -621,20 +630,26 @@ function MobileHeader({tab,onTab,updating,countdown,queue,showLog,onToggleLog}) 
           <span style={{fontSize:20,fontWeight:900,color:T.cat.loterias,letterSpacing:'-0.04em'}}> das Bets</span>
         </div>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
-          {updating
-            ?<div style={{display:'flex',alignItems:'center',gap:6,background:'#FFF8E1',borderRadius:T.r.pill,padding:'5px 10px'}}><div style={{width:8,height:8,borderRadius:'50%',border:'2px solid #F59E0B',borderTopColor:'transparent',animation:'spin 0.8s linear infinite'}}/><span style={{fontSize:11,fontWeight:700,color:'#92400E'}}>IA</span></div>
-            :<div style={{display:'flex',alignItems:'center',gap:6,background:'#F0FFF4',borderRadius:T.r.pill,padding:'5px 10px'}}><div style={{width:8,height:8,borderRadius:'50%',background:T.green}}/><span style={{fontSize:11,fontWeight:700,color:'#065F46'}}>AO VIVO</span></div>
-          }
+          <button onClick={force} disabled={updating} style={{display:'flex',alignItems:'center',gap:5,padding:'6px 12px',borderRadius:T.r.pill,background:updating?T.gray2:T.green,border:'none',color:updating?T.gray1:T.white,fontSize:12,fontWeight:700,cursor:updating?'not-allowed':'pointer'}}>
+            <Icon.refresh c={updating?T.gray1:T.white} s={14}/>
+            {updating?'Analisando...':'Atualizar'}
+          </button>
         </div>
       </div>
       {!updating&&countdown&&<div style={{margin:'0 18px 8px',background:T.gray2,borderRadius:T.r.sm,padding:'5px 12px',display:'flex',justifyContent:'space-between'}}><span style={{fontSize:11,color:T.gray1}}>Próxima atualização</span><span style={{fontSize:11,fontWeight:800,color:T.black,fontVariantNumeric:'tabular-nums'}}>{countdown}</span></div>}
       {updating&&queue.length>0&&<div style={{margin:'0 18px 8px',background:'#FFF8E1',borderRadius:T.r.sm,padding:'5px 12px',display:'flex',alignItems:'center',gap:8}}><div style={{width:8,height:8,borderRadius:'50%',border:'2px solid #F59E0B',borderTopColor:'transparent',animation:'spin 0.8s linear infinite',flexShrink:0}}/><span style={{fontSize:11,color:'#78350F'}}>Analisando <strong>{queue[0]}</strong> — {queue.length} restante(s)</span></div>}
-      <div style={{display:'flex',gap:6,overflowX:'auto',padding:'0 18px 12px',scrollbarWidth:'none'}}>
-        {TABS.map(({key,label,icon})=>{
+      <div style={{display:'flex',gap:0,overflowX:'auto',padding:'0 18px 0',scrollbarWidth:'none',borderTop:`1px solid ${T.border}`}}>
+        {TABS.map(({key,label})=>{
           const active=key===tab&&!showLog
-          return <button key={key} onClick={()=>onTab(key)} style={{padding:'7px 13px',borderRadius:T.r.pill,border:'none',background:active?T.black:T.gray2,color:active?T.white:T.gray1,fontSize:12,fontWeight:active?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0,transition:'all 0.12s'}}>{icon} {label}</button>
+          const TabIcon=TAB_ICON[key]||Icon.soccer
+          const catColor=T.cat[key]||T.black
+          return (
+            <button key={key} onClick={()=>onTab(key)} style={{display:'flex',alignItems:'center',gap:6,padding:'11px 14px',border:'none',borderBottom:`2px solid ${active?T.black:'transparent'}`,background:'transparent',color:active?T.black:T.gray1,fontSize:12,fontWeight:active?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0,transition:'all 0.12s',marginBottom:-1}}>
+              <TabIcon c={active?catColor:T.gray3} s={14}/>
+              {label}
+            </button>
+          )
         })}
-        <button onClick={onToggleLog} style={{padding:'7px 13px',borderRadius:T.r.pill,border:'none',background:showLog?T.black:T.gray2,color:showLog?T.white:T.gray1,fontSize:12,fontWeight:showLog?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0}}>⚙️ Motor</button>
       </div>
     </div>
   )
@@ -644,8 +659,8 @@ function MobileHeader({tab,onTab,updating,countdown,queue,showLog,onToggleLog}) 
 function SplashScreen() {
   return (
     <div style={{position:'fixed',inset:0,background:T.green,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:8,zIndex:999}}>
-      <div style={{fontSize:48,fontWeight:900,color:T.black,letterSpacing:'-0.04em',lineHeight:1}}>Guru das Bets</div>
-      <div style={{fontSize:13,fontWeight:500,color:'rgba(0,0,0,0.45)',letterSpacing:'0.06em'}}>PREVISÕES INTELIGENTES</div>
+      <div style={{fontSize:48,fontWeight:900,color:T.white,letterSpacing:'-0.04em',lineHeight:1}}>Guru das Bets</div>
+      <div style={{fontSize:13,fontWeight:500,color:'rgba(255,255,255,0.7)',letterSpacing:'0.06em'}}>PREVISÕES INTELIGENTES</div>
     </div>
   )
 }
@@ -669,11 +684,11 @@ const CSS=`
 const SEED={loterias:LOTERIAS,esportes:ESPORTES}
 
 export default function App() {
-  const [splash, setSplash] = useState(true)
-  const [tab,    setTab]    = useState('loterias')
-  const [selItem,setSelItem]= useState(null)
-  const [showLog,setShowLog]= useState(false)
-  const [activeFilter,setActiveFilter]=useState('all') // Kalshi sub-filter
+  const [splash,setSplash]=useState(true)
+  const [tab,setTab]=useState('loterias')
+  const [selItem,setSelItem]=useState(null)
+  const [showLog,setShowLog]=useState(false)
+  const [activeFilter,setActiveFilter]=useState('all')
 
   useEffect(()=>{const t=setTimeout(()=>setSplash(false),2000);return()=>clearTimeout(t)},[])
 
@@ -688,62 +703,51 @@ export default function App() {
   const totalLive=Object.values(appData.esportes).flatMap(d=>d.items).filter(i=>i.status==='live').length
 
   function handleTab(key){setTab(key);setShowLog(false);setActiveFilter('all')}
-  function handleToggleLog(){setShowLog(v=>!v)}
 
   // ── DESKTOP ──
   if (isDesktop) {
-    // Collect all items for "Todos" view when on sports tabs
-    const allSportItems = isLoto ? [] : espItems
+    const filteredItems=isLoto
+      ?appData.loterias.filter(l=>activeFilter==='all'||(activeFilter==='acumulado'&&l.acumulado))
+      :espItems.filter(i=>activeFilter==='all'||(activeFilter==='live'&&i.status==='live')||(activeFilter==='upcoming'&&i.status==='upcoming'))
 
     return (
       <div style={{display:'flex',flexDirection:'column',height:'100vh',background:T.bg}}>
         <style>{CSS}</style>
-        <DesktopNav tab={tab} onTab={handleTab} updating={updating} countdown={countdown} queue={queue} showLog={showLog} onToggleLog={handleToggleLog}/>
+        <DesktopNav tab={tab} onTab={handleTab} updating={updating} countdown={countdown} queue={queue} showLog={showLog} onToggleLog={()=>setShowLog(v=>!v)} force={force}/>
 
         <div style={{flex:1,overflowY:'auto'}}>
-          <div style={{maxWidth:1400,margin:'0 auto',padding:'28px 32px 48px'}}>
+          {/* Centered content — like Kalshi */}
+          <div style={{maxWidth:1280,margin:'0 auto',padding:'32px 40px 56px'}}>
 
-            {showLog ? (
+            {showLog?(
               <EngineLog logs={logs} updating={updating} lastAt={lastAt} countdown={countdown} queue={queue} force={force}/>
-            ) : (
+            ):(
               <>
-                {/* Page header — Kalshi "Browse Markets" style */}
+                {/* Page header */}
                 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:24}}>
-                  <h1 style={{fontSize:28,fontWeight:800,color:T.black,letterSpacing:'-0.04em'}}>
-                    {isLoto ? 'Loterias' : TABS.find(t=>t.key===tab)?.label}
+                  <h1 style={{fontSize:26,fontWeight:800,color:T.black,letterSpacing:'-0.04em'}}>
+                    {isLoto?'Loterias':TABS.find(t=>t.key===tab)?.label}
                   </h1>
-                  {/* Kalshi-style filter pills */}
                   <div style={{display:'flex',gap:8,alignItems:'center'}}>
                     {(!isLoto?['all','live','upcoming']:['all','acumulado']).map(f=>(
                       <button key={f} onClick={()=>setActiveFilter(f)} style={{padding:'7px 16px',borderRadius:T.r.pill,border:`1px solid ${activeFilter===f?T.black:T.border}`,background:activeFilter===f?T.black:T.white,color:activeFilter===f?T.white:T.black,fontSize:13,fontWeight:activeFilter===f?700:500,cursor:'pointer',transition:'all 0.15s'}}>
                         {f==='all'?'Todos':f==='live'?'Ao Vivo':f==='upcoming'?'Próximos':'Acumulados'}
                       </button>
                     ))}
-                    {catUpd&&(
-                      <div style={{display:'flex',alignItems:'center',gap:6,background:'#FFF8E1',borderRadius:T.r.pill,padding:'7px 14px',border:'1px solid #FFE082'}}>
-                        <div style={{width:8,height:8,borderRadius:'50%',border:'2px solid #F59E0B',borderTopColor:'transparent',animation:'spin 0.8s linear infinite'}}/>
-                        <span style={{fontSize:12,fontWeight:700,color:'#92400E'}}>Atualizando IA...</span>
-                      </div>
-                    )}
                   </div>
                 </div>
 
-                {/* Responsible gambling notice for loterias */}
                 {isLoto&&(
                   <div style={{background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:T.r.md,padding:'11px 18px',marginBottom:20,fontSize:12,color:'#78350F',lineHeight:1.6}}>
-                    <strong>Jogo responsável.</strong> Sugestões baseadas em estatística histórica — não garantem resultado. Aposte somente o que pode perder.
+                    <strong>Jogo responsável.</strong> Sugestões baseadas em estatística histórica — não garantem resultado.
                   </div>
                 )}
 
-                {/* KALSHI 3-COLUMN GRID */}
+                {/* 3-col grid — all cards same height via CARD_H */}
                 <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16,alignItems:'start'}}>
                   {isLoto
-                    ? appData.loterias
-                        .filter(l=>activeFilter==='all'||(activeFilter==='acumulado'&&l.acumulado))
-                        .map(lot=><KalshiLotoCard key={lot.id} lot={lot} onSelect={setSelItem} catUpdating={catUpd}/>)
-                    : allSportItems
-                        .filter(i=>activeFilter==='all'||(activeFilter==='live'&&i.status==='live')||(activeFilter==='upcoming'&&i.status==='upcoming'))
-                        .map(item=><KalshiSportCard key={item.id} item={item} catKey={tab} onSelect={setSelItem} catUpdating={catUpd}/>)
+                    ?filteredItems.map(lot=><KalshiLotoCard key={lot.id} lot={lot} onSelect={setSelItem} catUpdating={catUpd}/>)
+                    :filteredItems.map(item=><KalshiSportCard key={item.id} item={item} catKey={tab} onSelect={setSelItem} catUpdating={catUpd}/>)
                   }
                 </div>
               </>
@@ -760,38 +764,46 @@ export default function App() {
   return (
     <div style={{background:T.bg,minHeight:'100vh'}}>
       <style>{CSS}</style>
-      <MobileHeader tab={tab} onTab={handleTab} updating={updating} countdown={countdown} queue={queue} showLog={showLog} onToggleLog={handleToggleLog}/>
+      <MobileHeader tab={tab} onTab={handleTab} updating={updating} countdown={countdown} queue={queue} showLog={showLog} onToggleLog={()=>setShowLog(v=>!v)} force={force}/>
       <div style={{padding:isTablet?'24px 28px 100px':'16px 16px 100px',maxWidth:isTablet?900:'100%',margin:'0 auto'}}>
         {showLog?(
           <EngineLog logs={logs} updating={updating} lastAt={lastAt} countdown={countdown} queue={queue} force={force}/>
         ):(
           <>
-            {isLoto&&<div style={{background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:T.r.md,padding:'11px 16px',marginBottom:16,fontSize:12,color:'#78350F',lineHeight:1.6}}><strong>Jogo responsável.</strong> Sugestões baseadas em estatística histórica — não garantem resultado.</div>}
-            {!isLoto&&<div style={{display:'flex',gap:8,marginBottom:16,overflowX:'auto'}}>{['all','live','upcoming'].map((f,i)=><button key={f} style={{padding:'7px 14px',borderRadius:T.r.pill,border:'none',background:activeFilter===f?T.black:T.gray2,color:activeFilter===f?T.white:T.gray1,fontSize:12,fontWeight:activeFilter===f?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0}} onClick={()=>setActiveFilter(f)}>{f==='all'?`Todos (${espItems.length})`:f==='live'?'Ao Vivo':'Próximos'}</button>)}</div>}
+            {isLoto&&<div style={{background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:T.r.md,padding:'11px 16px',marginBottom:16,fontSize:12,color:'#78350F',lineHeight:1.6}}><strong>Jogo responsável.</strong> Sugestões baseadas em estatística — não garantem resultado.</div>}
+            {!isLoto&&<div style={{display:'flex',gap:0,marginBottom:0,overflowX:'auto',borderBottom:`1px solid ${T.border}`,marginLeft:-16,marginRight:-16,paddingLeft:16}}>
+              {['all','live','upcoming'].map((f)=>(
+                <button key={f} style={{padding:'10px 14px',border:'none',borderBottom:`2px solid ${activeFilter===f?T.black:'transparent'}`,background:'transparent',color:activeFilter===f?T.black:T.gray1,fontSize:12,fontWeight:activeFilter===f?700:500,cursor:'pointer',whiteSpace:'nowrap',flexShrink:0,marginBottom:-1}} onClick={()=>setActiveFilter(f)}>
+                  {f==='all'?`Todos (${espItems.length})`:f==='live'?'Ao Vivo':'Próximos'}
+                </button>
+              ))}
+            </div>}
+            {!isLoto&&<div style={{height:16}}/>}
             <div style={{display:'grid',gridTemplateColumns:isTablet?'repeat(2,1fr)':'1fr',gap:isTablet?16:0}}>
               {isLoto
                 ?appData.loterias.map(lot=><LotoCard key={lot.id} lot={lot} onSelect={setSelItem} catUpdating={catUpd}/>)
-                :espItems.filter(i=>activeFilter==='all'||(activeFilter==='live'&&i.status==='live')||(activeFilter==='upcoming'&&i.status==='upcoming')).map(item=><SportCard key={item.id} item={item} onSelect={setSelItem} catUpdating={catUpd}/>)
+                :espItems.filter(i=>activeFilter==='all'||(activeFilter==='live'&&i.status==='live')||(activeFilter==='upcoming'&&i.status==='upcoming')).map(item=><SportCard key={item.id} item={item} catKey={tab} onSelect={setSelItem} catUpdating={catUpd}/>)
               }
             </div>
           </>
         )}
       </div>
 
+      {/* Mobile bottom nav */}
       {isMobile&&(
         <div style={{position:'fixed',bottom:0,left:0,right:0,background:T.white,borderTop:`1px solid ${T.border}`,display:'flex',justifyContent:'space-around',paddingTop:10,paddingBottom:'env(safe-area-inset-bottom,20px)',zIndex:100}}>
           {[
-            {key:'discover',label:'Descobrir',svg:<svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M9 22V12h6v10" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>},
-            {key:'play',label:'Apostar',badge:totalLive,svg:<svg width="22" height="22" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8"/><path d="M10 8.5l5 3.5-5 3.5V8.5z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>},
-            {key:'engine',label:'Motor',engineDot:updating,svg:<svg width="22" height="22" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" strokeWidth="1.8"/><path d="M7 8h10M7 12h7M7 16h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>},
-            {key:'profile',label:'Perfil',svg:<svg width="22" height="22" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.8"/><path d="M4 20c0-3.314 3.582-6 8-6s8 2.686 8 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>},
-          ].map(({key,label,svg,badge,engineDot})=>{
-            const active=key==='engine'?showLog:false
+            {key:'home',    label:'Início',  Ic:Icon.home},
+            {key:'play',    label:'Apostar', badge:totalLive, Ic:Icon.play},
+            {key:'settings',label:'Motor',   engineDot:updating, Ic:Icon.settings},
+            {key:'profile', label:'Perfil',  Ic:Icon.person},
+          ].map(({key,label,Ic,badge,engineDot})=>{
+            const active=key==='settings'?showLog:false
             return (
-              <button key={key} onClick={()=>{if(key==='engine')handleToggleLog()}} style={{background:'none',border:'none',display:'flex',flexDirection:'column',alignItems:'center',gap:3,cursor:'pointer',position:'relative',minWidth:60,color:active?T.black:T.gray1,padding:'4px 0'}}>
+              <button key={key} onClick={()=>{if(key==='settings')setShowLog(v=>!v)}} style={{background:'none',border:'none',display:'flex',flexDirection:'column',alignItems:'center',gap:3,cursor:'pointer',position:'relative',minWidth:60,color:active?T.black:T.gray1,padding:'4px 0'}}>
                 {badge>0&&<span style={{position:'absolute',top:-2,right:4,background:T.red,color:T.white,fontSize:9,fontWeight:900,borderRadius:T.r.pill,padding:'1px 5px',lineHeight:1.5}}>{badge}</span>}
                 {engineDot&&!showLog&&<span style={{position:'absolute',top:0,right:6,width:8,height:8,borderRadius:'50%',background:'#F59E0B',border:`2px solid ${T.white}`,animation:'pulse 1.5s infinite'}}/>}
-                {svg}
+                <Ic c={active?T.black:T.gray1} s={22}/>
                 <span style={{fontSize:10,fontWeight:active?700:400}}>{label}</span>
               </button>
             )
