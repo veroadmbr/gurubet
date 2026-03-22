@@ -1856,8 +1856,10 @@ function MobileChatPage({item, catKey, onBack, appData}) {
 function MobileEventsList({tab, appData, onSelect, onBack, updating, countdown, force}) {
   const [filter, setFilter] = useState('all')
 
-  const isLoto  = tab==='loterias'
-  const isTodos = tab==='todos'
+  const isLoto   = tab==='loterias'
+  const isTodos  = tab==='todos'
+  const isCrypto = tab==='crypto'
+  const isMoedas = tab==='moedas'
   const catLabel = TABS.find(t=>t.key===tab)?.label || 'Eventos'
   const catColor = T.cat[tab]||T.black
   const catBg    = T.catBg[tab]||T.gray2
