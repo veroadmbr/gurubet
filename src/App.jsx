@@ -2200,15 +2200,17 @@ function CryptoCard({item}) {
       {/* Previsão Anual 2026 */}
       {item.yearPick&&(()=>{
         const yUp=item.yearPick==='ALTA', yDn=item.yearPick==='QUEDA'
-        const yColor=yUp?'#16A34A':yDn?T.red:T.gray1
+        const yColor=yUp?'#16A34A':yDn?T.red:'#6B7280'
         const yBg=yUp?'#F0FDF4':yDn?'#FEF2F2':'#F8F8F5'
+        const yBorder=yUp?'#BBF7D0':yDn?'#FECACA':'#E5E7EB'
+        const arrow=yUp?'↑':yDn?'↓':'→'
+        const label=`Previsão anual 2026  ${arrow}  ${item.yearPick} de ${item.yearConf}%`
         return (
-          <div style={{margin:'0 14px 8px',background:yBg,borderRadius:T.r.sm,padding:'5px 10px',flexShrink:0,border:`1px solid ${yUp?'#BBF7D0':yDn?'#FECACA':'#E8E8E4'}`}}>
-            <div style={{display:'flex',alignItems:'center',gap:6}}>
-              <span style={{fontSize:9,fontWeight:700,color:T.gray1,whiteSpace:'nowrap',flexShrink:0}}>2026</span>
-              <span style={{fontSize:10,color:T.gray1,flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.yearReason||'—'}</span>
-              <span style={{fontSize:10,fontWeight:900,color:yColor,whiteSpace:'nowrap',flexShrink:0}}>{item.yearPick} {item.yearConf}%</span>
+          <div style={{margin:'0 14px 8px',background:yBg,borderRadius:T.r.sm,padding:'6px 10px',flexShrink:0,border:`1px solid ${yBorder}`}}>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:8,marginBottom:3}}>
+              <span style={{fontSize:10,fontWeight:800,color:yColor,whiteSpace:'nowrap'}}>{label}</span>
             </div>
+            <span style={{fontSize:10,color:'#6B7280',lineHeight:1.4,display:'block',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.yearReason||'—'}</span>
           </div>
         )
       })()}
@@ -2295,15 +2297,17 @@ function MoedasCard({item}) {
       {/* Previsão Anual 2026 */}
       {item.yearPick&&(()=>{
         const yUp=item.yearPick==='ALTA', yDn=item.yearPick==='QUEDA'
-        const yColor=yUp?'#16A34A':yDn?T.red:T.gray1
+        const yColor=yUp?'#16A34A':yDn?T.red:'#6B7280'
         const yBg=yUp?'#F0FDF4':yDn?'#FEF2F2':'#F8F8F5'
+        const yBorder=yUp?'#BBF7D0':yDn?'#FECACA':'#E5E7EB'
+        const arrow=yUp?'↑':yDn?'↓':'→'
+        const label=`Previsão anual 2026  ${arrow}  ${item.yearPick} de ${item.yearConf}%`
         return (
-          <div style={{margin:'0 14px 8px',background:yBg,borderRadius:T.r.sm,padding:'5px 10px',flexShrink:0,border:`1px solid ${yUp?'#BBF7D0':yDn?'#FECACA':'#E8E8E4'}`}}>
-            <div style={{display:'flex',alignItems:'center',gap:6}}>
-              <span style={{fontSize:9,fontWeight:700,color:T.gray1,whiteSpace:'nowrap',flexShrink:0}}>2026</span>
-              <span style={{fontSize:10,color:T.gray1,flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.yearReason||'—'}</span>
-              <span style={{fontSize:10,fontWeight:900,color:yColor,whiteSpace:'nowrap',flexShrink:0}}>{item.yearPick} {item.yearConf}%</span>
+          <div style={{margin:'0 14px 8px',background:yBg,borderRadius:T.r.sm,padding:'6px 10px',flexShrink:0,border:`1px solid ${yBorder}`}}>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:8,marginBottom:3}}>
+              <span style={{fontSize:10,fontWeight:800,color:yColor,whiteSpace:'nowrap'}}>{label}</span>
             </div>
+            <span style={{fontSize:10,color:'#6B7280',lineHeight:1.4,display:'block',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.yearReason||'—'}</span>
           </div>
         )
       })()}
