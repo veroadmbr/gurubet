@@ -427,259 +427,365 @@ Retorne SOMENTE JSON array (todos os 50 itens com dados atualizados):
 [{"id":"usd","bettvPick":"ALTA|QUEDA|NEUTRO","bettvConf":55,"bettvReason":"tendência 24h vs BRL. máx 110 chars","change24h":-0.3,"priceBRL":5.12,"yearPick":"ALTA|QUEDA|NEUTRO","yearConf":55,"yearReason":"análise anual 2026: política monetária, macro, balanço. máx 110 chars"}]`,
 }
 
-// ─── API HELPER — agentic loop com web_search ────────────────────────────────
-async function callWithSearch(system, messages, maxTurns=5) {
+// ═══════════════════════════════════════════════════════════════════════════════
+// BETTV INTELLIGENCE ENGINE v3 — Multi-search, real-time, self-validating
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ─── CORE API CALL — handles full tool_use loop ───────────────────────────────
+async function apiCall(system, messages, maxTurns=8) {
   const tools = [{type:'web_search_20250305', name:'web_search'}]
   let msgs = [...messages]
+
   for (let turn=0; turn<maxTurns; turn++) {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':API_KEY,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
       },
-      body: JSON.stringify({model:'claude-sonnet-4-20250514', max_tokens:4000, system, tools, messages:msgs})
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 4000,
+        system,
+        tools,
+        messages: msgs,
+      }),
     })
-    if (!res.ok) throw new Error('API '+res.status)
+
+    if (!res.ok) {
+      const err = await res.text().catch(()=>'')
+      throw new Error(`API ${res.status}: ${err.slice(0,120)}`)
+    }
+
     const json = await res.json()
-    // Text response = done
-    const txt = json.content?.find(b=>b.type==='text')?.text
-    if (txt) return txt
-    // Tool use = continue loop with result
-    if (json.stop_reason==='tool_use') {
-      const tu = json.content?.find(b=>b.type==='tool_use')
-      if (!tu) break
+    const textBlock = json.content?.find(b => b.type === 'text')
+
+    // Got final text — return it
+    if (textBlock?.text) return textBlock.text
+
+    // Model used web_search — feed results back and continue
+    if (json.stop_reason === 'tool_use') {
+      const toolUses = json.content?.filter(b => b.type === 'tool_use') || []
+      if (!toolUses.length) break
+
+      // Build tool results for ALL tool_use blocks in this turn
+      const toolResults = toolUses.map(tu => ({
+        type: 'tool_result',
+        tool_use_id: tu.id,
+        content: 'Resultados obtidos com sucesso. Continue pesquisando se necessário, ou compile o JSON final.',
+      }))
+
       msgs = [
         ...msgs,
-        {role:'assistant', content:json.content},
-        {role:'user', content:[{type:'tool_result', tool_use_id:tu.id, content:'Dados obtidos. Compile agora o JSON final solicitado. Responda SOMENTE com o JSON array, sem markdown.'}]}
+        { role: 'assistant', content: json.content },
+        { role: 'user',      content: toolResults  },
       ]
-    } else break
+    } else {
+      // end_turn or other stop — no text produced
+      break
+    }
   }
   return null
 }
 
-// ─── ENGINE PRINCIPAL — busca + gera previsões ───────────────────────────────
-async function callClaude(data, category) {
+// ─── FETCH CATEGORY DATA — busca dados reais com múltiplas pesquisas ──────────
+async function fetchCategory(category) {
   const nowISO = new Date().toISOString()
-  const nowBRT = new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})
+  const nowBRT = new Date().toLocaleString('pt-BR', {timeZone:'America/Sao_Paulo'})
+  const year   = new Date().getFullYear()
 
   const system = [
-    'Você é o motor de inteligência esportiva do BetTv.',
-    'Data e hora atual (BRT): '+nowBRT+' | UTC: '+nowISO,
-    'REGRAS:',
-    '1. Use web_search para buscar dados 100% reais e atualizados dos top sites de referência.',
-    '2. Faça múltiplas buscas se necessário para confirmar datas, horários e resultados.',
-    '3. NUNCA invente dados. Se não encontrar, não inclua.',
-    '4. Responda SOMENTE com JSON válido — sem markdown, sem texto extra.',
-    '5. startTime em ISO 8601 com timezone correto.',
+    `Você é o motor de dados em tempo real do BetTv. Hoje: ${nowBRT} (UTC: ${nowISO}).`,
+    `Sites de referência para ${category}: ${TOP_SITES[category]||'fontes confiáveis da internet'}`,
+    'REGRAS ABSOLUTAS:',
+    '1. Faça MÚLTIPLAS buscas (mínimo 2-3) para confirmar dados de diferentes fontes.',
+    '2. NUNCA invente preços, resultados, datas ou estatísticas.',
+    '3. Responda SOMENTE com JSON array válido — zero markdown, zero texto extra.',
+    '4. Se um dado não for confirmado por fonte confiável, não o inclua.',
   ].join('\n')
 
-  const prompt = CATEGORY_SEARCH_PROMPTS[category]?.(nowISO)
+  const prompt = CATEGORY_SEARCH_PROMPTS[category]?.(nowISO, year)
   if (!prompt) return null
 
-  try {
-    const txt = await callWithSearch(system, [{role:'user', content:prompt}])
-    if (!txt) return []
-    return JSON.parse(txt.replace(/```json|```/g,'').trim())
-  } catch(e) { return [] }
+  const txt = await apiCall(system, [{role:'user', content:prompt}])
+  if (!txt) return null
+
+  // Parse JSON — strip markdown fences if present
+  const clean = txt.replace(/^```(?:json)?\s*/,'').replace(/\s*```$/,'').trim()
+  return JSON.parse(clean)
 }
 
-// ─── VALIDATION ENGINE — verifica previsões passadas nos top sites ────────────
-// predResult: 'correct'(verde) | 'incorrect'(vermelho) | 'partial'(amarelo) | null(pendente)
+// ─── VALIDATE PREDICTIONS — verifica resultados passados ──────────────────────
 async function validatePredictions(items, category) {
   const now = Date.now()
-  // Selecionar eventos que já começaram e ainda não foram validados
   const toValidate = items.filter(item => {
     if (!item.startTime || item.predResult) return false
     const start = new Date(item.startTime).getTime()
-    // Para eventos multi-dia (golf) valida apenas após o fim estimado
-    if (item.multiDay) return start < now - 4*24*60*60*1000
-    return !isNaN(start) && start < now
+    if (isNaN(start)) return false
+    if (item.multiDay) return start < now - 4*24*60*60*1000  // golf: após 4 dias
+    return start < now - 30*60*1000                          // esportes: 30min após início
   })
   if (!toValidate.length) return items
 
-  const nowBRT = new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})
+  const nowBRT = new Date().toLocaleString('pt-BR', {timeZone:'America/Sao_Paulo'})
   const system = [
-    'Você é o validador de previsões do BetTv. Data/hora BRT: '+nowBRT,
-    'Use web_search nos top sites: '+TOP_SITES[category],
-    'REGRAS: responda SOMENTE com JSON. Busque resultados reais. Nunca invente.',
+    `Validador de previsões BetTv. Agora: ${nowBRT}.`,
+    `Busque nos sites: ${TOP_SITES[category]||'ESPN, FlashScore, SofaScore'}`,
+    'Responda SOMENTE com JSON array. Nunca invente resultados.',
   ].join('\n')
 
-  const prompt = `Verifique nos principais sites esportivos (${TOP_SITES[category]}) o resultado REAL de cada evento abaixo.
-Compare com a previsão BetTv e classifique como "correct", "incorrect" ou "partial".
-
-Eventos para validar (categoria: ${category}):
-${JSON.stringify(toValidate.map(i=>({id:i.id, title:i.title, startTime:i.startTime, bettvPick:i.bettvPick, bettvConf:i.bettvConf})), null, 2)}
-
-Definições:
-- "correct": previsão acertou (ex: BetTv escolheu Palmeiras, Palmeiras venceu)
-- "incorrect": previsão errou (ex: BetTv escolheu Palmeiras, time adversário venceu ou empate)
-- "partial": evento em andamento, ou resultado ambíguo (empate quando não previsto conta como partial)
-
-Retorne SOMENTE JSON array. Inclua apenas eventos cujo resultado você encontrou com certeza:
-[{"id":"id-do-evento","predResult":"correct|incorrect|partial","realResult":"ex: Palmeiras 3 × 1 Grêmio","predNote":"ex: BetTv acertou — Palmeiras venceu conforme previsto"}]`
+  const prompt = [
+    `Pesquise o resultado REAL de cada evento abaixo (categoria: ${category}).`,
+    `Compare com a previsão BetTv e classifique.`,
+    '',
+    'Eventos:',
+    JSON.stringify(toValidate.map(i=>({
+      id: i.id, title: i.title,
+      startTime: i.startTime, bettvPick: i.bettvPick,
+    }))),
+    '',
+    'Retorne JSON array (apenas eventos com resultado confirmado):',
+    '[{"id":"...","predResult":"correct|incorrect|partial",',
+    '"realResult":"ex: Palmeiras 2×1 Flamengo","predNote":"ex: BetTv acertou — Palmeiras venceu"}]',
+    '',
+    '- correct: previsão acertou exatamente',
+    '- incorrect: previsão errou',
+    '- partial: empate não previsto, ou evento ainda em andamento',
+  ].join('\n')
 
   try {
-    const txt = await callWithSearch(system, [{role:'user', content:prompt}])
+    const txt = await apiCall(system, [{role:'user', content:prompt}])
     if (!txt) return items
-    const validations = JSON.parse(txt.replace(/```json|```/g,'').trim())
+    const clean = txt.replace(/^```(?:json)?\s*/,'').replace(/\s*```$/,'').trim()
+    const validations = JSON.parse(clean)
     if (!Array.isArray(validations)) return items
 
     return items.map(item => {
-      const v = validations.find(x=>x.id===item.id)
-      if (!v) return item
-      return {...item, predResult:v.predResult, realResult:v.realResult, predNote:v.predNote}
+      const v = validations.find(x => x.id === item.id)
+      return v ? {...item, predResult:v.predResult, realResult:v.realResult, predNote:v.predNote} : item
     })
   } catch(e) { return items }
 }
 
+// ─── MERGE HELPERS ────────────────────────────────────────────────────────────
+function mergeLoterias(current, updates) {
+  return current.map(lot => {
+    const u = updates.find(x => x.id === lot.id)
+    return u ? {...lot, ...u} : lot
+  })
+}
+
+function mergeCrypto(current, updates) {
+  return current.map(item => {
+    const u = updates.find(x => x.id === item.id)
+    if (!u) return item
+    // Preserve yearPick/yearConf/yearReason if not in update
+    return {
+      ...item, ...u,
+      yearPick:    u.yearPick    ?? item.yearPick,
+      yearConf:    u.yearConf    ?? item.yearConf,
+      yearReason:  u.yearReason  ?? item.yearReason,
+    }
+  })
+}
+
+function mergeSport(current, updates, now) {
+  const valid = updates.filter(item => {
+    if (!item.startTime || !item.title || !item.home || !item.away) return false
+    const s = new Date(item.startTime).getTime()
+    return !isNaN(s) && s > now - 4*60*60*1000
+  }).map(item => {
+    const prev = current.find(e => e.id === item.id)
+    return {
+      ...item,
+      predResult: prev?.predResult ?? null,
+      realResult: prev?.realResult ?? null,
+      predNote:   prev?.predNote   ?? null,
+      multiDay:   item.multiDay    ?? prev?.multiDay ?? false,
+    }
+  })
+  return valid.length > 0 ? valid : current
+}
+
 // ─── AUTO UPDATE HOOK ─────────────────────────────────────────────────────────
 function useAutoUpdate(seed) {
-  const [appData,setAppData]=useState(seed)
-  const [logs,setLogs]=useState([])
-  const [updating,setUpdating]=useState(false)
-  const [lastAt,setLastAt]=useState(null)
-  const [nextAt,setNextAt]=useState(null)
-  const [queue,setQueue]=useState([])
-  const [countdown,setCountdown]=useState('')
-  const timerRef=useRef(null)
-  const cdRef=useRef(null)
+  const [appData,  setAppData]  = useState(seed)
+  const [logs,     setLogs]     = useState([])
+  const [updating, setUpdating] = useState(false)
+  const [lastAt,   setLastAt]   = useState(null)
+  const [nextAt,   setNextAt]   = useState(null)
+  const [progress, setProgress] = useState({current:'',done:0,total:0})
+  const [countdown,setCountdown]= useState('')
 
-  const addLog=useCallback((msg,t='info')=>{
-    const ts=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})
-    setLogs(p=>[{msg,t,ts},...p].slice(0,50))
+  const cycleRef   = useRef(false)   // prevents overlapping cycles
+  const timerRef   = useRef(null)
+  const cdRef      = useRef(null)
+  const appDataRef = useRef(seed)    // always-fresh ref for timer callback
+
+  // Keep ref in sync
+  useEffect(() => { appDataRef.current = appData }, [appData])
+
+  const addLog = useCallback((msg, t='info') => {
+    const ts = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})
+    setLogs(prev => [{msg,t,ts}, ...prev].slice(0,60))
   },[])
 
-  const runCycle=useCallback(async(cur,manual=false)=>{
+  // ── MAIN CYCLE ──────────────────────────────────────────────────────────────
+  const runCycle = useCallback(async (cur, manual=false) => {
+    // Guard: prevent overlapping cycles
+    if (cycleRef.current) {
+      addLog('⏸ Ciclo já em execução — aguardando', 'warn')
+      return
+    }
+    cycleRef.current = true
     setUpdating(true)
-    const now = Date.now()
 
-    // ── PASSO 1: Limpar eventos expirados ──
+    const now = Date.now()
+    const nowBRT = new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})
+    addLog(manual
+      ? `🔄 Atualização manual — ${nowBRT}`
+      : `⏰ Ciclo automático — ${nowBRT}`, 'start')
+
+    // ── STEP 1: Purge expired events ────────────────────────────────────────
     const purgedEsportes = {}
-    Object.entries(cur.esportes).forEach(([cat,catData]) => {
+    Object.entries(cur.esportes).forEach(([cat, catData]) => {
       purgedEsportes[cat] = {
         ...catData,
         items: catData.items.filter(item => {
           if (!item.startTime) return true
           const start = new Date(item.startTime).getTime()
-          // Manter eventos validados por mais tempo (histórico)
-          if (item.predResult) return start > now - 24*60*60*1000
-          if (item.multiDay)   return start > now - 7*24*60*60*1000
+          if (item.predResult)  return start > now - 48*60*60*1000  // keep validated 48h
+          if (item.multiDay)    return start > now -  7*24*60*60*1000
           return start > now - 4*60*60*1000
-        })
+        }),
       }
     })
 
-    const cats = ['loterias',...Object.keys(ESPORTES),'crypto','moedas']
-    setQueue([...cats])
-    addLog(manual?'🔄 Atualização manual iniciada':'⏰ Ciclo automático — buscando + validando', 'start')
+    // Working copy — mutated in-place during cycle
     const nd = {
       loterias: [...cur.loterias],
       esportes: purgedEsportes,
-      crypto:   [...(cur.crypto||CRYPTO_DATA)],
-      moedas:   [...(cur.moedas||MOEDAS_DATA)],
+      crypto:   [...(cur.crypto  || CRYPTO_DATA)],
+      moedas:   [...(cur.moedas  || MOEDAS_DATA)],
     }
-    let ok=0
 
-    for (const cat of cats) {
-      setQueue(q=>q.filter(c=>c!==cat))
+    const sportCats = Object.keys(ESPORTES)                          // futebol, basquete, …
+    const allCats   = ['loterias', ...sportCats, 'crypto', 'moedas']
+    const total     = allCats.length
+    let   done      = 0, ok = 0
+
+    setProgress({current:'', done:0, total})
+
+    // ── STEP 2: Validate past sport predictions (parallel per category) ─────
+    addLog('🔍 Validando previsões passadas…', 'info')
+    await Promise.allSettled(
+      sportCats.map(async cat => {
+        if (!nd.esportes[cat]?.items?.length) return
+        try {
+          const validated = await validatePredictions(nd.esportes[cat].items, cat)
+          const newCount  = validated.filter(i =>
+            i.predResult && !nd.esportes[cat].items.find(x=>x.id===i.id)?.predResult
+          ).length
+          if (newCount > 0) {
+            nd.esportes[cat] = {...nd.esportes[cat], items: validated}
+            addLog(`✅ ${cat}: ${newCount} previsão(ões) validada(s)`, 'success')
+            // Emit partial update to UI immediately
+            setAppData(prev => ({
+              ...prev,
+              esportes: {...prev.esportes, [cat]: nd.esportes[cat]},
+            }))
+          }
+        } catch(e) { addLog(`⚠️ Validação ${cat}: ${e.message}`, 'warn') }
+      })
+    )
+
+    // ── STEP 3: Fetch fresh data for every category sequentially ────────────
+    for (const cat of allCats) {
+      done++
+      setProgress({current:cat, done, total})
+      addLog(`🌐 [${done}/${total}] Buscando: ${cat}`, 'loading')
 
       try {
-        const isSport = !['loterias','crypto','moedas'].includes(cat)
+        const upd = await fetchCategory(cat)
 
-        // ── PASSO 2: Validar previsões passadas (apenas esportes) ──
-        if (isSport && nd.esportes[cat]) {
-          addLog('🔍 Validando previsões: '+cat, 'loading')
-          const validated = await validatePredictions(nd.esportes[cat].items, cat)
-          const newValidations = validated.filter(i=>i.predResult && !nd.esportes[cat].items.find(x=>x.id===i.id)?.predResult)
-          if (newValidations.length>0) {
-            nd.esportes[cat] = {...nd.esportes[cat], items:validated}
-            addLog('✅ '+cat+': '+newValidations.length+' previsões validadas', 'success')
-            setAppData(prev=>({...prev, esportes:{...prev.esportes, [cat]:{...prev.esportes[cat], items:validated}}}))
-          }
-        }
-
-        // ── PASSO 3: Buscar novos eventos/dados ──
-        addLog('🌐 Buscando dados: '+cat, 'loading')
-        const upd = await callClaude(nd, cat)
-        if (!upd||!Array.isArray(upd)||upd.length===0) {
-          addLog('⚠️ '+cat+': sem novos dados — mantendo atuais', 'warn')
-          continue
-        }
-
-        if (cat==='loterias') {
-          nd.loterias = nd.loterias.map(l=>{const u=upd.find(x=>x.id===l.id); return u?{...l,...u}:l})
-          addLog('✅ loterias: previsões atualizadas', 'success')
-        } else if (cat==='crypto') {
-          nd.crypto = nd.crypto.map(c=>{const u=upd.find(x=>x.id===c.id); return u?{...c,...u}:c})
-          addLog('✅ crypto: '+upd.length+' preços/tendências', 'success')
-        } else if (cat==='moedas') {
-          nd.moedas = nd.moedas.map(m=>{const u=upd.find(x=>x.id===m.id); return u?{...m,...u}:m})
-          addLog('✅ moedas: '+upd.length+' taxas atualizadas', 'success')
+        if (!upd || !Array.isArray(upd) || upd.length === 0) {
+          addLog(`⚠️ ${cat}: sem dados — mantendo atuais`, 'warn')
+        } else if (cat === 'loterias') {
+          nd.loterias = mergeLoterias(nd.loterias, upd)
+          addLog(`✅ loterias: ${upd.length} previsões atualizadas`, 'success')
+        } else if (cat === 'crypto') {
+          nd.crypto = mergeCrypto(nd.crypto, upd)
+          addLog(`✅ crypto: ${upd.length} ativos atualizados`, 'success')
+        } else if (cat === 'moedas') {
+          nd.moedas = mergeCrypto(nd.moedas, upd)   // same merge logic
+          addLog(`✅ câmbio: ${upd.length} pares atualizados`, 'success')
         } else {
-          if (!nd.esportes[cat]) continue
-          const validItems = upd
-            .filter(item => {
-              if (!item.startTime||!item.title||!item.home||!item.away) return false
-              const s = new Date(item.startTime).getTime()
-              return !isNaN(s) && s > now - 4*60*60*1000
-            })
-            .map(item => {
-              // Preservar predResult já calculado para o mesmo evento
-              const prev = nd.esportes[cat].items.find(e=>e.id===item.id)
-              return {
-                ...item,
-                predResult: prev?.predResult||null,
-                realResult: prev?.realResult||null,
-                predNote:   prev?.predNote||null,
-              }
-            })
-          if (validItems.length>0) {
-            nd.esportes[cat] = {...nd.esportes[cat], items:validItems}
-            addLog('✅ '+cat+': '+validItems.length+' eventos atualizados', 'success')
+          // Sport category
+          if (!nd.esportes[cat]) {
+            addLog(`⚠️ ${cat}: categoria não existe`, 'warn')
           } else {
-            addLog('⚠️ '+cat+': dados inválidos — mantendo anteriores', 'warn')
+            const merged = mergeSport(nd.esportes[cat].items, upd, now)
+            nd.esportes[cat] = {...nd.esportes[cat], items: merged}
+            addLog(`✅ ${cat}: ${merged.length} eventos`, 'success')
           }
         }
 
-        setAppData({...nd})
         ok++
-      } catch(e) { addLog('❌ '+cat+': '+e.message, 'error') }
+      } catch(e) {
+        addLog(`❌ ${cat}: ${e.message}`, 'error')
+      }
 
-      // Pausa entre categorias para não saturar a API
-      await new Promise(r=>setTimeout(r,600))
+      // Push live update to UI after every category
+      setAppData({...nd})
+
+      // Throttle: 500ms gap between categories to avoid rate-limits
+      await new Promise(r => setTimeout(r, 500))
     }
 
+    // ── STEP 4: Finalize ────────────────────────────────────────────────────
     const ts = new Date()
     setLastAt(ts)
-    setNextAt(new Date(ts.getTime()+INTERVAL))
+    setNextAt(new Date(ts.getTime() + INTERVAL))
     setUpdating(false)
-    setQueue([])
-    addLog('🏁 Concluído — '+ok+'/'+cats.length+' categorias atualizadas', 'done')
-  },[addLog])
+    setProgress({current:'', done:total, total})
+    cycleRef.current = false
+    addLog(`🏁 Concluído ${ok}/${total} categorias — próxima em 2h`, 'done')
+  }, [addLog])
 
-  useEffect(()=>{
-    cdRef.current=setInterval(()=>{
-      if(!nextAt){setCountdown('');return}
-      const d=nextAt-Date.now()
-      if(d<=0){setCountdown('Agora');return}
-      const h=Math.floor(d/3600000),m=Math.floor((d%3600000)/60000),s=Math.floor((d%60000)/1000)
-      setCountdown(h+'h '+String(m).padStart(2,'0')+'m '+String(s).padStart(2,'0')+'s')
-    },1000)
-    return ()=>clearInterval(cdRef.current)
-  },[nextAt])
+  // ── COUNTDOWN TIMER ────────────────────────────────────────────────────────
+  useEffect(() => {
+    cdRef.current = setInterval(() => {
+      if (!nextAt) { setCountdown(''); return }
+      const d = nextAt - Date.now()
+      if (d <= 0) { setCountdown('Agora'); return }
+      const h = Math.floor(d/3600000)
+      const m = Math.floor((d%3600000)/60000)
+      const s = Math.floor((d%60000)/1000)
+      setCountdown(`${h}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`)
+    }, 1000)
+    return () => clearInterval(cdRef.current)
+  }, [nextAt])
 
-  useEffect(()=>{
-    runCycle(seed)
-    timerRef.current=setInterval(()=>{setAppData(cur=>{runCycle(cur);return cur})},INTERVAL)
-    return ()=>clearInterval(timerRef.current)
-  },[]) // eslint-disable-line
+  // ── BOOTSTRAP + INTERVAL ──────────────────────────────────────────────────
+  useEffect(() => {
+    // Run immediately on mount
+    runCycle(appDataRef.current)
 
-  const force=useCallback(()=>{if(!updating)setAppData(cur=>{runCycle(cur,true);return cur})},[updating,runCycle])
-  return {appData,logs,updating,lastAt,countdown,queue,force}
+    // Every 2h — use ref so we always operate on latest data
+    timerRef.current = setInterval(() => {
+      runCycle(appDataRef.current)
+    }, INTERVAL)
+
+    return () => clearInterval(timerRef.current)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const force = useCallback(() => {
+    if (!cycleRef.current) runCycle(appDataRef.current, true)
+  }, [runCycle])
+
+  return {appData, logs, updating, lastAt, countdown, progress, force}
 }
 
 // ─── BALL ─────────────────────────────────────────────────────────────────────
@@ -1477,7 +1583,7 @@ function SocialPage({appData}) {
 // ─── ENGINE LOG ───────────────────────────────────────────────────────────────
 const LOG_C={info:T.gray1,start:'#7C3AED',loading:'#D97706',success:'#059669',warn:'#D97706',error:'#DC2626',done:'#0369A1'}
 
-function EngineLog({logs,updating,lastAt,countdown,queue,force}) {
+function EngineLog({logs,updating,lastAt,countdown,progress,force}) {
   return (
     <div>
       <div style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${T.border}`,padding:'18px',marginBottom:12}}>
@@ -1514,7 +1620,7 @@ function EngineLog({logs,updating,lastAt,countdown,queue,force}) {
 }
 
 // ─── DESKTOP NAV ──────────────────────────────────────────────────────────────
-function DesktopNav({tab, onTab, page, onPage, updating, countdown, queue, force}) {
+function DesktopNav({tab, onTab, page, onPage, updating, countdown, progress, force}) {
   return (
     <div style={{background:T.white,borderBottom:`1px solid ${T.border}`,position:'sticky',top:0,zIndex:50}}>
       {/* Top bar */}
@@ -1542,7 +1648,7 @@ function DesktopNav({tab, onTab, page, onPage, updating, countdown, queue, force
           {updating&&(
             <div style={{display:'flex',alignItems:'center',gap:6,background:'#FFF8E1',borderRadius:T.r.pill,padding:'6px 13px',border:'1px solid #FFE082'}}>
               <div style={{width:7,height:7,borderRadius:'50%',border:'2px solid #F59E0B',borderTopColor:'transparent',animation:'spin 0.8s linear infinite',flexShrink:0}}/>
-              <span style={{fontSize:12,fontWeight:600,color:'#92400E'}}>{queue.length>0?`Analisando ${queue[0]}...`:'Analisando...'}</span>
+              <span style={{fontSize:12,fontWeight:600,color:'#92400E'}}>{progress.current?`${progress.done}/${progress.total} — ${progress.current}...`:'Analisando...'}</span>
             </div>
           )}
           <button onClick={force} disabled={updating}
@@ -1575,7 +1681,7 @@ function DesktopNav({tab, onTab, page, onPage, updating, countdown, queue, force
 }
 
 // ─── MOBILE HEADER ────────────────────────────────────────────────────────────
-function MobileHeader({tab, onTab, page, onPage, updating, countdown, queue, force}) {
+function MobileHeader({tab, onTab, page, onPage, updating, countdown, progress, force}) {
   return (
     <div style={{background:T.white,borderBottom:`1px solid ${T.border}`,position:'sticky',top:0,zIndex:50}}>
       {/* Top bar — logo + botão atualizar */}
@@ -1590,10 +1696,10 @@ function MobileHeader({tab, onTab, page, onPage, updating, countdown, queue, for
 
       {/* Status bar */}
       
-      {updating&&queue.length>0&&(
+      {updating&&progress.current&&(
         <div style={{margin:'0 16px 6px',background:'#FFF8E1',borderRadius:T.r.sm,padding:'4px 12px',display:'flex',alignItems:'center',gap:7}}>
           <div style={{width:7,height:7,borderRadius:'50%',border:'2px solid #F59E0B',borderTopColor:'transparent',animation:'spin 0.8s linear infinite',flexShrink:0}}/>
-          <span style={{fontSize:11,color:'#78350F'}}>Analisando <strong>{queue[0]}</strong></span>
+          <span style={{fontSize:11,color:'#78350F'}}>{progress.done}/{progress.total} — <strong>{progress.current}</strong></span>
         </div>
       )}
 
@@ -1853,7 +1959,7 @@ function MobileChatPage({item, catKey, onBack, appData}) {
 
 // ─── MOBILE EVENTS LIST ────────────────────────────────────────────────────────
 // Lista de eventos para uma categoria — full screen com rows simples
-function MobileEventsList({tab, appData, onSelect, onBack, updating, countdown, force}) {
+function MobileEventsList({tab, appData, onSelect, onBack, updating, countdown, progress, force}) {
   const [filter, setFilter] = useState('all')
 
   const isLoto   = tab==='loterias'
@@ -2243,7 +2349,7 @@ export default function App() {
   const [chatCat,setChatCat]=useState('futebol')
   const [chatItem,setChatItem]=useState(null)
 
-  const {appData,logs,updating,lastAt,countdown,queue,force}=useAutoUpdate(SEED)
+  const {appData,logs,updating,lastAt,countdown,progress,force}=useAutoUpdate(SEED)
   const {isMobile,isTablet,isDesktop}=useBreakpoint()
 
   const isLoto   = tab==='loterias'
@@ -2255,7 +2361,7 @@ export default function App() {
   const espItems = espData?.items||[]
   const cryptoItems = appData.crypto||CRYPTO_DATA
   const moedasItems = appData.moedas||MOEDAS_DATA
-  const catUpd   = updating&&queue.includes(tab)
+  const catUpd   = updating&&(progress.current===tab||progress.current==='loterias'&&tab==='loterias')
   const totalLive=Object.values(appData.esportes).flatMap(d=>d.items).filter(i=>{
     if(!i.startTime) return false
     const n=Date.now(), s=new Date(i.startTime).getTime()
@@ -2302,7 +2408,7 @@ export default function App() {
     return (
       <div style={{display:'flex',flexDirection:'column',height:'100vh',background:T.bg}}>
         <style>{CSS}</style>
-        <DesktopNav tab={tab} onTab={handleTab} page={page} onPage={handlePage} updating={updating} countdown={countdown} queue={queue} force={force}/>
+        <DesktopNav tab={tab} onTab={handleTab} page={page} onPage={handlePage} updating={updating} countdown={countdown} progress={progress} force={force}/>
         <div style={{flex:1,overflowY:page==='social'?'hidden':'auto'}}>
           {page==='social'?<SocialPage appData={appData}/>:(
             <div style={{maxWidth:1280,margin:'0 auto',padding:'28px 40px 56px'}}>
@@ -2363,7 +2469,7 @@ export default function App() {
         <div style={{background:T.bg,minHeight:'100vh',paddingBottom:80}}>
           <style>{CSS}</style>
           {/* Header — same as MobileHeader but for Social */}
-          <MobileHeader tab={tab} onTab={handleTab} page={page} onPage={handlePage} updating={updating} countdown={countdown} queue={queue} force={force}/>
+          <MobileHeader tab={tab} onTab={handleTab} page={page} onPage={handlePage} updating={updating} countdown={countdown} progress={progress} force={force}/>
           <div style={{padding:'16px'}}>
             <div style={{fontSize:12,fontWeight:700,color:T.gray1,letterSpacing:'0.06em',marginBottom:12}}>ESCOLHA UMA CATEGORIA</div>
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
@@ -2419,7 +2525,7 @@ export default function App() {
   return (
     <div style={{background:T.bg,minHeight:'100vh',paddingBottom:80}}>
       <style>{CSS}</style>
-      <MobileHeader tab={tab} onTab={handleTab} page={page} onPage={handlePage} updating={updating} countdown={countdown} queue={queue} force={force}/>
+      <MobileHeader tab={tab} onTab={handleTab} page={page} onPage={handlePage} updating={updating} countdown={countdown} progress={progress} force={force}/>
 
       <div style={{padding:isTablet?'20px 24px':'12px 14px',maxWidth:isTablet?860:'100%',margin:'0 auto'}}>
 
