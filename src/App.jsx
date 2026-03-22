@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 
 const API_KEY = import.meta.env.VITE_ANTHROPIC_API_KEY || ''
 
@@ -687,7 +687,7 @@ function useAutoUpdate(seed) {
         try {
           const validated = await validatePredictions(nd.esportes[cat].items||[], cat)
           const newCount  = validated.filter(i =>
-            i.predResult && !nd.esportes[cat].items.find(x=>x.id===i.id)?.predResult
+            i.predResult && !nd.esportes[cat]?.items?.find(x=>x.id===i.id)?.predResult
           ).length
           if (newCount > 0) {
             nd.esportes[cat] = {...nd.esportes[cat], items: validated}
@@ -727,7 +727,7 @@ function useAutoUpdate(seed) {
           if (!nd.esportes[cat]) {
             addLog(`⚠️ ${cat}: categoria não existe`, 'warn')
           } else {
-            const merged = mergeSport(nd.esportes[cat].items, upd, now)
+            const merged = mergeSport(nd.esportes[cat]?.items||[], upd, now)
             nd.esportes[cat] = {...nd.esportes[cat], items: merged}
             addLog(`✅ ${cat}: ${merged.length} eventos`, 'success')
           }
@@ -1027,7 +1027,7 @@ function KalshiSportCard({item, catKey, onSelect, catUpdating}) {
       {/* Teams */}
       <div style={{padding:'0 14px',flex:1,minHeight:0}}>
         {[item.home,item.away].map((side,i)=>{
-          const winner=side.pct>(i===0?item.away.pct:item.home.pct)
+          const winner=(side.pct||0)>(i===0?(item.away?.pct||0):(item.home?.pct||0))
           return (
             <div key={i} style={{display:'flex',alignItems:'center',gap:8,padding:'7px 0',borderBottom:i===0?`1px solid ${T.border}`:'none'}}>
               <TeamLogo logo={side.logo} name={side.name} size={26}/>
@@ -1409,7 +1409,7 @@ function InfoModal({item, isLoto, catKey, onClose}) {
             {/* Teams probabilities */}
             <div style={{display:'flex',flexDirection:'column',gap:0,borderRadius:T.r.md,overflow:'hidden',border:`1px solid ${T.border}`}}>
               {[item.home, item.away].map((side,i)=>{
-                const winner=side.pct>(i===0?item.away.pct:item.home.pct)
+                const winner=(side.pct||0)>(i===0?(item.away?.pct||0):(item.home?.pct||0))
                 return (
                   <div key={i} style={{display:'flex',alignItems:'center',gap:14,padding:'14px 16px',borderBottom:i===0?`1px solid ${T.border}`:'none',background:winner?'#FAFAFA':T.white}}>
                     <div style={{flex:1,minWidth:0}}>
@@ -1584,7 +1584,7 @@ function SocialPage({appData}) {
               {/* Mini odds strip */}
               {card?.home && (
                 <div style={{display:'flex',gap:8,marginTop:10}}>
-                  {[{n:card.home.name,p:card.home.pct,c:T.cat[selectedCat]||T.black},{n:'Empate',p:card.draw,c:T.gray1},{n:card.away.name,p:card.away.pct,c:T.gray1}].map(({n,p,c},i)=>(
+                  {[{n:card.home?.name||'',p:card.home?.pct||0,c:T.cat[selectedCat]||T.black},{n:'Empate',p:card.draw,c:T.gray1},{n:card.away.name,p:card.away.pct,c:T.gray1}].map(({n,p,c},i)=>(
                     <div key={i} style={{background:T.bg,borderRadius:T.r.sm,padding:'6px 10px',fontSize:11,color:T.gray1}}>
                       <span style={{fontWeight:800,color:c,fontSize:13}}>{p}%</span> <span style={{color:T.gray1}}>{n}</span>
                     </div>
@@ -2000,7 +2000,7 @@ function MobileSportCard({item, catKey, onSelect}) {
       {/* Times com logos + probabilidades */}
       <div style={{padding:'0 14px',borderTop:`1px solid ${T.border}`}}>
         {[item.home,item.away].map((side,i)=>{
-          const winner=side.pct>(i===0?item.away.pct:item.home.pct)
+          const winner=(side.pct||0)>(i===0?(item.away?.pct||0):(item.home?.pct||0))
           return (
             <div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'9px 0',borderBottom:i===0?`1px solid ${T.border}`:'none'}}>
               <TeamLogo logo={side.logo} name={side.name} size={28}/>
@@ -2101,9 +2101,9 @@ function MobileChatPage({item, catKey, onBack, appData}) {
         {item.home&&(
           <div style={{padding:'0 16px 12px',display:'flex',gap:6}}>
             {[
-              {name:item.home.name, pct:item.home.pct, logo:item.home.logo, winner:item.home.pct>item.away.pct},
+              {name:item.home?.name, pct:item.home?.pct||0, logo:item.home?.logo, winner:(item.home?.pct||0)>(item.away?.pct||0)},
               {name:'Empate', pct:item.draw, logo:null, winner:false},
-              {name:item.away.name, pct:item.away.pct, logo:item.away.logo, winner:item.away.pct>item.home.pct},
+              {name:item.away?.name, pct:item.away?.pct||0, logo:item.away?.logo, winner:(item.away?.pct||0)>(item.home?.pct||0)},
             ].map((s,i)=>(
               <div key={i} style={{flex:1,background:s.winner?catBg:T.gray2,borderRadius:T.r.sm,padding:'6px 8px',textAlign:'center'}}>
                 <div style={{fontSize:13,fontWeight:800,color:s.winner?catColor:T.black}}>{s.pct}%</div>
