@@ -1488,7 +1488,7 @@ function InfoModal({item, isLoto, catKey, onClose}) {
         <div style={{padding:'16px 24px 28px',display:'flex',flexDirection:'column',gap:12}}>
 
           {/* ── LOTERIAS ── */}
-          {isLoto && <>
+          {isLoto && !isEleicaoItem && <>
             {/* Prize */}
             <div style={{display:'flex',alignItems:'baseline',gap:10,paddingBottom:12,borderBottom:`1px solid ${T.border}`}}>
               <span style={{fontSize:26,fontWeight:900,color:T.black,letterSpacing:'-0.04em'}}>{item.premio}</span>
@@ -1600,11 +1600,11 @@ function InfoModal({item, isLoto, catKey, onClose}) {
                 <p style={{fontSize:13,color:T.black,lineHeight:1.65,margin:0}}>{item.bettvReason}</p>
               </div>
 
-              {item.tipo==='cenario'&&item.candidatos&&(
+              {item.tipo==='cenario'&&(item.candidatos?.length>0)&&(
                 <div style={{borderRadius:T.r.md,border:`1px solid ${T.border}`,overflow:'hidden'}}>
                   <div style={{padding:'10px 14px',borderBottom:`1px solid ${T.border}`,fontSize:11,fontWeight:700,letterSpacing:'0.06em'}}>INTENÇÃO DE VOTO — 1º TURNO</div>
-                  {item.candidatos.map((c,i)=>(
-                    <div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'10px 14px',borderBottom:i<item.candidatos.length-1?`1px solid ${T.border}`:'none',background:i<2?'#FAFAFA':T.white}}>
+                  {(item.candidatos||[]).map((c,i)=>(
+                    <div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'10px 14px',borderBottom:i<(item.candidatos?.length||0)-1?`1px solid ${T.border}`:'none',background:i<2?'#FAFAFA':T.white}}>
                       <div style={{width:150,flexShrink:0}}>
                         <div style={{fontSize:13,fontWeight:i<2?700:500,color:T.black}}>{c.nome}</div>
                         <div style={{fontSize:11,color:T.gray1}}>{c.partido} · {c.cargo}</div>
@@ -1621,7 +1621,7 @@ function InfoModal({item, isLoto, catKey, onClose}) {
               {item.tipo==='duelo'&&item.c1&&item.c2&&(
                 <div style={{borderRadius:T.r.md,border:`1px solid ${T.border}`,overflow:'hidden'}}>
                   <div style={{display:'flex'}}>
-                    {[item.c1,item.c2].map((c,i)=>(
+                    {[item.c1||{},item.c2||{}].map((c,i)=>(
                       <div key={i} style={{flex:1,padding:'16px',textAlign:'center',borderRight:i===0?`1px solid ${T.border}`:'none',background:i===0?'#FFF5F5':'#F5F8FF'}}>
                         <div style={{fontSize:36,fontWeight:900,color:c.cor,letterSpacing:'-0.04em'}}>{c.pct}%</div>
                         <div style={{fontSize:14,fontWeight:800,color:T.black,marginBottom:4}}>{c.nome}</div>
@@ -1629,10 +1629,10 @@ function InfoModal({item, isLoto, catKey, onClose}) {
                       </div>
                     ))}
                   </div>
-                  {item.rejeicao1!==undefined&&(
+                  {(item.rejeicao1!==undefined&&item.c1&&item.c2)&&(
                     <div style={{display:'flex',padding:'10px 14px',gap:16,borderTop:`1px solid ${T.border}`,background:'#FEF2F2'}}>
-                      <span style={{flex:1,fontSize:11,color:'#991B1B'}}>Rejeição {item.c1.nome.split('(')[0]}: <b>{item.rejeicao1}%</b></span>
-                      <span style={{flex:1,fontSize:11,color:'#991B1B'}}>Rejeição {item.c2.nome.split('(')[0]}: <b>{item.rejeicao2}%</b></span>
+                      <span style={{flex:1,fontSize:11,color:'#991B1B'}}>Rejeição {item.c1?.nome||"".split('(')[0]}: <b>{(item.rejeicao1||0)}%</b></span>
+                      <span style={{flex:1,fontSize:11,color:'#991B1B'}}>Rejeição {item.c2?.nome||"".split('(')[0]}: <b>{(item.rejeicao2||0)}%</b></span>
                     </div>
                   )}
                   {item.obs&&<div style={{padding:'10px 14px',background:'#FFFBEB',fontSize:11,color:'#92400E',borderTop:`1px solid ${T.border}`}}>ℹ️ {item.obs}</div>}
@@ -1642,7 +1642,7 @@ function InfoModal({item, isLoto, catKey, onClose}) {
               {item.tipo==='candidato'&&(
                 <div style={{borderRadius:T.r.md,border:`1px solid ${T.border}`,overflow:'hidden'}}>
                   <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr'}}>
-                    {[{label:'1º Turno',v:item.pct1turno,c:pc},{label:'2º Turno vs Lula',v:item.pct2turno,c:'#2E7D32'},{label:'Rejeição',v:item.rejeicao,c:'#E53935'}].map(({label,v,c})=>(
+                    {[{label:'1º Turno',v:item.pct1turno||0,c:pc},{label:'2º Turno vs Lula',v:item.pct2turno||0,c:'#2E7D32'},{label:'Rejeição',v:item.rejeicao||0,c:'#E53935'}].map(({label,v,c})=>(
                       <div key={label} style={{padding:'16px',textAlign:'center',borderRight:'1px solid #eee'}}>
                         <div style={{fontSize:32,fontWeight:900,color:c}}>{v}%</div>
                         <div style={{fontSize:11,color:T.gray1}}>{label}</div>
@@ -1656,25 +1656,25 @@ function InfoModal({item, isLoto, catKey, onClose}) {
               {item.tipo==='aprovacao'&&(
                 <div style={{borderRadius:T.r.md,border:`1px solid ${T.border}`,overflow:'hidden',padding:'16px'}}>
                   <div style={{display:'flex',gap:3,height:28,borderRadius:6,overflow:'hidden',marginBottom:12}}>
-                    <div style={{width:`${item.aprovacao}%`,background:'#16A34A',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:12,fontWeight:700,color:'white'}}>{item.aprovacao}%</span></div>
-                    <div style={{width:`${item.regular}%`,background:'#F59E0B',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:12,fontWeight:700,color:'white'}}>{item.regular}%</span></div>
-                    <div style={{flex:1,background:'#E53935',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:12,fontWeight:700,color:'white'}}>{item.reprovacao}%</span></div>
+                    <div style={{width:`${(item.aprovacao||0)}%`,background:'#16A34A',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:12,fontWeight:700,color:'white'}}>{(item.aprovacao||0)}%</span></div>
+                    <div style={{width:`${(item.regular||0)}%`,background:'#F59E0B',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:12,fontWeight:700,color:'white'}}>{(item.regular||0)}%</span></div>
+                    <div style={{flex:1,background:'#E53935',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:12,fontWeight:700,color:'white'}}>{(item.reprovacao||0)}%</span></div>
                   </div>
                   <div style={{display:'flex',gap:16,fontSize:12,marginBottom:10}}>
-                    <span>🟢 Aprova: <b>{item.aprovacao}%</b></span>
-                    <span>🟡 Regular: <b>{item.regular}%</b></span>
-                    <span>🔴 Reprova: <b>{item.reprovacao}%</b></span>
+                    <span>🟢 Aprova: <b>{(item.aprovacao||0)}%</b></span>
+                    <span>🟡 Regular: <b>{(item.regular||0)}%</b></span>
+                    <span>🔴 Reprova: <b>{(item.reprovacao||0)}%</b></span>
                   </div>
                   <div style={{background:'#FFFBEB',borderRadius:T.r.sm,padding:'10px 12px',fontSize:12,color:'#92400E'}}>
-                    <b>{item.naoDeveCandidatar}%</b> dos eleitores acham que Lula não deveria se candidatar à reeleição
+                    <b>{(item.naoDeveCandidatar||0)}%</b> dos eleitores acham que Lula não deveria se candidatar à reeleição
                   </div>
                 </div>
               )}
 
-              {item.tipo==='calendario'&&item.eventos&&(
+              {item.tipo==='calendario'&&(item.eventos?.length>0)&&(
                 <div style={{borderRadius:T.r.md,border:`1px solid ${T.border}`,overflow:'hidden'}}>
-                  {item.eventos.map((ev,i)=>(
-                    <div key={i} style={{display:'flex',gap:14,padding:'12px 14px',borderBottom:i<item.eventos.length-1?`1px solid ${T.border}`:'none',alignItems:'center',background:ev.tipo==='eleicao'?'#F5F3FF':ev.tipo==='posse'?'#F0FDF4':T.white}}>
+                  {(item.eventos||[]).map((ev,i)=>(
+                    <div key={i} style={{display:'flex',gap:14,padding:'12px 14px',borderBottom:i<(item.eventos?.length||0)-1?`1px solid ${T.border}`:'none',alignItems:'center',background:ev.tipo==='eleicao'?'#F5F3FF':ev.tipo==='posse'?'#F0FDF4':T.white}}>
                       <div style={{width:96,flexShrink:0,fontSize:12,fontWeight:700,color:ev.tipo==='eleicao'?pc:ev.tipo==='posse'?'#16A34A':'#6B7280'}}>{ev.data}</div>
                       <div style={{fontSize:13,color:T.black}}>{ev.evento}</div>
                     </div>
@@ -3102,7 +3102,7 @@ export default function App() {
             </div>
           )}
         </div>
-        {selItem&&<InfoModal item={selItem} isLoto={!selItem.home&&!selItem.away&&!selItem.price&&!selItem.priceBRL} catKey={selItem.tipo!==undefined?'eleicoes':selItem.price!==undefined?'crypto':selItem.priceBRL!==undefined?'moedas':selItem._catKey||tab} onClose={()=>setSelItem(null)}/>}
+        {selItem&&<InfoModal item={selItem} isLoto={!selItem.home&&!selItem.away&&!selItem.price&&!selItem.priceBRL&&!selItem.tipo} catKey={selItem.tipo!==undefined?'eleicoes':selItem.price!==undefined?'crypto':selItem.priceBRL!==undefined?'moedas':selItem._catKey||tab} onClose={()=>setSelItem(null)}/>}
       </div>
     )
   }
@@ -3277,7 +3277,7 @@ export default function App() {
         })}
       </div>
 
-      {selItem&&<InfoModal item={selItem} isLoto={!selItem.home&&!selItem.away&&!selItem.price&&!selItem.priceBRL} catKey={selItem.tipo!==undefined?'eleicoes':selItem.price!==undefined?'crypto':selItem.priceBRL!==undefined?'moedas':selItem._catKey||tab} onClose={()=>setSelItem(null)}/>}
+      {selItem&&<InfoModal item={selItem} isLoto={!selItem.home&&!selItem.away&&!selItem.price&&!selItem.priceBRL&&!selItem.tipo} catKey={selItem.tipo!==undefined?'eleicoes':selItem.price!==undefined?'crypto':selItem.priceBRL!==undefined?'moedas':selItem._catKey||tab} onClose={()=>setSelItem(null)}/>}
     </div>
   )
 }
