@@ -1263,10 +1263,15 @@ function InfoModal({item, isLoto, catKey, onClose}) {
   const {isMobile}=useBreakpoint()
   if (!item) return null
 
+  const isCryptoItem = catKey==='crypto'
+  const isMoedasItem = catKey==='moedas'
+  const isSpecialItem = isCryptoItem||isMoedasItem
+
   const catColor = T.cat[catKey||'loterias'] || T.black
   const catLabel = TABS.find(t=>t.key===catKey)?.label || 'Loteria'
   const methodText = isLoto
     ? METHODOLOGY.loterias(item)
+    : isSpecialItem ? null
     : (METHODOLOGY[catKey] ? METHODOLOGY[catKey](item) : METHODOLOGY.futebol(item))
 
   const panelStyle = isMobile
@@ -1284,9 +1289,12 @@ function InfoModal({item, isLoto, catKey, onClose}) {
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',padding:'20px 24px 0'}}>
           <div style={{flex:1,minWidth:0,paddingRight:12}}>
             <div style={{fontSize:11,fontWeight:700,color:catColor,letterSpacing:'0.06em',textTransform:'uppercase',marginBottom:4}}>{catLabel}</div>
-            <div style={{fontSize:18,fontWeight:800,color:T.black,letterSpacing:'-0.03em',lineHeight:1.2}}>{isLoto?item.nome:item.title}</div>
-            {!isLoto&&<div style={{fontSize:12,color:T.gray1,marginTop:3}}>{item.competition} · {(item.statusLabel||"").replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,"")}</div>}
+            <div style={{fontSize:18,fontWeight:800,color:T.black,letterSpacing:'-0.03em',lineHeight:1.2}}>
+              {isLoto?item.nome:isSpecialItem?(item.name||item.symbol):item.title}
+            </div>
+            {!isLoto&&!isSpecialItem&&<div style={{fontSize:12,color:T.gray1,marginTop:3}}>{item.competition} · {(item.statusLabel||"").replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,"")}</div>}
             {isLoto&&<div style={{fontSize:12,color:T.gray1,marginTop:3}}>Concurso {item.concurso} · Sorteio {item.data}</div>}
+            {isSpecialItem&&<div style={{fontSize:12,color:T.gray1,marginTop:3}}>{isCryptoItem?item.symbol+' · Mercado Cripto':'Câmbio · vs BRL'}</div>}
           </div>
           <button onClick={onClose} style={{width:30,height:30,minWidth:30,borderRadius:'50%',border:'none',background:T.gray2,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',marginTop:2}}>
             <IcoClose size={16} color={T.gray1}/>
@@ -1338,8 +1346,65 @@ function InfoModal({item, isLoto, catKey, onClose}) {
             </div>
           </>}
 
+          {/* ── CRYPTO / CÂMBIO ── */}
+          {isSpecialItem && <>
+
+            {/* Preço atual */}
+            <div style={{display:'flex',alignItems:'baseline',gap:12,paddingBottom:14,borderBottom:`1px solid ${T.border}`}}>
+              <span style={{fontSize:32,fontWeight:900,color:T.black,letterSpacing:'-0.04em'}}>
+                {isCryptoItem
+                  ? (item.price>=1000?'$'+Number(item.price).toLocaleString('en-US',{maximumFractionDigits:0})
+                    :item.price>=1?'$'+Number(item.price).toFixed(2)
+                    :'$'+Number(item.price).toFixed(5))
+                  : (item.priceBRL>=1?'R$ '+Number(item.priceBRL).toFixed(2):'R$ '+Number(item.priceBRL).toFixed(5))
+                }
+              </span>
+              {(()=>{const chg=item.change24h||0; const up=chg>0; return(
+                <span style={{fontSize:16,fontWeight:700,color:up?'#16A34A':'#E53935'}}>{up?'+':''}{chg.toFixed(2)}%</span>
+              )})()}
+            </div>
+
+            {/* Previsão do dia */}
+            {(()=>{
+              const isUp=item.bettvPick==='ALTA', isDn=item.bettvPick==='QUEDA'
+              const pc=isUp?'#16A34A':isDn?'#E53935':T.gray1
+              const pb=isUp?'#F0FDF4':isDn?'#FEF2F2':'#F8F8F5'
+              return(
+                <div style={{background:pb,borderRadius:T.r.md,padding:'14px 16px',border:`1px solid ${isUp?'#BBF7D0':isDn?'#FECACA':'#E8E8E4'}`}}>
+                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
+                    <span style={{fontSize:11,fontWeight:700,color:T.black,letterSpacing:'0.06em'}}>PREVISÃO DO DIA (24H)</span>
+                    <span style={{fontSize:14,fontWeight:900,color:'white',background:pc,borderRadius:T.r.pill,padding:'3px 14px'}}>{item.bettvPick||'—'}</span>
+                  </div>
+                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
+                    <span style={{fontSize:12,color:T.gray1}}>Confiança BetTv</span>
+                    <span style={{fontSize:16,fontWeight:800,color:pc}}>{item.bettvConf||0}%</span>
+                  </div>
+                  <p style={{fontSize:13,color:T.black,lineHeight:1.65,margin:0}}>{item.bettvReason||'—'}</p>
+                </div>
+              )
+            })()}
+
+            {/* Previsão anual */}
+            {item.yearPick&&(()=>{
+              const yUp=item.yearPick==='ALTA', yDn=item.yearPick==='QUEDA'
+              const yc=yUp?'#16A34A':yDn?'#E53935':'#6B7280'
+              const yb=yUp?'#F0FDF4':yDn?'#FEF2F2':'#F8F8F5'
+              const arrow=yUp?'↑':yDn?'↓':'→'
+              return(
+                <div style={{background:yb,borderRadius:T.r.md,padding:'14px 16px',border:`1px solid ${yUp?'#BBF7D0':yDn?'#FECACA':'#E5E7EB'}`}}>
+                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}>
+                    <span style={{fontSize:11,fontWeight:700,color:T.black,letterSpacing:'0.06em'}}>PREVISÃO ANUAL 2026</span>
+                    <span style={{fontSize:14,fontWeight:900,color:yc}}>{arrow} {item.yearPick} de {item.yearConf}%</span>
+                  </div>
+                  <p style={{fontSize:13,color:T.black,lineHeight:1.65,margin:0,whiteSpace:'pre-wrap'}}>{item.yearReason||'—'}</p>
+                </div>
+              )
+            })()}
+
+          </>}
+
           {/* ── ESPORTES ── */}
-          {!isLoto && <>
+          {!isLoto&&!isSpecialItem && <>
             {/* Teams probabilities */}
             <div style={{display:'flex',flexDirection:'column',gap:0,borderRadius:T.r.md,overflow:'hidden',border:`1px solid ${T.border}`}}>
               {[item.home, item.away].map((side,i)=>{
@@ -1379,10 +1444,10 @@ function InfoModal({item, isLoto, catKey, onClose}) {
           </>}
 
           {/* ── METHODOLOGY — always 1 paragraph ── */}
-          <div style={{borderTop:`1px solid ${T.border}`,paddingTop:14}}>
+          {!isSpecialItem&&<div style={{borderTop:`1px solid ${T.border}`,paddingTop:14}}>
             <div style={{fontSize:11,fontWeight:700,color:T.black,letterSpacing:'0.06em',marginBottom:8}}>COMO A PREVISÃO É FEITA</div>
             <p style={{fontSize:12,color:T.gray1,lineHeight:1.7,margin:0}}>{methodText}</p>
-          </div>
+          </div>}
 
           {/* Disclaimer */}
           <div style={{background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:T.r.sm,padding:'10px 14px',fontSize:11,color:'#92400E',lineHeight:1.5}}>
@@ -2121,7 +2186,7 @@ function MobileEventsList({tab, appData, onSelect, onBack, updating, countdown, 
 
 // ─── CRYPTO CARD ──────────────────────────────────────────────────────────────
 // ─── CRYPTO CARD — same style as KalshiSportCard ─────────────────────────────
-function CryptoCard({item}) {
+function CryptoCard({item, onSelect}) {
   const [hov,setHov]=useState(false)
   const [imgErr,setImgErr]=useState(false)
   const catColor = T.cat.crypto||'#D97706'
@@ -2141,10 +2206,10 @@ function CryptoCard({item}) {
   const barW = Math.min(95, Math.max(5, 50 + (chg * 4)))
 
   return (
-    <div onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+    <div onClick={()=>onSelect&&onSelect(item)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
       style={{height:CARD_H,background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C0C0BB':T.border}`,
         boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',
-        transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden'}}>
+        transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden',cursor:'pointer'}}>
 
       {/* Header */}
       <div style={{padding:'11px 14px 9px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
@@ -2225,7 +2290,7 @@ function CryptoCard({item}) {
 }
 
 // ─── MOEDAS CARD — same style as KalshiSportCard ─────────────────────────────
-function MoedasCard({item}) {
+function MoedasCard({item, onSelect}) {
   const [hov,setHov]=useState(false)
   const catColor = T.cat.moedas||'#0891B2'
   const catBg    = T.catBg.moedas||'#CFFAFE'
@@ -2240,10 +2305,10 @@ function MoedasCard({item}) {
   const barW = Math.min(95, Math.max(5, 50 + (chg * 5)))
 
   return (
-    <div onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+    <div onClick={()=>onSelect&&onSelect(item)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
       style={{height:CARD_H,background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C0C0BB':T.border}`,
         boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',
-        transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden'}}>
+        transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden',cursor:'pointer'}}>
 
       {/* Header */}
       <div style={{padding:'11px 14px 9px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
@@ -2433,16 +2498,16 @@ export default function App() {
                 {isLoto
                   ?currentItems.map(lot=><KalshiLotoCard key={lot.id} lot={lot} onSelect={setSelItem} catUpdating={catUpd}/>)
                   :isCrypto
-                    ?currentItems.map(item=><CryptoCard key={item.id} item={item}/>)
+                    ?currentItems.map(item=><CryptoCard key={item.id} item={item} onSelect={setSelItem}/>)
                     :isMoedas
-                      ?currentItems.map(item=><MoedasCard key={item.id} item={item}/>)
+                      ?currentItems.map(item=><MoedasCard key={item.id} item={item} onSelect={setSelItem}/>)
                       :currentItems.map(item=><KalshiSportCard key={item.id} item={item} catKey={item._catKey||tab} onSelect={setSelItem} catUpdating={isTodos?false:catUpd}/>)
                 }
               </div>
             </div>
           )}
         </div>
-        {selItem&&<InfoModal item={selItem} isLoto={!selItem.home&&!selItem.away} catKey={selItem._catKey||tab} onClose={()=>setSelItem(null)}/>}
+        {selItem&&<InfoModal item={selItem} isLoto={!selItem.home&&!selItem.away&&!selItem.price&&!selItem.priceBRL} catKey={selItem.price!==undefined?'crypto':selItem.priceBRL!==undefined?'moedas':selItem._catKey||tab} onClose={()=>setSelItem(null)}/>}
       </div>
     )
   }
@@ -2568,11 +2633,11 @@ export default function App() {
           </div>
         ):isCrypto?(
           <div style={{display:'grid',gridTemplateColumns:isTablet?'repeat(2,1fr)':'1fr',gap:12}}>
-            {currentItems.map(item=><CryptoCard key={item.id} item={item}/>)}
+            {currentItems.map(item=><CryptoCard key={item.id} item={item} onSelect={setSelItem}/>)}
           </div>
         ):isMoedas?(
           <div style={{display:'grid',gridTemplateColumns:isTablet?'repeat(2,1fr)':'1fr',gap:12}}>
-            {currentItems.map(item=><MoedasCard key={item.id} item={item}/>)}
+            {currentItems.map(item=><MoedasCard key={item.id} item={item} onSelect={setSelItem}/>)}
           </div>
         ):(
           <div style={{display:'flex',flexDirection:'column',gap:0}}>
@@ -2613,7 +2678,7 @@ export default function App() {
         })}
       </div>
 
-      {selItem&&<InfoModal item={selItem} isLoto={!selItem.home&&!selItem.away} catKey={selItem._catKey||tab} onClose={()=>setSelItem(null)}/>}
+      {selItem&&<InfoModal item={selItem} isLoto={!selItem.home&&!selItem.away&&!selItem.price&&!selItem.priceBRL} catKey={selItem.price!==undefined?'crypto':selItem.priceBRL!==undefined?'moedas':selItem._catKey||tab} onClose={()=>setSelItem(null)}/>}
     </div>
   )
 }
