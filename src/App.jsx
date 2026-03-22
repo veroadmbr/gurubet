@@ -511,10 +511,10 @@ async function fetchCategory(category) {
 
   const txt = await apiCall(system, [{role:'user', content:prompt}])
   if (!txt) return null
-
-  // Parse JSON — strip markdown fences if present
   const clean = txt.replace(/^```(?:json)?\s*/,'').replace(/\s*```$/,'').trim()
-  return JSON.parse(clean)
+  if (!clean.startsWith('[') && !clean.startsWith('{')) return null
+  const parsed = JSON.parse(clean)
+  return Array.isArray(parsed) ? parsed : (parsed ? [parsed] : null)
 }
 
 // ─── VALIDATE PREDICTIONS — verifica resultados passados ──────────────────────
@@ -592,12 +592,13 @@ function mergeCrypto(current, updates) {
 }
 
 function mergeSport(current, updates, now) {
-  const valid = updates.filter(item => {
+  const safeCurrents = current||[]
+  const valid = (updates||[]).filter(item => {
     if (!item.startTime || !item.title || !item.home || !item.away) return false
     const s = new Date(item.startTime).getTime()
     return !isNaN(s) && s > now - 4*60*60*1000
   }).map(item => {
-    const prev = current.find(e => e.id === item.id)
+    const prev = safeCurrents.find(e => e.id === item.id)
     return {
       ...item,
       predResult: prev?.predResult ?? null,
@@ -606,7 +607,7 @@ function mergeSport(current, updates, now) {
       multiDay:   item.multiDay    ?? prev?.multiDay ?? false,
     }
   })
-  return valid.length > 0 ? valid : current
+  return valid.length > 0 ? valid : safeCurrents
 }
 
 // ─── AUTO UPDATE HOOK ─────────────────────────────────────────────────────────
@@ -653,7 +654,7 @@ function useAutoUpdate(seed) {
     Object.entries(cur.esportes).forEach(([cat, catData]) => {
       purgedEsportes[cat] = {
         ...catData,
-        items: catData.items.filter(item => {
+        items: (catData.items||[]).filter(item => {
           if (!item.startTime) return true
           const start = new Date(item.startTime).getTime()
           if (item.predResult)  return start > now - 48*60*60*1000  // keep validated 48h
@@ -684,7 +685,7 @@ function useAutoUpdate(seed) {
       sportCats.map(async cat => {
         if (!nd.esportes[cat]?.items?.length) return
         try {
-          const validated = await validatePredictions(nd.esportes[cat].items, cat)
+          const validated = await validatePredictions(nd.esportes[cat].items||[], cat)
           const newCount  = validated.filter(i =>
             i.predResult && !nd.esportes[cat].items.find(x=>x.id===i.id)?.predResult
           ).length
@@ -1481,7 +1482,7 @@ function SocialPage({appData}) {
     ? appData.loterias.map(l => ({...l, id:l.id, title:l.nome, subtitle:l.descricao, status:'upcoming'}))
     : selectedCat === 'todos'
       ? Object.entries(appData.esportes).flatMap(([catKey,cat])=>
-          cat.items.map(item=>({...item, _catKey:catKey}))
+          (cat.items||[]).map(item=>({...item, _catKey:catKey}))
         ).sort((a,b)=>{
           const aL=(a.status==='live')?0:1, bL=(b.status==='live')?0:1
           if(aL!==bL) return aL-bL
@@ -2188,7 +2189,7 @@ function MobileEventsList({tab, appData, onSelect, onBack, updating, countdown, 
   const catBg    = T.catBg[tab]||T.gray2
 
   const allEvents = Object.entries(appData.esportes).flatMap(([catKey,cat])=>
-    cat.items.map(item=>({...item,_catKey:catKey}))
+    (cat.items||[]).map(item=>({...item,_catKey:catKey})))
   ).sort((a,b)=>{
     const aLive = (a.status==='live'||a.status==='inprogress')?0:1
     const bLive = (b.status==='live'||b.status==='inprogress')?0:1
@@ -2560,6 +2561,25 @@ const CSS=`
 // ─── APP ROOT ─────────────────────────────────────────────────────────────────
 const SEED={loterias:LOTERIAS,esportes:ESPORTES,crypto:CRYPTO_DATA,moedas:MOEDAS_DATA}
 
+
+// ─── ERROR BOUNDARY ──────────────────────────────────────────────────────────
+class ErrorBoundary extends React.Component {
+  constructor(props) { super(props); this.state = {error:null} }
+  static getDerivedStateFromError(e) { return {error:e} }
+  componentDidCatch(e,info) { console.error('BetTv error:', e, info) }
+  render() {
+    if (this.state.error) return (
+      <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',minHeight:'100vh',fontFamily:'sans-serif',gap:16,padding:32,background:'#F7F7F5'}}>
+        <div style={{fontSize:40}}>⚠️</div>
+        <div style={{fontSize:20,fontWeight:700,color:'#111'}}>Algo deu errado</div>
+        <div style={{fontSize:14,color:'#737373',maxWidth:400,textAlign:'center'}}>{String(this.state.error?.message||'Erro desconhecido')}</div>
+        <button onClick={()=>window.location.reload()} style={{background:'#111',color:'#fff',border:'none',borderRadius:24,padding:'10px 24px',fontSize:14,fontWeight:600,cursor:'pointer'}}>Recarregar</button>
+      </div>
+    )
+    return this.props.children
+  }
+}
+
 export default function App() {
   const [tab,setTab]=useState('todos')
   const [page,setPage]=useState('categorias')
@@ -2583,7 +2603,7 @@ export default function App() {
   const cryptoItems = appData.crypto||CRYPTO_DATA
   const moedasItems = appData.moedas||MOEDAS_DATA
   const catUpd   = updating&&(progress.current===tab||progress.current==='loterias'&&tab==='loterias')
-  const totalLive=Object.values(appData.esportes).flatMap(d=>d.items).filter(i=>{
+  const totalLive=Object.values(appData.esportes).flatMap(d=>d.items||[]).filter(i=>{
     if(!i.startTime) return false
     const n=Date.now(), s=new Date(i.startTime).getTime()
     if(i.multiDay) return n>=s && n<=s+7*24*60*60*1000
@@ -2591,7 +2611,7 @@ export default function App() {
   }).length
 
   const allEvents = Object.entries(appData.esportes).flatMap(([catKey,cat])=>
-    cat.items.map(item=>({...item,_catKey:catKey}))
+    (cat.items||[]).map(item=>({...item,_catKey:catKey})))
   ).sort((a,b)=>{
     const aLive = (a.status==='live'||a.status==='inprogress')?0:1
     const bLive = (b.status==='live'||b.status==='inprogress')?0:1
