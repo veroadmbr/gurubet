@@ -913,7 +913,7 @@ function KalshiSportCard({item, catKey, onSelect, catUpdating}) {
         <div style={{fontSize:14,fontWeight:700,color:T.black,lineHeight:1.3,letterSpacing:'-0.02em',overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',marginBottom:4}}>{item.title}</div>
         <div style={{display:'flex',alignItems:'center',gap:4}}>
           {(live||isOngoing)&&<><IcoLiveDot/><span style={{fontSize:11,fontWeight:700,color:live?T.red:'#D97706',marginLeft:3}}>{live?'AO VIVO':'EM ANDAMENTO'}</span><span style={{fontSize:11,color:T.gray1,margin:'0 2px'}}> · </span></>}
-          <span style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.statusLabel}</span>
+          <span style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{(item.statusLabel||"").replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,"")}</span>
         </div>
       </div>
 
@@ -1088,7 +1088,7 @@ function SportCard({item, catKey, onSelect, catUpdating}) {
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:9}}>
           <div style={{display:'flex',alignItems:'center',gap:5}}>
             {live&&<><IcoLiveDot/><span style={{fontSize:11,fontWeight:700,color:T.red,marginLeft:3}}>AO VIVO</span><span style={{color:T.gray1,fontSize:11,margin:'0 3px'}}> · </span></>}
-            <span style={{fontSize:11,color:T.gray1}}>{item.statusLabel}</span>
+            <span style={{fontSize:11,color:T.gray1}}>{(item.statusLabel||"").replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,"")}</span>
           </div>
           <span style={{fontSize:11,color:T.gray1}}>{item.competition}</span>
         </div>
@@ -1181,7 +1181,7 @@ function InfoModal({item, isLoto, catKey, onClose}) {
           <div style={{flex:1,minWidth:0,paddingRight:12}}>
             <div style={{fontSize:11,fontWeight:700,color:catColor,letterSpacing:'0.06em',textTransform:'uppercase',marginBottom:4}}>{catLabel}</div>
             <div style={{fontSize:18,fontWeight:800,color:T.black,letterSpacing:'-0.03em',lineHeight:1.2}}>{isLoto?item.nome:item.title}</div>
-            {!isLoto&&<div style={{fontSize:12,color:T.gray1,marginTop:3}}>{item.competition} · {item.statusLabel}</div>}
+            {!isLoto&&<div style={{fontSize:12,color:T.gray1,marginTop:3}}>{item.competition} · {(item.statusLabel||"").replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,"")}</div>}
             {isLoto&&<div style={{fontSize:12,color:T.gray1,marginTop:3}}>Concurso {item.concurso} · Sorteio {item.data}</div>}
           </div>
           <button onClick={onClose} style={{width:30,height:30,minWidth:30,borderRadius:'50%',border:'none',background:T.gray2,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',marginTop:2}}>
@@ -1383,7 +1383,7 @@ function SocialPage({appData}) {
                     {live&&<IcoLiveDot/>}
                     <span style={{fontSize:11,fontWeight:700,color:live?T.red:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.title||item.nome}</span>
                   </div>
-                  <div style={{fontSize:10,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.statusLabel||item.dias}</div>
+                  <div style={{fontSize:10,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{((item.statusLabel||item.dias||"")).replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,"")}</div>
                 </div>
                 {cnt>0&&<span style={{fontSize:10,fontWeight:700,color:T.gray1,flexShrink:0,paddingTop:1}}>{cnt}</span>}
                 <IcoSocial size={12} color={cnt>0?T.green:T.gray3}/>
@@ -1407,7 +1407,7 @@ function SocialPage({appData}) {
             <div style={{padding:'16px 20px',borderBottom:`1px solid ${T.border}`,background:T.white,flexShrink:0}}>
               <div style={{fontSize:11,fontWeight:700,color:T.cat[selectedCat]||T.black,letterSpacing:'0.05em',marginBottom:4,textTransform:'uppercase'}}>{TABS.find(t=>t.key===selectedCat)?.label}</div>
               <div style={{fontSize:16,fontWeight:800,color:T.black,letterSpacing:'-0.03em'}}>{card?.title||card?.nome}</div>
-              <div style={{fontSize:12,color:T.gray1,marginTop:2}}>{card?.competition||card?.descricao} · {card?.statusLabel||card?.dias}</div>
+              <div style={{fontSize:12,color:T.gray1,marginTop:2}}>{card?.competition||card?.descricao} · {((card?.statusLabel||card?.dias||"")).replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,"")}</div>
               {/* Mini odds strip */}
               {card?.home && (
                 <div style={{display:'flex',gap:8,marginTop:10}}>
@@ -1666,7 +1666,7 @@ function MobileSportCard({item, catKey, onSelect}) {
         <div style={{fontSize:15,fontWeight:800,color:T.black,letterSpacing:'-0.03em',lineHeight:1.25,marginBottom:3}}>{item.title}</div>
         <div style={{display:'flex',alignItems:'center',gap:4}}>
           {isActuallyLive&&<><IcoLiveDot/><span style={{fontSize:10,fontWeight:700,color:item.multiDay?'#D97706':T.red,marginLeft:2}}>{item.multiDay?'EM ANDAMENTO':'AO VIVO'}</span><span style={{fontSize:10,color:T.gray1,margin:'0 3px'}}>·</span></>}
-          <span style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.statusLabel}</span>
+          <span style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{(item.statusLabel||"").replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,"")}</span>
         </div>
       </div>
 
@@ -1766,7 +1766,7 @@ function MobileChatPage({item, catKey, onBack, appData}) {
               {isActuallyLive&&<><IcoLiveDot/><span style={{fontSize:10,fontWeight:700,color:item.multiDay?'#D97706':T.red}}>{item.multiDay?'EM ANDAMENTO':'AO VIVO'}</span></>}
             </div>
             <div style={{fontSize:15,fontWeight:800,color:T.black,letterSpacing:'-0.03em',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.title||item.nome}</div>
-            <div style={{fontSize:11,color:T.gray1}}>{item.statusLabel||item.dias}</div>
+            <div style={{fontSize:11,color:T.gray1}}>{((item.statusLabel||item.dias||"")).replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,"")}</div>
           </div>
         </div>
 
@@ -1995,7 +1995,7 @@ function MobileEventsList({tab, appData, onSelect, onBack, updating, countdown, 
                   {!live&&isTodos&&<span style={{fontSize:10,color:T.gray3}}>· {cl}</span>}
                 </div>
                 <div style={{fontSize:15,fontWeight:700,color:T.black,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',marginBottom:2}}>{item.title}</div>
-                <div style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.statusLabel}</div>
+                <div style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{(item.statusLabel||"").replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,"")}</div>
               </div>
               <div style={{textAlign:'right',flexShrink:0,minWidth:50}}>
                 <div style={{fontSize:13,fontWeight:800,color:T.white,background:cc,borderRadius:T.r.pill,padding:'3px 8px',marginBottom:4}}>
