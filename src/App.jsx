@@ -1333,6 +1333,8 @@ function KalshiSportCard({item, catKey, onSelect, catUpdating}) {
       <div style={{padding:'8px 14px 11px',display:'flex',justifyContent:'flex-end',flexShrink:0}}>
         <span style={{fontSize:11,color:T.gray1}}>Empate {item.draw}%</span>
       </div>
+      </div>
+      </div>
     </div>
   )
 }
@@ -1398,6 +1400,7 @@ function KalshiLotoCard({lot, onSelect, catUpdating}) {
       <div style={{padding:'8px 14px 11px',display:'flex',justifyContent:'space-between',flexShrink:0}}>
         <span style={{fontSize:11,color:T.gray1}}>Conc. {lot.concurso}</span>
         <span style={{fontSize:11,color:T.gray1}}>Min {lot.aposta}</span>
+      </div>
       </div>
     </div>
   )
