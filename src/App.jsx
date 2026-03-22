@@ -1399,19 +1399,19 @@ function KalshiSportCard({item, catKey, onSelect, catUpdating}) {
   const live=isActuallyLive, ong=isOngoing
 
   return (
-    <div style={{position:'relative',height:CARD_H,borderRadius:20,flexShrink:0}}>
+    <div style={{position:'relative',borderRadius:20,flexShrink:0}}>
       <div
         onClick={()=>onSelect(item)}
         onMouseEnter={()=>setHov(true)}
         onMouseLeave={()=>setHov(false)}
         style={{
-          height:'100%', borderRadius:20,
+          borderRadius:20,
           background:predBg,
           border:`1px solid ${predBorder||(hov?'#C0C0BB':'#E0E0E0')}`,
           cursor:'pointer',
           boxShadow:hov?'0 6px 24px rgba(0,0,0,0.09)':'0 2px 8px rgba(0,0,0,0.06)',
           transition:'box-shadow 0.18s,border-color 0.18s',
-          display:'flex', flexDirection:'column', overflow:'hidden',
+          display:'flex', flexDirection:'column',
         }}>
 
         {/* predResult badge */}
@@ -1458,7 +1458,7 @@ function KalshiSportCard({item, catKey, onSelect, catUpdating}) {
         </div>
 
         {/* ── ROWS ── */}
-        <div style={{flex:1,minHeight:0,display:'flex',flexDirection:'column'}}>
+        <div style={{borderTop:'1px solid #E0E0E0'}}>
           <SportRow logo={item.home?.logo} name={item.home?.name||'—'} pct={homePct} winner={homePct>0&&homePct>=awayPct&&homePct>=drawPct} catColor={catColor} catBg={catBg} catUpdating={catUpdating}/>
           <SportRow logo={item.away?.logo} name={item.away?.name||'—'} pct={awayPct} winner={awayPct>0&&awayPct>homePct&&awayPct>=drawPct} catColor={catColor} catBg={catBg} catUpdating={catUpdating}/>
           {drawPct>0&&<SportRow name="Empate" pct={drawPct} winner={false} isEmpate catColor={catColor} catBg={catBg} catUpdating={catUpdating}/>}
@@ -1482,7 +1482,7 @@ function KalshiSportCard({item, catKey, onSelect, catUpdating}) {
 function KalshiLotoCard({lot, onSelect, catUpdating}) {
   const [hov,setHov]=useState(false)
   return (
-    <div style={{position:'relative',height:CARD_H,borderRadius:T.r.lg,flexShrink:0}}>
+    <div style={{position:'relative',borderRadius:T.r.lg,flexShrink:0}}>
       <ShareBtn item={lot} catKey="loterias"/>
       <div onClick={()=>onSelect(lot)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
         style={{height:'100%',background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C0C0BB':T.border}`,cursor:'pointer',boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden'}}>
@@ -2534,9 +2534,11 @@ function MobileSportCard({item, catKey, onSelect}) {
       </div>
 
       {/* ── ROWS ── */}
+      <div style={{borderTop:'1px solid #E0E0E0'}}>
       <SportRow logo={item.home?.logo} name={item.home?.name||'—'} pct={homePct} winner={homePct>0&&homePct>=awayPct&&homePct>=drawPct} catColor={catColor} catBg={catBg}/>
       <SportRow logo={item.away?.logo} name={item.away?.name||'—'} pct={awayPct} winner={awayPct>0&&awayPct>homePct&&awayPct>=drawPct} catColor={catColor} catBg={catBg}/>
       {drawPct>0&&<SportRow name="Empate" pct={drawPct} winner={false} isEmpate catColor={catColor} catBg={catBg}/>}
+      </div>
 
       {/* ── BETTV STRIP ── */}
       <div style={{margin:'12px 16px 16px',background:'#F4F4F2',borderRadius:12,padding:'14px 16px'}}>
