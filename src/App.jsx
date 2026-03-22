@@ -343,124 +343,200 @@ const TABS = [
 
 const INTERVAL = 2*60*60*1000
 
-// ─── PROMPTS DE BUSCA POR CATEGORIA ──────────────────────────────────────────
-const CATEGORY_SEARCH_PROMPTS = {
-  futebol: (nowISO) => `Hoje é ${nowISO}. Use web_search para buscar partidas de futebol AO VIVO e FUTURAS (próximos 30 dias) nas seguintes competições: Premier League, La Liga, Champions League, Brasileirão Série A, Copa do Brasil. Busque resultados reais com datas e horários exatos. Depois retorne SOMENTE um JSON array com os eventos encontrados (máximo 12, priorizando ao vivo e mais próximos):
-[{"id":"f-UNIQUE","title":"Time A × Time B","competition":"Nome da Competição · Rodada","startTime":"ISO8601","statusLabel":"DD/MM · HHh BRT · Local","bettvPick":"Time A|Time B|Empate","bettvConf":50,"bettvReason":"max 100 chars baseado em dados reais","home":{"name":"Time A","logo":null,"sub":"posição/pts","pct":50},"away":{"name":"Time B","logo":null,"sub":"posição/pts","pct":30},"draw":20}]`,
-
-  basquete: (nowISO) => `Hoje é ${nowISO}. Use web_search para buscar jogos de basquete AO VIVO e FUTUROS (próximos 7 dias): NBA (hoje e amanhã), NBB Brasil. Busque placares ao vivo e probabilidades reais. Retorne SOMENTE JSON array (máximo 10 jogos):
-[{"id":"b-UNIQUE","title":"Time A × Time B","competition":"NBA · Data","startTime":"ISO8601","statusLabel":"Hoje · HHh BRT · Arena","bettvPick":"Time","bettvConf":60,"bettvReason":"prob% SportRadar/ESPN. Contexto real","home":{"name":"Time A","logo":null,"sub":"conferência/pos","pct":60},"away":{"name":"Time B","logo":null,"sub":"conferência/pos","pct":35},"draw":5}]`,
-
-  volei: (nowISO) => `Hoje é ${nowISO}. Use web_search para buscar jogos de vôlei (próximos 30 dias): Superliga Masculina Brasil, Superliga Feminina Brasil, VNL Liga das Nações. Retorne SOMENTE JSON array (máximo 6 jogos reais com datas verificadas):
-[{"id":"v-UNIQUE","title":"Time A × Time B","competition":"Competição · Fase","startTime":"ISO8601","statusLabel":"DD/MM · HHh · Local","bettvPick":"Time","bettvConf":55,"bettvReason":"contexto real da partida","home":{"name":"Time A","logo":null,"sub":"posição","pct":55},"away":{"name":"Time B","logo":null,"sub":"posição","pct":30},"draw":15}]`,
-
-  mma: (nowISO) => `Hoje é ${nowISO}. Use web_search para buscar próximos eventos UFC confirmados (próximos 60 dias) com card principal verificado no site da UFC ou CBS Sports. Retorne SOMENTE JSON array (máximo 6 lutas):
-[{"id":"m-UNIQUE","title":"Lutador A × Lutador B","competition":"UFC Evento · Main/Co-main","startTime":"ISO8601","statusLabel":"DD/MM · HHh PT · Cidade","bettvPick":"Lutador","bettvConf":55,"bettvReason":"record real. motivo técnico concreto","home":{"name":"Lutador A","logo":null,"sub":"record · ranking","pct":55},"away":{"name":"Lutador B","logo":null,"sub":"record · ranking","pct":35},"draw":10}]`,
-
-  tenis: (nowISO) => `Hoje é ${nowISO}. Use web_search para buscar partidas de tênis AO VIVO e FUTURAS (próximos 30 dias): Miami Open ATP/WTA, Roland Garros. Busque schedule oficial do ATP Tour e WTA. Retorne SOMENTE JSON array (máximo 8 partidas reais com datas verificadas):
-[{"id":"t-UNIQUE","title":"Jogador A × Jogador B","competition":"Torneio · Rodada","startTime":"ISO8601","statusLabel":"DD/MM · HHh BRT · Rodada","bettvPick":"Jogador","bettvConf":65,"bettvReason":"ranking real, h2h real, contexto real","home":{"name":"Jogador A","logo":null,"sub":"Nº ranking","pct":65},"away":{"name":"Jogador B","logo":null,"sub":"Nº ranking","pct":28},"draw":7}]`,
-
-  esports: (nowISO) => `Hoje é ${nowISO}. Use web_search para buscar partidas de e-sports AO VIVO e FUTURAS (próximos 60 dias): CBLOL 2026, LCK Spring 2026, CS2 Major 2026. Busque schedule oficial da Riot Games e ESL. Retorne SOMENTE JSON array (máximo 6 partidas verificadas):
-[{"id":"e-UNIQUE","title":"Time A × Time B","competition":"Liga · Fase · Rodada","startTime":"ISO8601","statusLabel":"DD/MM · HHh BRT · Arena","bettvPick":"Time","bettvConf":55,"bettvReason":"contexto real da liga","home":{"name":"Time A","logo":null,"sub":"posição","pct":55},"away":{"name":"Time B","logo":null,"sub":"posição","pct":35},"draw":10}]`,
-
-  loterias: () => `Retorne SOMENTE JSON array com previsões atualizadas para as loterias da Caixa. Use análise de frequência histórica:
-[{"id":"mega","guruNums":[n,n,n,n,n,n],"guruConf":18,"guruAnalise":"análise max 120 chars"},{"id":"lotofacil","guruNums":[15 números 1-25],"guruConf":34,"guruAnalise":"..."},{"id":"quina","guruNums":[5 números 1-80],"guruConf":22,"guruAnalise":"..."},{"id":"timemania","guruNums":[7 números 1-80],"guruConf":12,"guruAnalise":"..."},{"id":"duplasena","guruNums":[6 números 1-50],"guruConf":15,"guruAnalise":"..."},{"id":"diadesorte","guruNums":[7 números 1-31],"guruConf":14,"guruAnalise":"..."}]`,
-
-  crypto: () => `Analise tendências do mercado cripto hoje com base no seu conhecimento atualizado. Retorne SOMENTE JSON array (todos os 50 itens) com previsão ALTA/QUEDA/NEUTRO:
-[{"id":"btc","bettvPick":"ALTA|QUEDA|NEUTRO","bettvConf":65,"bettvReason":"max 100 chars","change24h":2.3}]`,
-
-  moedas: () => `Analise tendências do mercado de câmbio hoje. Retorne SOMENTE JSON array (todos os 50 itens):
-[{"id":"usd","bettvPick":"ALTA|QUEDA|NEUTRO","bettvConf":55,"bettvReason":"max 100 chars","change24h":-0.3}]`,
+// ─── TOP REFERENCE SITES BY CATEGORY ─────────────────────────────────────────
+const TOP_SITES = {
+  futebol:  'ESPN.com, BBC Sport, Sky Sports, FlashScore, SofaScore, LiveScore, 90min, Goal.com, GE.Globo.com, UOL Esporte, Transfermarkt, FBref, WhoScored, Premier League oficial, La Liga oficial, UEFA Champions League oficial, CBF.com.br, Gazeta Esportiva, Lance.com.br, Trivela.com.br',
+  basquete: 'NBA.com, ESPN.com, CBS Sports, Basketball Reference, HoopsHype, RealGM, Bleacher Report NBA, SportRadar, Rotowire NBA, Yahoo Sports NBA, NBAStats.com, ClutchPoints, The Athletic NBA, HoopsRumors, EuroLeague oficial, NBB oficial, BasqueteComPaixao',
+  mma:      'UFC.com, ESPN MMA, CBS Sports MMA, MMAJunkie, Sherdog, BloodyElbow, MMAFighting, MMAWeekly, Tapology, BestFightOdds, Sherdog Forums, MMA Mania, FightMatrix, MMA Decisions, MMANytt',
+  tenis:    'ATPTour.com, WTATennis.com, TennisAbstract, Ultimate Tennis Statistics, TennisTemple, FlashScore Tennis, ESPN Tennis, Tennis Now, TENNIS.com, TennisWorld, Ubitennis, TennisMajors, TennisHead, LiveTennis, Tennis365',
+  esports:  'Liquipedia.net, HLTV.org, Vlr.gg, LoLEsports oficial, ESL Gaming, FACEIT, Gosugamers, Dot Esports, The Esports Observer, SportBible Esports, RedBull Gaming, Esports Charts, CBLoL oficial (placar.lol), Abios, PandaScore',
+  golf:     'PGATour.com, OWGR.com (ranking mundial), GolfChannel, Golf Digest, Golf Magazine, ESPN Golf, CBSSports Golf, Masters.com, Golfweek, GolfDataTech, DataGolf, European Tour (DPWT), R&A Golf, USGA.org, GolfStats',
+  crypto:   'CoinGecko, CoinMarketCap, TradingView, CryptoCompare, Messari, Glassnode, IntoTheBlock, Santiment, DeFiLlama, The Block, CoinDesk, Decrypt, Cointelegraph, CryptoPanic, Kaiko',
+  moedas:   'Investing.com, XE.com, Forex Factory, DailyFX, Bloomberg FX, Reuters FX, TradingView Forex, OANDA, FXStreet, Banco Central do Brasil (bcb.gov.br), CMC Markets, IG Forex, Myfxbook, ForexLive, Exness',
+  loterias: 'Caixa.gov.br (loterias.caixa.gov.br), LotoClic, LottoNumbers.com, Loteria Online, Resultado.net, Loterias e Apostas, DiaDesorte.com, LotoFacil.net, Quina.org, MegaSena.com',
 }
 
-// ─── ENGINE PRINCIPAL — busca dados reais + gera previsões ───────────────────
+// ─── PROMPTS DE BUSCA (top sites + instruções precisas) ──────────────────────
+const CATEGORY_SEARCH_PROMPTS = {
+  futebol: (now) => `Data/hora UTC: ${now}.
+Consulte os seguintes sites de referência: ${TOP_SITES.futebol}
+Pesquise partidas de futebol AO VIVO e FUTURAS (próximos 30 dias):
+- Premier League, La Liga, Bundesliga, Serie A, Ligue 1
+- UEFA Champions League
+- Brasileirão Série A, Copa do Brasil, Libertadores
+- MLS
+Use múltiplas buscas para obter datas, horários e odds precisos.
+Retorne SOMENTE JSON array (máximo 14 eventos, ao vivo primeiro):
+[{"id":"f-SLUG","title":"Time A × Time B","competition":"Competição · Rodada/Fase","startTime":"ISO8601_EXATO","statusLabel":"DD/MM · HHhBRT · Estádio","bettvPick":"Time A|Time B|Empate","bettvConf":55,"bettvReason":"odds/prob real. máx 110 chars","home":{"name":"Time A","logo":null,"sub":"pos · pts · prob%","pct":55},"away":{"name":"Time B","logo":null,"sub":"pos · pts · prob%","pct":25},"draw":20}]`,
+
+  basquete: (now) => `Data/hora UTC: ${now}.
+Consulte: ${TOP_SITES.basquete}
+Pesquise jogos NBA AO VIVO agora (placar atual + quarter), HOJE e próximos 7 dias.
+Use web_search para obter: placar ao vivo, probabilidades de vitória reais (SportRadar/ESPN), lesões relevantes, sequência de vitórias/derrotas.
+Retorne SOMENTE JSON array (máximo 12 jogos):
+[{"id":"b-SLUG","title":"Time A × Time B","competition":"NBA · Data","startTime":"ISO8601","statusLabel":"AO VIVO·Q2·Arena|Hoje·HHhBRT·Arena","bettvPick":"Time","bettvConf":65,"bettvReason":"prob%+contexto real. máx 110 chars","home":{"name":"Time A","logo":null,"sub":"conf·pos·prob%","pct":65},"away":{"name":"Time B","logo":null,"sub":"conf·pos·prob%","pct":30},"draw":5}]`,
+
+  mma: (now) => `Data/hora UTC: ${now}.
+Consulte: ${TOP_SITES.mma}
+Pesquise todos os próximos eventos UFC confirmados (próximos 90 dias).
+Para cada evento, obtenha: local, card completo (main + co-main + card principal), records dos lutadores, rankings oficiais UFC.
+Retorne SOMENTE JSON array (máximo 8 lutas, main events + co-mains):
+[{"id":"m-SLUG","title":"Lutador A × Lutador B","competition":"UFC Evento · Tipo de Luta","startTime":"ISO8601","statusLabel":"DD/MM·HHhBRT·Local","bettvPick":"Lutador","bettvConf":58,"bettvReason":"record real+ranking+análise. máx 110 chars","home":{"name":"Lutador A","logo":null,"sub":"record·ranking","pct":58},"away":{"name":"Lutador B","logo":null,"sub":"record·ranking","pct":32},"draw":10}]`,
+
+  tenis: (now) => `Data/hora UTC: ${now}.
+Consulte: ${TOP_SITES.tenis}
+Pesquise partidas de tênis AO VIVO agora (score atual + set) e FUTURAS (próximos 45 dias):
+Miami Open ATP/WTA (schedule oficial atptour.com), Madrid Open (se iniciado), Roland Garros.
+Obtenha rankings oficiais ATP/WTA, H2H recente, superfície.
+Retorne SOMENTE JSON array (máximo 10 partidas):
+[{"id":"t-SLUG","title":"Jogador A × Jogador B","competition":"Torneio·Rodada","startTime":"ISO8601","statusLabel":"AO VIVO·Set 2·2-1|DD/MM·HHhBRT","bettvPick":"Jogador","bettvConf":68,"bettvReason":"ranking+h2h+superfície. máx 110 chars","home":{"name":"Jogador A","logo":null,"sub":"Nº ranking ATP/WTA","pct":68},"away":{"name":"Jogador B","logo":null,"sub":"Nº ranking","pct":25},"draw":7}]`,
+
+  esports: (now) => `Data/hora UTC: ${now}.
+Consulte: ${TOP_SITES.esports}
+Pesquise partidas de e-sports AO VIVO e FUTURAS (próximos 60 dias):
+CBLOL 2026 (placar.lol, liquipedia), LCK Spring 2026 (lolesports.com), CS2 Major/RMR, VCT Americas.
+Obtenha: schedules oficiais, resultados recentes, posição na tabela.
+Retorne SOMENTE JSON array (máximo 8 partidas verificadas):
+[{"id":"e-SLUG","title":"Time A × Time B","competition":"Liga·Fase·Rodada","startTime":"ISO8601","statusLabel":"DD/MM·HHhBRT·Local","bettvPick":"Time","bettvConf":58,"bettvReason":"posição+h2h+contexto. máx 110 chars","home":{"name":"Time A","logo":null,"sub":"posição·record","pct":58},"away":{"name":"Time B","logo":null,"sub":"posição·record","pct":32},"draw":10}]`,
+
+  golf: (now) => `Data/hora UTC: ${now}.
+Consulte: ${TOP_SITES.golf}
+Pesquise torneios PGA Tour EM ANDAMENTO agora (leaderboard ao vivo + líder + score) e FUTUROS (próximos 60 dias).
+Obtenha: leaderboard atual para torneios em andamento, datas confirmadas PGA Tour, ranking mundial OWGR dos jogadores.
+Retorne SOMENTE JSON array (máximo 8 torneios):
+[{"id":"g-SLUG","multiDay":true,"title":"Nome do Torneio Ano","competition":"PGA Tour · Torneio","startTime":"ISO8601_R1","statusLabel":"EM ANDAMENTO·R3·Local|DD/MM·Local","bettvPick":"Jogador favorito","bettvConf":38,"bettvReason":"ranking mundial+histórico+campo. máx 110 chars","home":{"name":"Favorito 1","logo":null,"sub":"Nº mundial·motivo","pct":30},"away":{"name":"Favorito 2","logo":null,"sub":"Nº mundial","pct":22},"draw":48}]`,
+
+  loterias: (now) => `Data/hora UTC: ${now}.
+Consulte: ${TOP_SITES.loterias}
+Busque os últimos resultados de cada loteria da Caixa e analise frequência histórica dos números.
+Retorne SOMENTE JSON array (6 loterias):
+[{"id":"mega","guruNums":[6 nums 1-60],"guruConf":18,"guruAnalise":"análise de frequência máx 120 chars"},{"id":"lotofacil","guruNums":[15 nums 1-25],"guruConf":34,"guruAnalise":"..."},{"id":"quina","guruNums":[5 nums 1-80],"guruConf":22,"guruAnalise":"..."},{"id":"timemania","guruNums":[7 nums 1-80],"guruConf":12,"guruAnalise":"..."},{"id":"duplasena","guruNums":[6 nums 1-50],"guruConf":15,"guruAnalise":"..."},{"id":"diadesorte","guruNums":[7 nums 1-31],"guruConf":14,"guruAnalise":"..."}]`,
+
+  crypto: (now) => `Data/hora UTC: ${now}.
+Consulte: ${TOP_SITES.crypto}
+Busque preços, variação 24h, volume, dominância e sentimento de mercado atuais para as principais criptomoedas.
+Analise tendências de curto prazo (fear/greed index, on-chain data, notícias relevantes).
+Retorne SOMENTE JSON array (todos os 50 itens com dados atualizados):
+[{"id":"btc","bettvPick":"ALTA|QUEDA|NEUTRO","bettvConf":65,"bettvReason":"preço+vol+sentimento. máx 110 chars","change24h":2.3,"price":87000}]`,
+
+  moedas: (now) => `Data/hora UTC: ${now}.
+Consulte: ${TOP_SITES.moedas}
+Busque taxas de câmbio atuais e análise de curto prazo para as principais moedas vs BRL/USD.
+Considere: decisões de bancos centrais, dados econômicos recentes, fluxo de capitais.
+Retorne SOMENTE JSON array (todos os 50 itens com dados atualizados):
+[{"id":"usd","bettvPick":"ALTA|QUEDA|NEUTRO","bettvConf":55,"bettvReason":"dados banco central+fluxo. máx 110 chars","change24h":-0.3,"priceBRL":5.12}]`,
+}
+
+// ─── API HELPER — agentic loop com web_search ────────────────────────────────
+async function callWithSearch(system, messages, maxTurns=5) {
+  const tools = [{type:'web_search_20250305', name:'web_search'}]
+  let msgs = [...messages]
+  for (let turn=0; turn<maxTurns; turn++) {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':API_KEY,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body: JSON.stringify({model:'claude-sonnet-4-20250514', max_tokens:4000, system, tools, messages:msgs})
+    })
+    if (!res.ok) throw new Error('API '+res.status)
+    const json = await res.json()
+    // Text response = done
+    const txt = json.content?.find(b=>b.type==='text')?.text
+    if (txt) return txt
+    // Tool use = continue loop with result
+    if (json.stop_reason==='tool_use') {
+      const tu = json.content?.find(b=>b.type==='tool_use')
+      if (!tu) break
+      msgs = [
+        ...msgs,
+        {role:'assistant', content:json.content},
+        {role:'user', content:[{type:'tool_result', tool_use_id:tu.id, content:'Dados obtidos. Compile agora o JSON final solicitado. Responda SOMENTE com o JSON array, sem markdown.'}]}
+      ]
+    } else break
+  }
+  return null
+}
+
+// ─── ENGINE PRINCIPAL — busca + gera previsões ───────────────────────────────
 async function callClaude(data, category) {
   const nowISO = new Date().toISOString()
   const nowBRT = new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})
-  const isEsporte = !['loterias','crypto','moedas'].includes(category)
 
   const system = [
-    'Você é o motor de dados esportivos do BetTv.',
-    'Data e hora atual (BRT): ' + nowBRT,
-    'Data UTC: ' + nowISO,
-    'REGRAS ABSOLUTAS:',
-    '1. Responda SOMENTE com JSON válido — sem markdown, sem explicações, sem texto antes ou depois.',
-    '2. Para categorias esportivas, use web_search para buscar dados REAIS e ATUAIS antes de responder.',
-    '3. NUNCA invente partidas, datas ou resultados.',
-    '4. Inclua SOMENTE eventos que ainda não terminaram (ao vivo ou futuros).',
-    '5. startTime DEVE ser uma data ISO 8601 real e verificada.',
-    '6. IDs devem ser únicos: use "cat-initials-timestamp" ex: "f-livche-1742".',
+    'Você é o motor de inteligência esportiva do BetTv.',
+    'Data e hora atual (BRT): '+nowBRT+' | UTC: '+nowISO,
+    'REGRAS:',
+    '1. Use web_search para buscar dados 100% reais e atualizados dos top sites de referência.',
+    '2. Faça múltiplas buscas se necessário para confirmar datas, horários e resultados.',
+    '3. NUNCA invente dados. Se não encontrar, não inclua.',
+    '4. Responda SOMENTE com JSON válido — sem markdown, sem texto extra.',
+    '5. startTime em ISO 8601 com timezone correto.',
   ].join('\n')
 
-  const prompt = isEsporte
-    ? CATEGORY_SEARCH_PROMPTS[category]?.(nowISO) || ''
-    : (CATEGORY_SEARCH_PROMPTS[category]?.() || '')
-
+  const prompt = CATEGORY_SEARCH_PROMPTS[category]?.(nowISO)
   if (!prompt) return null
 
-  // Use web_search tool for sports categories to get real live data
-  const tools = isEsporte ? [{type:'web_search_20250305', name:'web_search'}] : []
-
-  const body = {
-    model: 'claude-sonnet-4-20250514',
-    max_tokens: 4000,
-    system,
-    tools: tools.length ? tools : undefined,
-    messages: [{role:'user', content: prompt}],
-  }
-
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': API_KEY,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true',
-    },
-    body: JSON.stringify(body),
-  })
-
-  if (!res.ok) throw new Error('API ' + res.status)
-  const json = await res.json()
-
-  // Extract text from response — may include tool_use + tool_result blocks
-  const textBlock = json.content?.find(b => b.type === 'text')
-  if (!textBlock?.text) {
-    // If the model used web_search and stopped — do a follow-up to extract JSON
-    if (json.stop_reason === 'tool_use') {
-      const toolUse = json.content?.find(b => b.type === 'tool_use')
-      const toolResult = json.content?.find(b => b.type === 'tool_result')
-      const followUpRes = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': API_KEY,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true',
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 4000,
-          system,
-          tools,
-          messages: [
-            {role:'user', content: prompt},
-            {role:'assistant', content: json.content},
-            ...(toolUse ? [{role:'user', content:[{type:'tool_result',tool_use_id:toolUse.id,content:'Search results retrieved. Now compile the JSON array based on the real data found.'}]}] : []),
-          ],
-        }),
-      })
-      if (!followUpRes.ok) throw new Error('API follow-up ' + followUpRes.status)
-      const followJson = await followUpRes.json()
-      const followText = followJson.content?.find(b => b.type === 'text')?.text || '[]'
-      return JSON.parse(followText.replace(/```json|```/g,'').trim())
-    }
-    return []
-  }
-
-  return JSON.parse(textBlock.text.replace(/```json|```/g,'').trim())
+  try {
+    const txt = await callWithSearch(system, [{role:'user', content:prompt}])
+    if (!txt) return []
+    return JSON.parse(txt.replace(/```json|```/g,'').trim())
+  } catch(e) { return [] }
 }
 
+// ─── VALIDATION ENGINE — verifica previsões passadas nos top sites ────────────
+// predResult: 'correct'(verde) | 'incorrect'(vermelho) | 'partial'(amarelo) | null(pendente)
+async function validatePredictions(items, category) {
+  const now = Date.now()
+  // Selecionar eventos que já começaram e ainda não foram validados
+  const toValidate = items.filter(item => {
+    if (!item.startTime || item.predResult) return false
+    const start = new Date(item.startTime).getTime()
+    // Para eventos multi-dia (golf) valida apenas após o fim estimado
+    if (item.multiDay) return start < now - 4*24*60*60*1000
+    return !isNaN(start) && start < now
+  })
+  if (!toValidate.length) return items
+
+  const nowBRT = new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})
+  const system = [
+    'Você é o validador de previsões do BetTv. Data/hora BRT: '+nowBRT,
+    'Use web_search nos top sites: '+TOP_SITES[category],
+    'REGRAS: responda SOMENTE com JSON. Busque resultados reais. Nunca invente.',
+  ].join('\n')
+
+  const prompt = `Verifique nos principais sites esportivos (${TOP_SITES[category]}) o resultado REAL de cada evento abaixo.
+Compare com a previsão BetTv e classifique como "correct", "incorrect" ou "partial".
+
+Eventos para validar (categoria: ${category}):
+${JSON.stringify(toValidate.map(i=>({id:i.id, title:i.title, startTime:i.startTime, bettvPick:i.bettvPick, bettvConf:i.bettvConf})), null, 2)}
+
+Definições:
+- "correct": previsão acertou (ex: BetTv escolheu Palmeiras, Palmeiras venceu)
+- "incorrect": previsão errou (ex: BetTv escolheu Palmeiras, time adversário venceu ou empate)
+- "partial": evento em andamento, ou resultado ambíguo (empate quando não previsto conta como partial)
+
+Retorne SOMENTE JSON array. Inclua apenas eventos cujo resultado você encontrou com certeza:
+[{"id":"id-do-evento","predResult":"correct|incorrect|partial","realResult":"ex: Palmeiras 3 × 1 Grêmio","predNote":"ex: BetTv acertou — Palmeiras venceu conforme previsto"}]`
+
+  try {
+    const txt = await callWithSearch(system, [{role:'user', content:prompt}])
+    if (!txt) return items
+    const validations = JSON.parse(txt.replace(/```json|```/g,'').trim())
+    if (!Array.isArray(validations)) return items
+
+    return items.map(item => {
+      const v = validations.find(x=>x.id===item.id)
+      if (!v) return item
+      return {...item, predResult:v.predResult, realResult:v.realResult, predNote:v.predNote}
+    })
+  } catch(e) { return items }
+}
+
+// ─── AUTO UPDATE HOOK ─────────────────────────────────────────────────────────
 function useAutoUpdate(seed) {
   const [appData,setAppData]=useState(seed)
   const [logs,setLogs]=useState([])
@@ -479,74 +555,115 @@ function useAutoUpdate(seed) {
 
   const runCycle=useCallback(async(cur,manual=false)=>{
     setUpdating(true)
-    // Purge: remove events that ended more than 4h ago
     const now = Date.now()
+
+    // ── PASSO 1: Limpar eventos expirados ──
     const purgedEsportes = {}
-    Object.entries(cur.esportes).forEach(([cat, catData]) => {
+    Object.entries(cur.esportes).forEach(([cat,catData]) => {
       purgedEsportes[cat] = {
         ...catData,
         items: catData.items.filter(item => {
           if (!item.startTime) return true
           const start = new Date(item.startTime).getTime()
+          // Manter eventos validados por mais tempo (histórico)
+          if (item.predResult) return start > now - 24*60*60*1000
+          if (item.multiDay)   return start > now - 7*24*60*60*1000
           return start > now - 4*60*60*1000
         })
       }
     })
-    const cats=['loterias',...Object.keys(ESPORTES),'crypto','moedas']
+
+    const cats = ['loterias',...Object.keys(ESPORTES),'crypto','moedas']
     setQueue([...cats])
-    addLog(manual?'Atualização manual — buscando dados reais':'Ciclo automático — buscando eventos frescos','start')
-    const nd={loterias:[...cur.loterias],esportes:purgedEsportes,crypto:[...(cur.crypto||CRYPTO_DATA)],moedas:[...(cur.moedas||MOEDAS_DATA)]}
+    addLog(manual?'🔄 Atualização manual iniciada':'⏰ Ciclo automático — buscando + validando', 'start')
+    const nd = {
+      loterias: [...cur.loterias],
+      esportes: purgedEsportes,
+      crypto:   [...(cur.crypto||CRYPTO_DATA)],
+      moedas:   [...(cur.moedas||MOEDAS_DATA)],
+    }
     let ok=0
+
     for (const cat of cats) {
       setQueue(q=>q.filter(c=>c!==cat))
-      addLog('Buscando: '+cat,'loading')
+
       try {
-        const upd=await callClaude(nd,cat)
-        if (!upd||!Array.isArray(upd)||upd.length===0){addLog(cat+': sem dados','warn');continue}
-        if (cat==='loterias'){
-          nd.loterias=nd.loterias.map(l=>{const u=upd.find(x=>x.id===l.id);return u?{...l,...u}:l})
-        } else if (cat==='crypto') {
-          nd.crypto=nd.crypto.map(c=>{const u=upd.find(x=>x.id===c.id);return u?{...c,...u}:c})
-        } else if (cat==='moedas') {
-          nd.moedas=nd.moedas.map(m=>{const u=upd.find(x=>x.id===m.id);return u?{...m,...u}:m})
-        } else {
-          // For sports: REPLACE the items array entirely with fresh data from web
-          if (!nd.esportes[cat]) continue
-          // Validate: only keep items with valid startTime in the future or very recent
-          const validItems = upd.filter(item => {
-            if (!item.startTime) return false
-            if (!item.title || !item.home || !item.away) return false
-            const start = new Date(item.startTime).getTime()
-            return !isNaN(start) && start > now - 4*60*60*1000
-          }).map(item => ({
-            ...item,
-            status: 'upcoming', // never hardcode live — always use time-based detection
-          }))
-          if (validItems.length > 0) {
-            nd.esportes[cat] = {...nd.esportes[cat], items: validItems}
-            addLog(cat+': '+validItems.length+' eventos reais','success')
-          } else {
-            // Keep existing purged data if new data is invalid
-            addLog(cat+': mantendo dados anteriores ('+nd.esportes[cat].items.length+')','warn')
+        const isSport = !['loterias','crypto','moedas'].includes(cat)
+
+        // ── PASSO 2: Validar previsões passadas (apenas esportes) ──
+        if (isSport && nd.esportes[cat]) {
+          addLog('🔍 Validando previsões: '+cat, 'loading')
+          const validated = await validatePredictions(nd.esportes[cat].items, cat)
+          const newValidations = validated.filter(i=>i.predResult && !nd.esportes[cat].items.find(x=>x.id===i.id)?.predResult)
+          if (newValidations.length>0) {
+            nd.esportes[cat] = {...nd.esportes[cat], items:validated}
+            addLog('✅ '+cat+': '+newValidations.length+' previsões validadas', 'success')
+            setAppData(prev=>({...prev, esportes:{...prev.esportes, [cat]:{...prev.esportes[cat], items:validated}}}))
           }
         }
+
+        // ── PASSO 3: Buscar novos eventos/dados ──
+        addLog('🌐 Buscando dados: '+cat, 'loading')
+        const upd = await callClaude(nd, cat)
+        if (!upd||!Array.isArray(upd)||upd.length===0) {
+          addLog('⚠️ '+cat+': sem novos dados — mantendo atuais', 'warn')
+          continue
+        }
+
+        if (cat==='loterias') {
+          nd.loterias = nd.loterias.map(l=>{const u=upd.find(x=>x.id===l.id); return u?{...l,...u}:l})
+          addLog('✅ loterias: previsões atualizadas', 'success')
+        } else if (cat==='crypto') {
+          nd.crypto = nd.crypto.map(c=>{const u=upd.find(x=>x.id===c.id); return u?{...c,...u}:c})
+          addLog('✅ crypto: '+upd.length+' preços/tendências', 'success')
+        } else if (cat==='moedas') {
+          nd.moedas = nd.moedas.map(m=>{const u=upd.find(x=>x.id===m.id); return u?{...m,...u}:m})
+          addLog('✅ moedas: '+upd.length+' taxas atualizadas', 'success')
+        } else {
+          if (!nd.esportes[cat]) continue
+          const validItems = upd
+            .filter(item => {
+              if (!item.startTime||!item.title||!item.home||!item.away) return false
+              const s = new Date(item.startTime).getTime()
+              return !isNaN(s) && s > now - 4*60*60*1000
+            })
+            .map(item => {
+              // Preservar predResult já calculado para o mesmo evento
+              const prev = nd.esportes[cat].items.find(e=>e.id===item.id)
+              return {
+                ...item,
+                predResult: prev?.predResult||null,
+                realResult: prev?.realResult||null,
+                predNote:   prev?.predNote||null,
+              }
+            })
+          if (validItems.length>0) {
+            nd.esportes[cat] = {...nd.esportes[cat], items:validItems}
+            addLog('✅ '+cat+': '+validItems.length+' eventos atualizados', 'success')
+          } else {
+            addLog('⚠️ '+cat+': dados inválidos — mantendo anteriores', 'warn')
+          }
+        }
+
         setAppData({...nd})
         ok++
-        if (cat==='loterias'||cat==='crypto'||cat==='moedas') addLog(cat+': '+upd.length+' itens','success')
-      } catch(e){addLog(cat+': erro — '+e.message,'error')}
-      await new Promise(r=>setTimeout(r,800))
+      } catch(e) { addLog('❌ '+cat+': '+e.message, 'error') }
+
+      // Pausa entre categorias para não saturar a API
+      await new Promise(r=>setTimeout(r,600))
     }
-    const ts=new Date()
+
+    const ts = new Date()
     setLastAt(ts)
     setNextAt(new Date(ts.getTime()+INTERVAL))
     setUpdating(false)
     setQueue([])
-    addLog('Concluído — '+ok+'/'+cats.length+' categorias','done')
+    addLog('🏁 Concluído — '+ok+'/'+cats.length+' categorias atualizadas', 'done')
   },[addLog])
 
   useEffect(()=>{
     cdRef.current=setInterval(()=>{
-      if (!nextAt){setCountdown('');return}
+      if(!nextAt){setCountdown('');return}
       const d=nextAt-Date.now()
       if(d<=0){setCountdown('Agora');return}
       const h=Math.floor(d/3600000),m=Math.floor((d%3600000)/60000),s=Math.floor((d%60000)/1000)
@@ -772,9 +889,15 @@ function KalshiSportCard({item, catKey, onSelect, catUpdating}) {
   const catColor=T.cat[catKey]||T.black
   const label=TABS.find(t=>t.key===catKey)?.label||catKey
 
-  return (
+      const predBorder = item.predResult==='correct'?'#16A34A':item.predResult==='incorrect'?T.red:item.predResult==='partial'?'#D97706':null
+    const predBg = item.predResult==='correct'?'#F0FDF4':item.predResult==='incorrect'?'#FEF2F2':item.predResult==='partial'?'#FFFBEB':T.white
+
+    return (
     <div onClick={()=>onSelect(item)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-      style={{height:CARD_H,background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C0C0BB':T.border}`,cursor:'pointer',boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden'}}>
+      style={{height:CARD_H,background:predBg,borderRadius:T.r.lg,border:`2px solid ${predBorder||(hov?'#C0C0BB':T.border)}`,cursor:'pointer',boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden',position:'relative'}}>
+      {/* Prediction result badge */}
+      {item.predResult&&<div style={{position:'absolute',top:8,right:8,zIndex:2,background:predBorder,color:'white',fontSize:9,fontWeight:800,borderRadius:4,padding:'2px 6px',letterSpacing:'0.05em',textTransform:'uppercase'}}>{item.predResult==='correct'?'✓ ACERTOU':item.predResult==='incorrect'?'✗ ERROU':'~ PARCIAL'}</div>}
+
 
       {/* Header */}
       <div style={{padding:'11px 14px 9px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
@@ -835,7 +958,9 @@ function KalshiLotoCard({lot, onSelect, catUpdating}) {
   const [hov,setHov]=useState(false)
   return (
     <div onClick={()=>onSelect(lot)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-      style={{height:CARD_H,background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C0C0BB':T.border}`,cursor:'pointer',boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden'}}>
+      style={{height:CARD_H,background:T.white,borderRadius:T.r.lg,border:`2px solid ${item.predResult==='correct'?'#16A34A':item.predResult==='incorrect'?'#E53935':item.predResult==='partial'?'#D97706':(hov?'#C0C0BB':T.border)}`,cursor:'pointer',background:item.predResult==='correct'?'#F0FDF4':item.predResult==='incorrect'?'#FEF2F2':item.predResult==='partial'?'#FFFBEB':T.white,boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden',position:'relative'}}>
+      {item.predResult&&<div style={{position:'absolute',top:8,right:8,zIndex:2,fontSize:9,fontWeight:800,borderRadius:T.r.sm,padding:'2px 7px',letterSpacing:'0.04em',background:item.predResult==='correct'?'#16A34A':item.predResult==='incorrect'?'#E53935':'#D97706',color:'white'}}>{item.predResult==='correct'?'✓ ACERTOU':item.predResult==='incorrect'?'✗ ERROU':'~ PARCIAL'}</div>}
+      {item.predNote&&item.predResult&&<div style={{background:'rgba(0,0,0,0.04)',padding:'4px 10px',fontSize:10,color:'#374151',borderBottom:`1px solid ${T.border}`}}>{item.predNote}</div>}
 
       {/* Header */}
       <div style={{padding:'11px 14px 9px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
@@ -1521,8 +1646,8 @@ function MobileSportCard({item, catKey, onSelect}) {
 
   return (
     <div onClick={()=>onSelect(item)}
-      style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${T.border}`,
-        marginBottom:10,overflow:'hidden',cursor:'pointer',
+      style={{background:item.predResult==='correct'?'#F0FDF4':item.predResult==='incorrect'?'#FEF2F2':item.predResult==='partial'?'#FFFBEB':T.white,borderRadius:T.r.lg,border:`2px solid ${item.predResult==='correct'?'#16A34A':item.predResult==='incorrect'?'#E53935':item.predResult==='partial'?'#D97706':T.border}`,
+        marginBottom:10,overflow:'hidden',cursor:'pointer',position:'relative',
         boxShadow:'0 1px 4px rgba(0,0,0,0.05)'}}>
 
       {/* Header: categoria + competição */}
