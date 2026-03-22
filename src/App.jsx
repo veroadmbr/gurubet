@@ -2189,7 +2189,7 @@ function MobileEventsList({tab, appData, onSelect, onBack, updating, countdown, 
   const catBg    = T.catBg[tab]||T.gray2
 
   const allEvents = Object.entries(appData.esportes).flatMap(([catKey,cat])=>
-    (cat.items||[]).map(item=>({...item,_catKey:catKey})))
+    (cat.items||[]).map(item=>({...item,_catKey:catKey}))
   ).sort((a,b)=>{
     const aLive = (a.status==='live'||a.status==='inprogress')?0:1
     const bLive = (b.status==='live'||b.status==='inprogress')?0:1
@@ -2611,7 +2611,7 @@ export default function App() {
   }).length
 
   const allEvents = Object.entries(appData.esportes).flatMap(([catKey,cat])=>
-    (cat.items||[]).map(item=>({...item,_catKey:catKey})))
+    (cat.items||[]).map(item=>({...item,_catKey:catKey}))
   ).sort((a,b)=>{
     const aLive = (a.status==='live'||a.status==='inprogress')?0:1
     const bLive = (b.status==='live'||b.status==='inprogress')?0:1
