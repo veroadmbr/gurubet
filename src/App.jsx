@@ -1458,7 +1458,7 @@ function KalshiSportCard({item, catKey, onSelect, catUpdating}) {
         </div>
 
         {/* ── ROWS ── */}
-        <div style={{borderTop:'1px solid #E0E0E0'}}>
+        <div>
           <SportRow logo={item.home?.logo} name={item.home?.name||'—'} pct={homePct} winner={homePct>0&&homePct>=awayPct&&homePct>=drawPct} catColor={catColor} catBg={catBg} catUpdating={catUpdating}/>
           <SportRow logo={item.away?.logo} name={item.away?.name||'—'} pct={awayPct} winner={awayPct>0&&awayPct>homePct&&awayPct>=drawPct} catColor={catColor} catBg={catBg} catUpdating={catUpdating}/>
           {drawPct>0&&<SportRow name="Empate" pct={drawPct} winner={false} isEmpate catColor={catColor} catBg={catBg} catUpdating={catUpdating}/>}
@@ -1590,64 +1590,69 @@ function LotoCard({lot, onSelect, catUpdating}) {
 }
 
 function SportCard({item, catKey, onSelect, catUpdating}) {
-  const {isActuallyLive, isOngoing} = (() => {
-    if (!item.startTime) return {isActuallyLive:false, isOngoing:false}
-    const now = Date.now()
-    const start = new Date(item.startTime).getTime()
-    if (isNaN(start)) return {isActuallyLive:false, isOngoing:false}
-    // Multi-day events (golf tournaments): show EM ANDAMENTO
-    if (item.multiDay) {
-      return {isActuallyLive:false, isOngoing: now >= start && now <= start + 7*24*60*60*1000}
-    }
-    // Single-match events: AO VIVO within duration window
-    const durations = {futebol:130, basquete:180, tenis:300, mma:420, esports:240, golf:360}
-    const dur = (durations[catKey] || 180) * 60 * 1000
-    return {isActuallyLive: now >= start && now <= start + dur, isOngoing:false}
+  const {isActuallyLive,isOngoing}=(()=>{
+    if(!item.startTime) return {isActuallyLive:false,isOngoing:false}
+    const now=Date.now(),start=new Date(item.startTime).getTime()
+    if(isNaN(start)) return {isActuallyLive:false,isOngoing:false}
+    if(item.multiDay) return {isActuallyLive:false,isOngoing:now>=start&&now<=start+7*24*60*60*1000}
+    const dur=({futebol:130,basquete:180,tenis:300,mma:420,esports:240,golf:360}[catKey]||180)*60*1000
+    return {isActuallyLive:now>=start&&now<=start+dur,isOngoing:false}
   })()
-  const live = isActuallyLive; const [hov,setHov]=useState(false)
-  const catColor=T.cat[catKey]||T.black
+  const [hov,setHov]=useState(false)
+  const catColor=T.cat[catKey]||'#555'
+  const catBg=T.catBg[catKey]||'#F0F0F0'
+  const label=TABS.find(t=>t.key===catKey)?.label||catKey
+  const predBorder=item.predResult==='correct'?'#16A34A':item.predResult==='incorrect'?'#E53935':item.predResult==='partial'?'#D97706':null
+  const predBg=item.predResult==='correct'?'#F0FDF4':item.predResult==='incorrect'?'#FEF2F2':item.predResult==='partial'?'#FFFBEB':'white'
+  const homePct=item.home?.pct||0
+  const awayPct=item.away?.pct||0
+  const drawPct=item.draw||0
+  const live=isActuallyLive, ong=isOngoing
+
   return (
-    <div onClick={()=>onSelect(item)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-      style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${T.border}`,marginBottom:12,cursor:'pointer',boxShadow:hov?'0 4px 20px rgba(0,0,0,0.08)':'none',transition:'box-shadow 0.15s',position:'relative'}}>
-      <div style={{height:3,background:live?T.red:T.border}}/>
-      <div style={{padding:'14px 18px'}}>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:9}}>
-          <div style={{display:'flex',alignItems:'center',gap:5}}>
-            {live&&<><IcoLiveDot/><span style={{fontSize:11,fontWeight:700,color:T.red,marginLeft:3}}>AO VIVO</span><span style={{color:T.gray1,fontSize:11,margin:'0 3px'}}> · </span></>}
-            <span style={{fontSize:11,color:T.gray1}}>{(item.statusLabel||"").replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,"")}</span>
-          </div>
-          <span style={{fontSize:11,color:T.gray1}}>{item.competition}</span>
-        </div>
-        <div style={{marginBottom:11}}>
-          <div style={{fontSize:17,fontWeight:900,color:T.black,letterSpacing:'-0.04em',lineHeight:1.2}}>{item.title}</div>
-          <div style={{fontSize:11,color:T.gray1,marginTop:2}}>{item.subtitle}</div>
-        </div>
-        <div style={{background:T.bg,borderRadius:T.r.md,padding:'9px 11px',marginBottom:12,display:'flex',alignItems:'flex-start',gap:8}}>
-          <div style={{flex:1}}>
-            <span style={{fontSize:11,fontWeight:700,color:T.black}}>{catUpdating?'Atualizando...':`BetTv: ${item.bettvPick||item.guruPick||'—'}`}</span>
-            {!catUpdating&&( item.bettvReason||item.guruReason)&&<p style={{fontSize:11,color:T.gray1,margin:'2px 0 0',lineHeight:1.5}}>{item.bettvReason||item.guruReason}</p>}
-          </div>
-          <div style={{background:catUpdating?T.gray3:T.black,color:T.white,borderRadius:T.r.pill,padding:'3px 9px',fontSize:11,fontWeight:800,flexShrink:0}}>{item.bettvConf||item.guruConf||0}%</div>
-        </div>
-        <div style={{display:'flex',flexDirection:'column',gap:9}}>
-          {[item.home,item.away].map((side,i)=>(
-            <div key={i} style={{display:'flex',alignItems:'center',gap:9}}>
-              <div style={{width:3,height:34,borderRadius:2,background:T.border,flexShrink:0}}/>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:13,fontWeight:700,color:T.black,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{side.name}</div>
-                <div style={{fontSize:11,color:T.gray1}}>{side.sub}</div>
-              </div>
-              <div style={{textAlign:'right',flexShrink:0}}>
-                <div style={{fontSize:16,fontWeight:900,color:T.black}}>{side.pct}%</div>
-                <div style={{width:48,height:3,background:T.border,borderRadius:2,marginTop:2}}>
-                  <div style={{width:`${side.pct}%`,height:'100%',background:side.pct>50?catColor:T.gray3,borderRadius:2}}/>
-                </div>
-              </div>
+    <div style={{position:'relative',borderRadius:20,marginBottom:12}}>
+      <div onClick={()=>onSelect(item)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+        style={{borderRadius:20,background:predBg,border:`1px solid ${predBorder||(hov?'#C0C0BB':'#E0E0E0')}`,
+          cursor:'pointer',boxShadow:hov?'0 6px 24px rgba(0,0,0,0.09)':'0 2px 8px rgba(0,0,0,0.06)',
+          transition:'box-shadow 0.18s,border-color 0.18s',display:'flex',flexDirection:'column'}}>
+
+        {/* Header */}
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 20px',borderBottom:'1px solid #E0E0E0'}}>
+          <div style={{display:'flex',alignItems:'center',gap:14}}>
+            <div style={{width:44,height:44,borderRadius:12,background:'#F0F0F0',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+              {(()=>{const I=TAB_ICON[catKey]||IcoLottery; return <I size={22} color="#555"/>})()}
             </div>
-          ))}
+            <span style={{fontSize:14,fontWeight:800,color:'#555',letterSpacing:'0.05em',textTransform:'uppercase'}}>{label}</span>
+          </div>
+          <div style={{display:'flex',alignItems:'center',gap:16,minWidth:0}}>
+            <span style={{fontSize:13,color:'#999',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.competition}</span>
+            <ShareBtn item={item} catKey={catKey}/>
+          </div>
         </div>
-        <div style={{display:'flex',justifyContent:'flex-end',marginTop:11,paddingTop:9,borderTop:`1px solid ${T.border}`}}>
-          <span style={{fontSize:11,color:T.gray1}}>Empate: {item.draw}%</span>
+
+        {/* Title */}
+        <div style={{padding:'22px 20px 18px',borderBottom:'1px solid #E0E0E0'}}>
+          <div style={{fontSize:26,fontWeight:900,color:'#111',lineHeight:1.15,letterSpacing:'-0.03em',marginBottom:10}}>{item.title}</div>
+          <div style={{display:'flex',alignItems:'center',flexWrap:'wrap'}}>
+            {(live||ong)&&<><IcoLiveDot/><span style={{fontSize:13,fontWeight:800,color:live?'#E53935':'#F97316',marginLeft:6}}>{live?'AO VIVO':'EM ANDAMENTO'}</span><span style={{fontSize:13,color:'#AAA',margin:'0 6px'}}>·</span></>}
+            <span style={{fontSize:13,color:'#888'}}>{(item.statusLabel||'').replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,'')}</span>
+          </div>
+        </div>
+
+        {/* Rows */}
+        <div style={{borderTop:'1px solid #E0E0E0'}}>
+          <SportRow logo={item.home?.logo} name={item.home?.name||'—'} pct={homePct} winner={homePct>0&&homePct>=awayPct&&homePct>=drawPct} catColor={catColor} catBg={catBg} catUpdating={catUpdating}/>
+          <SportRow logo={item.away?.logo} name={item.away?.name||'—'} pct={awayPct} winner={awayPct>0&&awayPct>homePct&&awayPct>=drawPct} catColor={catColor} catBg={catBg} catUpdating={catUpdating}/>
+          {drawPct>0&&<SportRow name="Empate" pct={drawPct} winner={false} isEmpate catColor={catColor} catBg={catBg} catUpdating={catUpdating}/>}
+        </div>
+
+        {/* BetTv strip */}
+        <div style={{margin:'12px 16px 16px',background:'#F4F4F2',borderRadius:12,padding:'14px 16px'}}>
+          <div style={{display:'flex',alignItems:'flex-start'}}>
+            <span style={{fontSize:13,fontWeight:800,color:'#555',flexShrink:0,paddingTop:1,marginRight:10}}>BetTv</span>
+            <span style={{fontSize:13,color:'#888',lineHeight:1.6,flex:1,overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical'}}>{catUpdating?'Atualizando...':`${item.bettvPick||item.guruPick||'—'} · ${item.bettvReason||item.guruReason||'—'}`}</span>
+            <span style={{fontSize:15,fontWeight:900,color:'#111',flexShrink:0,marginLeft:10}}>{item.bettvConf||item.guruConf||0}%</span>
+          </div>
         </div>
       </div>
     </div>
@@ -2534,11 +2539,9 @@ function MobileSportCard({item, catKey, onSelect}) {
       </div>
 
       {/* ── ROWS ── */}
-      <div style={{borderTop:'1px solid #E0E0E0'}}>
       <SportRow logo={item.home?.logo} name={item.home?.name||'—'} pct={homePct} winner={homePct>0&&homePct>=awayPct&&homePct>=drawPct} catColor={catColor} catBg={catBg}/>
       <SportRow logo={item.away?.logo} name={item.away?.name||'—'} pct={awayPct} winner={awayPct>0&&awayPct>homePct&&awayPct>=drawPct} catColor={catColor} catBg={catBg}/>
       {drawPct>0&&<SportRow name="Empate" pct={drawPct} winner={false} isEmpate catColor={catColor} catBg={catBg}/>}
-      </div>
 
       {/* ── BETTV STRIP ── */}
       <div style={{margin:'12px 16px 16px',background:'#F4F4F2',borderRadius:12,padding:'14px 16px'}}>
