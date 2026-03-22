@@ -1268,79 +1268,81 @@ function KalshiSportCard({item, catKey, onSelect, catUpdating}) {
   const homePct=item.home?.pct||0
   const awayPct=item.away?.pct||0
   const drawPct=item.draw||0
+  const live=isActuallyLive, ongoing=isOngoing
+
+  function Row({logo,name,pct,winner,isEmpate}) {
+    const bc=winner?catColor:T.gray3
+    const bg=winner?catBg:T.white
+    return (
+      <div style={{display:'flex',alignItems:'center',gap:12,padding:'13px 20px',borderBottom:`1px solid ${T.border}`}}>
+        {isEmpate
+          ? <div style={{width:40,height:40,borderRadius:10,background:T.gray2,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:16,color:T.gray1}}>≡</div>
+          : <TeamLogo logo={logo} name={name} size={40}/>
+        }
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontSize:isEmpate?14:16,fontWeight:winner?800:600,color:isEmpate?T.gray1:T.black,marginBottom:5,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{name}</div>
+          <div style={{height:3,background:T.gray2,borderRadius:2,overflow:'hidden'}}>
+            <div style={{width:`${Math.max(4,pct)}%`,height:'100%',background:isEmpate?T.gray3:winner?catColor:T.gray3,borderRadius:2,transition:'width 0.6s'}}/>
+          </div>
+        </div>
+        <div style={{minWidth:58,textAlign:'center',padding:'6px 10px',borderRadius:999,border:`1.5px solid ${catUpdating?T.gray3:bc}`,color:catUpdating?T.gray1:winner?catColor:T.gray1,fontSize:14,fontWeight:800,background:catUpdating?T.white:bg,flexShrink:0,letterSpacing:'-0.02em'}}>
+          {catUpdating?'—':`${pct}%`}
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div style={{position:'relative',height:CARD_H,borderRadius:T.r.lg,flexShrink:0}}>
+    <div style={{position:'relative',height:CARD_H,borderRadius:16,flexShrink:0}}>
       <div onClick={()=>onSelect(item)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-        style={{height:'100%',background:predBg,borderRadius:T.r.lg,
-          border:`2px solid ${predBorder||(hov?'#C0C0BB':T.border)}`,
-          cursor:'pointer',boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',
-          transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden'}}>
+        style={{height:'100%',background:predBg,borderRadius:16,
+          border:`1.5px solid ${predBorder||(hov?'#C0C0BB':T.border)}`,
+          cursor:'pointer',boxShadow:hov?'0 8px 32px rgba(0,0,0,0.10)':'0 2px 8px rgba(0,0,0,0.06)',
+          transition:'box-shadow 0.18s,border-color 0.18s',display:'flex',flexDirection:'column',overflow:'hidden'}}>
 
         {/* predResult badge */}
-        {item.predResult&&<div style={{position:'absolute',top:8,right:40,zIndex:2,background:predBorder,color:'white',fontSize:9,fontWeight:800,borderRadius:4,padding:'2px 6px',letterSpacing:'0.05em',textTransform:'uppercase'}}>{item.predResult==='correct'?'✓ ACERTOU':item.predResult==='incorrect'?'✗ ERROU':'~ PARCIAL'}</div>}
+        {item.predResult&&<div style={{position:'absolute',top:10,right:48,zIndex:2,background:predBorder,color:'white',fontSize:9,fontWeight:800,borderRadius:4,padding:'2px 7px',letterSpacing:'0.06em',textTransform:'uppercase'}}>{item.predResult==='correct'?'✓ ACERTOU':item.predResult==='incorrect'?'✗ ERROU':'~ PARCIAL'}</div>}
 
-        {/* Header */}
-        <div style={{padding:'11px 14px 9px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
-          <div style={{display:'flex',alignItems:'center',gap:8,minWidth:0}}>
-            <CatIconBox catKey={catKey}/>
-            <span style={{fontSize:11,fontWeight:700,color:catColor,letterSpacing:'0.04em',textTransform:'uppercase',whiteSpace:'nowrap'}}>{label}</span>
+        {/* ── HEADER ── */}
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 20px 12px',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
+          <div style={{display:'flex',alignItems:'center',gap:12}}>
+            <div style={{width:44,height:44,borderRadius:12,background:catBg,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+              {(()=>{const I=TAB_ICON[catKey]||IcoLottery; return <I size={22} color={catColor}/>})()}
+            </div>
+            <span style={{fontSize:13,fontWeight:800,color:catColor,letterSpacing:'0.04em',textTransform:'uppercase'}}>{label}</span>
           </div>
-          <div style={{display:'flex',alignItems:'center',gap:8,minWidth:0}}>
-            <span style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.competition}</span>
+          <div style={{display:'flex',alignItems:'center',gap:10}}>
+            <span style={{fontSize:12,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:200}}>{item.competition}</span>
             <ShareBtn item={item} catKey={catKey}/>
           </div>
         </div>
 
-        {/* Title */}
-        <div style={{padding:'10px 14px 8px',flexShrink:0}}>
-          <div style={{fontSize:17,fontWeight:800,color:T.black,lineHeight:1.3,letterSpacing:'-0.03em',overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',marginBottom:4}}>{item.title}</div>
-          <div style={{display:'flex',alignItems:'center',gap:4}}>
-            {(isActuallyLive||isOngoing)&&<><IcoLiveDot/><span style={{fontSize:11,fontWeight:700,color:isActuallyLive?T.red:'#D97706',marginLeft:3}}>{isActuallyLive?'AO VIVO':'EM ANDAMENTO'}</span><span style={{fontSize:11,color:T.gray1,margin:'0 2px'}}> · </span></>}
-            <span style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{(item.statusLabel||"").replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,"")}</span>
+        {/* ── TITLE + STATUS ── */}
+        <div style={{padding:'16px 20px 14px',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
+          <div style={{fontSize:20,fontWeight:900,color:T.black,lineHeight:1.2,letterSpacing:'-0.04em',marginBottom:6}}>{item.title}</div>
+          <div style={{display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
+            {(live||ongoing)&&<>
+              <IcoLiveDot/>
+              <span style={{fontSize:12,fontWeight:800,color:live?T.red:'#D97706'}}>{live?'AO VIVO':'EM ANDAMENTO'}</span>
+              <span style={{fontSize:12,color:T.gray1}}>·</span>
+            </>}
+            <span style={{fontSize:12,color:T.gray1}}>{(item.statusLabel||"").replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,"")}</span>
           </div>
         </div>
 
-        {/* Times + Empate */}
-        <div style={{padding:'0 14px',flex:1,minHeight:0}}>
-          {(()=>{const s=item.home||{},w=homePct>awayPct&&homePct>drawPct; return (
-            <div style={{display:'flex',alignItems:'center',gap:8,padding:'8px 0',borderBottom:`1px solid ${T.border}`}}>
-              <TeamLogo logo={s.logo} name={s.name} size={26}/>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:15,fontWeight:w?800:600,color:T.black,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',marginBottom:3}}>{s.name}</div>
-                <div style={{height:2,background:T.gray2,borderRadius:1,overflow:'hidden'}}><div style={{width:`${Math.max(5,homePct)}%`,height:'100%',background:w?catColor:T.gray3,borderRadius:1,transition:'width 0.5s'}}/></div>
-              </div>
-              <div style={{minWidth:48,textAlign:'center',padding:'4px 8px',borderRadius:T.r.pill,border:`1.5px solid ${w?catColor:T.gray3}`,color:w?catColor:T.gray1,fontSize:13,fontWeight:800,background:w?catBg:T.white,flexShrink:0}}>{catUpdating?'—':`${homePct}%`}</div>
-            </div>
-          )})()}
-          {drawPct>0&&(
-            <div style={{display:'flex',alignItems:'center',gap:8,padding:'6px 0',borderBottom:`1px solid ${T.border}`}}>
-              <div style={{width:26,height:26,borderRadius:'50%',background:T.gray2,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:11,fontWeight:700,color:T.gray1}}>≡</div>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:13,fontWeight:500,color:T.gray1,marginBottom:3}}>Empate</div>
-                <div style={{height:2,background:T.gray2,borderRadius:1,overflow:'hidden'}}><div style={{width:`${Math.max(5,drawPct)}%`,height:'100%',background:T.gray3,borderRadius:1,transition:'width 0.5s'}}/></div>
-              </div>
-              <div style={{minWidth:48,textAlign:'center',padding:'4px 8px',borderRadius:T.r.pill,border:`1.5px solid ${T.gray3}`,color:T.gray1,fontSize:13,fontWeight:800,background:T.white,flexShrink:0}}>{catUpdating?'—':`${drawPct}%`}</div>
-            </div>
-          )}
-          {(()=>{const s=item.away||{},w=awayPct>homePct&&awayPct>drawPct; return (
-            <div style={{display:'flex',alignItems:'center',gap:8,padding:'8px 0'}}>
-              <TeamLogo logo={s.logo} name={s.name} size={26}/>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:15,fontWeight:w?800:600,color:T.black,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',marginBottom:3}}>{s.name}</div>
-                <div style={{height:2,background:T.gray2,borderRadius:1,overflow:'hidden'}}><div style={{width:`${Math.max(5,awayPct)}%`,height:'100%',background:w?catColor:T.gray3,borderRadius:1,transition:'width 0.5s'}}/></div>
-              </div>
-              <div style={{minWidth:48,textAlign:'center',padding:'4px 8px',borderRadius:T.r.pill,border:`1.5px solid ${w?catColor:T.gray3}`,color:w?catColor:T.gray1,fontSize:13,fontWeight:800,background:w?catBg:T.white,flexShrink:0}}>{catUpdating?'—':`${awayPct}%`}</div>
-            </div>
-          )})()}
+        {/* ── TEAMS + DRAW ── */}
+        <div style={{flex:1,minHeight:0,display:'flex',flexDirection:'column',justifyContent:'center'}}>
+          <Row logo={item.home?.logo} name={item.home?.name||'—'} pct={homePct} winner={homePct>awayPct&&homePct>drawPct}/>
+          <Row logo={item.away?.logo} name={item.away?.name||'—'} pct={awayPct} winner={awayPct>homePct&&awayPct>drawPct}/>
+          {drawPct>0&&<Row name="Empate" pct={drawPct} winner={false} isEmpate/>}
         </div>
 
-        {/* BetTv strip */}
-        <div style={{margin:'8px 14px 11px',background:'#F8F8F5',borderRadius:T.r.sm,padding:'7px 10px',flexShrink:0}}>
-          <div style={{display:'flex',alignItems:'flex-start',gap:6}}>
-            <span style={{fontSize:10,fontWeight:700,color:catColor,whiteSpace:'nowrap',paddingTop:1,flexShrink:0}}>BetTv</span>
-            <span style={{fontSize:11,color:T.gray1,lineHeight:1.4,flex:1,overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical'}}>{catUpdating?'Atualizando...':`${item.bettvPick||item.guruPick||'—'} · ${item.bettvReason||item.guruReason||'—'}`}</span>
-            <span style={{fontSize:11,fontWeight:800,color:T.black,flexShrink:0,paddingLeft:4}}>{item.bettvConf||item.guruConf||0}%</span>
+        {/* ── BETTV STRIP ── */}
+        <div style={{margin:'0 16px 14px',background:'#F5F5F3',borderRadius:12,padding:'10px 14px',flexShrink:0}}>
+          <div style={{display:'flex',alignItems:'flex-start',gap:8}}>
+            <span style={{fontSize:11,fontWeight:800,color:catColor,flexShrink:0,paddingTop:1}}>BetTv</span>
+            <span style={{fontSize:12,color:'#444',lineHeight:1.5,flex:1,overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical'}}>{catUpdating?'Atualizando...':`${item.bettvPick||item.guruPick||'—'} · ${item.bettvReason||item.guruReason||'—'}`}</span>
+            <span style={{fontSize:13,fontWeight:900,color:T.black,flexShrink:0,paddingLeft:6}}>{item.bettvConf||item.guruConf||0}%</span>
           </div>
         </div>
 
@@ -2347,129 +2349,91 @@ function MobileHeader({tab, onTab, page, onPage, updating, countdown, progress, 
   )
 }
 
-// ─── MOBILE SPORT CARD — redesenhado ─────────────────────────────────────────
 function MobileSportCard({item, catKey, onSelect}) {
-  const catColor = T.cat[catKey]||T.black
-  const catBg    = T.catBg[catKey]||T.gray2
-  const label    = TABS.find(t=>t.key===catKey)?.label||catKey
-
-  const isActuallyLive = (() => {
-    if (!item.startTime) return false
-    const now=Date.now(), start=new Date(item.startTime).getTime()
-    if (isNaN(start)) return false
-    if (item.multiDay) return now>=start && now<=start+7*24*60*60*1000
+  const catColor=T.cat[catKey]||T.black
+  const catBg=T.catBg[catKey]||T.gray2
+  const label=TABS.find(t=>t.key===catKey)?.label||catKey
+  const isActuallyLive=(()=>{
+    if(!item.startTime) return false
+    const now=Date.now(),start=new Date(item.startTime).getTime()
+    if(isNaN(start)) return false
+    if(item.multiDay) return now>=start&&now<=start+7*24*60*60*1000
     const dur=({futebol:130,basquete:180,tenis:300,mma:420,esports:240,golf:360}[catKey]||180)*60*1000
-    return now>=start && now<=start+dur
+    return now>=start&&now<=start+dur
   })()
+  const predBorder=item.predResult==='correct'?'#16A34A':item.predResult==='incorrect'?T.red:item.predResult==='partial'?'#D97706':null
+  const predBg=item.predResult==='correct'?'#F0FDF4':item.predResult==='incorrect'?'#FEF2F2':item.predResult==='partial'?'#FFFBEB':T.white
+  const homePct=item.home?.pct||0
+  const awayPct=item.away?.pct||0
+  const drawPct=item.draw||0
+  const live=!item.multiDay&&isActuallyLive
+  const ongoing=item.multiDay&&isActuallyLive
 
-  const homePct = item.home?.pct||0
-  const awayPct = item.away?.pct||0
-  const drawPct = item.draw||0
+  function Row({logo,name,pct,winner,isEmpate}) {
+    return (
+      <div style={{display:'flex',alignItems:'center',gap:12,padding:'13px 16px',borderBottom:`1px solid ${T.border}`}}>
+        {isEmpate
+          ? <div style={{width:38,height:38,borderRadius:10,background:T.gray2,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:15,color:T.gray1}}>≡</div>
+          : <TeamLogo logo={logo} name={name} size={38}/>
+        }
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontSize:isEmpate?14:17,fontWeight:winner?800:600,color:isEmpate?T.gray1:T.black,marginBottom:5,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{name}</div>
+          <div style={{height:3,background:T.gray2,borderRadius:2,overflow:'hidden'}}>
+            <div style={{width:`${Math.max(4,pct)}%`,height:'100%',background:isEmpate?T.gray3:winner?catColor:T.gray3,borderRadius:2,transition:'width 0.6s'}}/>
+          </div>
+        </div>
+        <div style={{minWidth:56,textAlign:'center',padding:'6px 10px',borderRadius:999,border:`1.5px solid ${winner?catColor:T.gray3}`,color:winner?catColor:T.gray1,fontSize:14,fontWeight:800,background:winner?catBg:T.white,flexShrink:0}}>
+          {pct}%
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div onClick={()=>onSelect(item)}
-      style={{background:item.predResult==='correct'?'#F0FDF4':item.predResult==='incorrect'?'#FEF2F2':item.predResult==='partial'?'#FFFBEB':T.white,
-        borderRadius:T.r.lg,border:`2px solid ${item.predResult==='correct'?'#16A34A':item.predResult==='incorrect'?'#E53935':item.predResult==='partial'?'#D97706':T.border}`,
-        marginBottom:10,cursor:'pointer',position:'relative',
-        boxShadow:'0 1px 4px rgba(0,0,0,0.05)'}}>
+      style={{background:predBg,borderRadius:16,border:`1.5px solid ${predBorder||T.border}`,
+        marginBottom:12,cursor:'pointer',position:'relative',
+        boxShadow:'0 2px 8px rgba(0,0,0,0.06)'}}>
 
-      {/* Header: categoria + competição + share */}
-      <div style={{padding:'10px 14px 0',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-        <div style={{display:'flex',alignItems:'center',gap:6}}>
-          <div style={{width:22,height:22,borderRadius:5,background:catBg,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-            {(() => { const I=TAB_ICON[catKey]||IcoLottery; return <I size={12} color={catColor}/> })()}
+      {/* Header */}
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 16px 12px',borderBottom:`1px solid ${T.border}`}}>
+        <div style={{display:'flex',alignItems:'center',gap:10}}>
+          <div style={{width:40,height:40,borderRadius:10,background:catBg,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+            {(()=>{const I=TAB_ICON[catKey]||IcoLottery; return <I size={20} color={catColor}/>})()}
           </div>
-          <span style={{fontSize:10,fontWeight:700,color:catColor,letterSpacing:'0.04em',textTransform:'uppercase'}}>{label}</span>
+          <span style={{fontSize:12,fontWeight:800,color:catColor,letterSpacing:'0.04em',textTransform:'uppercase'}}>{label}</span>
         </div>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
-          <span style={{fontSize:10,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:130}}>{item.competition}</span>
-          {/* Share inline — correctly vertically centered */}
+          <span style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:160}}>{item.competition}</span>
           <ShareBtn item={item} catKey={catKey}/>
         </div>
       </div>
 
-      {/* Título + status */}
-      <div style={{padding:'6px 14px 8px'}}>
-        <div style={{fontSize:17,fontWeight:800,color:T.black,letterSpacing:'-0.03em',lineHeight:1.25,marginBottom:3}}>{item.title}</div>
-        <div style={{display:'flex',alignItems:'center',gap:4}}>
-          {isActuallyLive&&<><IcoLiveDot/><span style={{fontSize:10,fontWeight:700,color:item.multiDay?'#D97706':T.red,marginLeft:2}}>{item.multiDay?'EM ANDAMENTO':'AO VIVO'}</span><span style={{fontSize:10,color:T.gray1,margin:'0 3px'}}>·</span></>}
-          <span style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{(item.statusLabel||"").replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,"")}</span>
+      {/* Title + status */}
+      <div style={{padding:'14px 16px 12px',borderBottom:`1px solid ${T.border}`}}>
+        <div style={{fontSize:20,fontWeight:900,color:T.black,lineHeight:1.2,letterSpacing:'-0.04em',marginBottom:6}}>{item.title}</div>
+        <div style={{display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
+          {(live||ongoing)&&<>
+            <IcoLiveDot/>
+            <span style={{fontSize:12,fontWeight:800,color:live?T.red:'#D97706'}}>{live?'AO VIVO':'EM ANDAMENTO'}</span>
+            <span style={{fontSize:12,color:T.gray1}}>·</span>
+          </>}
+          <span style={{fontSize:12,color:T.gray1}}>{(item.statusLabel||"").replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,"")}</span>
         </div>
       </div>
 
-      {/* Times + Empate + probabilidades */}
-      <div style={{padding:'0 14px',borderTop:`1px solid ${T.border}`}}>
-        {/* Home */}
-        {(()=>{
-          const side=item.home||{}
-          const winner=homePct>awayPct && homePct>drawPct
-          return (
-            <div style={{display:'flex',alignItems:'center',gap:10,padding:'9px 0',borderBottom:`1px solid ${T.border}`}}>
-              <TeamLogo logo={side.logo} name={side.name} size={28}/>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:17,fontWeight:winner?800:600,color:T.black,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',marginBottom:4}}>{side.name}</div>
-                <div style={{height:3,borderRadius:2,background:T.gray2,overflow:'hidden'}}>
-                  <div style={{width:`${Math.max(5,homePct)}%`,height:'100%',background:winner?catColor:T.gray3,borderRadius:2,transition:'width 0.5s'}}/>
-                </div>
-              </div>
-              <div style={{minWidth:52,textAlign:'center',padding:'5px 10px',borderRadius:T.r.pill,
-                border:`1.5px solid ${winner?catColor:T.gray3}`,
-                color:winner?catColor:T.gray1,fontSize:14,fontWeight:800,
-                background:winner?catBg:T.white,flexShrink:0}}>
-                {homePct}%
-              </div>
-            </div>
-          )
-        })()}
-
-        {/* Empate */}
-        {drawPct>0&&(
-          <div style={{display:'flex',alignItems:'center',gap:10,padding:'7px 0',borderBottom:`1px solid ${T.border}`}}>
-            <div style={{width:28,height:28,borderRadius:'50%',background:T.gray2,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:10,fontWeight:700,color:T.gray1}}>≡</div>
-            <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:14,fontWeight:500,color:T.gray1,marginBottom:4}}>Empate</div>
-              <div style={{height:3,borderRadius:2,background:T.gray2,overflow:'hidden'}}>
-                <div style={{width:`${Math.max(5,drawPct)}%`,height:'100%',background:T.gray3,borderRadius:2,transition:'width 0.5s'}}/>
-              </div>
-            </div>
-            <div style={{minWidth:52,textAlign:'center',padding:'5px 10px',borderRadius:T.r.pill,
-              border:`1.5px solid ${T.gray3}`,color:T.gray1,fontSize:14,fontWeight:800,
-              background:T.white,flexShrink:0}}>
-              {drawPct}%
-            </div>
-          </div>
-        )}
-
-        {/* Away */}
-        {(()=>{
-          const side=item.away||{}
-          const winner=awayPct>homePct && awayPct>drawPct
-          return (
-            <div style={{display:'flex',alignItems:'center',gap:10,padding:'9px 0'}}>
-              <TeamLogo logo={side.logo} name={side.name} size={28}/>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:17,fontWeight:winner?800:600,color:T.black,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',marginBottom:4}}>{side.name}</div>
-                <div style={{height:3,borderRadius:2,background:T.gray2,overflow:'hidden'}}>
-                  <div style={{width:`${Math.max(5,awayPct)}%`,height:'100%',background:winner?catColor:T.gray3,borderRadius:2,transition:'width 0.5s'}}/>
-                </div>
-              </div>
-              <div style={{minWidth:52,textAlign:'center',padding:'5px 10px',borderRadius:T.r.pill,
-                border:`1.5px solid ${winner?catColor:T.gray3}`,
-                color:winner?catColor:T.gray1,fontSize:14,fontWeight:800,
-                background:winner?catBg:T.white,flexShrink:0}}>
-                {awayPct}%
-              </div>
-            </div>
-          )
-        })()}
-      </div>
+      {/* Teams + Draw */}
+      <Row logo={item.home?.logo} name={item.home?.name||'—'} pct={homePct} winner={homePct>awayPct&&homePct>drawPct}/>
+      <Row logo={item.away?.logo} name={item.away?.name||'—'} pct={awayPct} winner={awayPct>homePct&&awayPct>drawPct}/>
+      {drawPct>0&&<Row name="Empate" pct={drawPct} winner={false} isEmpate/>}
 
       {/* BetTv strip */}
-      <div style={{padding:'8px 14px',background:'#F8F8F6',display:'flex',alignItems:'flex-start',gap:7}}>
-        <span style={{fontSize:10,fontWeight:700,color:catColor,flexShrink:0,paddingTop:1,letterSpacing:'0.02em'}}>BetTv</span>
-        <span style={{fontSize:11,color:T.black,fontWeight:600,flexShrink:0}}>{item.bettvPick||item.guruPick||'—'}</span>
-        <span style={{fontSize:11,color:T.gray1,flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>· {item.bettvReason||item.guruReason||'—'}</span>
-        <span style={{fontSize:11,fontWeight:800,color:T.white,background:catColor,borderRadius:T.r.pill,padding:'2px 8px',flexShrink:0}}>{item.bettvConf||item.guruConf||0}%</span>
+      <div style={{margin:'0 12px 12px',background:'#F5F5F3',borderRadius:12,padding:'10px 14px'}}>
+        <div style={{display:'flex',alignItems:'flex-start',gap:8}}>
+          <span style={{fontSize:11,fontWeight:800,color:catColor,flexShrink:0,paddingTop:1}}>BetTv</span>
+          <span style={{fontSize:12,color:'#444',lineHeight:1.5,flex:1,overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical'}}>{item.bettvPick||item.guruPick||'—'} · {item.bettvReason||item.guruReason||'—'}</span>
+          <span style={{fontSize:13,fontWeight:900,color:T.black,flexShrink:0,paddingLeft:6}}>{item.bettvConf||item.guruConf||0}%</span>
+        </div>
       </div>
 
     </div>
