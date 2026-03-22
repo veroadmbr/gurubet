@@ -1064,9 +1064,7 @@ function KalshiLotoCard({lot, onSelect, catUpdating}) {
   const [hov,setHov]=useState(false)
   return (
     <div onClick={()=>onSelect(lot)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-      style={{height:CARD_H,background:T.white,borderRadius:T.r.lg,border:`2px solid ${item.predResult==='correct'?'#16A34A':item.predResult==='incorrect'?'#E53935':item.predResult==='partial'?'#D97706':(hov?'#C0C0BB':T.border)}`,cursor:'pointer',background:item.predResult==='correct'?'#F0FDF4':item.predResult==='incorrect'?'#FEF2F2':item.predResult==='partial'?'#FFFBEB':T.white,boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden',position:'relative'}}>
-      {item.predResult&&<div style={{position:'absolute',top:8,right:8,zIndex:2,fontSize:9,fontWeight:800,borderRadius:T.r.sm,padding:'2px 7px',letterSpacing:'0.04em',background:item.predResult==='correct'?'#16A34A':item.predResult==='incorrect'?'#E53935':'#D97706',color:'white'}}>{item.predResult==='correct'?'✓ ACERTOU':item.predResult==='incorrect'?'✗ ERROU':'~ PARCIAL'}</div>}
-      {item.predNote&&item.predResult&&<div style={{background:'rgba(0,0,0,0.04)',padding:'4px 10px',fontSize:10,color:'#374151',borderBottom:`1px solid ${T.border}`}}>{item.predNote}</div>}
+      style={{height:CARD_H,background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C0C0BB':T.border}`,cursor:'pointer',boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden'}}>
 
       {/* Header */}
       <div style={{padding:'11px 14px 9px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
@@ -1093,8 +1091,8 @@ function KalshiLotoCard({lot, onSelect, catUpdating}) {
       <div style={{padding:'0 14px 7px',flexShrink:0}}>
         <div style={{fontSize:10,fontWeight:700,color:T.gray1,letterSpacing:'0.05em',marginBottom:5}}>ÚLTIMO RESULTADO</div>
         <div style={{display:'flex',gap:3,flexWrap:'wrap'}}>
-          {lot.ultimoResultado.slice(0,8).map(n=><Ball key={n} n={n} size={22}/>)}
-          {lot.ultimoResultado.length>8&&<span style={{fontSize:10,color:T.gray1,alignSelf:'center',marginLeft:2}}>+{lot.ultimoResultado.length-8}</span>}
+          {(lot.ultimoResultado||[]).slice(0,8).map(n=><Ball key={n} n={n} size={22}/>)}
+          {(lot.ultimoResultado||[]).length>8&&<span style={{fontSize:10,color:T.gray1,alignSelf:'center',marginLeft:2}}>+{(lot.ultimoResultado||[]).length-8}</span>}
         </div>
       </div>
 
@@ -1150,7 +1148,7 @@ function LotoCard({lot, onSelect, catUpdating}) {
         <div style={{height:1,background:T.border,marginBottom:12}}/>
         <div style={{marginBottom:12}}>
           <div style={{fontSize:10,fontWeight:700,color:T.gray1,letterSpacing:'0.05em',marginBottom:6}}>ÚLTIMO RESULTADO</div>
-          <div style={{display:'flex',gap:4,flexWrap:'wrap'}}>{lot.ultimoResultado.map(n=><Ball key={n} n={n} size={24}/>)}</div>
+          <div style={{display:'flex',gap:4,flexWrap:'wrap'}}>{(lot.ultimoResultado||[]).map(n=><Ball key={n} n={n} size={24}/>)}</div>
         </div>
         <div style={{background:T.bg,borderRadius:T.r.md,padding:'11px 13px'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
