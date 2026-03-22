@@ -45,6 +45,8 @@ const IcoMoedas    = ({size=16,color='currentColor'}) => <svg width={size} heigh
 
 const IcoGolf = ({size=16,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'block',flexShrink:0}}><circle cx="12" cy="18" r="3"/><path d="M12 15V3l4 2"/></svg>
 
+const IcoEleicoes = ({size=16,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'block',flexShrink:0}}><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+
 const TAB_ICON = {
   todos: IcoAll, loterias: IcoLottery, futebol: IcoSoccer, basquete: IcoBasket, mma: IcoMMA, tenis: IcoTennis, esports: IcoEsports,
   crypto: IcoCrypto, moedas: IcoMoedas,
@@ -328,6 +330,121 @@ const MOEDAS_DATA = [
 ]
 
 
+// ─── ELEIÇÕES 2026 ───────────────────────────────────────────────────────────
+// Fontes: Datafolha 07/03, Quaest 11/03, Meio/Ideia 11/03, Futura 11/03
+// Todos registrados no TSE — margem de erro ±2pp, nível confiança 95%
+
+const ELEICOES_DATA = [
+
+  // ── CARD 1: CENÁRIO GERAL — Quem vai ao 2º turno ──
+  {
+    id:'el-cenario',
+    tipo:'cenario',
+    titulo:'Cenário Geral — 1º Turno',
+    subtitulo:'Consenso Datafolha + Quaest + Meio/Ideia · Mar/2026',
+    bettvPick:'2º Turno: Lula × Flávio',
+    bettvConf:62,
+    bettvReason:'Todas as pesquisas apontam disputa entre Lula (PT) e Flávio Bolsonaro (PL). Campo da direita fragmentado favorece chegada dos dois ao 2º turno.',
+    candidatos:[
+      {nome:'Lula (PT)',          pct:39, tendencia:'queda',  cor:'#E53935', partido:'PT',          cargo:'Presidente — candidato à reeleição'},
+      {nome:'Flávio Bolsonaro',   pct:34, tendencia:'alta',   cor:'#1565C0', partido:'PL',          cargo:'Senador-RJ — filho de Jair Bolsonaro'},
+      {nome:'Tarcísio de Freitas',pct:21, tendencia:'estavel',cor:'#2E7D32', partido:'Republicanos',cargo:'Gov. São Paulo'},
+      {nome:'Ratinho Junior',     pct:7,  tendencia:'estavel',cor:'#F57F17', partido:'PSD',         cargo:'Gov. Paraná'},
+      {nome:'Romeu Zema',         pct:3,  tendencia:'estavel',cor:'#37474F', partido:'Novo',        cargo:'Gov. Minas Gerais'},
+      {nome:'Outros/Indecisos',   pct:16, tendencia:'estavel',cor:'#9E9E9E', partido:'—',           cargo:'Brancos, nulos, indecisos'},
+    ],
+    fonte:'Datafolha (07/03) + Quaest (11/03) · ±2pp · 95% confiança',
+  },
+
+  // ── CARD 2: DISPUTA PRINCIPAL — Lula vs Flávio ──
+  {
+    id:'el-lula-flavio',
+    tipo:'duelo',
+    titulo:'Lula × Flávio — 1º Turno',
+    subtitulo:'Cenário principal consolidado em todas as pesquisas',
+    bettvPick:'2º Turno garantido',
+    bettvConf:75,
+    bettvReason:'Lula 39% × Flávio 34% no Datafolha. Quaest mostra empate técnico 35% × 32%. Campo da direita unificado em Flávio após inelegibilidade de Jair.',
+    c1:{nome:'Lula (PT)',        pct:39, cor:'#E53935', desc:'Reeleição · Presidente em exercício'},
+    c2:{nome:'Flávio Bolsonaro', pct:34, cor:'#1565C0', desc:'Principal rival · Senador-RJ'},
+    rejeicao1:44, rejeicao2:35,
+    obs:'Jair Bolsonaro inelegível até 2030 — TSE BR-03715/2026',
+    fonte:'Datafolha 07/03/2026 — 2.004 entrevistados, 137 municípios',
+  },
+
+  // ── CARD 3: SEGUNDO TURNO — Simulação Lula × Flávio ──
+  {
+    id:'el-2turno',
+    tipo:'duelo',
+    titulo:'2º Turno — Lula × Flávio',
+    subtitulo:'Empate técnico histórico · Disputa mais acirrada desde 2022',
+    bettvPick:'Empate técnico — Lula leve favorito',
+    bettvConf:52,
+    bettvReason:'Quaest: 41% × 41% — empate exato. Datafolha: 46% × 43%. Lula em queda (era 45%→41%), Flávio em alta (era 38%→41%). Tendência favorece Flávio.',
+    c1:{nome:'Lula (PT)',        pct:46, cor:'#E53935', desc:'Em queda: era 51% (dez/25) → 46%'},
+    c2:{nome:'Flávio Bolsonaro', pct:43, cor:'#1565C0', desc:'Em alta: era 36% (dez/25) → 43%'},
+    rejeicao1:44, rejeicao2:35,
+    obs:'Quaest (11/03): empate em 41%×41%. Datafolha (07/03): 46%×43%. ±2pp.',
+    fonte:'Quaest 11/03 + Datafolha 07/03/2026',
+  },
+
+  // ── CARD 4: TARCÍSIO — o nome do centro-direita ──
+  {
+    id:'el-tarcisio',
+    tipo:'candidato',
+    titulo:'Tarcísio de Freitas',
+    subtitulo:'Gov. São Paulo · Republicanos — Candidatura incerta',
+    bettvPick:'Não candidato em 2026',
+    bettvConf:58,
+    bettvReason:'Tarcísio declarou apoio a Flávio Bolsonaro. Se candidato: 1º turno 21% (Datafolha), empataria 2º turno com Lula (Quaest 43%×43%). Forte em SP e Sul.',
+    pct1turno:21,
+    pct2turno:43,
+    tendencia:'estavel',
+    rejeicao:11,
+    pontos:['Gov. SP com aprovação acima de 55%','Forte no Sul e interior paulista','Apoio à candidatura de Flávio no momento','Poderia mudar estratégia até mai/2026'],
+    fonte:'Datafolha 07/03 + Quaest dez/2025',
+  },
+
+  // ── CARD 5: APROVAÇÃO LULA ──
+  {
+    id:'el-aprovacao',
+    tipo:'aprovacao',
+    titulo:'Aprovação do Governo Lula',
+    subtitulo:'Barómetro mensal — Quaest/Datafolha · Mar/2026',
+    bettvPick:'Aprovação em queda',
+    bettvConf:68,
+    bettvReason:'57% dos brasileiros consideram que Lula não deveria se candidatar à reeleição (Ipsos dez/25). Aprovação pressionada por fiscal e Selic alta.',
+    aprovacao:42,
+    reprovacao:38,
+    regular:20,
+    naoDeveCandidatar:57,
+    obs:'44% rejeição total (não votaria de jeito nenhum) — maior que qualquer adversário',
+    fonte:'Quaest + Ipsos · Mar/2026',
+  },
+
+  // ── CARD 6: CALENDÁRIO ELEITORAL ──
+  {
+    id:'el-calendario',
+    tipo:'calendario',
+    titulo:'Calendário Eleitoral 2026',
+    subtitulo:'TSE — Datas oficiais confirmadas',
+    bettvPick:'1º Turno: 04/out/2026',
+    bettvConf:99,
+    bettvReason:'Datas definidas pelo TSE. 1º turno em 4 de outubro, 2º turno (se necessário) em 25 de outubro de 2026.',
+    eventos:[
+      {data:'Abr/2026', evento:'Prazo final para filiação partidária', tipo:'prazo'},
+      {data:'Mai/2026', evento:'Definição de candidaturas pelos partidos', tipo:'prazo'},
+      {data:'Jun/2026', evento:'Início do período eleitoral oficial (TSE)', tipo:'marco'},
+      {data:'Ago/2026', evento:'Início da propaganda eleitoral gratuita', tipo:'marco'},
+      {data:'04 Out 2026', evento:'1º Turno — Eleição Presidencial', tipo:'eleicao'},
+      {data:'25 Out 2026', evento:'2º Turno (se necessário)', tipo:'eleicao'},
+      {data:'01 Jan 2027', evento:'Posse do novo presidente', tipo:'posse'},
+    ],
+    fonte:'TSE — Calendário oficial 2026',
+  },
+]
+
+
 const TABS = [
   { key:'todos',    label:'Todos'     },
   { key:'loterias', label:'Loterias'  },
@@ -337,6 +454,7 @@ const TABS = [
   { key:'tenis',    label:'Tênis'     },
   { key:'esports',  label:'E-sports'  },
   { key:'golf',     label:'Golf'      },
+  { key:'eleicoes', label:'Eleições'  },
   { key:'crypto',   label:'Crypto'    },
   { key:'moedas',   label:'Câmbio'    },
 ]
@@ -2187,6 +2305,7 @@ function MobileEventsList({tab, appData, onSelect, onBack, updating, countdown, 
   const isTodos  = tab==='todos'
   const isCrypto = tab==='crypto'
   const isMoedas = tab==='moedas'
+  const isEleicoes = tab==='eleicoes'
   const catLabel = TABS.find(t=>t.key===tab)?.label || 'Eventos'
   const catColor = T.cat[tab]||T.black
   const catBg    = T.catBg[tab]||T.gray2
@@ -2238,7 +2357,7 @@ function MobileEventsList({tab, appData, onSelect, onBack, updating, countdown, 
         </div>
 
         {/* Filter pills */}
-        {!isLoto&&!isCrypto&&!isMoedas&&(
+        {!isLoto&&!isCrypto&&!isMoedas&&!isEleicoes&&(
           <div style={{display:'flex',gap:6,padding:'0 16px 12px',overflowX:'auto',scrollbarWidth:'none'}}>
             {[
               {f:'all',label:'Todos',count:isTodos?allEvents.length:espItems.length},
@@ -2548,6 +2667,149 @@ function MoedasCard({item, onSelect}) {
 }
 
 
+
+// ─── ELEIÇÕES CARDS ──────────────────────────────────────────────────────────
+function EleicaoCard({item, onSelect}) {
+  const [hov,setHov]=useState(false)
+  const catColor = T.cat.eleicoes||'#7C3AED'
+  const catBg    = T.catBg.eleicoes||'#EDE9FE'
+
+  const TIPO_LABEL = {
+    cenario:'Cenário Geral', duelo:'Duelo Direto',
+    candidato:'Candidato', aprovacao:'Aprovação', calendario:'Calendário',
+  }
+  const pickColor = item.bettvConf>=65?'#16A34A':item.bettvConf>=50?'#D97706':'#6B7280'
+
+  return (
+    <div onClick={()=>onSelect&&onSelect(item)}
+      onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+      style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#A78BFA':T.border}`,
+        boxShadow:hov?'0 4px 20px rgba(124,58,237,0.12)':'0 1px 3px rgba(0,0,0,0.04)',
+        transition:'all 0.15s',cursor:'pointer',overflow:'hidden',display:'flex',flexDirection:'column'}}>
+
+      {/* Header */}
+      <div style={{padding:'11px 14px 9px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`}}>
+        <div style={{display:'flex',alignItems:'center',gap:8}}>
+          <div style={{width:22,height:22,borderRadius:6,background:catBg,display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <IcoEleicoes size={12} color={catColor}/>
+          </div>
+          <span style={{fontSize:11,fontWeight:700,color:catColor,letterSpacing:'0.04em',textTransform:'uppercase'}}>ELEIÇÕES 2026</span>
+        </div>
+        <span style={{fontSize:10,color:T.gray1,fontWeight:600}}>{TIPO_LABEL[item.tipo]||''}</span>
+      </div>
+
+      {/* Title */}
+      <div style={{padding:'12px 14px 8px'}}>
+        <div style={{fontSize:16,fontWeight:800,color:T.black,letterSpacing:'-0.03em',marginBottom:3}}>{item.titulo}</div>
+        <div style={{fontSize:11,color:T.gray1}}>{item.subtitulo}</div>
+      </div>
+
+      {/* Content by type */}
+      <div style={{padding:'0 14px',flex:1}}>
+
+        {/* CENÁRIO — barra de candidatos */}
+        {item.tipo==='cenario'&&item.candidatos&&(
+          <div style={{display:'flex',flexDirection:'column',gap:5,paddingBottom:8}}>
+            {item.candidatos.slice(0,4).map((c,i)=>(
+              <div key={i} style={{display:'flex',alignItems:'center',gap:8}}>
+                <div style={{width:80,fontSize:11,fontWeight:i<2?700:500,color:T.black,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{c.nome.split(' ')[0]}</div>
+                <div style={{flex:1,height:6,background:T.gray2,borderRadius:3,overflow:'hidden'}}>
+                  <div style={{height:'100%',width:`${c.pct}%`,background:c.cor,borderRadius:3,transition:'width 0.6s'}}/>
+                </div>
+                <div style={{width:32,textAlign:'right',fontSize:12,fontWeight:700,color:c.cor}}>{c.pct}%</div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* DUELO — dois candidatos frente a frente */}
+        {item.tipo==='duelo'&&item.c1&&item.c2&&(
+          <div style={{display:'flex',alignItems:'center',gap:10,paddingBottom:10}}>
+            <div style={{flex:1,textAlign:'center'}}>
+              <div style={{fontSize:26,fontWeight:900,color:item.c1.cor}}>{item.c1.pct}%</div>
+              <div style={{fontSize:12,fontWeight:700,color:T.black}}>{item.c1.nome.split('(')[0].trim()}</div>
+              <div style={{fontSize:10,color:T.gray1}}>{item.c1.desc}</div>
+            </div>
+            <div style={{flexShrink:0,fontSize:14,fontWeight:800,color:T.gray1}}>VS</div>
+            <div style={{flex:1,textAlign:'center'}}>
+              <div style={{fontSize:26,fontWeight:900,color:item.c2.cor}}>{item.c2.pct}%</div>
+              <div style={{fontSize:12,fontWeight:700,color:T.black}}>{item.c2.nome.split('(')[0].trim()}</div>
+              <div style={{fontSize:10,color:T.gray1}}>{item.c2.desc}</div>
+            </div>
+          </div>
+        )}
+
+        {/* CANDIDATO */}
+        {item.tipo==='candidato'&&(
+          <div style={{paddingBottom:8}}>
+            <div style={{display:'flex',gap:16,marginBottom:8}}>
+              <div style={{textAlign:'center'}}>
+                <div style={{fontSize:22,fontWeight:900,color:'#7C3AED'}}>{item.pct1turno}%</div>
+                <div style={{fontSize:10,color:T.gray1}}>1º Turno</div>
+              </div>
+              <div style={{textAlign:'center'}}>
+                <div style={{fontSize:22,fontWeight:900,color:'#2E7D32'}}>{item.pct2turno}%</div>
+                <div style={{fontSize:10,color:T.gray1}}>2º Turno vs Lula</div>
+              </div>
+              <div style={{textAlign:'center'}}>
+                <div style={{fontSize:22,fontWeight:900,color:'#E53935'}}>{item.rejeicao}%</div>
+                <div style={{fontSize:10,color:T.gray1}}>Rejeição</div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* APROVAÇÃO */}
+        {item.tipo==='aprovacao'&&(
+          <div style={{paddingBottom:8}}>
+            <div style={{display:'flex',gap:3,height:20,borderRadius:4,overflow:'hidden',marginBottom:8}}>
+              <div style={{width:`${item.aprovacao}%`,background:'#16A34A',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                <span style={{fontSize:10,fontWeight:700,color:'white'}}>{item.aprovacao}%</span>
+              </div>
+              <div style={{width:`${item.regular}%`,background:'#F59E0B',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                <span style={{fontSize:10,fontWeight:700,color:'white'}}>{item.regular}%</span>
+              </div>
+              <div style={{flex:1,background:'#E53935',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                <span style={{fontSize:10,fontWeight:700,color:'white'}}>{item.reprovacao}%</span>
+              </div>
+            </div>
+            <div style={{display:'flex',gap:10,fontSize:10,color:T.gray1}}>
+              <span>🟢 Aprova</span><span>🟡 Regular</span><span>🔴 Reprova</span>
+            </div>
+          </div>
+        )}
+
+        {/* CALENDÁRIO */}
+        {item.tipo==='calendario'&&item.eventos&&(
+          <div style={{display:'flex',flexDirection:'column',gap:4,paddingBottom:8}}>
+            {item.eventos.slice(0,4).map((ev,i)=>(
+              <div key={i} style={{display:'flex',gap:8,alignItems:'flex-start'}}>
+                <span style={{fontSize:10,fontWeight:700,color:ev.tipo==='eleicao'?'#7C3AED':ev.tipo==='posse'?'#16A34A':T.gray1,whiteSpace:'nowrap',minWidth:72}}>{ev.data}</span>
+                <span style={{fontSize:11,color:T.black}}>{ev.evento}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* BetTv strip */}
+      <div style={{margin:'8px 14px',background:'#F5F3FF',borderRadius:T.r.sm,padding:'7px 10px'}}>
+        <div style={{display:'flex',alignItems:'flex-start',gap:6}}>
+          <span style={{fontSize:10,fontWeight:700,color:catColor,whiteSpace:'nowrap',paddingTop:1,flexShrink:0}}>BetTv</span>
+          <span style={{fontSize:11,color:T.gray1,lineHeight:1.4,flex:1,overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical'}}>{item.bettvReason}</span>
+          <span style={{fontSize:11,fontWeight:900,color:'white',background:pickColor,borderRadius:T.r.pill,padding:'2px 8px',flexShrink:0,whiteSpace:'nowrap'}}>{item.bettvConf}%</span>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div style={{padding:'4px 14px 10px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+        <span style={{fontSize:10,color:T.gray1}}>{item.fonte}</span>
+        <span style={{fontSize:11,fontWeight:700,color:catColor}}>{item.bettvPick}</span>
+      </div>
+    </div>
+  )
+}
+
 // ─── GLOBAL CSS ───────────────────────────────────────────────────────────────
 const CSS=`
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -2585,7 +2847,8 @@ export default function App() {
   const isTodos  = tab==='todos'
   const isCrypto = tab==='crypto'
   const isMoedas = tab==='moedas'
-  const isSpecial = isCrypto||isMoedas
+  const isEleicoes = tab==='eleicoes'
+  const isSpecial = isCrypto||isMoedas||isEleicoes
   const espData  = (!isSpecial&&!isTodos) ? appData.esportes[tab] : null
   const espItems = espData?.items||[]
   const cryptoItems = appData.crypto||CRYPTO_DATA
@@ -2619,7 +2882,8 @@ export default function App() {
     return now >= start && now <= start + 6*60*60*1000
   }
 
-  const currentItems = isLoto
+  const currentItems = isEleicoes ? ELEICOES_DATA
+    : isLoto
     ? appData.loterias.filter(l=>activeFilter==='all'||(activeFilter==='acumulado'&&l.acumulado))
     : isCrypto ? cryptoItems
     : isMoedas ? moedasItems
@@ -2646,7 +2910,7 @@ export default function App() {
             <div style={{maxWidth:1280,margin:'0 auto',padding:'28px 40px 56px'}}>
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:22}}>
                 <h1 style={{fontSize:24,fontWeight:800,color:T.black,letterSpacing:'-0.04em'}}>
-                  {isLoto?'Loterias':isCrypto?'Crypto · Previsões do Dia':isMoedas?'Câmbio · Taxa do Dia':isTodos?'Todos os Eventos':TABS.find(t=>t.key===tab)?.label}
+                  {isLoto?'Loterias':isEleicoes?'Eleições 2026 · Brasil':isCrypto?'Crypto · Previsões do Dia':isMoedas?'Câmbio · Taxa do Dia':isTodos?'Todos os Eventos':TABS.find(t=>t.key===tab)?.label}
                 </h1>
                 {!isCrypto&&!isMoedas&&(
                   <div style={{display:'flex',gap:7}}>
@@ -2664,7 +2928,9 @@ export default function App() {
                   ?currentItems.map(lot=><KalshiLotoCard key={lot.id} lot={lot} onSelect={setSelItem} catUpdating={catUpd}/>)
                   :isCrypto
                     ?currentItems.map(item=><CryptoCard key={item.id} item={item} onSelect={setSelItem}/>)
-                    :isMoedas
+                    :tab==='eleicoes'
+                      ?<div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:14,gridColumn:'1/-1'}}>{ELEICOES_DATA.map(el=><EleicaoCard key={el.id} item={el} onSelect={setSelItem}/>)}</div>
+                  :isMoedas
                       ?currentItems.map(item=><MoedasCard key={item.id} item={item} onSelect={setSelItem}/>)
                       :currentItems.map(item=><KalshiSportCard key={item.id} item={item} catKey={item._catKey||tab} onSelect={setSelItem} catUpdating={isTodos?false:catUpd}/>)
                 }
@@ -2762,7 +3028,7 @@ export default function App() {
       <div style={{padding:isTablet?'20px 24px':'12px 14px',maxWidth:isTablet?860:'100%',margin:'0 auto'}}>
 
         {/* Filter pills */}
-        {!isLoto&&!isCrypto&&!isMoedas&&(
+        {!isLoto&&!isCrypto&&!isMoedas&&!isEleicoes&&(
           <div style={{display:'flex',gap:6,marginBottom:14,overflowX:'auto',scrollbarWidth:'none',paddingBottom:2}}>
             {[
               {f:'all',     label:'Todos'},
@@ -2799,6 +3065,10 @@ export default function App() {
         ):isCrypto?(
           <div style={{display:'grid',gridTemplateColumns:isTablet?'repeat(2,1fr)':'1fr',gap:12}}>
             {currentItems.map(item=><CryptoCard key={item.id} item={item} onSelect={setSelItem}/>)}
+          </div>
+        ):tab==='eleicoes'?(
+          <div style={{display:'grid',gridTemplateColumns:isTablet?'repeat(2,1fr)':'1fr',gap:12}}>
+            {ELEICOES_DATA.map(el=><EleicaoCard key={el.id} item={el} onSelect={setSelItem}/>)}
           </div>
         ):isMoedas?(
           <div style={{display:'grid',gridTemplateColumns:isTablet?'repeat(2,1fr)':'1fr',gap:12}}>
