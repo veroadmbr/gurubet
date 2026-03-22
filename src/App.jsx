@@ -2379,13 +2379,7 @@ function DesktopNav({tab, onTab, page, onPage, updating, countdown, progress, fo
         <SearchBar appData={appData} onTab={onTab} onPage={onPage} onSelectItem={onSelectItem}/>
 
         {/* Right: status + button */}
-        <div style={{display:'flex',alignItems:'center',gap:10,flexShrink:0}}>
-          {updating&&(
-            <div style={{display:'flex',alignItems:'center',gap:6,background:'#FFF8E1',borderRadius:T.r.pill,padding:'6px 13px',border:'1px solid #FFE082'}}>
-              <div style={{width:7,height:7,borderRadius:'50%',border:'2px solid #F59E0B',borderTopColor:'transparent',animation:'spin 0.8s linear infinite',flexShrink:0}}/>
-              <span style={{fontSize:12,fontWeight:600,color:'#92400E'}}>{progress.current?`${progress.done}/${progress.total} — ${progress.current}...`:'Analisando...'}</span>
-            </div>
-          )}
+        <div style={{display:'flex',alignItems:'center',flexShrink:0}}>
           <button onClick={force} disabled={updating}
             style={{display:'flex',alignItems:'center',gap:7,background:updating?T.gray2:T.green,color:updating?T.gray1:T.white,border:'none',borderRadius:T.r.pill,padding:'8px 17px',fontSize:13,fontWeight:700,cursor:updating?'not-allowed':'pointer',transition:'background 0.15s',whiteSpace:'nowrap'}}>
             <IcoRefresh size={14} color={updating?T.gray1:T.white}/>
@@ -2428,14 +2422,6 @@ function MobileHeader({tab, onTab, page, onPage, updating, countdown, progress, 
           {updating?'Analisando...':'Atualizar'}
         </button>
       </div>
-
-      {/* Status bar */}
-      {updating&&progress.current&&(
-        <div style={{margin:'0 16px 6px',background:'#FFF8E1',borderRadius:T.r.sm,padding:'4px 12px',display:'flex',alignItems:'center',gap:7}}>
-          <div style={{width:7,height:7,borderRadius:'50%',border:'2px solid #F59E0B',borderTopColor:'transparent',animation:'spin 0.8s linear infinite',flexShrink:0}}/>
-          <span style={{fontSize:13,color:'#78350F'}}>{progress.done}/{progress.total} — <strong>{progress.current}</strong></span>
-        </div>
-      )}
 
       {/* Tab bar — scroll horizontal */}
       <div style={{display:'flex',overflowX:'auto',scrollbarWidth:'none',WebkitOverflowScrolling:'touch'}}>
