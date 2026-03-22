@@ -1320,20 +1320,21 @@ const CARD_H = 316
 
 
 // ─── SPORT CARD ROW ───────────────────────────────────────────────────────────
-function SportRow({logo,name,pct,winner,isEmpate,catColor,catBg,catUpdating}) {
+function SportRow({logo,name,pct,winner,isEmpate,catColor,catBg,catUpdating,compact}) {
+  const sz=compact?32:44, fs=compact?(isEmpate?13:16):(isEmpate?16:22), pill=compact?{mw:52,h:30,fs:13}:{mw:68,h:40,fs:17}
   return (
-    <div style={{display:'flex',alignItems:'center',gap:16,padding:'16px 20px',borderBottom:'1px solid #E0E0E0'}}>
+    <div style={{display:'flex',alignItems:'center',gap:compact?10:16,padding:compact?'10px 14px':'16px 20px',borderBottom:'1px solid #E0E0E0'}}>
       {isEmpate
-        ? <div style={{width:44,height:44,borderRadius:10,flexShrink:0,background:'#EEEEEE',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,color:'#AAA'}}>≡</div>
-        : <TeamLogo logo={logo} name={name} size={44}/>
+        ? <div style={{width:sz,height:sz,borderRadius:compact?8:10,flexShrink:0,background:'#EEEEEE',display:'flex',alignItems:'center',justifyContent:'center',fontSize:compact?14:18,color:'#AAA'}}>≡</div>
+        : <TeamLogo logo={logo} name={name} size={sz}/>
       }
       <div style={{flex:1,minWidth:0}}>
-        <div style={{fontSize:isEmpate?16:22,fontWeight:isEmpate?500:700,color:isEmpate?'#AAA':'#111',letterSpacing:'-0.02em',marginBottom:8,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{name}</div>
-        <div style={{height:3,background:'#E0E0E0',borderRadius:2,overflow:'hidden'}}>
+        <div style={{fontSize:fs,fontWeight:isEmpate?500:700,color:isEmpate?'#AAA':'#111',letterSpacing:'-0.02em',marginBottom:compact?4:8,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{name}</div>
+        <div style={{height:compact?2:3,background:'#E0E0E0',borderRadius:2,overflow:'hidden'}}>
           <div style={{height:'100%',width:`${Math.max(4,pct)}%`,background:isEmpate?'#C8C8C8':winner?catColor:'#C8C8C8',borderRadius:2,transition:'width 0.6s'}}/>
         </div>
       </div>
-      <div style={{minWidth:68,height:40,display:'flex',alignItems:'center',justifyContent:'center',borderRadius:999,border:'2px solid #DDDDDD',color:'#888',fontSize:17,fontWeight:800,background:'white',flexShrink:0}}>
+      <div style={{minWidth:pill.mw,height:pill.h,display:'flex',alignItems:'center',justifyContent:'center',borderRadius:999,border:'2px solid #DDDDDD',color:'#888',fontSize:pill.fs,fontWeight:800,background:'white',flexShrink:0}}>
         {catUpdating?'—':`${pct}%`}
       </div>
     </div>
@@ -2383,34 +2384,34 @@ function MobileSportCard({item, catKey, onSelect}) {
   const hp=item.home?.pct||0,ap=item.away?.pct||0,dp=item.draw||0
 
   return (
-    <div style={{position:'relative',borderRadius:20,flexShrink:0,marginBottom:14}}>
-      {pb&&item.predResult&&<div style={{position:'absolute',top:12,right:56,zIndex:2,background:pb,color:'white',fontSize:9,fontWeight:800,borderRadius:4,padding:'2px 7px',letterSpacing:'0.06em',textTransform:'uppercase'}}>{item.predResult==='correct'?'✓ ACERTOU':item.predResult==='incorrect'?'✗ ERROU':'~ PARCIAL'}</div>}
-      <div onClick={()=>onSelect(item)} style={{borderRadius:20,background:pbg,border:`1px solid ${pb||'#E0E0E0'}`,cursor:'pointer',boxShadow:'0 2px 8px rgba(0,0,0,0.06)',display:'flex',flexDirection:'column'}}>
-        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 20px',borderBottom:'1px solid #E0E0E0'}}>
-          <div style={{display:'flex',alignItems:'center',gap:14}}>
-            <div style={{width:44,height:44,borderRadius:12,background:'#F0F0F0',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>{(()=>{const I=TAB_ICON[catKey]||IcoLottery;return <I size={22} color="#555"/>})()}</div>
-            <span style={{fontSize:14,fontWeight:800,color:'#555',letterSpacing:'0.05em',textTransform:'uppercase'}}>{label}</span>
+    <div style={{position:'relative',borderRadius:16,flexShrink:0,marginBottom:10}}>
+      {pb&&item.predResult&&<div style={{position:'absolute',top:10,right:48,zIndex:2,background:pb,color:'white',fontSize:9,fontWeight:800,borderRadius:4,padding:'2px 7px',letterSpacing:'0.06em',textTransform:'uppercase'}}>{item.predResult==='correct'?'✓ ACERTOU':item.predResult==='incorrect'?'✗ ERROU':'~ PARCIAL'}</div>}
+      <div onClick={()=>onSelect(item)} style={{borderRadius:16,background:pbg,border:`1px solid ${pb||'#E0E0E0'}`,cursor:'pointer',boxShadow:'0 2px 8px rgba(0,0,0,0.06)',display:'flex',flexDirection:'column'}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'10px 14px',borderBottom:'1px solid #E0E0E0'}}>
+          <div style={{display:'flex',alignItems:'center',gap:10}}>
+            <div style={{width:34,height:34,borderRadius:10,background:'#F0F0F0',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>{(()=>{const I=TAB_ICON[catKey]||IcoLottery;return <I size={17} color="#555"/>})()}</div>
+            <span style={{fontSize:12,fontWeight:800,color:'#555',letterSpacing:'0.05em',textTransform:'uppercase'}}>{label}</span>
           </div>
-          <div style={{display:'flex',alignItems:'center',gap:16,minWidth:0,overflow:'hidden'}}>
-            <span style={{fontSize:13,color:'#999',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.competition}</span>
+          <div style={{display:'flex',alignItems:'center',gap:10,minWidth:0,overflow:'hidden'}}>
+            <span style={{fontSize:12,color:'#999',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.competition}</span>
             <ShareBtn item={item} catKey={catKey}/>
           </div>
         </div>
-        <div style={{padding:'22px 20px 18px',borderBottom:'1px solid #E0E0E0'}}>
-          <div style={{fontSize:26,fontWeight:900,color:'#111',lineHeight:1.15,letterSpacing:'-0.03em',marginBottom:10}}>{item.title}</div>
+        <div style={{padding:'14px 14px 12px',borderBottom:'1px solid #E0E0E0'}}>
+          <div style={{fontSize:19,fontWeight:900,color:'#111',lineHeight:1.2,letterSpacing:'-0.03em',marginBottom:6}}>{item.title}</div>
           <div style={{display:'flex',alignItems:'center',flexWrap:'wrap'}}>
-            {(live||ong)&&<><IcoLiveDot/><span style={{fontSize:13,fontWeight:800,color:live?'#E53935':'#F97316',marginLeft:6}}>{live?'AO VIVO':'EM ANDAMENTO'}</span><span style={{fontSize:13,color:'#AAA',margin:'0 6px'}}>·</span></>}
-            <span style={{fontSize:13,color:'#888'}}>{(item.statusLabel||'').replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,'')}</span>
+            {(live||ong)&&<><IcoLiveDot/><span style={{fontSize:12,fontWeight:800,color:live?'#E53935':'#F97316',marginLeft:5}}>{live?'AO VIVO':'EM ANDAMENTO'}</span><span style={{fontSize:12,color:'#AAA',margin:'0 5px'}}>·</span></>}
+            <span style={{fontSize:12,color:'#888'}}>{(item.statusLabel||'').replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,'')}</span>
           </div>
         </div>
-        <SportRow logo={item.home?.logo} name={item.home?.name||'—'} pct={hp} winner={hp>0&&hp>=ap&&hp>=dp} catColor={catColor} catBg={catBg}/>
-        <SportRow logo={item.away?.logo} name={item.away?.name||'—'} pct={ap} winner={ap>0&&ap>hp&&ap>=dp} catColor={catColor} catBg={catBg}/>
-        {dp>0&&<SportRow name="Empate" pct={dp} winner={false} isEmpate catColor={catColor} catBg={catBg}/>}
-        <div style={{margin:'12px 16px 16px',background:'#F4F4F2',borderRadius:12,padding:'14px 16px'}}>
+        <SportRow logo={item.home?.logo} name={item.home?.name||'—'} pct={hp} winner={hp>0&&hp>=ap&&hp>=dp} catColor={catColor} catBg={catBg} compact/>
+        <SportRow logo={item.away?.logo} name={item.away?.name||'—'} pct={ap} winner={ap>0&&ap>hp&&ap>=dp} catColor={catColor} catBg={catBg} compact/>
+        {dp>0&&<SportRow name="Empate" pct={dp} winner={false} isEmpate catColor={catColor} catBg={catBg} compact/>}
+        <div style={{margin:'8px 12px 12px',background:'#F4F4F2',borderRadius:10,padding:'10px 12px'}}>
           <div style={{display:'flex',alignItems:'flex-start'}}>
-            <span style={{fontSize:13,fontWeight:800,color:'#555',flexShrink:0,paddingTop:1,marginRight:10}}>BetTv</span>
-            <span style={{fontSize:13,color:'#888',lineHeight:1.6,flex:1,overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical'}}>{`${item.bettvPick||item.guruPick||'—'} · ${item.bettvReason||item.guruReason||'—'}`}</span>
-            <span style={{fontSize:15,fontWeight:900,color:'#111',flexShrink:0,marginLeft:10}}>{item.bettvConf||item.guruConf||0}%</span>
+            <span style={{fontSize:12,fontWeight:800,color:'#555',flexShrink:0,paddingTop:1,marginRight:8}}>BetTv</span>
+            <span style={{fontSize:12,color:'#888',lineHeight:1.5,flex:1,overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical'}}>{`${item.bettvPick||item.guruPick||'—'} · ${item.bettvReason||item.guruReason||'—'}`}</span>
+            <span style={{fontSize:13,fontWeight:900,color:'#111',flexShrink:0,marginLeft:8}}>{item.bettvConf||item.guruConf||0}%</span>
           </div>
         </div>
       </div>
