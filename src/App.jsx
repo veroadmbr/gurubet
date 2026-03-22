@@ -1481,13 +1481,16 @@ function SocialPage({appData}) {
   const catItems = selectedCat === 'loterias'
     ? appData.loterias.map(l => ({...l, id:l.id, title:l.nome, subtitle:l.descricao, status:'upcoming'}))
     : selectedCat === 'todos'
-      ? Object.entries(appData.esportes).flatMap(([catKey,cat])=>
-          (cat.items||[]).map(item=>({...item, _catKey:catKey}))
-        ).sort((a,b)=>{
-          const aL=(a.status==='live')?0:1, bL=(b.status==='live')?0:1
-          if(aL!==bL) return aL-bL
-          return new Date(a.startTime||'2099')-new Date(b.startTime||'2099')
-        })
+      ? (()=>{
+          const flat=Object.entries(appData.esportes).flatMap(([catKey,cat])=>
+            (cat.items||[]).map(item=>({...item, _catKey:catKey}))
+          )
+          return flat.sort((a,b)=>{
+            const aL=(a.status==='live')?0:1,bL=(b.status==='live')?0:1
+            if(aL!==bL) return aL-bL
+            return new Date(a.startTime||'2099')-new Date(b.startTime||'2099')
+          })
+        })()
       : selectedCat === 'crypto' || selectedCat === 'moedas'
         ? [] // crypto/moedas não têm chat
         : (appData.esportes[selectedCat]?.items || [])
@@ -2188,14 +2191,17 @@ function MobileEventsList({tab, appData, onSelect, onBack, updating, countdown, 
   const catColor = T.cat[tab]||T.black
   const catBg    = T.catBg[tab]||T.gray2
 
-  const allEvents = Object.entries(appData.esportes).flatMap(([catKey,cat])=>
-    (cat.items||[]).map(item=>({...item,_catKey:catKey}))
-  ).sort((a,b)=>{
-    const aLive = (a.status==='live'||a.status==='inprogress')?0:1
-    const bLive = (b.status==='live'||b.status==='inprogress')?0:1
-    if (aLive!==bLive) return aLive-bLive
-    return new Date(a.startTime||'2099')-new Date(b.startTime||'2099')
-  })
+  const allEvents = (()=>{
+    const flat = Object.entries(appData.esportes).flatMap(([catKey,cat])=>
+      (cat.items||[]).map(item=>({...item,_catKey:catKey}))
+    )
+    return flat.sort((a,b)=>{
+      const aLive=(a.status==='live'||a.status==='inprogress')?0:1
+      const bLive=(b.status==='live'||b.status==='inprogress')?0:1
+      if(aLive!==bLive) return aLive-bLive
+      return new Date(a.startTime||'2099')-new Date(b.startTime||'2099')
+    })
+  })()
 
   const espItems = appData.esportes[tab]?.items||[]
 
@@ -2562,24 +2568,6 @@ const CSS=`
 const SEED={loterias:LOTERIAS,esportes:ESPORTES,crypto:CRYPTO_DATA,moedas:MOEDAS_DATA}
 
 
-// ─── ERROR BOUNDARY ──────────────────────────────────────────────────────────
-class ErrorBoundary extends React.Component {
-  constructor(props) { super(props); this.state = {error:null} }
-  static getDerivedStateFromError(e) { return {error:e} }
-  componentDidCatch(e,info) { console.error('BetTv error:', e, info) }
-  render() {
-    if (this.state.error) return (
-      <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',minHeight:'100vh',fontFamily:'sans-serif',gap:16,padding:32,background:'#F7F7F5'}}>
-        <div style={{fontSize:40}}>⚠️</div>
-        <div style={{fontSize:20,fontWeight:700,color:'#111'}}>Algo deu errado</div>
-        <div style={{fontSize:14,color:'#737373',maxWidth:400,textAlign:'center'}}>{String(this.state.error?.message||'Erro desconhecido')}</div>
-        <button onClick={()=>window.location.reload()} style={{background:'#111',color:'#fff',border:'none',borderRadius:24,padding:'10px 24px',fontSize:14,fontWeight:600,cursor:'pointer'}}>Recarregar</button>
-      </div>
-    )
-    return this.props.children
-  }
-}
-
 export default function App() {
   const [tab,setTab]=useState('todos')
   const [page,setPage]=useState('categorias')
@@ -2610,14 +2598,17 @@ export default function App() {
     return n>=s && n<=s+6*60*60*1000
   }).length
 
-  const allEvents = Object.entries(appData.esportes).flatMap(([catKey,cat])=>
-    (cat.items||[]).map(item=>({...item,_catKey:catKey}))
-  ).sort((a,b)=>{
-    const aLive = (a.status==='live'||a.status==='inprogress')?0:1
-    const bLive = (b.status==='live'||b.status==='inprogress')?0:1
-    if (aLive!==bLive) return aLive-bLive
-    return new Date(a.startTime||'2099')-new Date(b.startTime||'2099')
-  })
+  const allEvents = (()=>{
+    const flat = Object.entries(appData.esportes).flatMap(([catKey,cat])=>
+      (cat.items||[]).map(item=>({...item,_catKey:catKey}))
+    )
+    return flat.sort((a,b)=>{
+      const aLive=(a.status==='live'||a.status==='inprogress')?0:1
+      const bLive=(b.status==='live'||b.status==='inprogress')?0:1
+      if(aLive!==bLive) return aLive-bLive
+      return new Date(a.startTime||'2099')-new Date(b.startTime||'2099')
+    })
+  })()
 
   // Real-time live check
   function isReallyLive(item) {
