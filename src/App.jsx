@@ -1334,7 +1334,6 @@ function KalshiSportCard({item, catKey, onSelect, catUpdating}) {
         <span style={{fontSize:11,color:T.gray1}}>Empate {item.draw}%</span>
       </div>
       </div>
-      </div>
     </div>
   )
 }
