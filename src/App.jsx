@@ -441,8 +441,72 @@ const ELEICOES_DATA = [
       {data:'01 Jan 2027', evento:'Posse do novo presidente', tipo:'posse'},
     ],
     fonte:'TSE — Calendário oficial 2026',
+  },,
+
+  // ── CARD 7: Lula × Tarcísio — 2º Turno ──
+  {
+    id:'el-tarcisio-2t',
+    tipo:'duelo',
+    titulo:'2º Turno — Lula × Tarcísio',
+    subtitulo:'Empate técnico — AtlasIntel/Paraná Pesquisas',
+    bettvPick:'Empate técnico — alta incerteza',
+    bettvConf:46,
+    bettvReason:'AtlasIntel jan/26: 49% × 45%. Paraná Pesquisas dez/25: empate técnico. Tendência: distância caindo. Tarcísio apoiou Flávio mas pode mudar.',
+    c1:{nome:'Lula (PT)',           pct:49, cor:'#E53935', desc:'Em queda de aprovação. Rejeição 44%.'},
+    c2:{nome:'Tarcísio de Freitas', pct:45, cor:'#2E7D32', desc:'Gov. SP · Forte no Sul/SE. Candidatura incerta.'},
+    rejeicao1:44, rejeicao2:11,
+    obs:'Tarcísio declarou apoio a Flávio, mas pode reverter até mai/2026',
+    fonte:'AtlasIntel jan/26 + Paraná Pesquisas dez/25 · ±2pp',
   },
-]
+
+  // ── CARD 8: Lula × Michelle — 2º Turno ──
+  {
+    id:'el-michelle-2t',
+    tipo:'duelo',
+    titulo:'2º Turno — Lula × Michelle',
+    subtitulo:'Lula favorito — AtlasIntel/Quaest',
+    bettvPick:'Lula vence',
+    bettvConf:55,
+    bettvReason:'AtlasIntel jan/26: 49% × 45%. Quaest dez/25: Lula 47% × Michelle 34%. Maior margem que vs Flávio. Michelle não declarou candidatura.',
+    c1:{nome:'Lula (PT)',         pct:49, cor:'#E53935', desc:'Favorito. Margem maior que vs Flávio.'},
+    c2:{nome:'Michelle Bolsonaro',pct:45, cor:'#9C27B0', desc:'PL · Ex-primeira dama. Não declarou candidatura.'},
+    rejeicao1:44, rejeicao2:30,
+    obs:'Quaest dez/25: Lula 47% × Michelle 34% (+13pp). Mais folgado que 2º turno vs Flávio.',
+    fonte:'AtlasIntel jan/26 + Quaest dez/25 · ±1-2pp',
+  },
+
+  // ── CARD 9: Lula × Ratinho Junior — 2º Turno ──
+  {
+    id:'el-ratinho-2t',
+    tipo:'duelo',
+    titulo:'2º Turno — Lula × Ratinho Jr.',
+    subtitulo:'Empate técnico — Real Time Big Data mar/2026',
+    bettvPick:'Empate técnico',
+    bettvConf:48,
+    bettvReason:'Real Time Big Data mar/26: Lula 42% × Ratinho 41% — empate na margem. Quaest: Lula 44% × Ratinho 34%. PSD ainda avalia candidatura.',
+    c1:{nome:'Lula (PT)',      pct:42, cor:'#E53935', desc:'Caiu de 45% vs Ratinho em jan/26.'},
+    c2:{nome:'Ratinho Junior', pct:41, cor:'#FF6F00', desc:'PSD · Gov. Paraná. Entre os mais competitivos.'},
+    rejeicao1:44, rejeicao2:13,
+    obs:'Quaest mar/26: 1º turno — Lula 37% × Flávio 30% × Ratinho 7% (Lula líder fora da margem)',
+    fonte:'Real Time Big Data 03/03/2026 — TSE BR-09353/2026',
+  },
+
+  // ── CARD 10: Cenário alternativo — PSD fragmenta direita ──
+  {
+    id:'el-caiado',
+    tipo:'duelo',
+    titulo:'1º Turno — Cenário com PSD (Caiado)',
+    subtitulo:'Quaest mar/2026 — único cenário em que Lula lidera fora da margem',
+    bettvPick:'Lula lidera com folga',
+    bettvConf:66,
+    bettvReason:'Quaest mar/26: Lula 39% × Flávio 32% × Caiado 4% × Zema 2%. Quando PSD lança candidato próprio, campo da direita fragmenta e Lula abre vantagem.',
+    c1:{nome:'Lula (PT)',            pct:39, cor:'#E53935', desc:'Único cenário fora da margem de erro.'},
+    c2:{nome:'Flávio Bolsonaro (PL)', pct:32, cor:'#1565C0', desc:'Perde 2pp com entrada do PSD no páreo.'},
+    rejeicao1:44, rejeicao2:35,
+    obs:'Caiado 4% + Zema 2% fragmentam direita — beneficia Lula no 1º turno',
+    fonte:'Quaest Genial 11/03/2026 — TSE BR-05809/2026',
+  }
+]]
 
 
 const TABS = [
@@ -1409,11 +1473,12 @@ function InfoModal({item, isLoto, catKey, onClose}) {
           <div style={{flex:1,minWidth:0,paddingRight:12}}>
             <div style={{fontSize:11,fontWeight:700,color:catColor,letterSpacing:'0.06em',textTransform:'uppercase',marginBottom:4}}>{catLabel}</div>
             <div style={{fontSize:18,fontWeight:800,color:T.black,letterSpacing:'-0.03em',lineHeight:1.2}}>
-              {isLoto?item.nome:isSpecialItem?(item.name||item.symbol):item.title}
+              {isLoto?item.nome:isEleicaoItem?item.titulo:isSpecialItem?(item.name||item.symbol):item.title}
             </div>
-            {!isLoto&&!isSpecialItem&&<div style={{fontSize:12,color:T.gray1,marginTop:3}}>{item.competition} · {(item.statusLabel||"").replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,"")}</div>}
+            {!isLoto&&!isSpecialItem&&!isEleicaoItem&&<div style={{fontSize:12,color:T.gray1,marginTop:3}}>{item.competition} · {(item.statusLabel||"").replace(/^(AO VIVO|EM ANDAMENTO)\s*[·\-·]?\s*/i,"")}</div>}
             {isLoto&&<div style={{fontSize:12,color:T.gray1,marginTop:3}}>Concurso {item.concurso} · Sorteio {item.data}</div>}
-            {isSpecialItem&&<div style={{fontSize:12,color:T.gray1,marginTop:3}}>{isCryptoItem?item.symbol+' · Mercado Cripto':'Câmbio · vs BRL'}</div>}
+            {isEleicaoItem&&<div style={{fontSize:12,color:T.gray1,marginTop:3}}>{item.subtitulo}</div>}
+            {isSpecialItem&&!isEleicaoItem&&<div style={{fontSize:12,color:T.gray1,marginTop:3}}>{isCryptoItem?item.symbol+' · Mercado Cripto':'Câmbio · vs BRL'}</div>}
           </div>
           <button onClick={onClose} style={{width:30,height:30,minWidth:30,borderRadius:'50%',border:'none',background:T.gray2,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',marginTop:2}}>
             <IcoClose size={16} color={T.gray1}/>
@@ -1522,8 +1587,107 @@ function InfoModal({item, isLoto, catKey, onClose}) {
 
           </>}
 
+          {/* ── ELEIÇÕES 2026 ── */}
+          {isEleicaoItem && (()=>{
+            const pc='#7C3AED'
+            return <>
+              <div style={{background:'#F5F3FF',borderRadius:T.r.md,padding:'14px 16px',border:'1px solid #DDD6FE'}}>
+                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
+                  <span style={{fontSize:11,fontWeight:700,color:T.black,letterSpacing:'0.06em'}}>ANÁLISE BetTv</span>
+                  <span style={{fontSize:13,fontWeight:900,color:'white',background:pc,borderRadius:T.r.pill,padding:'3px 14px'}}>{item.bettvConf}% conf.</span>
+                </div>
+                <div style={{fontSize:15,fontWeight:800,color:pc,marginBottom:6}}>{item.bettvPick}</div>
+                <p style={{fontSize:13,color:T.black,lineHeight:1.65,margin:0}}>{item.bettvReason}</p>
+              </div>
+
+              {item.tipo==='cenario'&&item.candidatos&&(
+                <div style={{borderRadius:T.r.md,border:`1px solid ${T.border}`,overflow:'hidden'}}>
+                  <div style={{padding:'10px 14px',borderBottom:`1px solid ${T.border}`,fontSize:11,fontWeight:700,letterSpacing:'0.06em'}}>INTENÇÃO DE VOTO — 1º TURNO</div>
+                  {item.candidatos.map((c,i)=>(
+                    <div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'10px 14px',borderBottom:i<item.candidatos.length-1?`1px solid ${T.border}`:'none',background:i<2?'#FAFAFA':T.white}}>
+                      <div style={{width:150,flexShrink:0}}>
+                        <div style={{fontSize:13,fontWeight:i<2?700:500,color:T.black}}>{c.nome}</div>
+                        <div style={{fontSize:11,color:T.gray1}}>{c.partido} · {c.cargo}</div>
+                      </div>
+                      <div style={{flex:1,height:8,background:T.gray2,borderRadius:4,overflow:'hidden'}}>
+                        <div style={{height:'100%',width:`${c.pct}%`,background:c.cor,borderRadius:4}}/>
+                      </div>
+                      <div style={{width:36,textAlign:'right',fontSize:14,fontWeight:800,color:c.cor}}>{c.pct}%</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {item.tipo==='duelo'&&item.c1&&item.c2&&(
+                <div style={{borderRadius:T.r.md,border:`1px solid ${T.border}`,overflow:'hidden'}}>
+                  <div style={{display:'flex'}}>
+                    {[item.c1,item.c2].map((c,i)=>(
+                      <div key={i} style={{flex:1,padding:'16px',textAlign:'center',borderRight:i===0?`1px solid ${T.border}`:'none',background:i===0?'#FFF5F5':'#F5F8FF'}}>
+                        <div style={{fontSize:36,fontWeight:900,color:c.cor,letterSpacing:'-0.04em'}}>{c.pct}%</div>
+                        <div style={{fontSize:14,fontWeight:800,color:T.black,marginBottom:4}}>{c.nome}</div>
+                        <div style={{fontSize:11,color:T.gray1,lineHeight:1.4}}>{c.desc}</div>
+                      </div>
+                    ))}
+                  </div>
+                  {item.rejeicao1!==undefined&&(
+                    <div style={{display:'flex',padding:'10px 14px',gap:16,borderTop:`1px solid ${T.border}`,background:'#FEF2F2'}}>
+                      <span style={{flex:1,fontSize:11,color:'#991B1B'}}>Rejeição {item.c1.nome.split('(')[0]}: <b>{item.rejeicao1}%</b></span>
+                      <span style={{flex:1,fontSize:11,color:'#991B1B'}}>Rejeição {item.c2.nome.split('(')[0]}: <b>{item.rejeicao2}%</b></span>
+                    </div>
+                  )}
+                  {item.obs&&<div style={{padding:'10px 14px',background:'#FFFBEB',fontSize:11,color:'#92400E',borderTop:`1px solid ${T.border}`}}>ℹ️ {item.obs}</div>}
+                </div>
+              )}
+
+              {item.tipo==='candidato'&&(
+                <div style={{borderRadius:T.r.md,border:`1px solid ${T.border}`,overflow:'hidden'}}>
+                  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr'}}>
+                    {[{label:'1º Turno',v:item.pct1turno,c:pc},{label:'2º Turno vs Lula',v:item.pct2turno,c:'#2E7D32'},{label:'Rejeição',v:item.rejeicao,c:'#E53935'}].map(({label,v,c})=>(
+                      <div key={label} style={{padding:'16px',textAlign:'center',borderRight:'1px solid #eee'}}>
+                        <div style={{fontSize:32,fontWeight:900,color:c}}>{v}%</div>
+                        <div style={{fontSize:11,color:T.gray1}}>{label}</div>
+                      </div>
+                    ))}
+                  </div>
+                  {(item.pontos||[]).map((p,i)=><div key={i} style={{fontSize:12,color:T.black,padding:'8px 14px',borderTop:`1px solid ${T.border}`}}>• {p}</div>)}
+                </div>
+              )}
+
+              {item.tipo==='aprovacao'&&(
+                <div style={{borderRadius:T.r.md,border:`1px solid ${T.border}`,overflow:'hidden',padding:'16px'}}>
+                  <div style={{display:'flex',gap:3,height:28,borderRadius:6,overflow:'hidden',marginBottom:12}}>
+                    <div style={{width:`${item.aprovacao}%`,background:'#16A34A',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:12,fontWeight:700,color:'white'}}>{item.aprovacao}%</span></div>
+                    <div style={{width:`${item.regular}%`,background:'#F59E0B',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:12,fontWeight:700,color:'white'}}>{item.regular}%</span></div>
+                    <div style={{flex:1,background:'#E53935',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:12,fontWeight:700,color:'white'}}>{item.reprovacao}%</span></div>
+                  </div>
+                  <div style={{display:'flex',gap:16,fontSize:12,marginBottom:10}}>
+                    <span>🟢 Aprova: <b>{item.aprovacao}%</b></span>
+                    <span>🟡 Regular: <b>{item.regular}%</b></span>
+                    <span>🔴 Reprova: <b>{item.reprovacao}%</b></span>
+                  </div>
+                  <div style={{background:'#FFFBEB',borderRadius:T.r.sm,padding:'10px 12px',fontSize:12,color:'#92400E'}}>
+                    <b>{item.naoDeveCandidatar}%</b> dos eleitores acham que Lula não deveria se candidatar à reeleição
+                  </div>
+                </div>
+              )}
+
+              {item.tipo==='calendario'&&item.eventos&&(
+                <div style={{borderRadius:T.r.md,border:`1px solid ${T.border}`,overflow:'hidden'}}>
+                  {item.eventos.map((ev,i)=>(
+                    <div key={i} style={{display:'flex',gap:14,padding:'12px 14px',borderBottom:i<item.eventos.length-1?`1px solid ${T.border}`:'none',alignItems:'center',background:ev.tipo==='eleicao'?'#F5F3FF':ev.tipo==='posse'?'#F0FDF4':T.white}}>
+                      <div style={{width:96,flexShrink:0,fontSize:12,fontWeight:700,color:ev.tipo==='eleicao'?pc:ev.tipo==='posse'?'#16A34A':'#6B7280'}}>{ev.data}</div>
+                      <div style={{fontSize:13,color:T.black}}>{ev.evento}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div style={{fontSize:11,color:T.gray1,textAlign:'right'}}>Fonte: {item.fonte}</div>
+            </>
+          })()}
+
           {/* ── ESPORTES ── */}
-          {!isLoto&&!isSpecialItem && <>
+          {!isLoto&&!isSpecialItem&&!isEleicaoItem && <>
             {/* Teams probabilities */}
             <div style={{display:'flex',flexDirection:'column',gap:0,borderRadius:T.r.md,overflow:'hidden',border:`1px solid ${T.border}`}}>
               {[item.home, item.away].map((side,i)=>{
@@ -1563,7 +1727,7 @@ function InfoModal({item, isLoto, catKey, onClose}) {
           </>}
 
           {/* ── METHODOLOGY — always 1 paragraph ── */}
-          {!isSpecialItem&&<div style={{borderTop:`1px solid ${T.border}`,paddingTop:14}}>
+          {!isSpecialItem&&!isEleicaoItem&&<div style={{borderTop:`1px solid ${T.border}`,paddingTop:14}}>
             <div style={{fontSize:11,fontWeight:700,color:T.black,letterSpacing:'0.06em',marginBottom:8}}>COMO A PREVISÃO É FEITA</div>
             <p style={{fontSize:12,color:T.gray1,lineHeight:1.7,margin:0}}>{methodText}</p>
           </div>}
@@ -2938,7 +3102,7 @@ export default function App() {
             </div>
           )}
         </div>
-        {selItem&&<InfoModal item={selItem} isLoto={!selItem.home&&!selItem.away&&!selItem.price&&!selItem.priceBRL} catKey={selItem.price!==undefined?'crypto':selItem.priceBRL!==undefined?'moedas':selItem._catKey||tab} onClose={()=>setSelItem(null)}/>}
+        {selItem&&<InfoModal item={selItem} isLoto={!selItem.home&&!selItem.away&&!selItem.price&&!selItem.priceBRL} catKey={selItem.tipo!==undefined?'eleicoes':selItem.price!==undefined?'crypto':selItem.priceBRL!==undefined?'moedas':selItem._catKey||tab} onClose={()=>setSelItem(null)}/>}
       </div>
     )
   }
@@ -3113,7 +3277,7 @@ export default function App() {
         })}
       </div>
 
-      {selItem&&<InfoModal item={selItem} isLoto={!selItem.home&&!selItem.away&&!selItem.price&&!selItem.priceBRL} catKey={selItem.price!==undefined?'crypto':selItem.priceBRL!==undefined?'moedas':selItem._catKey||tab} onClose={()=>setSelItem(null)}/>}
+      {selItem&&<InfoModal item={selItem} isLoto={!selItem.home&&!selItem.away&&!selItem.price&&!selItem.priceBRL} catKey={selItem.tipo!==undefined?'eleicoes':selItem.price!==undefined?'crypto':selItem.priceBRL!==undefined?'moedas':selItem._catKey||tab} onClose={()=>setSelItem(null)}/>}
     </div>
   )
 }
