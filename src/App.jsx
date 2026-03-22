@@ -43,9 +43,9 @@ const IcoThumb     = ({size=14,color='currentColor'}) => <svg width={size} heigh
 const IcoCrypto    = ({size=16,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'block',flexShrink:0}}><path d="M11.767 19.089c4.924.868 6.14-6.025 1.216-6.894m-1.216 6.894L5.86 18.047m5.908 1.042-.347 1.97m1.563-8.864c4.924.869 6.14-6.025 1.215-6.893m-1.215 6.893-3.94-.694m5.155-6.2L8.29 4.26m5.908 1.042.348-1.97M7.48 20.364l3.126-17.727"/></svg>
 const IcoMoedas    = ({size=16,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'block',flexShrink:0}}><circle cx="12" cy="12" r="10"/><path d="M12 6v2m0 8v2M8 12h8"/><path d="M9 9h.01M15 15h.01"/></svg>
 
-const IcoGolf = ({size=16,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'block',flexShrink:0}}><line x1="6" y1="22" x2="6" y2="2"/><polygon points="6,2 18,8 6,14" fill={color} stroke="none"/></svg>
+const IcoGolf = ({size=16,color='currentColor'}) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 -960 960 960" fill={color} style={{display:'block',flexShrink:0}}><path d="M780-120q-25 0-42.5-17.5T720-180q0-25 17.5-42.5T780-240q25 0 42.5 17.5T840-180q0 25-17.5 42.5T780-120ZM400-80q-100 0-170-23.5T160-160q0-23 33-41t87-29v70h80v-720l320 156-240 124v362q86 5 143 26.5t57 51.5q0 33-70 56.5T400-80Z"/></svg>
 
-const IcoEleicoes = ({size=16,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" style={{display:'block',flexShrink:0}}><rect x="1" y="3" width="22" height="18" rx="2" fill="#009C3B"/><polygon points="12,5 22,12 12,19 2,12" fill="#FFDF00"/><circle cx="12" cy="12" r="4" fill="#002776"/><line x1="8.5" y1="12" x2="15.5" y2="12" stroke="white" strokeWidth="1.2"/></svg>
+const IcoEleicoes = ({size=16,color='currentColor'}) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 -960 960 960" fill={color} style={{display:'block',flexShrink:0}}><path d="M200-80q-33 0-56.5-23.5T120-160v-182l110-125 57 57-80 90h546l-78-88 57-57 108 123v182q0 33-23.5 56.5T760-80H200Zm0-80h560v-80H200v80Zm225-225L284-526q-23-23-22.5-56.5T285-639l196-196q23-23 57-24t57 22l141 141q23 23 24 56t-22 56L538-384q-23 23-56.5 22.5T425-385Zm255-254L539-780 341-582l141 141 198-198ZM200-160v-80 80Z"/></svg>
 
 const TAB_ICON = {
   todos: IcoAll, loterias: IcoLottery, futebol: IcoSoccer, basquete: IcoBasket, mma: IcoMMA, tenis: IcoTennis, esports: IcoEsports,
@@ -1044,13 +1044,14 @@ function ShareBtn({item, catKey}) {
     <button onClick={handleShare}
       title={copied?'Copiado!':'Compartilhar'}
       style={{
-        position:'absolute', top:8, right:8, zIndex:10,
-        width:26, height:26, borderRadius:'50%',
-        background:copied?'#16A34A':'rgba(0,0,0,0.06)',
-        border:'none', cursor:'pointer', display:'flex',
+        position:'absolute', top:6, right:6, zIndex:20,
+        width:24, height:24, borderRadius:'50%',
+        background:copied?'#16A34A':'rgba(255,255,255,0.85)',
+        border:`1px solid ${copied?'#16A34A':'rgba(0,0,0,0.10)'}`,
+        cursor:'pointer', display:'flex',
         alignItems:'center', justifyContent:'center',
-        transition:'background 0.2s', flexShrink:0,
-        backdropFilter:'blur(4px)',
+        transition:'all 0.2s', flexShrink:0,
+        backdropFilter:'blur(8px)', boxShadow:'0 1px 4px rgba(0,0,0,0.10)',
       }}
       onMouseEnter={e=>{ if(!copied) e.currentTarget.style.background='rgba(0,0,0,0.14)' }}
       onMouseLeave={e=>{ if(!copied) e.currentTarget.style.background='rgba(0,0,0,0.06)' }}
@@ -1282,7 +1283,7 @@ function KalshiSportCard({item, catKey, onSelect, catUpdating}) {
 
 
       {/* Header */}
-      <div style={{padding:'11px 14px 9px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
+      <div style={{padding:'11px 14px 9px',paddingRight:38,display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
         <div style={{display:'flex',alignItems:'center',gap:8,minWidth:0}}>
           <CatIconBox catKey={catKey}/>
           <span style={{fontSize:11,fontWeight:700,color:catColor,letterSpacing:'0.04em',textTransform:'uppercase',whiteSpace:'nowrap'}}>{label}</span>
@@ -1344,7 +1345,7 @@ function KalshiLotoCard({lot, onSelect, catUpdating}) {
 
       <ShareBtn item={lot} catKey="loterias"/>
       {/* Header */}
-      <div style={{padding:'11px 14px 9px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
+      <div style={{padding:'11px 14px 9px',paddingRight:38,display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
           <CatIconBox catKey="loterias"/>
           <span style={{fontSize:11,fontWeight:700,color:T.cat.loterias,letterSpacing:'0.04em',textTransform:'uppercase'}}>LOTERIA</span>
@@ -2751,7 +2752,7 @@ function CryptoCard({item, onSelect}) {
         transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden',cursor:'pointer'}}>
 
       {/* Header */}
-      <div style={{padding:'11px 14px 9px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
+      <div style={{padding:'11px 14px 9px',paddingRight:38,display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
           <div style={{width:22,height:22,borderRadius:6,background:catBg,display:'flex',alignItems:'center',justifyContent:'center'}}>
             <IcoCrypto size={12} color={catColor}/>
@@ -2851,7 +2852,7 @@ function MoedasCard({item, onSelect}) {
         transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden',cursor:'pointer'}}>
 
       {/* Header */}
-      <div style={{padding:'11px 14px 9px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
+      <div style={{padding:'11px 14px 9px',paddingRight:38,display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
           <div style={{width:22,height:22,borderRadius:6,background:catBg,display:'flex',alignItems:'center',justifyContent:'center'}}>
             <IcoMoedas size={12} color={catColor}/>
