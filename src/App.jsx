@@ -204,19 +204,19 @@ const ESPORTES = {
 
   golf: { label:'Golf', items:[
     // Valspar Championship — EM ANDAMENTO R4 (21-22/03) — PGA Tour API confirmado
-    { id:'g-val', startTime:'2026-03-19T13:00:00Z', statusLabel:'AO VIVO · R4 · Innisbrook · Flórida',competition:'PGA Tour · Valspar Championship', title:'Valspar Championship 2026',  bettvPick:'Scheffler',bettvConf:45, bettvReason:'Scottie Scheffler Nº1 mundial favorito. Innisbrook favorece drives precisos. Rory e Rahm ameaças.', home:{name:'S. Scheffler',logo:null,sub:'Nº1 Mundo · Fav.',pct:35}, away:{name:'R. McIlroy',  logo:null,sub:'Nº3 Mundo',      pct:25}, draw:40},
+    { multiDay:true, id:'g-val', startTime:'2026-03-19T13:00:00Z', statusLabel:'AO VIVO · R4 · Innisbrook · Flórida',competition:'PGA Tour · Valspar Championship', title:'Valspar Championship 2026',  bettvPick:'Scheffler',bettvConf:45, bettvReason:'Scottie Scheffler Nº1 mundial favorito. Innisbrook favorece drives precisos. Rory e Rahm ameaças.', home:{name:'S. Scheffler',logo:null,sub:'Nº1 Mundo · Fav.',pct:35}, away:{name:'R. McIlroy',  logo:null,sub:'Nº3 Mundo',      pct:25}, draw:40},
     // Texas Children Houston Open — 26/03 (PGA Tour API: status created)
-    { id:'g-hou', startTime:'2026-03-26T13:00:00Z', statusLabel:'26/03 · 10h BRT · Memorial Park · Houston',competition:'PGA Tour · Houston Open',        title:'Houston Open 2026',          bettvPick:'Scheffler',bettvConf:40, bettvReason:'Scheffler Nº1 Houston favorito histórico. Koepka e Cantlay ameaças em campo aberto.', home:{name:'S. Scheffler',logo:null,sub:'Nº1 Mundo',       pct:30}, away:{name:'B. Koepka',   logo:null,sub:'Nº6 Mundo',       pct:20}, draw:50},
+    { multiDay:true, id:'g-hou', startTime:'2026-03-26T13:00:00Z', statusLabel:'26/03 · 10h BRT · Memorial Park · Houston',competition:'PGA Tour · Houston Open',        title:'Houston Open 2026',          bettvPick:'Scheffler',bettvConf:40, bettvReason:'Scheffler Nº1 Houston favorito histórico. Koepka e Cantlay ameaças em campo aberto.', home:{name:'S. Scheffler',logo:null,sub:'Nº1 Mundo',       pct:30}, away:{name:'B. Koepka',   logo:null,sub:'Nº6 Mundo',       pct:20}, draw:50},
     // Valero Texas Open — 02/04 (PGA Tour API: scheduled)
-    { id:'g-tex', startTime:'2026-04-02T13:00:00Z', statusLabel:'02/04 · 10h BRT · TPC San Antonio',  competition:'PGA Tour · Valero Texas Open',    title:'Valero Texas Open 2026',     bettvPick:'Rory McIlroy',bettvConf:38,bettvReason:'Valero TX Open tradicional warm-up para o Masters. McIlroy e Spieth favoritos históricos.', home:{name:'R. McIlroy',  logo:null,sub:'Nº3 Mundo',       pct:28}, away:{name:'J. Spieth',   logo:null,sub:'Nº11 Mundo',      pct:20}, draw:52},
+    { multiDay:true, id:'g-tex', startTime:'2026-04-02T13:00:00Z', statusLabel:'02/04 · 10h BRT · TPC San Antonio',  competition:'PGA Tour · Valero Texas Open',    title:'Valero Texas Open 2026',     bettvPick:'Rory McIlroy',bettvConf:38,bettvReason:'Valero TX Open tradicional warm-up para o Masters. McIlroy e Spieth favoritos históricos.', home:{name:'R. McIlroy',  logo:null,sub:'Nº3 Mundo',       pct:28}, away:{name:'J. Spieth',   logo:null,sub:'Nº11 Mundo',      pct:20}, draw:52},
     // THE MASTERS — 09/04 (PGA Tour API: created — Augusta National)
-    { id:'g-mas', startTime:'2026-04-09T13:00:00Z', statusLabel:'09/04 · 10h BRT · Augusta National', competition:'PGA Tour · The Masters 2026',     title:'The Masters Tournament 2026',bettvPick:'Scheffler',bettvConf:42, bettvReason:'Scheffler Nº1 mundo e bicampeão do Masters. Augusta favorece drives longos e putting preciso.', home:{name:'S. Scheffler',logo:null,sub:'Nº1 · 2× campeão', pct:30}, away:{name:'R. McIlroy',  logo:null,sub:'Nº3 · Sonho carreira',pct:22}, draw:48},
+    { multiDay:true, id:'g-mas', startTime:'2026-04-09T13:00:00Z', statusLabel:'09/04 · 10h BRT · Augusta National', competition:'PGA Tour · The Masters 2026',     title:'The Masters Tournament 2026',bettvPick:'Scheffler',bettvConf:42, bettvReason:'Scheffler Nº1 mundo e bicampeão do Masters. Augusta favorece drives longos e putting preciso.', home:{name:'S. Scheffler',logo:null,sub:'Nº1 · 2× campeão', pct:30}, away:{name:'R. McIlroy',  logo:null,sub:'Nº3 · Sonho carreira',pct:22}, draw:48},
     // RBC Heritage — 16/04 (PGA Tour API: scheduled)
-    { id:'g-rbc', startTime:'2026-04-16T13:00:00Z', statusLabel:'16/04 · 10h BRT · Harbour Town · SC',competition:'PGA Tour · RBC Heritage',         title:'RBC Heritage 2026',          bettvPick:'Rory McIlroy',bettvConf:40,bettvReason:'McIlroy campeão RBC Heritage 2024. Harbour Town favorece precisão sobre distância.', home:{name:'R. McIlroy',  logo:null,sub:'Nº3 Mundo',       pct:28}, away:{name:'X. Schauffele',logo:null,sub:'Nº5 Mundo',       pct:22}, draw:50},
+    { multiDay:true, id:'g-rbc', startTime:'2026-04-16T13:00:00Z', statusLabel:'16/04 · 10h BRT · Harbour Town · SC',competition:'PGA Tour · RBC Heritage',         title:'RBC Heritage 2026',          bettvPick:'Rory McIlroy',bettvConf:40,bettvReason:'McIlroy campeão RBC Heritage 2024. Harbour Town favorece precisão sobre distância.', home:{name:'R. McIlroy',  logo:null,sub:'Nº3 Mundo',       pct:28}, away:{name:'X. Schauffele',logo:null,sub:'Nº5 Mundo',       pct:22}, draw:50},
     // Cadillac Championship — 30/04 (PGA Tour API: scheduled)
-    { id:'g-cad', startTime:'2026-04-30T13:00:00Z', statusLabel:'30/04 · 10h BRT · Doral · Miami',    competition:'PGA Tour · Cadillac Championship',title:'Cadillac Championship 2026',  bettvPick:'Scheffler',bettvConf:38, bettvReason:'Scottie Scheffler domina campo aberto. Doral favorece potência. Rory e Cantlay competitivos.', home:{name:'S. Scheffler',logo:null,sub:'Nº1 Mundo',       pct:28}, away:{name:'R. McIlroy',  logo:null,sub:'Nº3 Mundo',       pct:20}, draw:52},
+    { multiDay:true, id:'g-cad', startTime:'2026-04-30T13:00:00Z', statusLabel:'30/04 · 10h BRT · Doral · Miami',    competition:'PGA Tour · Cadillac Championship',title:'Cadillac Championship 2026',  bettvPick:'Scheffler',bettvConf:38, bettvReason:'Scottie Scheffler domina campo aberto. Doral favorece potência. Rory e Cantlay competitivos.', home:{name:'S. Scheffler',logo:null,sub:'Nº1 Mundo',       pct:28}, away:{name:'R. McIlroy',  logo:null,sub:'Nº3 Mundo',       pct:20}, draw:52},
     // Truist Championship — 07/05
-    { id:'g-tru', startTime:'2026-05-07T13:00:00Z', statusLabel:'07/05 · 10h BRT · Truist Championship',competition:'PGA Tour · Truist Championship',title:'Truist Championship 2026',    bettvPick:'Scheffler',bettvConf:38, bettvReason:'Scheffler em grande forma. Torneio favorece precisão e gestão de campo.', home:{name:'S. Scheffler',logo:null,sub:'Nº1 Mundo',       pct:27}, away:{name:'C. Morikawa', logo:null,sub:'Nº7 Mundo',       pct:20}, draw:53},
+    { multiDay:true, id:'g-tru', startTime:'2026-05-07T13:00:00Z', statusLabel:'07/05 · 10h BRT · Truist Championship',competition:'PGA Tour · Truist Championship',title:'Truist Championship 2026',    bettvPick:'Scheffler',bettvConf:38, bettvReason:'Scheffler em grande forma. Torneio favorece precisão e gestão de campo.', home:{name:'S. Scheffler',logo:null,sub:'Nº1 Mundo',       pct:27}, away:{name:'C. Morikawa', logo:null,sub:'Nº7 Mundo',       pct:20}, draw:53},
   ]},
 }
 
@@ -754,16 +754,19 @@ const CARD_H = 316
 function KalshiSportCard({item, catKey, onSelect, catUpdating}) {
   const [hov,setHov]=useState(false)
   // Live only if event is actually happening now (within ±90min of start)
-  const isActuallyLive = (() => {
-    if (item.status !== 'live' && item.status !== 'inprogress') return false
-    if (!item.startTime) return true
+  const {isActuallyLive, isOngoing} = (() => {
+    if (!item.startTime) return {isActuallyLive:false, isOngoing:false}
     const now = Date.now()
     const start = new Date(item.startTime).getTime()
-    // Dynamic window based on sport type — must have started and within max duration
-    // Never use hardcoded status:'upcoming' — calculate purely from time
-    const durations = {futebol:130, basquete:180, tenis:300, mma:420, volei:150, esports:240}
-    const dur = (durations[catKey] || 150) * 60 * 1000
-    return now >= start && now <= start + dur
+    if (isNaN(start)) return {isActuallyLive:false, isOngoing:false}
+    // Multi-day events (golf tournaments): show EM ANDAMENTO
+    if (item.multiDay) {
+      return {isActuallyLive:false, isOngoing: now >= start && now <= start + 7*24*60*60*1000}
+    }
+    // Single-match events: AO VIVO within duration window
+    const durations = {futebol:130, basquete:180, tenis:300, mma:420, esports:240, golf:360}
+    const dur = (durations[catKey] || 180) * 60 * 1000
+    return {isActuallyLive: now >= start && now <= start + dur, isOngoing:false}
   })()
   const live = isActuallyLive
   const catColor=T.cat[catKey]||T.black
@@ -786,7 +789,7 @@ function KalshiSportCard({item, catKey, onSelect, catUpdating}) {
       <div style={{padding:'10px 14px 8px',flexShrink:0}}>
         <div style={{fontSize:14,fontWeight:700,color:T.black,lineHeight:1.3,letterSpacing:'-0.02em',overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',marginBottom:4}}>{item.title}</div>
         <div style={{display:'flex',alignItems:'center',gap:4}}>
-          {live&&<><IcoLiveDot/><span style={{fontSize:11,fontWeight:700,color:T.red,marginLeft:3}}>AO VIVO</span><span style={{fontSize:11,color:T.gray1,margin:'0 2px'}}> · </span></>}
+          {(live||isOngoing)&&<><IcoLiveDot/><span style={{fontSize:11,fontWeight:700,color:live?T.red:'#D97706',marginLeft:3}}>{live?'AO VIVO':'EM ANDAMENTO'}</span><span style={{fontSize:11,color:T.gray1,margin:'0 2px'}}> · </span></>}
           <span style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.statusLabel}</span>
         </div>
       </div>
@@ -936,16 +939,19 @@ function LotoCard({lot, onSelect, catUpdating}) {
 }
 
 function SportCard({item, catKey, onSelect, catUpdating}) {
-  const isActuallyLive = (() => {
-    if (item.status !== 'live' && item.status !== 'inprogress') return false
-    if (!item.startTime) return true
+  const {isActuallyLive, isOngoing} = (() => {
+    if (!item.startTime) return {isActuallyLive:false, isOngoing:false}
     const now = Date.now()
     const start = new Date(item.startTime).getTime()
-    // Dynamic window based on sport type — must have started and within max duration
-    // Never use hardcoded status:'upcoming' — calculate purely from time
-    const durations = {futebol:130, basquete:180, tenis:300, mma:420, volei:150, esports:240}
-    const dur = (durations[catKey] || 150) * 60 * 1000
-    return now >= start && now <= start + dur
+    if (isNaN(start)) return {isActuallyLive:false, isOngoing:false}
+    // Multi-day events (golf tournaments): show EM ANDAMENTO
+    if (item.multiDay) {
+      return {isActuallyLive:false, isOngoing: now >= start && now <= start + 7*24*60*60*1000}
+    }
+    // Single-match events: AO VIVO within duration window
+    const durations = {futebol:130, basquete:180, tenis:300, mma:420, esports:240, golf:360}
+    const dur = (durations[catKey] || 180) * 60 * 1000
+    return {isActuallyLive: now >= start && now <= start + dur, isOngoing:false}
   })()
   const live = isActuallyLive; const [hov,setHov]=useState(false)
   const catColor=T.cat[catKey]||T.black
@@ -1505,10 +1511,12 @@ function MobileSportCard({item, catKey, onSelect}) {
   const label    = TABS.find(t=>t.key===catKey)?.label||catKey
 
   const isActuallyLive = (() => {
-    if (item.status!=='live'&&item.status!=='inprogress') return false
-    if (!item.startTime) return item.status==='live'
+    if (!item.startTime) return false
     const now=Date.now(), start=new Date(item.startTime).getTime()
-    return now>=start-10*60*1000 && now<=start+150*60*1000
+    if (isNaN(start)) return false
+    if (item.multiDay) return now>=start && now<=start+7*24*60*60*1000
+    const dur=({futebol:130,basquete:180,tenis:300,mma:420,esports:240,golf:360}[catKey]||180)*60*1000
+    return now>=start && now<=start+dur
   })()
 
   return (
@@ -1532,7 +1540,7 @@ function MobileSportCard({item, catKey, onSelect}) {
       <div style={{padding:'6px 14px 8px'}}>
         <div style={{fontSize:15,fontWeight:800,color:T.black,letterSpacing:'-0.03em',lineHeight:1.25,marginBottom:3}}>{item.title}</div>
         <div style={{display:'flex',alignItems:'center',gap:4}}>
-          {isActuallyLive&&<><IcoLiveDot/><span style={{fontSize:10,fontWeight:700,color:T.red,marginLeft:2}}>AO VIVO</span><span style={{fontSize:10,color:T.gray1,margin:'0 3px'}}>·</span></>}
+          {isActuallyLive&&<><IcoLiveDot/><span style={{fontSize:10,fontWeight:700,color:item.multiDay?'#D97706':T.red,marginLeft:2}}>{item.multiDay?'EM ANDAMENTO':'AO VIVO'}</span><span style={{fontSize:10,color:T.gray1,margin:'0 3px'}}>·</span></>}
           <span style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.statusLabel}</span>
         </div>
       </div>
@@ -1592,10 +1600,12 @@ function MobileChatPage({item, catKey, onBack, appData}) {
   const isLotoItem = !item.home && !item.away
 
   const isActuallyLive = (() => {
-    if (item.status!=='live'&&item.status!=='inprogress') return false
-    if (!item.startTime) return item.status==='live'
+    if (!item.startTime) return false
     const now=Date.now(), start=new Date(item.startTime).getTime()
-    return now>=start-10*60*1000 && now<=start+150*60*1000
+    if (isNaN(start)) return false
+    if (item.multiDay) return now>=start && now<=start+7*24*60*60*1000
+    const dur=({futebol:130,basquete:180,tenis:300,mma:420,esports:240,golf:360}[catKey]||180)*60*1000
+    return now>=start && now<=start+dur
   })()
 
   function post() {
@@ -1628,7 +1638,7 @@ function MobileChatPage({item, catKey, onBack, appData}) {
                 {(() => { const I=TAB_ICON[catKey]||IcoLottery; return <I size={10} color={catColor}/> })()}
               </div>
               <span style={{fontSize:10,fontWeight:700,color:catColor,textTransform:'uppercase',letterSpacing:'0.04em'}}>{label}</span>
-              {isActuallyLive&&<><IcoLiveDot/><span style={{fontSize:10,fontWeight:700,color:T.red}}>AO VIVO</span></>}
+              {isActuallyLive&&<><IcoLiveDot/><span style={{fontSize:10,fontWeight:700,color:item.multiDay?'#D97706':T.red}}>{item.multiDay?'EM ANDAMENTO':'AO VIVO'}</span></>}
             </div>
             <div style={{fontSize:15,fontWeight:800,color:T.black,letterSpacing:'-0.03em',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.title||item.nome}</div>
             <div style={{fontSize:11,color:T.gray1}}>{item.statusLabel||item.dias}</div>
@@ -2087,7 +2097,12 @@ export default function App() {
   const cryptoItems = appData.crypto||CRYPTO_DATA
   const moedasItems = appData.moedas||MOEDAS_DATA
   const catUpd   = updating&&queue.includes(tab)
-  const totalLive= Object.values(appData.esportes).flatMap(d=>d.items).filter(i=>i.status==='live').length
+  const totalLive=Object.values(appData.esportes).flatMap(d=>d.items).filter(i=>{
+    if(!i.startTime) return false
+    const n=Date.now(), s=new Date(i.startTime).getTime()
+    if(i.multiDay) return n>=s && n<=s+7*24*60*60*1000
+    return n>=s && n<=s+6*60*60*1000
+  }).length
 
   const allEvents = Object.entries(appData.esportes).flatMap(([catKey,cat])=>
     cat.items.map(item=>({...item,_catKey:catKey}))
