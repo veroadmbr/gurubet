@@ -1522,7 +1522,9 @@ function SportCard({item, catKey, onSelect, catUpdating}) {
   const hp=item.home?.pct||0,ap=item.away?.pct||0,dp=item.draw||0
 
   return (
-    <div onClick={()=>onSelect(item)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)} style={{borderRadius:20,background:pbg,border:`1px solid ${pb||(hov?'#C0C0BB':'#E0E0E0')}`,cursor:'pointer',boxShadow:hov?'0 6px 24px rgba(0,0,0,0.09)':'0 2px 8px rgba(0,0,0,0.06)',transition:'box-shadow 0.18s,border-color 0.18s',display:'flex',flexDirection:'column',marginBottom:12}}>
+    <div style={{position:'relative',borderRadius:20,flexShrink:0,marginBottom:12}} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}>
+      {pb&&item.predResult&&<div style={{position:'absolute',top:12,right:56,zIndex:2,background:pb,color:'white',fontSize:9,fontWeight:800,borderRadius:4,padding:'2px 7px',letterSpacing:'0.06em',textTransform:'uppercase'}}>{item.predResult==='correct'?'✓ ACERTOU':item.predResult==='incorrect'?'✗ ERROU':'~ PARCIAL'}</div>}
+      <div onClick={()=>onSelect(item)} style={{borderRadius:20,background:pbg,border:`1px solid ${pb||(hov?'#C0C0BB':'#E0E0E0')}`,cursor:'pointer',boxShadow:hov?'0 6px 24px rgba(0,0,0,0.09)':'0 2px 8px rgba(0,0,0,0.06)',transition:'box-shadow 0.18s,border-color 0.18s',display:'flex',flexDirection:'column'}}>
         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 20px',borderBottom:'1px solid #E0E0E0'}}>
           <div style={{display:'flex',alignItems:'center',gap:14}}>
             <div style={{width:44,height:44,borderRadius:12,background:'#F0F0F0',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>{(()=>{const I=TAB_ICON[catKey]||IcoLottery;return <I size={22} color="#555"/>})()}</div>
