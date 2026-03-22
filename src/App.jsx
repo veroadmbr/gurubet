@@ -43,9 +43,9 @@ const IcoThumb     = ({size=14,color='currentColor'}) => <svg width={size} heigh
 const IcoCrypto    = ({size=16,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'block',flexShrink:0}}><path d="M11.767 19.089c4.924.868 6.14-6.025 1.216-6.894m-1.216 6.894L5.86 18.047m5.908 1.042-.347 1.97m1.563-8.864c4.924.869 6.14-6.025 1.215-6.893m-1.215 6.893-3.94-.694m5.155-6.2L8.29 4.26m5.908 1.042.348-1.97M7.48 20.364l3.126-17.727"/></svg>
 const IcoMoedas    = ({size=16,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'block',flexShrink:0}}><circle cx="12" cy="12" r="10"/><path d="M12 6v2m0 8v2M8 12h8"/><path d="M9 9h.01M15 15h.01"/></svg>
 
-const IcoGolf = ({size=16,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'block',flexShrink:0}}><circle cx="12" cy="18" r="3"/><path d="M12 15V3l4 2"/></svg>
+const IcoGolf = ({size=16,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'block',flexShrink:0}}><line x1="6" y1="22" x2="6" y2="2"/><polygon points="6,2 18,8 6,14" fill={color} stroke="none"/></svg>
 
-const IcoEleicoes = ({size=16,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'block',flexShrink:0}}><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+const IcoEleicoes = ({size=16,color='currentColor'}) => <svg width={size} height={size} viewBox="0 0 24 24" style={{display:'block',flexShrink:0}}><rect x="1" y="3" width="22" height="18" rx="2" fill="#009C3B"/><polygon points="12,5 22,12 12,19 2,12" fill="#FFDF00"/><circle cx="12" cy="12" r="4" fill="#002776"/><line x1="8.5" y1="12" x2="15.5" y2="12" stroke="white" strokeWidth="1.2"/></svg>
 
 const TAB_ICON = {
   todos: IcoAll, loterias: IcoLottery, futebol: IcoSoccer, basquete: IcoBasket, mma: IcoMMA, tenis: IcoTennis, esports: IcoEsports,
@@ -971,6 +971,98 @@ function useAutoUpdate(seed) {
   return {appData, logs, updating, lastAt, countdown, progress, force}
 }
 
+
+// ─── SHARE BUTTON ─────────────────────────────────────────────────────────────
+function ShareBtn({item, catKey}) {
+  const [copied, setCopied] = useState(false)
+
+  function buildText() {
+    const site = 'bettv.com.br'
+    // Sport
+    if (item.home && item.away) {
+      return `⚽ BetTv · ${item.title}\n` +
+        `📊 Pick: ${item.bettvPick} (${item.bettvConf}% conf.)\n` +
+        `💬 ${item.bettvReason||''}\n` +
+        `🔗 ${site}`
+    }
+    // Loteria
+    if (item.nome) {
+      const nums = (item.guruNums||[]).slice(0,6).join(', ')
+      return `🎲 BetTv · ${item.nome} — Conc. ${item.concurso||''}\n` +
+        `🔢 Sugestão: ${nums}\n` +
+        `🎯 Confiança: ${item.guruConf||item.bettvConf||0}%\n` +
+        `🔗 ${site}`
+    }
+    // Crypto
+    if (item.price !== undefined) {
+      const chg = item.change24h||0
+      return `₿ BetTv · ${item.symbol} — ${item.name}\n` +
+        `💰 Preço: $${item.price>=1000?Number(item.price).toLocaleString('en-US',{maximumFractionDigits:0}):Number(item.price).toFixed(2)} (${chg>0?'+':''}${chg.toFixed(2)}%)\n` +
+        `📊 Pick 24h: ${item.bettvPick} ${item.bettvConf}% · Anual 2026: ${item.yearPick||''} ${item.yearConf||''}%\n` +
+        `🔗 ${site}`
+    }
+    // Câmbio
+    if (item.priceBRL !== undefined) {
+      return `💱 BetTv · ${item.symbol} — ${item.name}\n` +
+        `💰 R$ ${item.priceBRL>=1?Number(item.priceBRL).toFixed(2):Number(item.priceBRL).toFixed(5)}\n` +
+        `📊 Pick: ${item.bettvPick} ${item.bettvConf}% · Anual 2026: ${item.yearPick||''} ${item.yearConf||''}%\n` +
+        `🔗 ${site}`
+    }
+    // Eleições
+    if (item.tipo) {
+      const pick = item.bettvPick||''
+      return `🗳️ BetTv · Eleições 2026\n` +
+        `📋 ${item.titulo}\n` +
+        `📊 ${pick} (${item.bettvConf}% conf.)\n` +
+        `💬 ${item.bettvReason||''}\n` +
+        `🔗 ${site}`
+    }
+    return `BetTv · bettv.com.br`
+  }
+
+  async function handleShare(e) {
+    e.stopPropagation()
+    const text = buildText()
+    try {
+      if (navigator.share) {
+        await navigator.share({title:'BetTv', text})
+      } else {
+        await navigator.clipboard.writeText(text)
+        setCopied(true)
+        setTimeout(()=>setCopied(false), 2000)
+      }
+    } catch(_) {
+      try {
+        await navigator.clipboard.writeText(text)
+        setCopied(true)
+        setTimeout(()=>setCopied(false), 2000)
+      } catch(__) {}
+    }
+  }
+
+  return (
+    <button onClick={handleShare}
+      title={copied?'Copiado!':'Compartilhar'}
+      style={{
+        position:'absolute', top:8, right:8, zIndex:10,
+        width:26, height:26, borderRadius:'50%',
+        background:copied?'#16A34A':'rgba(0,0,0,0.06)',
+        border:'none', cursor:'pointer', display:'flex',
+        alignItems:'center', justifyContent:'center',
+        transition:'background 0.2s', flexShrink:0,
+        backdropFilter:'blur(4px)',
+      }}
+      onMouseEnter={e=>{ if(!copied) e.currentTarget.style.background='rgba(0,0,0,0.14)' }}
+      onMouseLeave={e=>{ if(!copied) e.currentTarget.style.background='rgba(0,0,0,0.06)' }}
+    >
+      {copied
+        ? <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+        : <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      }
+    </button>
+  )
+}
+
 // ─── BALL ─────────────────────────────────────────────────────────────────────
 function Ball({n, size=24, bg=T.gray2, color=T.black}) {
   return (
@@ -1185,6 +1277,7 @@ function KalshiSportCard({item, catKey, onSelect, catUpdating}) {
     <div onClick={()=>onSelect(item)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
       style={{height:CARD_H,background:predBg,borderRadius:T.r.lg,border:`2px solid ${predBorder||(hov?'#C0C0BB':T.border)}`,cursor:'pointer',boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden',position:'relative'}}>
       {/* Prediction result badge */}
+      <ShareBtn item={item} catKey={catKey}/>
       {item.predResult&&<div style={{position:'absolute',top:8,right:8,zIndex:2,background:predBorder,color:'white',fontSize:9,fontWeight:800,borderRadius:4,padding:'2px 6px',letterSpacing:'0.05em',textTransform:'uppercase'}}>{item.predResult==='correct'?'✓ ACERTOU':item.predResult==='incorrect'?'✗ ERROU':'~ PARCIAL'}</div>}
 
 
@@ -1249,6 +1342,7 @@ function KalshiLotoCard({lot, onSelect, catUpdating}) {
     <div onClick={()=>onSelect(lot)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
       style={{height:CARD_H,background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C0C0BB':T.border}`,cursor:'pointer',boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden'}}>
 
+      <ShareBtn item={lot} catKey="loterias"/>
       {/* Header */}
       <div style={{padding:'11px 14px 9px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
@@ -1313,6 +1407,7 @@ function LotoCard({lot, onSelect, catUpdating}) {
   return (
     <div onClick={()=>onSelect(lot)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
       style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${T.border}`,marginBottom:12,overflow:'hidden',cursor:'pointer',boxShadow:hov?'0 4px 20px rgba(0,0,0,0.08)':'none',transition:'box-shadow 0.15s'}}>
+      <ShareBtn item={lot} catKey="loterias"/>
       <div style={{height:3,background:lot.acumulado?'#F59E0B':T.cat.loterias}}/>
       <div style={{padding:'16px 18px'}}>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:12}}>
@@ -2258,6 +2353,7 @@ function MobileSportCard({item, catKey, onSelect}) {
         marginBottom:10,overflow:'hidden',cursor:'pointer',position:'relative',
         boxShadow:'0 1px 4px rgba(0,0,0,0.05)'}}>
 
+      <ShareBtn item={item} catKey={catKey}/>
       {/* Header: categoria + competição */}
       <div style={{padding:'10px 14px 0',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
         <div style={{display:'flex',alignItems:'center',gap:6}}>
@@ -2661,6 +2757,7 @@ function CryptoCard({item, onSelect}) {
             <IcoCrypto size={12} color={catColor}/>
           </div>
           <span style={{fontSize:11,fontWeight:700,color:catColor,letterSpacing:'0.04em',textTransform:'uppercase'}}>CRYPTO</span>
+          <ShareBtn item={item} catKey="crypto"/>
         </div>
         <span style={{fontSize:11,color:T.gray1}}>Mercado 24h</span>
       </div>
@@ -2760,6 +2857,7 @@ function MoedasCard({item, onSelect}) {
             <IcoMoedas size={12} color={catColor}/>
           </div>
           <span style={{fontSize:11,fontWeight:700,color:catColor,letterSpacing:'0.04em',textTransform:'uppercase'}}>CÂMBIO</span>
+          <ShareBtn item={item} catKey="moedas"/>
         </div>
         <span style={{fontSize:11,color:T.gray1}}>vs BRL · Hoje</span>
       </div>
@@ -2859,6 +2957,7 @@ function EleicaoCard({item, onSelect}) {
           <span style={{fontSize:11,fontWeight:700,color:catColor,letterSpacing:'0.04em',textTransform:'uppercase'}}>ELEIÇÕES 2026</span>
         </div>
         <span style={{fontSize:10,color:T.gray1,fontWeight:600}}>{TIPO_LABEL[item.tipo]||''}</span>
+        <ShareBtn item={item} catKey="eleicoes"/>
       </div>
 
       {/* Title */}
