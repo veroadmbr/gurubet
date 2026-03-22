@@ -1683,15 +1683,164 @@ function EngineLog({logs,updating,lastAt,countdown,progress,force}) {
 }
 
 // ─── DESKTOP NAV ──────────────────────────────────────────────────────────────
-function DesktopNav({tab, onTab, page, onPage, updating, countdown, progress, force}) {
+function useGlobalSearch(appData) {
+  // Build a flat searchable index from all content
+  const index = useMemo(() => {
+    const items = []
+    // Esportes
+    Object.entries(appData.esportes||{}).forEach(([catKey, cat]) => {
+      ;(cat.items||[]).forEach(item => {
+        items.push({
+          type: 'esporte', catKey,
+          label: item.title,
+          sub: item.competition,
+          pick: item.bettvPick,
+          conf: item.bettvConf,
+          raw: `${item.title} ${item.competition} ${item.home?.name||''} ${item.away?.name||''} ${item.bettvPick||''}`.toLowerCase(),
+          item,
+        })
+      })
+    })
+    // Loterias
+    ;(appData.loterias||[]).forEach(lot => {
+      items.push({
+        type: 'loteria', catKey: 'loterias',
+        label: lot.nome, sub: `Sorteio ${lot.data} · ${lot.premio}`,
+        pick: `${lot.guruConf}% conf.`, conf: lot.guruConf,
+        raw: `${lot.nome} ${lot.descricao}`.toLowerCase(),
+        item: lot,
+      })
+    })
+    // Crypto
+    ;(appData.crypto||[]).forEach(c => {
+      items.push({
+        type: 'crypto', catKey: 'crypto',
+        label: `${c.symbol} — ${c.name}`,
+        sub: c.price ? `$${c.price>=1000?Number(c.price).toLocaleString('en-US',{maximumFractionDigits:0}):Number(c.price).toFixed(2)}` : '',
+        pick: c.bettvPick, conf: c.bettvConf,
+        raw: `${c.symbol} ${c.name} ${c.bettvPick||''}`.toLowerCase(),
+        item: c,
+      })
+    })
+    // Moedas
+    ;(appData.moedas||[]).forEach(m => {
+      items.push({
+        type: 'moeda', catKey: 'moedas',
+        label: `${m.symbol} — ${m.name}`,
+        sub: m.priceBRL ? `R$ ${m.priceBRL>=1?Number(m.priceBRL).toFixed(2):Number(m.priceBRL).toFixed(5)}` : '',
+        pick: m.bettvPick, conf: m.bettvConf,
+        raw: `${m.symbol} ${m.name} ${m.flag||''} ${m.bettvPick||''}`.toLowerCase(),
+        item: m,
+      })
+    })
+    return items
+  }, [appData])
+
+  const search = useCallback((q) => {
+    if (!q || q.trim().length < 2) return []
+    const terms = q.trim().toLowerCase().split(/\s+/)
+    return index
+      .filter(entry => terms.every(t => entry.raw.includes(t)))
+      .slice(0, 12)
+  }, [index])
+
+  return search
+}
+
+function SearchBar({appData, onTab, onPage, onSelectItem}) {
+  const [query, setQuery]   = useState('')
+  const [open,  setOpen]    = useState(false)
+  const [focus, setFocus]   = useState(false)
+  const inputRef = useRef(null)
+  const search   = useGlobalSearch(appData)
+
+  const results = useMemo(() => search(query), [search, query])
+  const show = focus && query.length >= 2
+
+  const CAT_COLOR = {
+    esporte:'#1A7A4A', loteria:'#1A7A4A', crypto:'#D97706', moeda:'#0891B2',
+  }
+  const CAT_LABEL = {
+    esporte:'Esporte', loteria:'Loteria', crypto:'Crypto', moeda:'Câmbio',
+  }
+  const PICK_COLOR = {ALTA:'#16A34A', QUEDA:'#E53935', NEUTRO:'#6B7280'}
+
+  function handleSelect(entry) {
+    setQuery('')
+    setFocus(false)
+    // Navigate to correct tab
+    onPage('categorias')
+    onTab(entry.catKey)
+    // Open item modal
+    setTimeout(() => onSelectItem(entry.item, entry.catKey), 80)
+  }
+
+  return (
+    <div style={{position:'relative', flex:1, maxWidth:440}}>
+      {/* Input */}
+      <div style={{display:'flex',alignItems:'center',gap:8,background:focus?T.white:T.bg,border:`1.5px solid ${focus?T.black:T.border}`,borderRadius:T.r.pill,padding:'0 14px',height:36,transition:'border-color 0.15s,background 0.15s'}}>
+        <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke={focus?T.black:T.gray1} strokeWidth="2.2" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input
+          ref={inputRef}
+          value={query}
+          onChange={e=>setQuery(e.target.value)}
+          onFocus={()=>setFocus(true)}
+          onBlur={()=>setTimeout(()=>setFocus(false),150)}
+          placeholder="Buscar times, cryptos, moedas, loterias…"
+          style={{flex:1,border:'none',background:'transparent',fontSize:13,color:T.black,outline:'none',fontFamily:'inherit'}}
+        />
+        {query&&<button onClick={()=>{setQuery('');inputRef.current?.focus()}} style={{background:'none',border:'none',cursor:'pointer',padding:0,display:'flex',color:T.gray1}}>
+          <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>}
+      </div>
+
+      {/* Dropdown */}
+      {show&&(
+        <div style={{position:'absolute',top:'calc(100% + 6px)',left:0,right:0,background:T.white,borderRadius:T.r.lg,border:`1px solid ${T.border}`,boxShadow:'0 12px 40px rgba(0,0,0,0.14)',zIndex:200,overflow:'hidden',maxHeight:420,overflowY:'auto'}}>
+          {results.length===0
+            ? <div style={{padding:'16px 16px',fontSize:13,color:T.gray1,textAlign:'center'}}>Nenhum resultado para "{query}"</div>
+            : <>
+                <div style={{padding:'8px 14px 6px',fontSize:10,fontWeight:700,color:T.gray1,letterSpacing:'0.06em',borderBottom:`1px solid ${T.border}`}}>
+                  {results.length} resultado{results.length!==1?'s':''} para "{query}"
+                </div>
+                {results.map((entry, i) => {
+                  const cc = CAT_COLOR[entry.type]||T.black
+                  const pc = PICK_COLOR[entry.pick]||T.gray1
+                  return (
+                    <button key={i} onMouseDown={()=>handleSelect(entry)}
+                      style={{width:'100%',display:'flex',alignItems:'center',gap:12,padding:'10px 14px',background:'none',border:'none',borderBottom:`1px solid ${T.border}`,cursor:'pointer',textAlign:'left',transition:'background 0.1s'}}
+                      onMouseEnter={e=>e.currentTarget.style.background='#F7F7F5'}
+                      onMouseLeave={e=>e.currentTarget.style.background='none'}>
+                      {/* Type badge */}
+                      <div style={{width:44,flexShrink:0,textAlign:'center',background:cc+'18',borderRadius:T.r.sm,padding:'3px 4px'}}>
+                        <span style={{fontSize:9,fontWeight:800,color:cc,letterSpacing:'0.04em'}}>{CAT_LABEL[entry.type]}</span>
+                      </div>
+                      {/* Text */}
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:13,fontWeight:700,color:T.black,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{entry.label}</div>
+                        {entry.sub&&<div style={{fontSize:11,color:T.gray1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{entry.sub}</div>}
+                      </div>
+                      {/* Pick badge */}
+                      {entry.pick&&<div style={{flexShrink:0,background:pc,color:'white',borderRadius:T.r.pill,fontSize:10,fontWeight:800,padding:'2px 9px',whiteSpace:'nowrap'}}>{entry.pick}</div>}
+                    </button>
+                  )
+                })}
+              </>
+          }
+        </div>
+      )}
+    </div>
+  )
+}
+
+function DesktopNav({tab, onTab, page, onPage, updating, countdown, progress, force, appData, onSelectItem}) {
   return (
     <div style={{background:T.white,borderBottom:`1px solid ${T.border}`,position:'sticky',top:0,zIndex:50}}>
       {/* Top bar */}
-      <div style={{maxWidth:1280,margin:'0 auto',padding:'0 40px',display:'flex',alignItems:'center',justifyContent:'space-between',height:54,width:'100%'}}>
-        <div style={{display:'flex',alignItems:'center',gap:28}}>
-          <div style={{display:'flex',alignItems:'center'}}>
-            <LogoSVG height={30}/>
-          </div>
+      <div style={{maxWidth:1280,margin:'0 auto',padding:'0 40px',display:'flex',alignItems:'center',justifyContent:'space-between',height:54,gap:20,width:'100%'}}>
+        {/* Left: logo + nav */}
+        <div style={{display:'flex',alignItems:'center',gap:24,flexShrink:0}}>
+          <LogoSVG height={30}/>
           <nav style={{display:'flex',gap:2}}>
             {[
               {key:'categorias', label:'CATEGORIAS'},
@@ -1707,7 +1856,12 @@ function DesktopNav({tab, onTab, page, onPage, updating, countdown, progress, fo
             })}
           </nav>
         </div>
-        <div style={{display:'flex',alignItems:'center',gap:10}}>
+
+        {/* Center: search bar */}
+        <SearchBar appData={appData} onTab={onTab} onPage={onPage} onSelectItem={onSelectItem}/>
+
+        {/* Right: status + button */}
+        <div style={{display:'flex',alignItems:'center',gap:10,flexShrink:0}}>
           {updating&&(
             <div style={{display:'flex',alignItems:'center',gap:6,background:'#FFF8E1',borderRadius:T.r.pill,padding:'6px 13px',border:'1px solid #FFE082'}}>
               <div style={{width:7,height:7,borderRadius:'50%',border:'2px solid #F59E0B',borderTopColor:'transparent',animation:'spin 0.8s linear infinite',flexShrink:0}}/>
@@ -1715,14 +1869,14 @@ function DesktopNav({tab, onTab, page, onPage, updating, countdown, progress, fo
             </div>
           )}
           <button onClick={force} disabled={updating}
-            style={{display:'flex',alignItems:'center',gap:7,background:updating?T.gray2:T.green,color:updating?T.gray1:T.white,border:'none',borderRadius:T.r.pill,padding:'8px 17px',fontSize:13,fontWeight:700,cursor:updating?'not-allowed':'pointer',transition:'background 0.15s'}}>
+            style={{display:'flex',alignItems:'center',gap:7,background:updating?T.gray2:T.green,color:updating?T.gray1:T.white,border:'none',borderRadius:T.r.pill,padding:'8px 17px',fontSize:13,fontWeight:700,cursor:updating?'not-allowed':'pointer',transition:'background 0.15s',whiteSpace:'nowrap'}}>
             <IcoRefresh size={14} color={updating?T.gray1:T.white}/>
             {updating?'Atualizando...':'Atualizar previsões'}
           </button>
         </div>
       </div>
 
-      {/* Category tabs — only when on categorias page */}
+      {/* Category tabs */}
       {page==='categorias'&&(
         <div style={{maxWidth:1280,margin:'0 auto',padding:'0 40px',display:'flex',alignItems:'center',borderTop:`1px solid ${T.border}`,overflowX:'auto'}}>
           {TABS.map(({key,label})=>{
@@ -2475,7 +2629,7 @@ export default function App() {
     return (
       <div style={{display:'flex',flexDirection:'column',height:'100vh',background:T.bg}}>
         <style>{CSS}</style>
-        <DesktopNav tab={tab} onTab={handleTab} page={page} onPage={handlePage} updating={updating} countdown={countdown} progress={progress} force={force}/>
+        <DesktopNav tab={tab} onTab={handleTab} page={page} onPage={handlePage} updating={updating} countdown={countdown} progress={progress} force={force} appData={appData} onSelectItem={setSelItem}/>
         <div style={{flex:1,overflowY:page==='social'?'hidden':'auto'}}>
           {page==='social'?<SocialPage appData={appData}/>:(
             <div style={{maxWidth:1280,margin:'0 auto',padding:'28px 40px 56px'}}>
