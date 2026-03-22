@@ -2189,20 +2189,19 @@ function MobileHeader({tab, onTab, page, onPage, updating, countdown, progress, 
     <div style={{background:T.white,borderBottom:`1px solid ${T.border}`,position:'sticky',top:0,zIndex:50}}>
       {/* Top bar — logo + botão atualizar */}
       <div style={{padding:'10px 16px 8px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-        <LogoSVG height={24}/>
+        <LogoSVG height={29}/>
         <button onClick={force} disabled={updating}
-          style={{display:'flex',alignItems:'center',gap:5,padding:'7px 14px',borderRadius:T.r.pill,background:updating?T.gray2:T.green,border:'none',color:updating?T.gray1:T.white,fontSize:12,fontWeight:700,cursor:updating?'not-allowed':'pointer',flexShrink:0}}>
-          <IcoRefresh size={13} color={updating?T.gray1:T.white}/>
+          style={{display:'flex',alignItems:'center',gap:6,padding:'8px 16px',borderRadius:T.r.pill,background:updating?T.gray2:T.green,border:'none',color:updating?T.gray1:T.white,fontSize:14,fontWeight:700,cursor:updating?'not-allowed':'pointer',flexShrink:0}}>
+          <IcoRefresh size={15} color={updating?T.gray1:T.white}/>
           {updating?'Analisando...':'Atualizar'}
         </button>
       </div>
 
       {/* Status bar */}
-      
       {updating&&progress.current&&(
         <div style={{margin:'0 16px 6px',background:'#FFF8E1',borderRadius:T.r.sm,padding:'4px 12px',display:'flex',alignItems:'center',gap:7}}>
           <div style={{width:7,height:7,borderRadius:'50%',border:'2px solid #F59E0B',borderTopColor:'transparent',animation:'spin 0.8s linear infinite',flexShrink:0}}/>
-          <span style={{fontSize:11,color:'#78350F'}}>{progress.done}/{progress.total} — <strong>{progress.current}</strong></span>
+          <span style={{fontSize:13,color:'#78350F'}}>{progress.done}/{progress.total} — <strong>{progress.current}</strong></span>
         </div>
       )}
 
@@ -2214,23 +2213,23 @@ function MobileHeader({tab, onTab, page, onPage, updating, countdown, progress, 
           const catColor = T.cat[key]||T.black
           return (
             <button key={key} onClick={()=>{onPage('categorias');onTab(key)}}
-              style={{display:'flex',alignItems:'center',gap:4,padding:'9px 12px',border:'none',
+              style={{display:'flex',alignItems:'center',gap:5,padding:'13px 14px',border:'none',
                 borderBottom:`2px solid ${active?catColor:'transparent'}`,
                 background:'transparent',color:active?catColor:T.gray1,
-                fontSize:12,fontWeight:active?700:500,cursor:'pointer',
+                fontSize:14,fontWeight:active?700:500,cursor:'pointer',
                 whiteSpace:'nowrap',flexShrink:0,marginBottom:-1,transition:'all 0.12s'}}>
-              <Ico size={13} color={active?catColor:T.gray3}/>
+              <Ico size={15} color={active?catColor:T.gray3}/>
               {label}
             </button>
           )
         })}
         <button onClick={()=>onPage('social')}
-          style={{display:'flex',alignItems:'center',gap:4,padding:'9px 12px',border:'none',
+          style={{display:'flex',alignItems:'center',gap:5,padding:'13px 14px',border:'none',
             borderBottom:`2px solid ${page==='social'?T.black:'transparent'}`,
             background:'transparent',color:page==='social'?T.black:T.gray1,
-            fontSize:12,fontWeight:page==='social'?700:500,cursor:'pointer',
+            fontSize:14,fontWeight:page==='social'?700:500,cursor:'pointer',
             whiteSpace:'nowrap',flexShrink:0,marginBottom:-1}}>
-          <IcoSocial size={13} color={page==='social'?T.black:T.gray3}/>
+          <IcoSocial size={15} color={page==='social'?T.black:T.gray3}/>
           Social
         </button>
       </div>
