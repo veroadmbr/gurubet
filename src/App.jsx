@@ -506,7 +506,7 @@ const ELEICOES_DATA = [
     obs:'Caiado 4% + Zema 2% fragmentam direita — beneficia Lula no 1º turno',
     fonte:'Quaest Genial 11/03/2026 — TSE BR-05809/2026',
   }
-]]
+]
 
 
 const TABS = [
