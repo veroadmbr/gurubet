@@ -49,7 +49,7 @@ const IcoEleicoes = ({size=16,color='currentColor'}) => <svg xmlns="http://www.w
 
 const TAB_ICON = {
   todos: IcoAll, loterias: IcoLottery, futebol: IcoSoccer, basquete: IcoBasket, mma: IcoMMA, tenis: IcoTennis, esports: IcoEsports,
-  crypto: IcoCrypto, moedas: IcoMoedas,
+  golf: IcoGolf, eleicoes: IcoEleicoes, crypto: IcoCrypto, moedas: IcoMoedas,
 }
 
 const LogoSVG = ({height=32}) => (
@@ -1275,10 +1275,11 @@ function KalshiSportCard({item, catKey, onSelect, catUpdating}) {
     const predBg = item.predResult==='correct'?'#F0FDF4':item.predResult==='incorrect'?'#FEF2F2':item.predResult==='partial'?'#FFFBEB':T.white
 
     return (
-    <div onClick={()=>onSelect(item)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-      style={{height:CARD_H,background:predBg,borderRadius:T.r.lg,border:`2px solid ${predBorder||(hov?'#C0C0BB':T.border)}`,cursor:'pointer',boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden',position:'relative'}}>
-      {/* Prediction result badge */}
+    <div style={{position:'relative',height:CARD_H,borderRadius:T.r.lg,flexShrink:0}}>
       <ShareBtn item={item} catKey={catKey}/>
+      <div onClick={()=>onSelect(item)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+        style={{height:'100%',background:predBg,borderRadius:T.r.lg,border:`2px solid ${predBorder||(hov?'#C0C0BB':T.border)}`,cursor:'pointer',boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden'}}>
+      {/* Prediction result badge */}
       {item.predResult&&<div style={{position:'absolute',top:8,right:8,zIndex:2,background:predBorder,color:'white',fontSize:9,fontWeight:800,borderRadius:4,padding:'2px 6px',letterSpacing:'0.05em',textTransform:'uppercase'}}>{item.predResult==='correct'?'✓ ACERTOU':item.predResult==='incorrect'?'✗ ERROU':'~ PARCIAL'}</div>}
 
 
@@ -1340,10 +1341,10 @@ function KalshiSportCard({item, catKey, onSelect, catUpdating}) {
 function KalshiLotoCard({lot, onSelect, catUpdating}) {
   const [hov,setHov]=useState(false)
   return (
-    <div onClick={()=>onSelect(lot)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-      style={{height:CARD_H,background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C0C0BB':T.border}`,cursor:'pointer',boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden'}}>
-
+    <div style={{position:'relative',height:CARD_H,borderRadius:T.r.lg,flexShrink:0}}>
       <ShareBtn item={lot} catKey="loterias"/>
+      <div onClick={()=>onSelect(lot)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+        style={{height:'100%',background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C0C0BB':T.border}`,cursor:'pointer',boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden'}}>
       {/* Header */}
       <div style={{padding:'11px 14px 9px',paddingRight:38,display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
         <div style={{display:'flex',alignItems:'center',gap:8}}>
@@ -1407,7 +1408,7 @@ function LotoCard({lot, onSelect, catUpdating}) {
   const [hov,setHov]=useState(false)
   return (
     <div onClick={()=>onSelect(lot)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-      style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${T.border}`,marginBottom:12,overflow:'hidden',cursor:'pointer',boxShadow:hov?'0 4px 20px rgba(0,0,0,0.08)':'none',transition:'box-shadow 0.15s'}}>
+      style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${T.border}`,marginBottom:12,cursor:'pointer',boxShadow:hov?'0 4px 20px rgba(0,0,0,0.08)':'none',transition:'box-shadow 0.15s',position:'relative'}}>
       <ShareBtn item={lot} catKey="loterias"/>
       <div style={{height:3,background:lot.acumulado?'#F59E0B':T.cat.loterias}}/>
       <div style={{padding:'16px 18px'}}>
@@ -1465,7 +1466,7 @@ function SportCard({item, catKey, onSelect, catUpdating}) {
   const catColor=T.cat[catKey]||T.black
   return (
     <div onClick={()=>onSelect(item)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-      style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${T.border}`,marginBottom:12,overflow:'hidden',cursor:'pointer',boxShadow:hov?'0 4px 20px rgba(0,0,0,0.08)':'none',transition:'box-shadow 0.15s'}}>
+      style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${T.border}`,marginBottom:12,cursor:'pointer',boxShadow:hov?'0 4px 20px rgba(0,0,0,0.08)':'none',transition:'box-shadow 0.15s',position:'relative'}}>
       <div style={{height:3,background:live?T.red:T.border}}/>
       <div style={{padding:'14px 18px'}}>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:9}}>
@@ -2351,7 +2352,7 @@ function MobileSportCard({item, catKey, onSelect}) {
   return (
     <div onClick={()=>onSelect(item)}
       style={{background:item.predResult==='correct'?'#F0FDF4':item.predResult==='incorrect'?'#FEF2F2':item.predResult==='partial'?'#FFFBEB':T.white,borderRadius:T.r.lg,border:`2px solid ${item.predResult==='correct'?'#16A34A':item.predResult==='incorrect'?'#E53935':item.predResult==='partial'?'#D97706':T.border}`,
-        marginBottom:10,overflow:'hidden',cursor:'pointer',position:'relative',
+        marginBottom:10,cursor:'pointer',position:'relative',
         boxShadow:'0 1px 4px rgba(0,0,0,0.05)'}}>
 
       <ShareBtn item={item} catKey={catKey}/>
@@ -2749,7 +2750,7 @@ function CryptoCard({item, onSelect}) {
     <div onClick={()=>onSelect&&onSelect(item)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
       style={{height:CARD_H,background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C0C0BB':T.border}`,
         boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',
-        transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden',cursor:'pointer'}}>
+        transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',cursor:'pointer',position:'relative'}}>
 
       {/* Header */}
       <div style={{padding:'11px 14px 9px',paddingRight:38,display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
@@ -2849,7 +2850,7 @@ function MoedasCard({item, onSelect}) {
     <div onClick={()=>onSelect&&onSelect(item)} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
       style={{height:CARD_H,background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#C0C0BB':T.border}`,
         boxShadow:hov?'0 4px 20px rgba(0,0,0,0.1)':'0 1px 3px rgba(0,0,0,0.04)',
-        transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',overflow:'hidden',cursor:'pointer'}}>
+        transition:'box-shadow 0.15s,border-color 0.15s',display:'flex',flexDirection:'column',cursor:'pointer',position:'relative'}}>
 
       {/* Header */}
       <div style={{padding:'11px 14px 9px',paddingRight:38,display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
@@ -2947,7 +2948,7 @@ function EleicaoCard({item, onSelect}) {
       onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
       style={{background:T.white,borderRadius:T.r.lg,border:`1px solid ${hov?'#A78BFA':T.border}`,
         boxShadow:hov?'0 4px 20px rgba(124,58,237,0.12)':'0 1px 3px rgba(0,0,0,0.04)',
-        transition:'all 0.15s',cursor:'pointer',overflow:'hidden',display:'flex',flexDirection:'column'}}>
+        transition:'all 0.15s',cursor:'pointer',display:'flex',flexDirection:'column',position:'relative'}}>
 
       {/* Header */}
       <div style={{padding:'11px 14px 9px',display:'flex',justifyContent:'space-between',alignItems:'center',borderBottom:`1px solid ${T.border}`}}>
