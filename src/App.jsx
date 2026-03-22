@@ -523,19 +523,85 @@ const TABS = [
   { key:'moedas',   label:'Câmbio'    },
 ]
 
-const INTERVAL = 2*60*60*1000
+const INTERVAL = 1*60*60*1000  // atualização a cada 1 hora
 
-// ─── TOP REFERENCE SITES BY CATEGORY ─────────────────────────────────────────
+// ─── TOP REFERENCE SITES BY CATEGORY (fontes definidas pelo usuário) ──────────
 const TOP_SITES = {
-  futebol:  'ESPN.com, BBC Sport, Sky Sports, FlashScore, SofaScore, LiveScore, 90min, Goal.com, GE.Globo.com, UOL Esporte, Transfermarkt, FBref, WhoScored, Premier League oficial, La Liga oficial, UEFA Champions League oficial, CBF.com.br, Gazeta Esportiva, Lance.com.br, Trivela.com.br',
-  basquete: 'NBA.com, ESPN.com, CBS Sports, Basketball Reference, HoopsHype, RealGM, Bleacher Report NBA, SportRadar, Rotowire NBA, Yahoo Sports NBA, NBAStats.com, ClutchPoints, The Athletic NBA, HoopsRumors, EuroLeague oficial, NBB oficial, BasqueteComPaixao',
-  mma:      'UFC.com, ESPN MMA, CBS Sports MMA, MMAJunkie, Sherdog, BloodyElbow, MMAFighting, MMAWeekly, Tapology, BestFightOdds, Sherdog Forums, MMA Mania, FightMatrix, MMA Decisions, MMANytt',
-  tenis:    'ATPTour.com, WTATennis.com, TennisAbstract, Ultimate Tennis Statistics, TennisTemple, FlashScore Tennis, ESPN Tennis, Tennis Now, TENNIS.com, TennisWorld, Ubitennis, TennisMajors, TennisHead, LiveTennis, Tennis365',
-  esports:  'Liquipedia.net, HLTV.org, Vlr.gg, LoLEsports oficial, ESL Gaming, FACEIT, Gosugamers, Dot Esports, The Esports Observer, SportBible Esports, RedBull Gaming, Esports Charts, CBLoL oficial (placar.lol), Abios, PandaScore',
-  golf:     'PGATour.com, OWGR.com (ranking mundial), GolfChannel, Golf Digest, Golf Magazine, ESPN Golf, CBSSports Golf, Masters.com, Golfweek, GolfDataTech, DataGolf, European Tour (DPWT), R&A Golf, USGA.org, GolfStats',
-  crypto:   'CoinGecko, CoinMarketCap, TradingView, CryptoCompare, Messari, Glassnode, IntoTheBlock, Santiment, DeFiLlama, The Block, CoinDesk, Decrypt, Cointelegraph, CryptoPanic, Kaiko',
-  moedas:   'Investing.com, XE.com, Forex Factory, DailyFX, Bloomberg FX, Reuters FX, TradingView Forex, OANDA, FXStreet, Banco Central do Brasil (bcb.gov.br), CMC Markets, IG Forex, Myfxbook, ForexLive, Exness',
-  loterias: 'Caixa.gov.br (loterias.caixa.gov.br), LotoClic, LottoNumbers.com, Loteria Online, Resultado.net, Loterias e Apostas, DiaDesorte.com, LotoFacil.net, Quina.org, MegaSena.com',
+  futebol:
+    'FIFA (fifa.com), UEFA (uefa.com), CONMEBOL (conmebol.com), CBF (cbf.com.br), ' +
+    'Premier League (premierleague.com), La Liga (laliga.com), Serie A (legaseriea.it), ' +
+    'Bundesliga (bundesliga.com), Ligue 1 (ligue1.com), MLS (mlssoccer.com), ' +
+    'Transfermarkt (transfermarkt.com), FBref (fbref.com), WhoScored (whoscored.com), ' +
+    'SofaScore (sofascore.com), Flashscore (flashscore.com), FotMob (fotmob.com), ' +
+    'Understat (understat.com), ESPN Soccer (espn.com/soccer), BBC Sport (bbc.com/sport/football), ' +
+    'Goal (goal.com)',
+
+  basquete:
+    'NBA (nba.com), FIBA (fiba.basketball), EuroLeague (euroleaguebasketball.net), ' +
+    'NCAA (ncaa.com), Basketball Reference (basketball-reference.com), StatMuse (statmuse.com), ' +
+    'NBA Stats (stats.nba.com), ESPN NBA (espn.com/nba), Yahoo Sports NBA (sports.yahoo.com/nba), ' +
+    'Bleacher Report NBA (bleacherreport.com/nba), NBB (lnb.com.br), ' +
+    'Globo Esporte (ge.globo.com/basquete), UOL Esporte (uol.com.br/esporte/basquete), ' +
+    'RealGM (basketball.realgm.com), HoopsHype (hoopshype.com), ' +
+    'Cleaning the Glass (cleaningtheglass.com), EuroBasket (eurobasket.com), ' +
+    'CBS Sports NBA (cbssports.com/nba), The Athletic NBA (theathletic.com/nba)',
+
+  mma:
+    'UFC (ufc.com), Bellator (bellator.com), ONE Championship (onefc.com), PFL (pflmma.com), ' +
+    'Sherdog (sherdog.com), Tapology (tapology.com), MMA Decisions (mmadecisions.com), ' +
+    'MMA Fighting (mmafighting.com), Bloody Elbow (bloodyelbow.com), ESPN MMA (espn.com/mma), ' +
+    'Combate (ge.globo.com/combate), UFC Stats (ufcstats.com), FightMatrix (fightmatrix.com), ' +
+    'MMAJunkie (mmajunkie.usatoday.com), Sherdog Rankings (sherdog.com/rankings), ' +
+    'Tapology Rankings (tapology.com/rankings)',
+
+  tenis:
+    'ATP Tour (atptour.com), WTA (wtatennis.com), ITF (itftennis.com), Davis Cup (daviscup.com), ' +
+    'Tennis Abstract (tennisabstract.com), Ultimate Tennis Stats (ultimatetennisstatistics.com), ' +
+    'Tennis.com, ESPN Tennis (espn.com/tennis), BBC Tennis (bbc.com/sport/tennis), ' +
+    'Flashscore Tennis (flashscore.com/tennis), SofaScore Tennis (sofascore.com/tennis), ' +
+    'ATP Rankings (atptour.com/en/rankings), WTA Rankings (wtatennis.com/rankings), ' +
+    'Roland Garros (rolandgarros.com), Wimbledon (wimbledon.com), ' +
+    'US Open (usopen.org), Australian Open (ausopen.com), Tennis Explorer (tennisexplorer.com)',
+
+  esports:
+    'Liquipedia (liquipedia.net), HLTV (hltv.org), Mais Esports (maisesports.com.br), ' +
+    'GosuGamers (gosugamers.net), Dot Esports (dotesports.com), Dexerto (dexerto.com), ' +
+    'Esports Insider (esportsinsider.com), Esports Charts (escharts.com), Tracker.gg, ' +
+    'VLR.gg, Riot Esports / LoLEsports (lolesports.com), Valorant Esports (valorantesports.com), ' +
+    'ESL (esl.com), BLAST (blast.tv), FACEIT (faceit.com), OP.GG, U.GG, PandaScore (pandascore.co)',
+
+  golf:
+    'PGA Tour (pgatour.com), European Tour (europeantour.com), LPGA (lpga.com), ' +
+    'OWGR — ranking mundial (owgr.com), Golf Channel (golfchannel.com), ' +
+    'ESPN Golf (espn.com/golf), BBC Golf (bbc.com/sport/golf), Golf Digest (golfdigest.com), ' +
+    'DataGolf (datagolf.com), CBS Golf (cbssports.com/golf), Sky Sports Golf (skysports.com/golf), ' +
+    'Golf.com, Golfweek (golfweek.usatoday.com)',
+
+  eleicoes:
+    'TSE (tse.jus.br), Datafolha (datafolha.folha.uol.com.br), Ipec (ipec-inteligencia.com.br), ' +
+    'Gallup (news.gallup.com), FiveThirtyEight (fivethirtyeight.com), ' +
+    'Pew Research (pewresearch.org), Politico (politico.com), Reuters (reuters.com), ' +
+    'AP News (apnews.com), G1 Política (g1.globo.com/politica), UOL Política (uol.com.br/politica), ' +
+    'Estadão (politica.estadao.com.br), Folha (folha.uol.com.br), ' +
+    'BBC (bbc.com/news/politics), NYTimes (nytimes.com/section/politics)',
+
+  crypto:
+    'CoinMarketCap (coinmarketcap.com), CoinGecko (coingecko.com), Glassnode (glassnode.com), ' +
+    'Messari (messari.io), CryptoQuant (cryptoquant.com), Binance (binance.com), ' +
+    'Coinbase (coinbase.com), Kraken (kraken.com), Bybit (bybit.com), ' +
+    'CoinDesk (coindesk.com), CoinTelegraph (cointelegraph.com), ' +
+    'The Block (theblock.co), Decrypt (decrypt.co), Etherscan (etherscan.io), Dune (dune.com)',
+
+  moedas:
+    'XE (xe.com), Investing (investing.com), TradingView (tradingview.com), OANDA (oanda.com), ' +
+    'Forex Factory (forexfactory.com), Banco Central do Brasil (bcb.gov.br), ' +
+    'Federal Reserve (federalreserve.gov), ECB (ecb.europa.eu), IMF (imf.org), ' +
+    'Bloomberg (bloomberg.com), Reuters Markets (reuters.com/markets), WSJ (wsj.com), ' +
+    'FXStreet (fxstreet.com), DailyFX (dailyfx.com), MarketWatch (marketwatch.com)',
+
+  loterias:
+    'Caixa Econômica Federal — loterias.caixa.gov.br, Loteria Online, Resultado.net, ' +
+    'LotoClic, LottoNumbers.com, DiaDesorte.com, LotoFacil.net, Quina.org, MegaSena.com',
 }
 
 // ─── PROMPTS DE BUSCA (top sites + instruções precisas) ──────────────────────
@@ -679,13 +745,15 @@ async function fetchCategory(category) {
   const year   = new Date().getFullYear()
 
   const system = [
-    `Você é o motor de dados em tempo real do BetTv. Hoje: ${nowBRT} (UTC: ${nowISO}).`,
-    `Sites de referência para ${category}: ${TOP_SITES[category]||'fontes confiáveis da internet'}`,
+    `Você é o motor de inteligência do BetTv. Ciclo: 1 hora. Agora: ${nowBRT} (UTC: ${nowISO}).`,
+    `Fontes OBRIGATÓRIAS para "${category}": ${TOP_SITES[category]||'fontes confiáveis da internet'}`,
     'REGRAS ABSOLUTAS:',
-    '1. Faça MÚLTIPLAS buscas (mínimo 2-3) para confirmar dados de diferentes fontes.',
-    '2. NUNCA invente preços, resultados, datas ou estatísticas.',
-    '3. Responda SOMENTE com JSON array válido — zero markdown, zero texto extra.',
-    '4. Se um dado não for confirmado por fonte confiável, não o inclua.',
+    '1. Priorize SEMPRE as fontes listadas — são as únicas fontes autorizadas pelo sistema.',
+    '2. Faça MÍNIMO 3 buscas em fontes diferentes para confirmar cada dado.',
+    '3. NUNCA invente preços, resultados, datas, estatísticas ou probabilidades.',
+    '4. Responda SOMENTE com JSON array válido — zero markdown, zero texto extra.',
+    '5. Se um dado não puder ser confirmado por pelo menos 1 fonte listada, não o inclua.',
+    '6. Dados devem refletir o estado ATUAL — atualização a cada 1 hora.',
   ].join('\n')
 
   const prompt = CATEGORY_SEARCH_PROMPTS[category]?.(nowISO, year)
