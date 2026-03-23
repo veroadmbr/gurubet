@@ -105,16 +105,16 @@ const ESPORTES = {
     // ══════════════════════════════════════════════════════
     // 🏴󠁧󠁢󠁥󠁮󠁧󠁿  EUROPA — Premier League
     // ══════════════════════════════════════════════════════
-    { id:'pl-newxsun', startTime:'2026-03-22T12:00:00Z', statusLabel:'Amanhã · 09h BRT · St James Park',   competition:'Premier League · Rodada 31',  title:'Newcastle United × Sunderland AFC',    bettvPick:'Newcastle United', bettvConf:57, bettvReason:'Newcastle 57.1% SportRadar. Sunderland promovido 18.8%. Qualidade superior dos Magpies.', home:{name:'Newcastle United',  logo:'newcastle',   sub:'5º · 57.1%',     pct:57}, away:{name:'Sunderland AFC',     logo:'sunderland',  sub:'19º · 18.8%',    pct:19}, draw:24},
-    { id:'pl-avlxwhu', startTime:'2026-03-22T14:15:00Z', statusLabel:'Amanhã · 11h15 BRT · Villa Park',   competition:'Premier League · Rodada 31',  title:'Aston Villa × West Ham United',         bettvPick:'Aston Villa',      bettvConf:52, bettvReason:'Villa 7º (48pts) 51.5% SportRadar. West Ham 15º (28pts) 23.3%. Watkins artilheiro.', home:{name:'Aston Villa',        logo:'astonvilla',  sub:'7º · 51.5%',     pct:52}, away:{name:'West Ham United',    logo:'westham',     sub:'15º · 23.3%',    pct:23}, draw:25},
-    { id:'pl-totxnfo', startTime:'2026-03-22T14:15:00Z', statusLabel:'Amanhã · 11h15 BRT · Tottenham Std', competition:'Premier League · Rodada 31',  title:'Tottenham Hotspur × Nottingham Forest',  bettvPick:'Tottenham Hotspur',bettvConf:41, bettvReason:'Tottenham 8º (46pts) 40.8% SportRadar. Forest 11º (40pts) 31%. Equilíbrio real.', home:{name:'Tottenham Hotspur',  logo:'tottenham',   sub:'8º · 40.8%',     pct:41}, away:{name:'Nottingham Forest',  logo:'nottmforest', sub:'11º · 31%',      pct:31}, draw:28},
+    { id:'pl-newxsun', startTime:'2026-03-25T12:00:00Z', statusLabel:'Amanhã · 09h BRT · St James Park',   competition:'Premier League · Rodada 31',  title:'Newcastle United × Sunderland AFC',    bettvPick:'Newcastle United', bettvConf:57, bettvReason:'Newcastle 57.1% SportRadar. Sunderland promovido 18.8%. Qualidade superior dos Magpies.', home:{name:'Newcastle United',  logo:'newcastle',   sub:'5º · 57.1%',     pct:57}, away:{name:'Sunderland AFC',     logo:'sunderland',  sub:'19º · 18.8%',    pct:19}, draw:24},
+    { id:'pl-avlxwhu', startTime:'2026-03-25T14:15:00Z', statusLabel:'Amanhã · 11h15 BRT · Villa Park',   competition:'Premier League · Rodada 31',  title:'Aston Villa × West Ham United',         bettvPick:'Aston Villa',      bettvConf:52, bettvReason:'Villa 7º (48pts) 51.5% SportRadar. West Ham 15º (28pts) 23.3%. Watkins artilheiro.', home:{name:'Aston Villa',        logo:'astonvilla',  sub:'7º · 51.5%',     pct:52}, away:{name:'West Ham United',    logo:'westham',     sub:'15º · 23.3%',    pct:23}, draw:25},
+    { id:'pl-totxnfo', startTime:'2026-03-25T14:15:00Z', statusLabel:'Amanhã · 11h15 BRT · Tottenham Std', competition:'Premier League · Rodada 31',  title:'Tottenham Hotspur × Nottingham Forest',  bettvPick:'Tottenham Hotspur',bettvConf:41, bettvReason:'Tottenham 8º (46pts) 40.8% SportRadar. Forest 11º (40pts) 31%. Equilíbrio real.', home:{name:'Tottenham Hotspur',  logo:'tottenham',   sub:'8º · 40.8%',     pct:41}, away:{name:'Nottingham Forest',  logo:'nottmforest', sub:'11º · 31%',      pct:31}, draw:28},
     { id:'pl-arsbou',  startTime:'2026-04-11T11:30:00Z', statusLabel:'11/04 · 08h30 BRT · Emirates',       competition:'Premier League · Rodada 32',  title:'Arsenal FC × AFC Bournemouth',          bettvPick:'Arsenal FC',       bettvConf:71, bettvReason:'Arsenal FC lidera PL. 70.8% SportRadar. Bournemouth 11.5%.', home:{name:'Arsenal FC',          logo:'arsenal',     sub:'1º · 70.8%',     pct:71}, away:{name:'AFC Bournemouth',    logo:null,          sub:'12º · 11.5%',    pct:12}, draw:17},
     { id:'pl-lfcful',  startTime:'2026-04-11T16:30:00Z', statusLabel:'11/04 · 13h30 BRT · Anfield',         competition:'Premier League · Rodada 32',  title:'Liverpool FC × Fulham FC',              bettvPick:'Liverpool FC',     bettvConf:63, bettvReason:'Liverpool 3º (66pts) 63.3% SportRadar. Fulham 8º (43pts) 16.8%.', home:{name:'Liverpool FC',        logo:'liverpool',   sub:'3º · 63.3%',     pct:63}, away:{name:'Fulham FC',          logo:null,          sub:'8º · 16.8%',     pct:17}, draw:20},
 
     // ══════════════════════════════════════════════════════
     // 🇪🇸  EUROPA — La Liga
     // ══════════════════════════════════════════════════════
-    { id:'ll-barxrvc', startTime:'2026-03-22T13:00:00Z', statusLabel:'Amanhã · 10h BRT · Camp Nou',         competition:'La Liga · Rodada 29',         title:'FC Barcelona × Rayo Vallecano',         bettvPick:'FC Barcelona',     bettvConf:78, bettvReason:'Barcelona lidera La Liga 78% SportRadar. Rayo Vallecano 8.9% — diferença enorme.', home:{name:'FC Barcelona',       logo:'barcelona',   sub:'1º · 78%',       pct:78}, away:{name:'Rayo Vallecano',     logo:null,          sub:'9º · 8.9%',      pct:9},  draw:13},
+    { id:'ll-barxrvc', startTime:'2026-03-25T13:00:00Z', statusLabel:'Amanhã · 10h BRT · Camp Nou',         competition:'La Liga · Rodada 29',         title:'FC Barcelona × Rayo Vallecano',         bettvPick:'FC Barcelona',     bettvConf:78, bettvReason:'Barcelona lidera La Liga 78% SportRadar. Rayo Vallecano 8.9% — diferença enorme.', home:{name:'FC Barcelona',       logo:'barcelona',   sub:'1º · 78%',       pct:78}, away:{name:'Rayo Vallecano',     logo:null,          sub:'9º · 8.9%',      pct:9},  draw:13},
     { id:'ll-rmaxatm', startTime:'2026-03-22T20:00:00Z', statusLabel:'Amanhã · 17h BRT · Bernabéu',          competition:'La Liga · Rodada 29',         title:'Real Madrid × Atletico Madrid',         bettvPick:'Real Madrid',      bettvConf:51, bettvReason:'Derby Madrileno. Real 51.3% SportRadar. Atletico 24.7%. Mbappé favorito.', home:{name:'Real Madrid',         logo:'realmadrid',  sub:'2º · 51.3%',     pct:51}, away:{name:'Atletico Madrid',    logo:'atletimadrid',sub:'3º · 24.7%',     pct:25}, draw:24},
     { id:'ll-malmra',  startTime:'2026-04-04T14:15:00Z', statusLabel:'04/04 · 11h15 BRT · Visit Mallorca',   competition:'La Liga · Rodada 30',         title:'RCD Mallorca × Real Madrid',            bettvPick:'Real Madrid',      bettvConf:60, bettvReason:'Real Madrid 60.3% SportRadar. Mallorca 17.5% em casa. Mbappé em sequência.', home:{name:'RCD Mallorca',        logo:null,          sub:'7º · 17.5%',     pct:18}, away:{name:'Real Madrid',         logo:'realmadrid',  sub:'2º · 60.3%',     pct:60}, draw:22},
     { id:'ll-atmxbar', startTime:'2026-04-04T19:00:00Z', statusLabel:'04/04 · 16h BRT · Metropolitano',      competition:'La Liga · Rodada 30',         title:'Atletico Madrid × FC Barcelona',        bettvPick:'FC Barcelona',     bettvConf:41, bettvReason:'Barcelona 40.8% SportRadar. Atletico em casa 34.6%. Barça lidera mas Metropolitano é difícil.', home:{name:'Atletico Madrid',    logo:'atletimadrid',sub:'3º · 34.6%',     pct:35}, away:{name:'FC Barcelona',       logo:'barcelona',   sub:'1º · 40.8%',     pct:41}, draw:24},
@@ -134,8 +134,8 @@ const ESPORTES = {
     // ══════════════════════════════════════════════════════
     // 🇺🇸  EUA — MLS
     // ══════════════════════════════════════════════════════
-    { id:'mls-nshxorl', startTime:'2026-03-21T22:15:00Z', statusLabel:'AO VIVO · Nashville · MLS',            competition:'MLS · Rodada 5',              title:'Nashville SC × Orlando City SC',        bettvPick:'Nashville SC',     bettvConf:70, bettvReason:'Nashville lidera 3-0 ao intervalo. Resultado quase definido. Orlando em colapso.', home:{name:'Nashville SC',        logo:null,          sub:'MLS · Leste',    pct:70}, away:{name:'Orlando City SC',    logo:null,          sub:'MLS · Leste',    pct:18}, draw:12},
-    { id:'mls-dalxhou', startTime:'2026-03-22T00:30:00Z', statusLabel:'Hoje · 21h30 BRT · Toyota Stadium',    competition:'MLS · Rodada 5',              title:'FC Dallas × Houston Dynamo',            bettvPick:'FC Dallas',        bettvConf:40, bettvReason:'FC Dallas 40.1% SportRadar. Houston Dynamo 32.8%. Texas Derby equilibrado.', home:{name:'FC Dallas',           logo:null,          sub:'MLS · Oeste · 40.1%',pct:40}, away:{name:'Houston Dynamo',     logo:null,          sub:'MLS · Oeste · 32.8%',pct:33}, draw:27},
+    { id:'mls-nshxorl', startTime:'2026-03-24T22:15:00Z', statusLabel:'AO VIVO · Nashville · MLS',            competition:'MLS · Rodada 5',              title:'Nashville SC × Orlando City SC',        bettvPick:'Nashville SC',     bettvConf:70, bettvReason:'Nashville lidera 3-0 ao intervalo. Resultado quase definido. Orlando em colapso.', home:{name:'Nashville SC',        logo:null,          sub:'MLS · Leste',    pct:70}, away:{name:'Orlando City SC',    logo:null,          sub:'MLS · Leste',    pct:18}, draw:12},
+    { id:'mls-dalxhou', startTime:'2026-03-25T00:30:00Z', statusLabel:'Hoje · 21h30 BRT · Toyota Stadium',    competition:'MLS · Rodada 5',              title:'FC Dallas × Houston Dynamo',            bettvPick:'FC Dallas',        bettvConf:40, bettvReason:'FC Dallas 40.1% SportRadar. Houston Dynamo 32.8%. Texas Derby equilibrado.', home:{name:'FC Dallas',           logo:null,          sub:'MLS · Oeste · 40.1%',pct:40}, away:{name:'Houston Dynamo',     logo:null,          sub:'MLS · Oeste · 32.8%',pct:33}, draw:27},
     { id:'mls-nycxmia', startTime:'2026-03-22T17:00:00Z', statusLabel:'Amanhã · 14h BRT · Yankee Stadium',    competition:'MLS · Rodada 5',              title:'New York City FC × Inter Miami CF',     bettvPick:'NYCFC',            bettvConf:41, bettvReason:'NYCFC 41.1% SportRadar em casa. Inter Miami 32.7%. Miami sem grande forma no MLS.', home:{name:'New York City FC',    logo:null,          sub:'MLS · Leste · 41.1%',pct:41}, away:{name:'Inter Miami CF',     logo:null,          sub:'MLS · Leste · 32.7%',pct:33}, draw:26},
     { id:'mls-porxlag', startTime:'2026-03-22T20:45:00Z', statusLabel:'Amanhã · 17h45 BRT · Providence Park', competition:'MLS · Rodada 5',              title:'Portland Timbers × LA Galaxy',          bettvPick:'Portland Timbers', bettvConf:43, bettvReason:'Portland 42.6% SportRadar em casa. LA Galaxy 31.9%. Clássico Oeste MLS.', home:{name:'Portland Timbers',    logo:null,          sub:'MLS · Oeste · 42.6%',pct:43}, away:{name:'LA Galaxy',          logo:null,          sub:'MLS · Oeste · 31.9%',pct:32}, draw:25},
     { id:'mls-minxsea', startTime:'2026-03-22T18:30:00Z', statusLabel:'Amanhã · 15h30 BRT · Allianz Field',   competition:'MLS · Rodada 5',              title:'Minnesota United × Seattle Sounders',   bettvPick:'Seattle Sounders', bettvConf:37, bettvReason:'Seattle 37.4% vs Minnesota 34.4% SportRadar. Equilíbrio total no Oeste MLS.', home:{name:'Minnesota United FC', logo:null,          sub:'MLS · Oeste · 34.4%',pct:34}, away:{name:'Seattle Sounders',   logo:null,          sub:'MLS · Oeste · 37.4%',pct:37}, draw:29},
@@ -143,19 +143,19 @@ const ESPORTES = {
 
   basquete: { label:'Basquete', items:[
     // NBA AO VIVO agora (21/03 ~22:30 BRT)
-    { id:'b-orl', startTime:'2026-03-21T23:00:00Z', statusLabel:'AO VIVO · Q2 6:31 · Kaseya Ctr',      competition:'NBA · Temp. Regular', title:'Orlando Magic × LA Lakers',             bettvPick:'Orlando Magic',        bettvConf:52, bettvReason:'Orlando lidera Q2 45-41 SportRadar. Magic jogando bem em casa contra Lakers fora.', home:{name:'Orlando Magic',       logo:'magic',    sub:'Q2 · 45pts',    pct:52}, away:{name:'LA Lakers',            logo:'lakers',   sub:'Q2 · 41pts',    pct:44}, draw:4 },
-    { id:'b-cha', startTime:'2026-03-21T23:00:00Z', statusLabel:'AO VIVO · Q2 5:22 · Spectrum Ctr',    competition:'NBA · Temp. Regular', title:'Charlotte Hornets × Memphis Grizzlies',  bettvPick:'Charlotte Hornets',    bettvConf:55, bettvReason:'Charlotte lidera Q2 45-41. Memphis em colapso — pior sequência da temporada.', home:{name:'Charlotte Hornets',    logo:'hornets',  sub:'Q2 · 45pts',    pct:55}, away:{name:'Memphis Grizzlies',    logo:'grizzlies',sub:'Q2 · 41pts',    pct:36}, draw:9 },
-    { id:'b-nop', startTime:'2026-03-21T23:00:00Z', statusLabel:'AO VIVO · Q2 4:54 · Smoothie King',   competition:'NBA · Temp. Regular', title:'New Orleans Pelicans × Cleveland Cavaliers',bettvPick:'Cleveland Cavaliers',bettvConf:58, bettvReason:'Cleveland lidera Q2 48-42. Mitchell e Garland dominam. Pelicans sob pressão.', home:{name:'New Orleans Pelicans',  logo:'pelicans', sub:'Q2 · 42pts',    pct:36}, away:{name:'Cleveland Cavaliers',  logo:'cavaliers',sub:'Q2 · 48pts',    pct:58}, draw:6 },
+    { id:'b-orl', startTime:'2026-03-24T23:00:00Z', statusLabel:'AO VIVO · Q2 6:31 · Kaseya Ctr',      competition:'NBA · Temp. Regular', title:'Orlando Magic × LA Lakers',             bettvPick:'Orlando Magic',        bettvConf:52, bettvReason:'Orlando lidera Q2 45-41 SportRadar. Magic jogando bem em casa contra Lakers fora.', home:{name:'Orlando Magic',       logo:'magic',    sub:'Q2 · 45pts',    pct:52}, away:{name:'LA Lakers',            logo:'lakers',   sub:'Q2 · 41pts',    pct:44}, draw:4 },
+    { id:'b-cha', startTime:'2026-03-24T23:00:00Z', statusLabel:'AO VIVO · Q2 5:22 · Spectrum Ctr',    competition:'NBA · Temp. Regular', title:'Charlotte Hornets × Memphis Grizzlies',  bettvPick:'Charlotte Hornets',    bettvConf:55, bettvReason:'Charlotte lidera Q2 45-41. Memphis em colapso — pior sequência da temporada.', home:{name:'Charlotte Hornets',    logo:'hornets',  sub:'Q2 · 45pts',    pct:55}, away:{name:'Memphis Grizzlies',    logo:'grizzlies',sub:'Q2 · 41pts',    pct:36}, draw:9 },
+    { id:'b-nop', startTime:'2026-03-24T23:00:00Z', statusLabel:'AO VIVO · Q2 4:54 · Smoothie King',   competition:'NBA · Temp. Regular', title:'New Orleans Pelicans × Cleveland Cavaliers',bettvPick:'Cleveland Cavaliers',bettvConf:58, bettvReason:'Cleveland lidera Q2 48-42. Mitchell e Garland dominam. Pelicans sob pressão.', home:{name:'New Orleans Pelicans',  logo:'pelicans', sub:'Q2 · 42pts',    pct:36}, away:{name:'Cleveland Cavaliers',  logo:'cavaliers',sub:'Q2 · 48pts',    pct:58}, draw:6 },
     // NBA esta noite (scheduled)
-    { id:'b-hou', startTime:'2026-03-22T00:00:00Z', statusLabel:'Hoje · 21h BRT · Toyota Center',      competition:'NBA · Temp. Regular', title:'Houston Rockets × Miami Heat',           bettvPick:'Houston Rockets',      bettvConf:57, bettvReason:'Houston 57.3% SportRadar. 5V seguidas em casa. Miami sem Tyler Herro lesionado.', home:{name:'Houston Rockets',      logo:'rockets',  sub:'Conf. Oeste · 57.3%',pct:57}, away:{name:'Miami Heat',            logo:'heat',     sub:'Conf. Leste · 42.7%',pct:43}, draw:0 },
-    { id:'b-sas', startTime:'2026-03-22T00:00:00Z', statusLabel:'Hoje · 21h BRT · AT&T Center',        competition:'NBA · Temp. Regular', title:'San Antonio Spurs × Indiana Pacers',     bettvPick:'San Antonio Spurs',    bettvConf:89, bettvReason:'Spurs 92.8% SportRadar. Wembanyama 24pts/12reb por jogo. Pacers sem Haliburton.', home:{name:'San Antonio Spurs',    logo:'spurs',    sub:'Conf. Oeste · 92.8%',pct:89}, away:{name:'Indiana Pacers',        logo:'pacers',   sub:'Conf. Leste · 7.2%', pct:7},  draw:4 },
-    { id:'b-atl', startTime:'2026-03-22T00:00:00Z', statusLabel:'Hoje · 21h BRT · State Farm Arena',   competition:'NBA · Temp. Regular', title:'Atlanta Hawks × Golden State Warriors',   bettvPick:'Atlanta Hawks',        bettvConf:75, bettvReason:'Hawks 74.8% SportRadar. Warriors sem Curry — 10ª pior defesa da temporada.', home:{name:'Atlanta Hawks',         logo:'hawks',    sub:'Conf. Leste · 74.8%',pct:75}, away:{name:'Golden State Warriors', logo:'warriors', sub:'Conf. Oeste · 25.2%',pct:25}, draw:0 },
-    { id:'b-dal', startTime:'2026-03-22T00:30:00Z', statusLabel:'Hoje · 21h30 BRT · Am. Airlines Ctr', competition:'NBA · Temp. Regular', title:'Dallas Mavericks × LA Clippers',         bettvPick:'LA Clippers',          bettvConf:68, bettvReason:'Clippers 71.7% SportRadar. Dallas rebuilding pós-troca de Luka Doncic.', home:{name:'Dallas Mavericks',     logo:'mavericks',sub:'Conf. Oeste · 28.3%',pct:28}, away:{name:'LA Clippers',           logo:'clippers', sub:'Conf. Oeste · 71.7%',pct:68}, draw:4 },
-    { id:'b-uta', startTime:'2026-03-22T01:30:00Z', statusLabel:'Hoje · 22h30 BRT · Delta Center',     competition:'NBA · Temp. Regular', title:'Utah Jazz × Philadelphia 76ers',         bettvPick:'Philadelphia 76ers',   bettvConf:62, bettvReason:'76ers 66.5% SportRadar. Embiid dominante desde retorno de lesão no quadril.', home:{name:'Utah Jazz',             logo:'jazz',     sub:'Conf. Oeste · 33.5%',pct:34}, away:{name:'Philadelphia 76ers',   logo:'sixers',   sub:'Conf. Leste · 66.5%',pct:62}, draw:4 },
-    { id:'b-phx', startTime:'2026-03-22T02:00:00Z', statusLabel:'Hoje · 23h BRT · Footprint Center',   competition:'NBA · Temp. Regular', title:'Phoenix Suns × Milwaukee Bucks',         bettvPick:'Phoenix Suns',         bettvConf:79, bettvReason:'Suns 82.9% SportRadar. Bucks sem Giannis — lesão no joelho encerra temporada.', home:{name:'Phoenix Suns',          logo:'suns',     sub:'Conf. Oeste · 82.9%',pct:80}, away:{name:'Milwaukee Bucks',       logo:'bucks',    sub:'Conf. Leste · 17.1%',pct:17}, draw:3 },
+    { id:'b-hou', startTime:'2026-03-25T00:00:00Z', statusLabel:'Hoje · 21h BRT · Toyota Center',      competition:'NBA · Temp. Regular', title:'Houston Rockets × Miami Heat',           bettvPick:'Houston Rockets',      bettvConf:57, bettvReason:'Houston 57.3% SportRadar. 5V seguidas em casa. Miami sem Tyler Herro lesionado.', home:{name:'Houston Rockets',      logo:'rockets',  sub:'Conf. Oeste · 57.3%',pct:57}, away:{name:'Miami Heat',            logo:'heat',     sub:'Conf. Leste · 42.7%',pct:43}, draw:0 },
+    { id:'b-sas', startTime:'2026-03-25T00:00:00Z', statusLabel:'Hoje · 21h BRT · AT&T Center',        competition:'NBA · Temp. Regular', title:'San Antonio Spurs × Indiana Pacers',     bettvPick:'San Antonio Spurs',    bettvConf:89, bettvReason:'Spurs 92.8% SportRadar. Wembanyama 24pts/12reb por jogo. Pacers sem Haliburton.', home:{name:'San Antonio Spurs',    logo:'spurs',    sub:'Conf. Oeste · 92.8%',pct:89}, away:{name:'Indiana Pacers',        logo:'pacers',   sub:'Conf. Leste · 7.2%', pct:7},  draw:4 },
+    { id:'b-atl', startTime:'2026-03-25T00:00:00Z', statusLabel:'Hoje · 21h BRT · State Farm Arena',   competition:'NBA · Temp. Regular', title:'Atlanta Hawks × Golden State Warriors',   bettvPick:'Atlanta Hawks',        bettvConf:75, bettvReason:'Hawks 74.8% SportRadar. Warriors sem Curry — 10ª pior defesa da temporada.', home:{name:'Atlanta Hawks',         logo:'hawks',    sub:'Conf. Leste · 74.8%',pct:75}, away:{name:'Golden State Warriors', logo:'warriors', sub:'Conf. Oeste · 25.2%',pct:25}, draw:0 },
+    { id:'b-dal', startTime:'2026-03-25T00:30:00Z', statusLabel:'Hoje · 21h30 BRT · Am. Airlines Ctr', competition:'NBA · Temp. Regular', title:'Dallas Mavericks × LA Clippers',         bettvPick:'LA Clippers',          bettvConf:68, bettvReason:'Clippers 71.7% SportRadar. Dallas rebuilding pós-troca de Luka Doncic.', home:{name:'Dallas Mavericks',     logo:'mavericks',sub:'Conf. Oeste · 28.3%',pct:28}, away:{name:'LA Clippers',           logo:'clippers', sub:'Conf. Oeste · 71.7%',pct:68}, draw:4 },
+    { id:'b-uta', startTime:'2026-03-25T01:30:00Z', statusLabel:'Hoje · 22h30 BRT · Delta Center',     competition:'NBA · Temp. Regular', title:'Utah Jazz × Philadelphia 76ers',         bettvPick:'Philadelphia 76ers',   bettvConf:62, bettvReason:'76ers 66.5% SportRadar. Embiid dominante desde retorno de lesão no quadril.', home:{name:'Utah Jazz',             logo:'jazz',     sub:'Conf. Oeste · 33.5%',pct:34}, away:{name:'Philadelphia 76ers',   logo:'sixers',   sub:'Conf. Leste · 66.5%',pct:62}, draw:4 },
+    { id:'b-phx', startTime:'2026-03-26T02:00:00Z', statusLabel:'Hoje · 23h BRT · Footprint Center',   competition:'NBA · Temp. Regular', title:'Phoenix Suns × Milwaukee Bucks',         bettvPick:'Phoenix Suns',         bettvConf:79, bettvReason:'Suns 82.9% SportRadar. Bucks sem Giannis — lesão no joelho encerra temporada.', home:{name:'Phoenix Suns',          logo:'suns',     sub:'Conf. Oeste · 82.9%',pct:80}, away:{name:'Milwaukee Bucks',       logo:'bucks',    sub:'Conf. Leste · 17.1%',pct:17}, draw:3 },
     // NBA amanhã 22/03 e próximos dias
-    { id:'b-den', startTime:'2026-03-22T21:00:00Z', statusLabel:'Amanhã · 18h BRT · Ball Arena',       competition:'NBA · Temp. Regular', title:'Denver Nuggets × Portland Trail Blazers', bettvPick:'Denver Nuggets',       bettvConf:72, bettvReason:'Nuggets 76.1% SportRadar. Jokic triplo-duplo machine. Portland em rebuilding.', home:{name:'Denver Nuggets',       logo:'nuggets',  sub:'Conf. Oeste · 76.1%',pct:73}, away:{name:'Portland Trail Blazers',logo:'blazers',  sub:'Conf. Oeste · 23.9%',pct:19}, draw:8 },
-    { id:'b-bos', startTime:'2026-03-23T00:00:00Z', statusLabel:'Dom · 21h BRT · TD Garden',           competition:'NBA · Temp. Regular', title:'Boston Celtics × Minnesota Timberwolves', bettvPick:'Boston Celtics',       bettvConf:72, bettvReason:'Celtics 76.7% SportRadar. 1º do Leste em casa. Timberwolves fortes mas viajando.', home:{name:'Boston Celtics',        logo:'celtics',  sub:'1º Leste · 76.7%',   pct:73}, away:{name:'Minnesota Timberwolves',logo:'timberwolves',sub:'Conf. Oeste · 23.3%',pct:23}, draw:4 },
+    { id:'b-den', startTime:'2026-03-26T21:00:00Z', statusLabel:'Amanhã · 18h BRT · Ball Arena',       competition:'NBA · Temp. Regular', title:'Denver Nuggets × Portland Trail Blazers', bettvPick:'Denver Nuggets',       bettvConf:72, bettvReason:'Nuggets 76.1% SportRadar. Jokic triplo-duplo machine. Portland em rebuilding.', home:{name:'Denver Nuggets',       logo:'nuggets',  sub:'Conf. Oeste · 76.1%',pct:73}, away:{name:'Portland Trail Blazers',logo:'blazers',  sub:'Conf. Oeste · 23.9%',pct:19}, draw:8 },
+    { id:'b-bos', startTime:'2026-03-27T00:00:00Z', statusLabel:'Dom · 21h BRT · TD Garden',           competition:'NBA · Temp. Regular', title:'Boston Celtics × Minnesota Timberwolves', bettvPick:'Boston Celtics',       bettvConf:72, bettvReason:'Celtics 76.7% SportRadar. 1º do Leste em casa. Timberwolves fortes mas viajando.', home:{name:'Boston Celtics',        logo:'celtics',  sub:'1º Leste · 76.7%',   pct:73}, away:{name:'Minnesota Timberwolves',logo:'timberwolves',sub:'Conf. Oeste · 23.3%',pct:23}, draw:4 },
     { id:'b-phi', startTime:'2026-03-23T23:00:00Z', statusLabel:'Seg · 20h BRT · Wells Fargo Center',  competition:'NBA · Temp. Regular', title:'Philadelphia 76ers × OKC Thunder',       bettvPick:'OKC Thunder',          bettvConf:55, bettvReason:'OKC Thunder lideres do Oeste — SGA vs Embiid, duelo épico dos MVPs da temporada.', home:{name:'Philadelphia 76ers',   logo:'sixers',   sub:'Conf. Leste',         pct:45}, away:{name:'OKC Thunder',          logo:'okc',      sub:'1º Oeste',            pct:52}, draw:3 },
   ]},
 
@@ -178,8 +178,8 @@ const ESPORTES = {
 
   tenis: { label:'Tênis', items:[
     // Miami Open AO VIVO (21/03) — dados Sportradar
-    { id:'t-orl', startTime:'2026-03-21T23:05:00Z', statusLabel:'AO VIVO · Miami Open R32 · WTA',     competition:'WTA Miami Open · R32',  title:'Parks × Gauff',             bettvPick:'Gauff',    bettvConf:68, bettvReason:'Coco Gauff Nº3 WTA em Miami. Parks WC joga bem em casa mas nível abaixo de Gauff.', home:{name:'A. Parks',    logo:null,sub:'WC WTA',        pct:25}, away:{name:'C. Gauff',    logo:'gauff',  sub:'Nº3 WTA',    pct:68}, draw:7 },
-    { id:'t-daz', startTime:'2026-03-22T00:30:00Z', statusLabel:'Hoje · 21h30 BRT · Miami ATP R32',   competition:'ATP Miami Open · R32',  title:'Damm Jr × Zverev',          bettvPick:'Zverev',   bettvConf:88, bettvReason:'Alexander Zverev Nº3 ATP. Damm Jr wildcard local. Diferença técnica enorme.', home:{name:'M. Damm Jr',  logo:null,sub:'WC ATP',        pct:8},  away:{name:'A. Zverev',   logo:'zverev', sub:'Nº3 ATP',    pct:88}, draw:4 },
+    { id:'t-orl', startTime:'2026-03-24T23:05:00Z', statusLabel:'AO VIVO · Miami Open R32 · WTA',     competition:'WTA Miami Open · R32',  title:'Parks × Gauff',             bettvPick:'Gauff',    bettvConf:68, bettvReason:'Coco Gauff Nº3 WTA em Miami. Parks WC joga bem em casa mas nível abaixo de Gauff.', home:{name:'A. Parks',    logo:null,sub:'WC WTA',        pct:25}, away:{name:'C. Gauff',    logo:'gauff',  sub:'Nº3 WTA',    pct:68}, draw:7 },
+    { id:'t-daz', startTime:'2026-03-25T00:30:00Z', statusLabel:'Hoje · 21h30 BRT · Miami ATP R32',   competition:'ATP Miami Open · R32',  title:'Damm Jr × Zverev',          bettvPick:'Zverev',   bettvConf:88, bettvReason:'Alexander Zverev Nº3 ATP. Damm Jr wildcard local. Diferença técnica enorme.', home:{name:'M. Damm Jr',  logo:null,sub:'WC ATP',        pct:8},  away:{name:'A. Zverev',   logo:'zverev', sub:'Nº3 ATP',    pct:88}, draw:4 },
     // Miami Open próximos rounds — schedule oficial ATP/WTA
     { id:'t-sin', startTime:'2026-03-23T17:00:00Z', statusLabel:'23/03 · 14h BRT · Miami ATP R32',   competition:'ATP Miami Open · R32',  title:'Sinner × Dzumhur',          bettvPick:'Sinner',   bettvConf:88, bettvReason:'Jannik Sinner Nº2 ATP campeão IW 2026. Dzumhur Nº76 tático mas sem poder para Sinner.', home:{name:'J. Sinner',   logo:'sinner', sub:'Nº2 · IW Campeão',pct:88}, away:{name:'D. Dzumhur',  logo:null, sub:'Nº76 ATP',   pct:8},  draw:4 },
     { id:'t-alc', startTime:'2026-03-23T20:00:00Z', statusLabel:'23/03 · 17h BRT · Miami ATP R32',   competition:'ATP Miami Open · R32',  title:'Alcaraz × R32',             bettvPick:'Alcaraz',  bettvConf:82, bettvReason:'Carlos Alcaraz Nº1 ATP. 17-1 na temporada. Invicto desde Indian Wells.', home:{name:'C. Alcaraz',  logo:'alcaraz',sub:'Nº1 ATP',      pct:82}, away:{name:'Oponente R32',logo:null, sub:'ATP',        pct:13}, draw:5 },
@@ -206,7 +206,7 @@ const ESPORTES = {
 
   golf: { label:'Golf', items:[
     // Valspar Championship — EM ANDAMENTO R4 (21-22/03) — PGA Tour API confirmado
-    { multiDay:true, id:'g-val', startTime:'2026-03-19T13:00:00Z', statusLabel:'AO VIVO · R4 · Innisbrook · Flórida',competition:'PGA Tour · Valspar Championship', title:'Valspar Championship 2026',  bettvPick:'Scheffler',bettvConf:45, bettvReason:'Scottie Scheffler Nº1 mundial favorito. Innisbrook favorece drives precisos. Rory e Rahm ameaças.', home:{name:'S. Scheffler',logo:null,sub:'Nº1 Mundo · Fav.',pct:35}, away:{name:'R. McIlroy',  logo:null,sub:'Nº3 Mundo',      pct:25}, draw:40},
+    { multiDay:true, id:'g-val', startTime:'2026-03-24T13:00:00Z', statusLabel:'AO VIVO · R4 · Innisbrook · Flórida',competition:'PGA Tour · Valspar Championship', title:'Valspar Championship 2026',  bettvPick:'Scheffler',bettvConf:45, bettvReason:'Scottie Scheffler Nº1 mundial favorito. Innisbrook favorece drives precisos. Rory e Rahm ameaças.', home:{name:'S. Scheffler',logo:null,sub:'Nº1 Mundo · Fav.',pct:35}, away:{name:'R. McIlroy',  logo:null,sub:'Nº3 Mundo',      pct:25}, draw:40},
     // Texas Children Houston Open — 26/03 (PGA Tour API: status created)
     { multiDay:true, id:'g-hou', startTime:'2026-03-26T13:00:00Z', statusLabel:'26/03 · 10h BRT · Memorial Park · Houston',competition:'PGA Tour · Houston Open',        title:'Houston Open 2026',          bettvPick:'Scheffler',bettvConf:40, bettvReason:'Scheffler Nº1 Houston favorito histórico. Koepka e Cantlay ameaças em campo aberto.', home:{name:'S. Scheffler',logo:null,sub:'Nº1 Mundo',       pct:30}, away:{name:'B. Koepka',   logo:null,sub:'Nº6 Mundo',       pct:20}, draw:50},
     // Valero Texas Open — 02/04 (PGA Tour API: scheduled)
@@ -614,7 +614,6 @@ Retorne SOMENTE JSON array (todos os 50 itens com dados atualizados):
 
 // ─── CORE API CALL — handles full tool_use loop ───────────────────────────────
 async function apiCall(system, messages, maxTurns=8) {
-  if (!API_KEY) throw new Error('VITE_ANTHROPIC_API_KEY não configurada')
   const tools = [{type:'web_search_20250305', name:'web_search'}]
   let msgs = [...messages]
 
@@ -819,7 +818,16 @@ function mergeSport(current, updates, now) {
       multiDay:   item.multiDay    ?? prev?.multiDay ?? false,
     }
   })
-  return valid.length > 0 ? valid : safeCurrents
+  if (valid.length === 0) return safeCurrents
+  // MERGE: keep existing items that aren't in the update set + add all new valid items
+  const newIds = new Set(valid.map(i => i.id))
+  const kept = safeCurrents.filter(i => !newIds.has(i.id))
+  return [...valid, ...kept].sort((a,b) => {
+    const aLive = (a.status==='live'||a.status==='inprogress') ? 0 : 1
+    const bLive = (b.status==='live'||b.status==='inprogress') ? 0 : 1
+    if (aLive !== bLive) return aLive - bLive
+    return new Date(a.startTime||'2099') - new Date(b.startTime||'2099')
+  })
 }
 
 // ─── AUTO UPDATE HOOK ─────────────────────────────────────────────────────────
@@ -853,10 +861,8 @@ function useAutoUpdate(seed) {
       return
     }
     cycleRef.current = true
-    cycleRef._startTime = Date.now()
     setUpdating(true)
 
-    try {
     const now = Date.now()
     const nowBRT = new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})
     addLog(manual
@@ -865,7 +871,7 @@ function useAutoUpdate(seed) {
 
     // ── STEP 1: Purge expired events ────────────────────────────────────────
     const purgedEsportes = {}
-    Object.entries(cur.esportes||{}).forEach(([cat, catData]) => {
+    Object.entries(cur.esportes).forEach(([cat, catData]) => {
       purgedEsportes[cat] = {
         ...catData,
         items: (catData.items||[]).filter(item => {
@@ -880,7 +886,7 @@ function useAutoUpdate(seed) {
 
     // Working copy — mutated in-place during cycle
     const nd = {
-      loterias: [...(cur.loterias||[])],
+      loterias: [...cur.loterias],
       esportes: purgedEsportes,
       crypto:   [...(cur.crypto  || CRYPTO_DATA)],
       moedas:   [...(cur.moedas  || MOEDAS_DATA)],
@@ -963,17 +969,10 @@ function useAutoUpdate(seed) {
     const ts = new Date()
     setLastAt(ts)
     setNextAt(new Date(ts.getTime() + INTERVAL))
+    setUpdating(false)
+    setProgress({current:'', done:total, total})
+    cycleRef.current = false
     addLog(`🏁 Concluído ${ok}/${total} categorias — próxima em 2h`, 'done')
-
-    } catch(fatalError) {
-      addLog(`💥 Erro fatal no ciclo: ${fatalError.message}`, 'error')
-      console.error('[BetTv] Fatal cycle error:', fatalError)
-    } finally {
-      // ALWAYS reset — even if the cycle crashes
-      setUpdating(false)
-      setProgress({current:'', done:0, total:0})
-      cycleRef.current = false
-    }
   }, [addLog])
 
   // ── COUNTDOWN TIMER ────────────────────────────────────────────────────────
@@ -1004,19 +1003,7 @@ function useAutoUpdate(seed) {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const force = useCallback(() => {
-    // Safety: if cycle has been "running" for >5min, it's stuck — force reset
-    if (cycleRef.current) {
-      const stuckTime = Date.now() - (cycleRef._startTime || 0)
-      if (stuckTime > 5 * 60 * 1000) {
-        console.warn('[BetTv] Cycle stuck for >5min, force-resetting')
-        cycleRef.current = false
-        setUpdating(false)
-      } else {
-        return // genuinely running
-      }
-    }
-    cycleRef._startTime = Date.now()
-    runCycle(appDataRef.current, true)
+    if (!cycleRef.current) runCycle(appDataRef.current, true)
   }, [runCycle])
 
   return {appData, logs, updating, lastAt, countdown, progress, force}
