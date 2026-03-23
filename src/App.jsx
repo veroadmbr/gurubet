@@ -1230,19 +1230,197 @@ const LOGOS = {
   loud:         'https://upload.wikimedia.org/wikipedia/commons/a/a5/LOUD_Esports_logo.png',
   furia:        'https://upload.wikimedia.org/wikipedia/commons/f/f9/Furia_Esports_logo.png',
   t1:           'https://upload.wikimedia.org/wikipedia/commons/1/13/T1_%28esports%29_logo.png',
+  // ── Brasileirão extras ──
+  santos:       'https://upload.wikimedia.org/wikipedia/commons/1/15/Santos_Logo.png',
+  athleticopr:  'https://upload.wikimedia.org/wikipedia/commons/b/b3/Athletico_Paranaense_2019.svg',
+  bragantino:   'https://upload.wikimedia.org/wikipedia/commons/0/07/Red_Bull_Bragantino_logo.svg',
+  cuiaba:       'https://upload.wikimedia.org/wikipedia/commons/3/3b/Cuiab%C3%A1_Esporte_Clube.svg',
+  juventude:    'https://upload.wikimedia.org/wikipedia/commons/4/43/EC_Juventude.svg',
+  vitoria:      'https://upload.wikimedia.org/wikipedia/commons/5/55/Esporte_Clube_Vit%C3%B3ria_logo.svg',
+  mirassol:     'https://upload.wikimedia.org/wikipedia/commons/5/5e/Mirassol_FC.svg',
+  ceara:        'https://upload.wikimedia.org/wikipedia/commons/d/d0/Cear%C3%A1_Sporting_Club_logo.svg',
+  coritiba:     'https://upload.wikimedia.org/wikipedia/commons/5/54/Coritiba_FBC_2011.svg',
+  goias:        'https://upload.wikimedia.org/wikipedia/commons/a/ab/Goias_Esporte_Clube.svg',
+  // ── MLS ──
+  lagalaxy:     'https://upload.wikimedia.org/wikipedia/commons/7/70/Los_Angeles_Galaxy_logo.svg',
+  intermiami:   'https://upload.wikimedia.org/wikipedia/commons/d/d6/Inter_Miami_CF_logo.svg',
+  portland:     'https://upload.wikimedia.org/wikipedia/en/d/d1/Portland_Timbers_%28MLS%29_logo.svg',
+  seattle:      'https://upload.wikimedia.org/wikipedia/en/2/25/Seattle_Sounders_FC.svg',
+  atlanta:      'https://upload.wikimedia.org/wikipedia/commons/5/5c/Atlanta_United_FC_crest.svg',
+  nycfc:        'https://upload.wikimedia.org/wikipedia/en/f/f9/New_York_City_FC_logo.svg',
+  columbus:     'https://upload.wikimedia.org/wikipedia/en/3/38/Columbus_Crew_SC_%282021%29_logo.svg',
+  lafc:         'https://upload.wikimedia.org/wikipedia/commons/5/52/Los_Angeles_FC_%28crest%29.svg',
+  // ── La Liga extras ──
+  realsociedad: 'https://upload.wikimedia.org/wikipedia/en/f/f1/Real_Sociedad_logo.svg',
+  villarreal:   'https://upload.wikimedia.org/wikipedia/en/b/b9/Villarreal_CF_logo-en.svg',
+  betis:        'https://upload.wikimedia.org/wikipedia/en/1/13/Real_Betis_logo.svg',
+  sevilla:      'https://upload.wikimedia.org/wikipedia/en/3/3b/Sevilla_FC_logo.svg',
+  athletic:     'https://upload.wikimedia.org/wikipedia/en/9/98/Club_Athletic_Bilbao_logo.svg',
+  girona:       'https://upload.wikimedia.org/wikipedia/en/2/2f/Girona_FC_Logo.svg',
+  // ── Serie A extras ──
+  acmilan:      'https://upload.wikimedia.org/wikipedia/commons/d/d0/Logo_of_AC_Milan.svg',
+  asroma:       'https://upload.wikimedia.org/wikipedia/en/f/f7/AS_Roma_logo_%282017%29.svg',
+  lazio:        'https://upload.wikimedia.org/wikipedia/en/c/ce/S.S._Lazio_badge.svg',
+  atalanta:     'https://upload.wikimedia.org/wikipedia/en/6/66/AtalantaBC.svg',
+  fiorentina:   'https://upload.wikimedia.org/wikipedia/commons/a/ae/ACF_Fiorentina_2022.svg',
+  // ── Bundesliga extras ──
+  leipzig:      'https://upload.wikimedia.org/wikipedia/en/0/04/RB_Leipzig_2014_logo.svg',
+  stuttgart:    'https://upload.wikimedia.org/wikipedia/commons/e/eb/VfB_Stuttgart_1893_Logo.svg',
+  frankfurt:    'https://upload.wikimedia.org/wikipedia/commons/0/04/Eintracht_Frankfurt_Logo.svg',
+  wolfsburg:    'https://upload.wikimedia.org/wikipedia/commons/f/f3/Logo-VfL-Wolfsburg.svg',
+  // ── Champions League extra ──
+  benfica:      'https://upload.wikimedia.org/wikipedia/en/a/a2/SL_Benfica_logo.svg',
+  porto:        'https://upload.wikimedia.org/wikipedia/en/f/f1/FC_Porto.svg',
+  sporting:     'https://upload.wikimedia.org/wikipedia/en/e/e1/Sporting_Clube_de_Portugal_%28Logo%29.svg',
+  ajax:         'https://upload.wikimedia.org/wikipedia/en/7/79/Ajax_Amsterdam.svg',
+  // ── Golf ──
+  scheffler:    'https://a.espncdn.com/i/headshots/golf/players/full/10404.png',
+  mcilroy:      'https://a.espncdn.com/i/headshots/golf/players/full/3470.png',
+  rahm:         'https://a.espncdn.com/i/headshots/golf/players/full/9780.png',
+  koepka:       'https://a.espncdn.com/i/headshots/golf/players/full/6798.png',
+  spieth:       'https://a.espncdn.com/i/headshots/golf/players/full/5765.png',
+  thomas:       'https://a.espncdn.com/i/headshots/golf/players/full/9131.png',
+  hovland:      'https://a.espncdn.com/i/headshots/golf/players/full/10423.png',
+}
+
+// ─── NAME → LOGO KEY RESOLVER ───────────────────────────────────────────────
+// Maps common team/player names (as returned by the API) to LOGOS keys
+const NAME_TO_LOGO = {}
+;(function buildNameMap(){
+  const explicit = {
+    // NBA
+    'oklahoma city thunder':'okc','okc thunder':'okc','thunder':'okc',
+    'los angeles lakers':'lakers','la lakers':'lakers',
+    'boston celtics':'celtics','golden state warriors':'warriors',
+    'cleveland cavaliers':'cavaliers','houston rockets':'rockets',
+    'denver nuggets':'nuggets','miami heat':'heat','phoenix suns':'suns',
+    'atlanta hawks':'hawks','charlotte hornets':'hornets',
+    'memphis grizzlies':'grizzlies','new orleans pelicans':'pelicans',
+    'san antonio spurs':'spurs','dallas mavericks':'mavericks',
+    'utah jazz':'jazz','milwaukee bucks':'bucks','indiana pacers':'pacers',
+    'washington wizards':'wizards','orlando magic':'magic',
+    'philadelphia 76ers':'sixers','philadelphia sixers':'sixers','76ers':'sixers',
+    'portland trail blazers':'blazers','trail blazers':'blazers',
+    'minnesota timberwolves':'timberwolves','la clippers':'clippers',
+    'los angeles clippers':'clippers','new york knicks':'knicks',
+    'brooklyn nets':'nets','toronto raptors':'raptors','sacramento kings':'kings',
+    // Premier League
+    'manchester united':'manutd','man united':'manutd','man utd':'manutd',
+    'manchester city':'mancity','man city':'mancity',
+    'tottenham hotspur':'tottenham','tottenham':'tottenham',
+    'brighton & hove albion':'brighton','brighton':'brighton',
+    'aston villa':'astonvilla','nottingham forest':'nottmforest',
+    'west ham united':'westham','west ham':'westham',
+    'leeds united':'leeds','newcastle united':'newcastle',
+    'sunderland afc':'sunderland',
+    // La Liga
+    'real madrid':'realmadrid','atletico madrid':'atletimadrid','atlético madrid':'atletimadrid',
+    'atletico de madrid':'atletimadrid','atlético de madrid':'atletimadrid',
+    'real sociedad':'realsociedad','real betis':'betis',
+    'athletic bilbao':'athletic','athletic club':'athletic','girona fc':'girona',
+    'villarreal cf':'villarreal','sevilla fc':'sevilla',
+    // Bundesliga
+    'bayern munich':'bayernmunich','bayern münchen':'bayernmunich','fc bayern':'bayernmunich',
+    'borussia dortmund':'dortmund','bayer leverkusen':'leverkusen',
+    'rb leipzig':'leipzig','vfb stuttgart':'stuttgart',
+    'eintracht frankfurt':'frankfurt','vfl wolfsburg':'wolfsburg',
+    // Serie A
+    'inter milan':'intermilan','internazionale':'intermilan','inter':'intermilan',
+    'ac milan':'acmilan','milan':'acmilan','as roma':'asroma','roma':'asroma',
+    'ss lazio':'lazio','atalanta bc':'atalanta','acf fiorentina':'fiorentina',
+    // Ligue 1
+    'paris saint-germain':'psg','paris sg':'psg',
+    // Brasileirão
+    'são paulo':'saopaulo','sao paulo':'saopaulo','são paulo fc':'saopaulo',
+    'palmeiras':'palmeiras','se palmeiras':'palmeiras',
+    'corinthians':'corinthians','sc corinthians':'corinthians',
+    'flamengo':'flamengo','cr flamengo':'flamengo',
+    'fluminense':'fluminense','fluminense fc':'fluminense',
+    'botafogo':'botafogo','botafogo fr':'botafogo',
+    'atlético-mg':'atleticmg','atletico-mg':'atleticmg','atlético mineiro':'atleticmg','atletico mineiro':'atleticmg',
+    'internacional':'internacional','sc internacional':'internacional',
+    'grêmio':'gremio','gremio':'gremio','grêmio fbpa':'gremio',
+    'cruzeiro':'cruzeiro','cruzeiro ec':'cruzeiro',
+    'bahia':'bahia','ec bahia':'bahia',
+    'vasco da gama':'vasco','vasco':'vasco',
+    'fortaleza':'fortaleza','fortaleza ec':'fortaleza',
+    'santos':'santos','santos fc':'santos',
+    'athletico-pr':'athleticopr','athletico paranaense':'athleticopr','athletico':'athleticopr',
+    'red bull bragantino':'bragantino','rb bragantino':'bragantino','bragantino':'bragantino',
+    'cuiabá':'cuiaba','cuiaba ec':'cuiaba',
+    'juventude':'juventude','ec juventude':'juventude',
+    'vitória':'vitoria','ec vitória':'vitoria','vitoria':'vitoria',
+    'mirassol':'mirassol','mirassol fc':'mirassol',
+    'ceará':'ceara','ceara sc':'ceara',
+    'coritiba':'coritiba','goiás':'goias','goias':'goias',
+    'sport recife':'sport','sport':'sport',
+    // MLS
+    'la galaxy':'lagalaxy','los angeles galaxy':'lagalaxy',
+    'inter miami':'intermiami','inter miami cf':'intermiami',
+    'portland timbers':'portland','seattle sounders':'seattle',
+    'atlanta united':'atlanta','new york city fc':'nycfc',
+    'nycfc':'nycfc','columbus crew':'columbus',
+    'los angeles fc':'lafc','lafc':'lafc',
+    // Champions League
+    'sl benfica':'benfica','fc porto':'porto',
+    'sporting cp':'sporting','sporting lisbon':'sporting',
+    'ajax amsterdam':'ajax','afc ajax':'ajax',
+    // Golf
+    'scottie scheffler':'scheffler','s. scheffler':'scheffler',
+    'rory mcilroy':'mcilroy','r. mcilroy':'mcilroy',
+    'jon rahm':'rahm','j. rahm':'rahm',
+    'brooks koepka':'koepka','b. koepka':'koepka',
+    'jordan spieth':'spieth','j. spieth':'spieth',
+    'justin thomas':'thomas','j. thomas':'thomas',
+    'viktor hovland':'hovland','v. hovland':'hovland',
+    // Tênis
+    'jannik sinner':'sinner','j. sinner':'sinner',
+    'carlos alcaraz':'alcaraz','c. alcaraz':'alcaraz',
+    'aryna sabalenka':'sabalenka','a. sabalenka':'sabalenka',
+    'coco gauff':'gauff','c. gauff':'gauff',
+    'taylor fritz':'fritz','t. fritz':'fritz',
+    'stefanos tsitsipas':'tsitsipas','s. tsitsipas':'tsitsipas',
+    'daniil medvedev':'medvedev','d. medvedev':'medvedev',
+    'alexander zverev':'zverev','a. zverev':'zverev',
+    // MMA
+    'alex pereira':'pereira','a. pereira':'pereira',
+    'islam makhachev':'makhachev','i. makhachev':'makhachev',
+    'alexandre pantoja':'pantoja','a. pantoja':'pantoja',
+    'israel adesanya':'adesanya','i. adesanya':'adesanya',
+    'jiri prochazka':'prochazka','j. prochazka':'prochazka',
+  }
+  // Build map
+  Object.entries(explicit).forEach(([name,key])=>{NAME_TO_LOGO[name]=key})
+  // Also add each LOGOS key as-is (lowercase)
+  Object.keys(LOGOS).forEach(k=>{NAME_TO_LOGO[k]=k})
+})()
+
+function resolveLogoKey(logo, name) {
+  // 1. Direct key from API
+  if (logo && LOGOS[logo]) return logo
+  // 2. Try name lookup
+  if (!name) return null
+  const norm = name.toLowerCase().trim()
+  if (NAME_TO_LOGO[norm]) return NAME_TO_LOGO[norm]
+  // 3. Fuzzy: check if name contains or is contained by a known key
+  for (const [n,k] of Object.entries(NAME_TO_LOGO)) {
+    if (norm.includes(n) || n.includes(norm)) return k
+  }
+  return null
 }
 
 
 // ─── TEAM / PLAYER LOGO ───────────────────────────────────────────────────────
-// 1. Tenta URL do mapa LOGOS estático
+// 1. Tenta resolver pelo mapa LOGOS (por key ou por nome)
 // 2. Se falhar → busca via IA (Claude) e cacheia
 // 3. Fallback → avatar com iniciais coloridas
 function TeamLogo({logo, name, size=26}) {
   const [staticErr, setStaticErr] = useState(false)
-  const [aiUrl, setAiUrl] = useState(undefined) // undefined=buscando, null=falhou, string=ok
+  const [aiUrl, setAiUrl] = useState(undefined)
   const [aiErr, setAiErr] = useState(false)
 
-  const staticUrl = logo ? LOGOS[logo] : null
+  const resolvedKey = resolveLogoKey(logo, name)
+  const staticUrl = resolvedKey ? LOGOS[resolvedKey] : null
   const useStatic = staticUrl && !staticErr
 
   useEffect(() => {
@@ -1253,7 +1431,6 @@ function TeamLogo({logo, name, size=26}) {
     fetchImageUrl(name).then(() => setAiUrl(imageCache[name] ?? null))
   }, [name, useStatic])
 
-  // Avatar cores por inicial
   const initials = name
     ? name.replace(/[×x]/g,'').split(/[\s\-\.]+/).filter(Boolean)
         .map(w => w[0]?.toUpperCase()).filter(Boolean).slice(0,2).join('')
