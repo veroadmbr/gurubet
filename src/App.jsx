@@ -614,6 +614,7 @@ Retorne SOMENTE JSON array (todos os 50 itens com dados atualizados):
 
 // ─── CORE API CALL — handles full tool_use loop ───────────────────────────────
 async function apiCall(system, messages, maxTurns=8) {
+  if (!API_KEY) throw new Error('VITE_ANTHROPIC_API_KEY não configurada')
   const tools = [{type:'web_search_20250305', name:'web_search'}]
   let msgs = [...messages]
 
@@ -852,8 +853,10 @@ function useAutoUpdate(seed) {
       return
     }
     cycleRef.current = true
+    cycleRef._startTime = Date.now()
     setUpdating(true)
 
+    try {
     const now = Date.now()
     const nowBRT = new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})
     addLog(manual
@@ -862,7 +865,7 @@ function useAutoUpdate(seed) {
 
     // ── STEP 1: Purge expired events ────────────────────────────────────────
     const purgedEsportes = {}
-    Object.entries(cur.esportes).forEach(([cat, catData]) => {
+    Object.entries(cur.esportes||{}).forEach(([cat, catData]) => {
       purgedEsportes[cat] = {
         ...catData,
         items: (catData.items||[]).filter(item => {
@@ -877,7 +880,7 @@ function useAutoUpdate(seed) {
 
     // Working copy — mutated in-place during cycle
     const nd = {
-      loterias: [...cur.loterias],
+      loterias: [...(cur.loterias||[])],
       esportes: purgedEsportes,
       crypto:   [...(cur.crypto  || CRYPTO_DATA)],
       moedas:   [...(cur.moedas  || MOEDAS_DATA)],
@@ -960,10 +963,17 @@ function useAutoUpdate(seed) {
     const ts = new Date()
     setLastAt(ts)
     setNextAt(new Date(ts.getTime() + INTERVAL))
-    setUpdating(false)
-    setProgress({current:'', done:total, total})
-    cycleRef.current = false
     addLog(`🏁 Concluído ${ok}/${total} categorias — próxima em 2h`, 'done')
+
+    } catch(fatalError) {
+      addLog(`💥 Erro fatal no ciclo: ${fatalError.message}`, 'error')
+      console.error('[BetTv] Fatal cycle error:', fatalError)
+    } finally {
+      // ALWAYS reset — even if the cycle crashes
+      setUpdating(false)
+      setProgress({current:'', done:0, total:0})
+      cycleRef.current = false
+    }
   }, [addLog])
 
   // ── COUNTDOWN TIMER ────────────────────────────────────────────────────────
@@ -994,7 +1004,19 @@ function useAutoUpdate(seed) {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const force = useCallback(() => {
-    if (!cycleRef.current) runCycle(appDataRef.current, true)
+    // Safety: if cycle has been "running" for >5min, it's stuck — force reset
+    if (cycleRef.current) {
+      const stuckTime = Date.now() - (cycleRef._startTime || 0)
+      if (stuckTime > 5 * 60 * 1000) {
+        console.warn('[BetTv] Cycle stuck for >5min, force-resetting')
+        cycleRef.current = false
+        setUpdating(false)
+      } else {
+        return // genuinely running
+      }
+    }
+    cycleRef._startTime = Date.now()
+    runCycle(appDataRef.current, true)
   }, [runCycle])
 
   return {appData, logs, updating, lastAt, countdown, progress, force}
