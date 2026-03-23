@@ -516,9 +516,7 @@ const TABS = [
   { key:'basquete', label:'Basquete'  },
   { key:'mma',      label:'MMA / UFC' },
   { key:'tenis',    label:'Tênis'     },
-  { key:'esports',  label:'E-sports'  },
   { key:'golf',     label:'Golf'      },
-  { key:'eleicoes', label:'Eleições'  },
   { key:'crypto',   label:'Crypto'    },
   { key:'moedas',   label:'Câmbio'    },
 ]
@@ -854,7 +852,7 @@ function useAutoUpdate(seed) {
       moedas:   [...(cur.moedas  || MOEDAS_DATA)],
     }
 
-    const sportCats = Object.keys(ESPORTES)                          // futebol, basquete, …
+    const sportCats = Object.keys(ESPORTES).filter(k=>k!=='esports')  // futebol, basquete, …
     const allCats   = ['loterias', ...sportCats, 'crypto', 'moedas']
     const total     = allCats.length
     let   done      = 0, ok = 0
@@ -2074,7 +2072,7 @@ function useGlobalSearch(appData) {
   const index = useMemo(() => {
     const items = []
     // Esportes
-    Object.entries(appData.esportes||{}).forEach(([catKey, cat]) => {
+    Object.entries(appData.esportes||{}).filter(([k])=>k!=='esports').forEach(([catKey, cat]) => {
       ;(cat.items||[]).forEach(item => {
         items.push({
           type: 'esporte', catKey,
@@ -2569,13 +2567,12 @@ function MobileEventsList({tab, appData, onSelect, onBack, updating, countdown, 
   const isTodos  = tab==='todos'
   const isCrypto = tab==='crypto'
   const isMoedas = tab==='moedas'
-  const isEleicoes = tab==='eleicoes'
   const catLabel = TABS.find(t=>t.key===tab)?.label || 'Eventos'
   const catColor = T.cat[tab]||T.black
   const catBg    = T.catBg[tab]||T.gray2
 
   const allEvents = (()=>{
-    const flat = Object.entries(appData.esportes).flatMap(([catKey,cat])=>
+    const flat = Object.entries(appData.esportes).filter(([k])=>k!=='esports').flatMap(([catKey,cat])=>
       (cat.items||[]).map(item=>({...item,_catKey:catKey}))
     )
     return flat.sort((a,b)=>{
@@ -2621,7 +2618,7 @@ function MobileEventsList({tab, appData, onSelect, onBack, updating, countdown, 
         </div>
 
         {/* Filter pills */}
-        {!isLoto&&!isCrypto&&!isMoedas&&!isEleicoes&&(
+        {!isLoto&&!isCrypto&&!isMoedas&&(
           <div style={{display:'flex',gap:6,padding:'0 16px 12px',overflowX:'auto',scrollbarWidth:'none'}}>
             {[
               {f:'all',label:'Todos',count:isTodos?allEvents.length:espItems.length},
@@ -3114,8 +3111,7 @@ export default function App() {
   const isTodos  = tab==='todos'
   const isCrypto = tab==='crypto'
   const isMoedas = tab==='moedas'
-  const isEleicoes = tab==='eleicoes'
-  const isSpecial = isCrypto||isMoedas||isEleicoes
+  const isSpecial = isCrypto||isMoedas
   const espData  = (!isSpecial&&!isTodos) ? appData.esportes[tab] : null
   const espItems = espData?.items||[]
   const cryptoItems = appData.crypto||CRYPTO_DATA
@@ -3129,7 +3125,7 @@ export default function App() {
   }).length
 
   const allEvents = (()=>{
-    const flat = Object.entries(appData.esportes).flatMap(([catKey,cat])=>
+    const flat = Object.entries(appData.esportes).filter(([k])=>k!=='esports').flatMap(([catKey,cat])=>
       (cat.items||[]).map(item=>({...item,_catKey:catKey}))
     )
     return flat.sort((a,b)=>{
@@ -3149,8 +3145,7 @@ export default function App() {
     return now >= start && now <= start + 6*60*60*1000
   }
 
-  const currentItems = isEleicoes ? ELEICOES_DATA
-    : isLoto
+  const currentItems = isLoto
     ? appData.loterias.filter(l=>activeFilter==='all'||(activeFilter==='acumulado'&&l.acumulado))
     : isCrypto ? cryptoItems
     : isMoedas ? moedasItems
@@ -3177,7 +3172,7 @@ export default function App() {
             <div style={{maxWidth:1280,margin:'0 auto',padding:'28px 40px 56px'}}>
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:22}}>
                 <h1 style={{fontSize:24,fontWeight:800,color:T.black,letterSpacing:'-0.04em'}}>
-                  {isLoto?'Loterias':isEleicoes?'Eleições 2026 · Brasil':isCrypto?'Crypto · Previsões do Dia':isMoedas?'Câmbio · Taxa do Dia':isTodos?'Todos os Eventos':TABS.find(t=>t.key===tab)?.label}
+                  {isLoto?'Loterias':isCrypto?'Crypto · Previsões do Dia':isMoedas?'Câmbio · Taxa do Dia':isTodos?'Todos os Eventos':TABS.find(t=>t.key===tab)?.label}
                 </h1>
                 {!isCrypto&&!isMoedas&&(
                   <div style={{display:'flex',gap:7}}>
@@ -3195,8 +3190,6 @@ export default function App() {
                   ?currentItems.map(lot=><KalshiLotoCard key={lot.id} lot={lot} onSelect={setSelItem} catUpdating={catUpd}/>)
                   :isCrypto
                     ?currentItems.map(item=><CryptoCard key={item.id} item={item} onSelect={setSelItem}/>)
-                    :tab==='eleicoes'
-                      ?<div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:14,gridColumn:'1/-1'}}>{ELEICOES_DATA.map(el=><EleicaoCard key={el.id} item={el} onSelect={setSelItem}/>)}</div>
                   :isMoedas
                       ?currentItems.map(item=><MoedasCard key={item.id} item={item} onSelect={setSelItem}/>)
                       :currentItems.map(item=><KalshiSportCard key={item.id} item={item} catKey={item._catKey||tab} onSelect={setSelItem} catUpdating={isTodos?false:catUpd}/>)
@@ -3295,7 +3288,7 @@ export default function App() {
       <div style={{padding:isTablet?'20px 24px':'12px 14px',maxWidth:isTablet?860:'100%',margin:'0 auto'}}>
 
         {/* Filter pills */}
-        {!isLoto&&!isCrypto&&!isMoedas&&!isEleicoes&&(
+        {!isLoto&&!isCrypto&&!isMoedas&&(
           <div style={{display:'flex',gap:6,marginBottom:14,overflowX:'auto',scrollbarWidth:'none',paddingBottom:2}}>
             {[
               {f:'all',     label:'Todos'},
@@ -3332,10 +3325,6 @@ export default function App() {
         ):isCrypto?(
           <div style={{display:'grid',gridTemplateColumns:isTablet?'repeat(2,1fr)':'1fr',gap:12}}>
             {currentItems.map(item=><CryptoCard key={item.id} item={item} onSelect={setSelItem}/>)}
-          </div>
-        ):tab==='eleicoes'?(
-          <div style={{display:'grid',gridTemplateColumns:isTablet?'repeat(2,1fr)':'1fr',gap:12}}>
-            {ELEICOES_DATA.map(el=><EleicaoCard key={el.id} item={el} onSelect={setSelItem}/>)}
           </div>
         ):isMoedas?(
           <div style={{display:'grid',gridTemplateColumns:isTablet?'repeat(2,1fr)':'1fr',gap:12}}>
