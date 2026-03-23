@@ -540,21 +540,22 @@ const TOP_SITES = {
 const CATEGORY_SEARCH_PROMPTS = {
   futebol: (now) => `Data/hora UTC: ${now}.
 Consulte os seguintes sites de referência: ${TOP_SITES.futebol}
-Pesquise partidas de futebol AO VIVO e FUTURAS (próximos 30 dias):
-- Premier League, La Liga, Bundesliga, Serie A, Ligue 1
-- UEFA Champions League
-- Brasileirão Série A, Copa do Brasil, Libertadores
-- MLS
-Use múltiplas buscas para obter datas, horários e odds precisos.
-Retorne SOMENTE JSON array (máximo 14 eventos, ao vivo primeiro):
+PASSO 1: Pesquise "Brasileirão Série A rodada jogos" para obter jogos do Brasileirão desta rodada e próxima.
+PASSO 2: Pesquise "Premier League fixtures this week" para obter jogos da PL.
+PASSO 3: Pesquise "La Liga fixtures this week" e "Champions League fixtures" para mais jogos.
+PASSO 4: Pesquise "MLS schedule this week" para jogos da MLS.
+Retorne o MÁXIMO de partidas (mínimo 10, máximo 14, ao vivo primeiro).
+Retorne SOMENTE JSON array:
 [{"id":"f-SLUG","title":"Time A × Time B","competition":"Competição · Rodada/Fase","startTime":"ISO8601_EXATO","statusLabel":"DD/MM · HHhBRT · Estádio","bettvPick":"Time A|Time B|Empate","bettvConf":55,"bettvReason":"odds/prob real. máx 110 chars","home":{"name":"Time A","logo":null,"sub":"pos · pts · prob%","pct":55},"away":{"name":"Time B","logo":null,"sub":"pos · pts · prob%","pct":25},"draw":20}]`,
 
   basquete: (now) => `Data/hora UTC: ${now}.
 Consulte: ${TOP_SITES.basquete}
-Pesquise jogos NBA AO VIVO agora (placar atual + quarter), HOJE e próximos 7 dias.
-Use web_search para obter: placar ao vivo, probabilidades de vitória reais (SportRadar/ESPN), lesões relevantes, sequência de vitórias/derrotas.
-Retorne SOMENTE JSON array (máximo 12 jogos):
-[{"id":"b-SLUG","title":"Time A × Time B","competition":"NBA · Data","startTime":"ISO8601","statusLabel":"AO VIVO·Q2·Arena|Hoje·HHhBRT·Arena","bettvPick":"Time","bettvConf":65,"bettvReason":"prob%+contexto real. máx 110 chars","home":{"name":"Time A","logo":null,"sub":"conf·pos·prob%","pct":65},"away":{"name":"Time B","logo":null,"sub":"conf·pos·prob%","pct":30},"draw":5}]`,
+PASSO 1: Pesquise "NBA schedule today" e "NBA schedule this week" para obter TODOS os jogos de hoje e desta semana.
+PASSO 2: Pesquise "NBA scores today" para jogos ao vivo e resultados recentes.
+PASSO 3: Para cada jogo encontrado, busque as probabilidades de vitória reais.
+Retorne o MÁXIMO de jogos possível (mínimo 8, máximo 12). NÃO pare no primeiro resultado.
+Retorne SOMENTE JSON array:
+[{"id":"b-SLUG","title":"Time A × Time B","competition":"NBA · Temp. Regular","startTime":"ISO8601","statusLabel":"AO VIVO·Q2·Arena|DD/MM·HHhBRT·Arena","bettvPick":"Time","bettvConf":65,"bettvReason":"prob%+contexto real. máx 110 chars","home":{"name":"Time A","logo":null,"sub":"conf·pos·record","pct":65},"away":{"name":"Time B","logo":null,"sub":"conf·pos·record","pct":30},"draw":5}]`,
 
   mma: (now) => `Data/hora UTC: ${now}.
 Consulte: ${TOP_SITES.mma}
@@ -641,11 +642,10 @@ async function apiCall(system, messages, maxTurns=8) {
 
     const json = await res.json()
 
-    // Collect ALL text blocks (web_search server-side tool produces multiple)
+    // Collect ALL text blocks — web_search server-side produces multiple
     const textBlocks = (json.content||[]).filter(b => b.type === 'text').map(b => b.text).filter(Boolean)
 
-    // For server-side web_search: stop_reason is 'end_turn', results are inline
-    // Return the LAST text block — that's where the final JSON answer lives
+    // Server-side web_search: stop_reason is 'end_turn', JSON is in the LAST text block
     if (json.stop_reason === 'end_turn' && textBlocks.length) {
       return textBlocks[textBlocks.length - 1]
     }
@@ -667,7 +667,6 @@ async function apiCall(system, messages, maxTurns=8) {
         { role: 'user',      content: toolResults  },
       ]
     } else {
-      // Fallback: return any text we found
       if (textBlocks.length) return textBlocks[textBlocks.length - 1]
       break
     }
@@ -685,10 +684,11 @@ async function fetchCategory(category) {
     `Você é o motor de dados em tempo real do BetTv. Hoje: ${nowBRT} (UTC: ${nowISO}).`,
     `Sites de referência para ${category}: ${TOP_SITES[category]||'fontes confiáveis da internet'}`,
     'REGRAS ABSOLUTAS:',
-    '1. Faça MÚLTIPLAS buscas (mínimo 2-3) para confirmar dados de diferentes fontes.',
+    '1. Faça MÚLTIPLAS buscas para encontrar o MÁXIMO de eventos possível.',
     '2. NUNCA invente preços, resultados, datas ou estatísticas.',
-    '3. Responda SOMENTE com JSON array válido — zero markdown, zero texto extra.',
+    '3. Responda SOMENTE com JSON array válido — zero markdown, zero texto extra, zero explicações.',
     '4. Se um dado não for confirmado por fonte confiável, não o inclua.',
+    '5. Retorne o MÁXIMO de eventos que encontrar, não pare no primeiro resultado.',
   ].join('\n')
 
   const prompt = CATEGORY_SEARCH_PROMPTS[category]?.(nowISO, year)
@@ -697,21 +697,14 @@ async function fetchCategory(category) {
   const txt = await apiCall(system, [{role:'user', content:prompt}])
   if (!txt) return null
 
-  // Robust JSON extraction: strip markdown fences, find the JSON array/object
+  // Robust JSON extraction: find JSON array/object anywhere in text
   let clean = txt.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim()
-
-  // Try to find a JSON array [...] or object {...} in the text
   const arrStart = clean.indexOf('[')
   const objStart = clean.indexOf('{')
   if (arrStart === -1 && objStart === -1) return null
-
-  // Pick whichever comes first
   const start = arrStart !== -1 && (objStart === -1 || arrStart < objStart) ? arrStart : objStart
   clean = clean.slice(start)
-
-  // Find matching end bracket
-  const openChar = clean[0]
-  const closeChar = openChar === '[' ? ']' : '}'
+  const openChar = clean[0], closeChar = openChar === '[' ? ']' : '}'
   let depth = 0, end = -1
   for (let i = 0; i < clean.length; i++) {
     if (clean[i] === openChar) depth++
@@ -724,7 +717,7 @@ async function fetchCategory(category) {
     const parsed = JSON.parse(clean)
     return Array.isArray(parsed) ? parsed : (parsed ? [parsed] : null)
   } catch(e) {
-    console.warn(`[BetTv] JSON parse failed for ${category}:`, e.message, clean.slice(0,200))
+    console.warn(`[BetTv] JSON parse failed for ${category}:`, e.message)
     return null
   }
 }
@@ -774,7 +767,6 @@ async function validatePredictions(items, category) {
     const idx = clean.indexOf('[')
     if (idx === -1) return items
     clean = clean.slice(idx)
-    // Find matching ]
     let depth=0, end=-1
     for(let i=0;i<clean.length;i++){if(clean[i]==='[')depth++;else if(clean[i]===']'){depth--;if(depth===0){end=i;break}}}
     if(end===-1) return items
@@ -1230,64 +1222,13 @@ const LOGOS = {
   loud:         'https://upload.wikimedia.org/wikipedia/commons/a/a5/LOUD_Esports_logo.png',
   furia:        'https://upload.wikimedia.org/wikipedia/commons/f/f9/Furia_Esports_logo.png',
   t1:           'https://upload.wikimedia.org/wikipedia/commons/1/13/T1_%28esports%29_logo.png',
-  // ── Brasileirão extras ──
-  santos:       'https://upload.wikimedia.org/wikipedia/commons/1/15/Santos_Logo.png',
-  athleticopr:  'https://upload.wikimedia.org/wikipedia/commons/b/b3/Athletico_Paranaense_2019.svg',
-  bragantino:   'https://upload.wikimedia.org/wikipedia/commons/0/07/Red_Bull_Bragantino_logo.svg',
-  cuiaba:       'https://upload.wikimedia.org/wikipedia/commons/3/3b/Cuiab%C3%A1_Esporte_Clube.svg',
-  juventude:    'https://upload.wikimedia.org/wikipedia/commons/4/43/EC_Juventude.svg',
-  vitoria:      'https://upload.wikimedia.org/wikipedia/commons/5/55/Esporte_Clube_Vit%C3%B3ria_logo.svg',
-  mirassol:     'https://upload.wikimedia.org/wikipedia/commons/5/5e/Mirassol_FC.svg',
-  ceara:        'https://upload.wikimedia.org/wikipedia/commons/d/d0/Cear%C3%A1_Sporting_Club_logo.svg',
-  coritiba:     'https://upload.wikimedia.org/wikipedia/commons/5/54/Coritiba_FBC_2011.svg',
-  goias:        'https://upload.wikimedia.org/wikipedia/commons/a/ab/Goias_Esporte_Clube.svg',
-  // ── MLS ──
-  lagalaxy:     'https://upload.wikimedia.org/wikipedia/commons/7/70/Los_Angeles_Galaxy_logo.svg',
-  intermiami:   'https://upload.wikimedia.org/wikipedia/commons/d/d6/Inter_Miami_CF_logo.svg',
-  portland:     'https://upload.wikimedia.org/wikipedia/en/d/d1/Portland_Timbers_%28MLS%29_logo.svg',
-  seattle:      'https://upload.wikimedia.org/wikipedia/en/2/25/Seattle_Sounders_FC.svg',
-  atlanta:      'https://upload.wikimedia.org/wikipedia/commons/5/5c/Atlanta_United_FC_crest.svg',
-  nycfc:        'https://upload.wikimedia.org/wikipedia/en/f/f9/New_York_City_FC_logo.svg',
-  columbus:     'https://upload.wikimedia.org/wikipedia/en/3/38/Columbus_Crew_SC_%282021%29_logo.svg',
-  lafc:         'https://upload.wikimedia.org/wikipedia/commons/5/52/Los_Angeles_FC_%28crest%29.svg',
-  // ── La Liga extras ──
-  realsociedad: 'https://upload.wikimedia.org/wikipedia/en/f/f1/Real_Sociedad_logo.svg',
-  villarreal:   'https://upload.wikimedia.org/wikipedia/en/b/b9/Villarreal_CF_logo-en.svg',
-  betis:        'https://upload.wikimedia.org/wikipedia/en/1/13/Real_Betis_logo.svg',
-  sevilla:      'https://upload.wikimedia.org/wikipedia/en/3/3b/Sevilla_FC_logo.svg',
-  athletic:     'https://upload.wikimedia.org/wikipedia/en/9/98/Club_Athletic_Bilbao_logo.svg',
-  girona:       'https://upload.wikimedia.org/wikipedia/en/2/2f/Girona_FC_Logo.svg',
-  // ── Serie A extras ──
-  acmilan:      'https://upload.wikimedia.org/wikipedia/commons/d/d0/Logo_of_AC_Milan.svg',
-  asroma:       'https://upload.wikimedia.org/wikipedia/en/f/f7/AS_Roma_logo_%282017%29.svg',
-  lazio:        'https://upload.wikimedia.org/wikipedia/en/c/ce/S.S._Lazio_badge.svg',
-  atalanta:     'https://upload.wikimedia.org/wikipedia/en/6/66/AtalantaBC.svg',
-  fiorentina:   'https://upload.wikimedia.org/wikipedia/commons/a/ae/ACF_Fiorentina_2022.svg',
-  // ── Bundesliga extras ──
-  leipzig:      'https://upload.wikimedia.org/wikipedia/en/0/04/RB_Leipzig_2014_logo.svg',
-  stuttgart:    'https://upload.wikimedia.org/wikipedia/commons/e/eb/VfB_Stuttgart_1893_Logo.svg',
-  frankfurt:    'https://upload.wikimedia.org/wikipedia/commons/0/04/Eintracht_Frankfurt_Logo.svg',
-  wolfsburg:    'https://upload.wikimedia.org/wikipedia/commons/f/f3/Logo-VfL-Wolfsburg.svg',
-  // ── Champions League extra ──
-  benfica:      'https://upload.wikimedia.org/wikipedia/en/a/a2/SL_Benfica_logo.svg',
-  porto:        'https://upload.wikimedia.org/wikipedia/en/f/f1/FC_Porto.svg',
-  sporting:     'https://upload.wikimedia.org/wikipedia/en/e/e1/Sporting_Clube_de_Portugal_%28Logo%29.svg',
-  ajax:         'https://upload.wikimedia.org/wikipedia/en/7/79/Ajax_Amsterdam.svg',
-  // ── Golf ──
-  scheffler:    'https://a.espncdn.com/i/headshots/golf/players/full/10404.png',
-  mcilroy:      'https://a.espncdn.com/i/headshots/golf/players/full/3470.png',
-  rahm:         'https://a.espncdn.com/i/headshots/golf/players/full/9780.png',
-  koepka:       'https://a.espncdn.com/i/headshots/golf/players/full/6798.png',
-  spieth:       'https://a.espncdn.com/i/headshots/golf/players/full/5765.png',
-  thomas:       'https://a.espncdn.com/i/headshots/golf/players/full/9131.png',
-  hovland:      'https://a.espncdn.com/i/headshots/golf/players/full/10423.png',
 }
 
+
 // ─── NAME → LOGO KEY RESOLVER ───────────────────────────────────────────────
-// Maps common team/player names (as returned by the API) to LOGOS keys
 const NAME_TO_LOGO = {}
 ;(function buildNameMap(){
-  const explicit = {
+  const m = {
     // NBA
     'oklahoma city thunder':'okc','okc thunder':'okc','thunder':'okc',
     'los angeles lakers':'lakers','la lakers':'lakers',
@@ -1312,22 +1253,14 @@ const NAME_TO_LOGO = {}
     'aston villa':'astonvilla','nottingham forest':'nottmforest',
     'west ham united':'westham','west ham':'westham',
     'leeds united':'leeds','newcastle united':'newcastle',
-    'sunderland afc':'sunderland',
     // La Liga
     'real madrid':'realmadrid','atletico madrid':'atletimadrid','atlético madrid':'atletimadrid',
     'atletico de madrid':'atletimadrid','atlético de madrid':'atletimadrid',
-    'real sociedad':'realsociedad','real betis':'betis',
-    'athletic bilbao':'athletic','athletic club':'athletic','girona fc':'girona',
-    'villarreal cf':'villarreal','sevilla fc':'sevilla',
     // Bundesliga
     'bayern munich':'bayernmunich','bayern münchen':'bayernmunich','fc bayern':'bayernmunich',
     'borussia dortmund':'dortmund','bayer leverkusen':'leverkusen',
-    'rb leipzig':'leipzig','vfb stuttgart':'stuttgart',
-    'eintracht frankfurt':'frankfurt','vfl wolfsburg':'wolfsburg',
-    // Serie A
+    // Serie A (Italy)
     'inter milan':'intermilan','internazionale':'intermilan','inter':'intermilan',
-    'ac milan':'acmilan','milan':'acmilan','as roma':'asroma','roma':'asroma',
-    'ss lazio':'lazio','atalanta bc':'atalanta','acf fiorentina':'fiorentina',
     // Ligue 1
     'paris saint-germain':'psg','paris sg':'psg',
     // Brasileirão
@@ -1344,42 +1277,16 @@ const NAME_TO_LOGO = {}
     'bahia':'bahia','ec bahia':'bahia',
     'vasco da gama':'vasco','vasco':'vasco',
     'fortaleza':'fortaleza','fortaleza ec':'fortaleza',
-    'santos':'santos','santos fc':'santos',
-    'athletico-pr':'athleticopr','athletico paranaense':'athleticopr','athletico':'athleticopr',
-    'red bull bragantino':'bragantino','rb bragantino':'bragantino','bragantino':'bragantino',
-    'cuiabá':'cuiaba','cuiaba ec':'cuiaba',
-    'juventude':'juventude','ec juventude':'juventude',
-    'vitória':'vitoria','ec vitória':'vitoria','vitoria':'vitoria',
-    'mirassol':'mirassol','mirassol fc':'mirassol',
-    'ceará':'ceara','ceara sc':'ceara',
-    'coritiba':'coritiba','goiás':'goias','goias':'goias',
     'sport recife':'sport','sport':'sport',
-    // MLS
-    'la galaxy':'lagalaxy','los angeles galaxy':'lagalaxy',
-    'inter miami':'intermiami','inter miami cf':'intermiami',
-    'portland timbers':'portland','seattle sounders':'seattle',
-    'atlanta united':'atlanta','new york city fc':'nycfc',
-    'nycfc':'nycfc','columbus crew':'columbus',
-    'los angeles fc':'lafc','lafc':'lafc',
-    // Champions League
-    'sl benfica':'benfica','fc porto':'porto',
-    'sporting cp':'sporting','sporting lisbon':'sporting',
-    'ajax amsterdam':'ajax','afc ajax':'ajax',
     // Golf
-    'scottie scheffler':'scheffler','s. scheffler':'scheffler',
-    'rory mcilroy':'mcilroy','r. mcilroy':'mcilroy',
-    'jon rahm':'rahm','j. rahm':'rahm',
-    'brooks koepka':'koepka','b. koepka':'koepka',
-    'jordan spieth':'spieth','j. spieth':'spieth',
-    'justin thomas':'thomas','j. thomas':'thomas',
-    'viktor hovland':'hovland','v. hovland':'hovland',
+    'scottie scheffler':'sinner','s. scheffler':'sinner',  // reuse tennis headshot style
+    'rory mcilroy':'sinner','r. mcilroy':'sinner',
     // Tênis
     'jannik sinner':'sinner','j. sinner':'sinner',
     'carlos alcaraz':'alcaraz','c. alcaraz':'alcaraz',
     'aryna sabalenka':'sabalenka','a. sabalenka':'sabalenka',
     'coco gauff':'gauff','c. gauff':'gauff',
     'taylor fritz':'fritz','t. fritz':'fritz',
-    'stefanos tsitsipas':'tsitsipas','s. tsitsipas':'tsitsipas',
     'daniil medvedev':'medvedev','d. medvedev':'medvedev',
     'alexander zverev':'zverev','a. zverev':'zverev',
     // MMA
@@ -1387,33 +1294,30 @@ const NAME_TO_LOGO = {}
     'islam makhachev':'makhachev','i. makhachev':'makhachev',
     'alexandre pantoja':'pantoja','a. pantoja':'pantoja',
     'israel adesanya':'adesanya','i. adesanya':'adesanya',
-    'jiri prochazka':'prochazka','j. prochazka':'prochazka',
+    // MLS
+    'la galaxy':'lagalaxy','los angeles galaxy':'lagalaxy',
+    'inter miami':'intermiami','inter miami cf':'intermiami',
+    'portland timbers':'portland','seattle sounders':'seattle',
+    'atlanta united':'atlanta','new york city fc':'nycfc',
+    'columbus crew':'columbus','los angeles fc':'lafc',
   }
-  // Build map
-  Object.entries(explicit).forEach(([name,key])=>{NAME_TO_LOGO[name]=key})
-  // Also add each LOGOS key as-is (lowercase)
+  Object.entries(m).forEach(([n,k])=>{NAME_TO_LOGO[n]=k})
   Object.keys(LOGOS).forEach(k=>{NAME_TO_LOGO[k]=k})
 })()
 
 function resolveLogoKey(logo, name) {
-  // 1. Direct key from API
   if (logo && LOGOS[logo]) return logo
-  // 2. Try name lookup
   if (!name) return null
   const norm = name.toLowerCase().trim()
   if (NAME_TO_LOGO[norm]) return NAME_TO_LOGO[norm]
-  // 3. Fuzzy: check if name contains or is contained by a known key
+  // Fuzzy: check if name contains a known key
   for (const [n,k] of Object.entries(NAME_TO_LOGO)) {
     if (norm.includes(n) || n.includes(norm)) return k
   }
   return null
 }
 
-
 // ─── TEAM / PLAYER LOGO ───────────────────────────────────────────────────────
-// 1. Tenta resolver pelo mapa LOGOS (por key ou por nome)
-// 2. Se falhar → busca via IA (Claude) e cacheia
-// 3. Fallback → avatar com iniciais coloridas
 function TeamLogo({logo, name, size=26}) {
   const [staticErr, setStaticErr] = useState(false)
   const [aiUrl, setAiUrl] = useState(undefined)
@@ -2078,7 +1982,7 @@ function SocialPage({appData}) {
     ? appData.loterias.map(l => ({...l, id:l.id, title:l.nome, subtitle:l.descricao, status:'upcoming'}))
     : selectedCat === 'todos'
       ? (()=>{
-          const flat=Object.entries(appData.esportes).flatMap(([catKey,cat])=>
+          const flat=Object.entries(appData.esportes).filter(([k])=>k!=="esports").flatMap(([catKey,cat])=>
             (cat.items||[]).map(item=>({...item, _catKey:catKey}))
           )
           return flat.sort((a,b)=>{
@@ -2788,7 +2692,7 @@ function MobileEventsList({tab, appData, onSelect, onBack, updating, countdown, 
   const catBg    = T.catBg[tab]||T.gray2
 
   const allEvents = (()=>{
-    const flat = Object.entries(appData.esportes).filter(([k])=>k!=='esports').flatMap(([catKey,cat])=>
+    const flat = Object.entries(appData.esportes).filter(([k])=>k!=="esports").flatMap(([catKey,cat])=>
       (cat.items||[]).map(item=>({...item,_catKey:catKey}))
     )
     return flat.sort((a,b)=>{
@@ -3341,7 +3245,7 @@ export default function App() {
   }).length
 
   const allEvents = (()=>{
-    const flat = Object.entries(appData.esportes).filter(([k])=>k!=='esports').flatMap(([catKey,cat])=>
+    const flat = Object.entries(appData.esportes).filter(([k])=>k!=="esports").flatMap(([catKey,cat])=>
       (cat.items||[]).map(item=>({...item,_catKey:catKey}))
     )
     return flat.sort((a,b)=>{
@@ -3357,7 +3261,6 @@ export default function App() {
     if (!item.startTime) return false
     const now = Date.now()
     const start = new Date(item.startTime).getTime()
-    // Live = event has started and within max duration
     return now >= start && now <= start + 6*60*60*1000
   }
 
