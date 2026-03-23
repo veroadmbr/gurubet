@@ -627,7 +627,7 @@ async function apiCall(system, messages, maxTurns=8) {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 4000,
+        max_tokens: 16000,
         system,
         tools,
         messages: msgs,
@@ -640,17 +640,21 @@ async function apiCall(system, messages, maxTurns=8) {
     }
 
     const json = await res.json()
-    const textBlock = json.content?.find(b => b.type === 'text')
 
-    // Got final text — return it
-    if (textBlock?.text) return textBlock.text
+    // Collect ALL text blocks (web_search server-side tool produces multiple)
+    const textBlocks = (json.content||[]).filter(b => b.type === 'text').map(b => b.text).filter(Boolean)
 
-    // Model used web_search — feed results back and continue
+    // For server-side web_search: stop_reason is 'end_turn', results are inline
+    // Return the LAST text block — that's where the final JSON answer lives
+    if (json.stop_reason === 'end_turn' && textBlocks.length) {
+      return textBlocks[textBlocks.length - 1]
+    }
+
+    // Client-side tool_use — feed results back and continue
     if (json.stop_reason === 'tool_use') {
-      const toolUses = json.content?.filter(b => b.type === 'tool_use') || []
+      const toolUses = (json.content||[]).filter(b => b.type === 'tool_use')
       if (!toolUses.length) break
 
-      // Build tool results for ALL tool_use blocks in this turn
       const toolResults = toolUses.map(tu => ({
         type: 'tool_result',
         tool_use_id: tu.id,
@@ -663,7 +667,8 @@ async function apiCall(system, messages, maxTurns=8) {
         { role: 'user',      content: toolResults  },
       ]
     } else {
-      // end_turn or other stop — no text produced
+      // Fallback: return any text we found
+      if (textBlocks.length) return textBlocks[textBlocks.length - 1]
       break
     }
   }
@@ -691,10 +696,37 @@ async function fetchCategory(category) {
 
   const txt = await apiCall(system, [{role:'user', content:prompt}])
   if (!txt) return null
-  const clean = txt.replace(/^```(?:json)?\s*/,'').replace(/\s*```$/,'').trim()
-  if (!clean.startsWith('[') && !clean.startsWith('{')) return null
-  const parsed = JSON.parse(clean)
-  return Array.isArray(parsed) ? parsed : (parsed ? [parsed] : null)
+
+  // Robust JSON extraction: strip markdown fences, find the JSON array/object
+  let clean = txt.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim()
+
+  // Try to find a JSON array [...] or object {...} in the text
+  const arrStart = clean.indexOf('[')
+  const objStart = clean.indexOf('{')
+  if (arrStart === -1 && objStart === -1) return null
+
+  // Pick whichever comes first
+  const start = arrStart !== -1 && (objStart === -1 || arrStart < objStart) ? arrStart : objStart
+  clean = clean.slice(start)
+
+  // Find matching end bracket
+  const openChar = clean[0]
+  const closeChar = openChar === '[' ? ']' : '}'
+  let depth = 0, end = -1
+  for (let i = 0; i < clean.length; i++) {
+    if (clean[i] === openChar) depth++
+    else if (clean[i] === closeChar) { depth--; if (depth === 0) { end = i; break } }
+  }
+  if (end === -1) return null
+  clean = clean.slice(0, end + 1)
+
+  try {
+    const parsed = JSON.parse(clean)
+    return Array.isArray(parsed) ? parsed : (parsed ? [parsed] : null)
+  } catch(e) {
+    console.warn(`[BetTv] JSON parse failed for ${category}:`, e.message, clean.slice(0,200))
+    return null
+  }
 }
 
 // ─── VALIDATE PREDICTIONS — verifica resultados passados ──────────────────────
@@ -738,8 +770,15 @@ async function validatePredictions(items, category) {
   try {
     const txt = await apiCall(system, [{role:'user', content:prompt}])
     if (!txt) return items
-    const clean = txt.replace(/^```(?:json)?\s*/,'').replace(/\s*```$/,'').trim()
-    const validations = JSON.parse(clean)
+    let clean = txt.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim()
+    const idx = clean.indexOf('[')
+    if (idx === -1) return items
+    clean = clean.slice(idx)
+    // Find matching ]
+    let depth=0, end=-1
+    for(let i=0;i<clean.length;i++){if(clean[i]==='[')depth++;else if(clean[i]===']'){depth--;if(depth===0){end=i;break}}}
+    if(end===-1) return items
+    const validations = JSON.parse(clean.slice(0,end+1))
     if (!Array.isArray(validations)) return items
 
     return items.map(item => {
