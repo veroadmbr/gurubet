@@ -1547,6 +1547,7 @@ function InfoModal({item, isLoto, catKey, onClose}) {
 
   const isCryptoItem = catKey==='crypto'
   const isMoedasItem = catKey==='moedas'
+  const isEleicaoItem = catKey==='eleicoes'
   const isSpecialItem = isCryptoItem||isMoedasItem
 
   const catColor = T.cat[catKey||'loterias'] || T.black
